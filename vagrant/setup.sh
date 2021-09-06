@@ -108,8 +108,8 @@ script_log "Installing shoreman..."
 curl https://github.com/chrismytton/shoreman/raw/master/shoreman.sh -sLo /usr/bin/shoreman
 chmod +x /usr/bin/shoreman
 
-script_log "Copying systemd unit file..."
-cp $APP_DIR/vagrant/reverser.service /lib/systemd/system/
+script_log "Installing systemd unit file..."
+sudo ln -s $APP_DIR/vagrant/reverser.service /lib/systemd/system
 systemctl daemon-reload
 systemctl enable reverser 2>/dev/null
 
