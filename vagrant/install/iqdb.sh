@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-apt-get install -y libsqlite3-dev libgd-dev
+apt-get install -y libsqlite3-dev libgd-dev cmake git
 
 git clone https://github.com/danbooru/iqdb.git /tmp/iqdb
 cd /tmp/iqdb

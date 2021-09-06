@@ -56,7 +56,7 @@ fi
 apt-get update
 
 # build dependencies
-apt-get install -y cmake pkg-config libglib2.0-dev libexpat1-dev
+apt-get install -y pkg-config libglib2.0-dev libexpat1-dev
 
 # runtime dependencies
 apt-get install -y postgresql-13 postgresql-server-dev-13 redis-server nodejs yarn nginx
@@ -71,28 +71,12 @@ sudo -u postgres createuser -s $USER
 
 if ! which vipsthumbnail >/dev/null; then
     script_log "Installing libvips..."
-    VIPS_VERSION=8.11.3
-    pushd .
-    cd /tmp
-    wget -q https://github.com/libvips/libvips/releases/download/v$VIPS_VERSION/vips-$VIPS_VERSION.tar.gz
-    tar xf vips-$VIPS_VERSION.tar.gz
-    cd vips-$VIPS_VERSION
-    ./configure --prefix=/usr
-    make install
-    ldconfig
-    popd
-    rm -fr /tmp/vips-$VIPS_VERSION.tar.gz /tmp/vips-$VIPS_VERSION
+    bash $APP_DIR/vagrant/install/vips.sh
 fi
 
 if ! type ruby-install >/dev/null 2>&1; then
     script_log "Installing ruby-install..."
-    RUBY_INSTALL_VERSION=0.8.2
-    cd /usr/local/src
-    wget -qO ruby-install-$RUBY_INSTALL_VERSION.tar.gz https://github.com/postmodern/ruby-install/archive/v$RUBY_INSTALL_VERSION.tar.gz
-    tar -xzvf ruby-install-$RUBY_INSTALL_VERSION.tar.gz >/dev/null
-    cd ruby-install-$RUBY_INSTALL_VERSION/
-    sudo make install >/dev/null
-    rm /usr/local/src/ruby-install-$RUBY_INSTALL_VERSION.tar.gz
+    bash $APP_DIR/vagrant/install/ruby-install.sh
 fi
 
 if [ -f "$CHRUBY_PATH" ]; then
@@ -101,20 +85,7 @@ fi
 
 if ! type chruby >/dev/null 2>&1; then
     script_log "Installing chruby..."
-    CHRUBY_VERSION=0.3.9
-    cd /usr/local/src
-    wget -qO chruby-$CHRUBY_VERSION.tar.gz https://github.com/postmodern/chruby/archive/v$CHRUBY_VERSION.tar.gz
-    tar -xzvf chruby-$CHRUBY_VERSION.tar.gz >/dev/null
-    cd chruby-$CHRUBY_VERSION/
-    sudo make install >/dev/null
-    sudo ./scripts/setup.sh >/dev/null
-    rm /usr/local/src/chruby-$CHRUBY_VERSION.tar.gz
-
-    echo -e \
-"if [ -n \"\$BASH_VERSION\" ] || [ -n \"\$ZSH_VERSION\" ]; then
-  source /usr/local/share/chruby/chruby.sh
-  source /usr/local/share/chruby/auto.sh
-fi" > $CHRUBY_PATH
+    bash $APP_DIR/vagrant/install/chruby.sh $CHRUBY_PATH
 fi
 
 if ! which iqdb >/dev/null; then
