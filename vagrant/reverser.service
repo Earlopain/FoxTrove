@@ -1,0 +1,12 @@
+[Unit]
+Description=Reverser
+After=network.target
+
+[Service]
+Type=simple
+User=reverser
+WorkingDirectory=/vagrant
+ExecStart=/bin/bash -c 'source /etc/profile.d/chruby.sh;/usr/bin/shoreman'
+
+[Install]
+WantedBy=vagrant.mount
