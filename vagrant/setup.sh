@@ -71,12 +71,9 @@ apt-get install -y postgresql-13 postgresql-server-dev-13 redis-server nodejs ya
 sudo setcap CAP_NET_BIND_SERVICE=+eip $(which nginx)
 
 script_log "Setting up postgres..."
-sed -i -e 's/md5/trust/' /etc/postgresql/13/main/pg_hba.conf
 
-service postgresql restart
-
-script_log "Creating postgres user..."
-sudo -u postgres createuser -s $USER
+script_log "Creating postgres database..."
+/usr/lib/postgresql/13/bin/initdb -D /home/$USER/postgres
 
 if ! which vipsthumbnail >/dev/null; then
     script_log "Installing libvips..."
@@ -101,10 +98,6 @@ if ! which iqdb >/dev/null; then
     script_log "Installing iqdb..."
     bash $APP_DIR/vagrant/install/iqdb.sh
 fi
-
-script_log "Enabling redis server..."
-systemctl enable redis-server 2>/dev/null
-systemctl start redis-server
 
 script_log "Stopping systemd service..."
 service reverser stop 2>/dev/null
