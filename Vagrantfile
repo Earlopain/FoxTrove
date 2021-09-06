@@ -16,7 +16,7 @@ Vagrant.configure('2') do |config|
 
   config.vm.define 'default' do |node|
     node.vm.hostname = 'reverser.local'
-    node.vm.network :private_network, ip: '192.168.64.78'
+    node.vm.network :private_network, ip: '192.168.64.77'
   end
 
   config.vm.provision 'shell', path: 'vagrant/setup.sh'
