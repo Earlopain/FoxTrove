@@ -53,6 +53,12 @@ if ! package_installed redis-server; then
    script_log "redis repository added"
 fi
 
+# nginx -e was added in 1.20 while ubuntu still ships 1.18
+if !package_installed nginx; then
+    add_key http://nginx.org/keys/nginx_signing.key
+    echo "deb https://nginx.org/packages/ubuntu/ focal nginx" > /etc/apt/sources.list.d/nginx.list
+fi
+
 apt-get update
 
 # build dependencies
@@ -60,6 +66,9 @@ apt-get install -y pkg-config libglib2.0-dev libexpat1-dev
 
 # runtime dependencies
 apt-get install -y postgresql-13 postgresql-server-dev-13 redis-server nodejs yarn nginx
+
+# allow nginx to bind to port 80 without root
+sudo setcap CAP_NET_BIND_SERVICE=+eip $(which nginx)
 
 script_log "Setting up postgres..."
 sed -i -e 's/md5/trust/' /etc/postgresql/13/main/pg_hba.conf
@@ -101,11 +110,6 @@ script_log "Stopping systemd service..."
 service reverser stop 2>/dev/null
 
 sudo -i -u $USER bash -c "$APP_DIR/vagrant/user-setup.sh '$APP_DIR' '$CHRUBY_PATH'"
-
-
-script_log "Enabling nginx..."
-cp $APP_DIR/vagrant/nginx.conf /etc/nginx/conf.d/reverser.conf
-service nginx restart
 
 script_log "Installing shoreman..."
 curl https://github.com/chrismytton/shoreman/raw/master/shoreman.sh -sLo /usr/bin/shoreman
