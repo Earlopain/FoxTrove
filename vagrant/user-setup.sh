@@ -26,9 +26,9 @@ script_log "Installing bundler gem..."
 gem install bundler >/dev/null
 bundler config github.https true
 
-script_log "Dropping existing databases (if any)..."
-dropdb --if-exists reverser_development
-dropdb --if-exists reverser_test
+script_log "Restarting systemd service..."
+sudo systemctl restart reverser
 
+# Race condition: If postgres did not fully start yet
 script_log "Running setup..."
 ./bin/setup
