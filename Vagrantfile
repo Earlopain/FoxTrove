@@ -19,5 +19,5 @@ Vagrant.configure('2') do |config|
     node.vm.network :private_network, ip: '192.168.64.78'
   end
 
-  config.vm.provision 'shell', path: 'vagrant/install.sh'
+  config.vm.provision 'shell', path: 'vagrant/setup.sh'
 end

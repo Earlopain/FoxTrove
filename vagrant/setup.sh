@@ -18,10 +18,6 @@ add_key() {
     wget -qO - "$1" | sudo apt-key add - &>/dev/null
 }
 
-install_packages() {
-    sudo apt-get install -y $@
-}
-
 script_log() {
     echo "[install.sh] >>> $@"
 }
@@ -59,12 +55,11 @@ fi
 
 apt-get update
 
-if ! install_packages \
-      postgresql-13 postgresql-server-dev-13 redis-server nodejs yarn nginx
-      pkg-config libglib2.0-dev libexpat1-dev; then
-    >&2 script_log "Installation of dependencies failed, please see the errors above and re-run \`vagrant provision\`"
-    exit 1
-fi
+# build dependencies
+apt-get install -y cmake pkg-config libglib2.0-dev libexpat1-dev
+
+# runtime dependencies
+apt-get install -y postgresql-13 postgresql-server-dev-13 redis-server nodejs yarn nginx
 
 script_log "Setting up postgres..."
 sed -i -e 's/md5/trust/' /etc/postgresql/13/main/pg_hba.conf
@@ -120,6 +115,11 @@ if ! type chruby >/dev/null 2>&1; then
   source /usr/local/share/chruby/chruby.sh
   source /usr/local/share/chruby/auto.sh
 fi" > $CHRUBY_PATH
+fi
+
+if ! which iqdb >/dev/null; then
+    script_log "Installing iqdb..."
+    bash $APP_DIR/vagrant/install/iqdb.sh
 fi
 
 script_log "Enabling redis server..."
