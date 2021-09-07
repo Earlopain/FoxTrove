@@ -22,13 +22,5 @@ if ! command -v ruby >/dev/null || ruby -v | grep -v "$RUBY_VER_NUM" >/dev/null 
     script_log "Installed ruby version: $(ruby -v)"
 fi
 
-script_log "Installing bundler gem..."
-gem install bundler >/dev/null
-bundler config github.https true
-
-script_log "Restarting systemd service..."
-sudo systemctl restart reverser
-
-# Race condition: If postgres did not fully start yet
 script_log "Running setup..."
 ./bin/setup

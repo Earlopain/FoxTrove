@@ -9,7 +9,7 @@ Vagrant.configure('2') do |config|
   config.vm.provider 'virtualbox' do |v|
     v.cpus = 2
     v.memory = 2048
-    config.vm.synced_folder '.', '/vagrant', type: 'virtualbox', owner: "reverser"
+    config.vm.synced_folder '.', '/vagrant', type: 'nfs'
   end
 
   config.ssh.username = 'reverser' if VAGRANT_COMMAND == 'ssh'

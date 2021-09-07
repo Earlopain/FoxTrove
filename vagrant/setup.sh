@@ -68,17 +68,10 @@ apt-get install -y pkg-config libglib2.0-dev libexpat1-dev
 # runtime dependencies
 apt-get install -y postgresql-13 postgresql-server-dev-13 redis-server nodejs yarn nginx
 
-# allow nginx to bind to port 80 without root and disable the service
-setcap CAP_NET_BIND_SERVICE=+eip $(which nginx)
-systemctl stop nginx
-systemctl disable nginx
-
 script_log "Setting up postgres..."
-systemctl stop postgresql
-systemctl disable postgresql
-
-script_log "Creating postgres database..."
-sudo -i -u $USER /usr/lib/postgresql/13/bin/initdb -D /home/$USER/postgres -U $USER
+sed -i -e 's/md5/trust/' /etc/postgresql/13/main/pg_hba.conf
+systemctl restart postgresql
+sudo -u postgres createuser -s $USER
 
 if ! which vipsthumbnail >/dev/null; then
     script_log "Installing libvips..."
@@ -104,6 +97,20 @@ if ! which iqdb >/dev/null; then
     bash $APP_DIR/vagrant/install/iqdb.sh
 fi
 
+script_log "Enabling redis server..."
+systemctl enable redis-server 2>/dev/null
+systemctl start redis-server
+
+script_log "Stopping system service..."
+sudo systemctl stop reverser 2>/dev/null
+
+sudo -i -u $USER bash -c "$APP_DIR/vagrant/user-setup.sh '$APP_DIR' '$CHRUBY_PATH'"
+
+script_log "Setting up nginx..."
+rm -f /etc/nginx/conf.d/default.conf
+ln -sf $APP_DIR/vagrant/reverser.conf /etc/nginx/conf.d
+systemctl restart nginx
+
 script_log "Installing shoreman..."
 curl https://github.com/chrismytton/shoreman/raw/master/shoreman.sh -sLo /usr/bin/shoreman
 chmod +x /usr/bin/shoreman
@@ -113,4 +120,6 @@ cp $APP_DIR/vagrant/reverser.service /lib/systemd/system/
 systemctl daemon-reload
 systemctl enable reverser 2>/dev/null
 
-sudo -i -u $USER bash -c "$APP_DIR/vagrant/user-setup.sh '$APP_DIR' '$CHRUBY_PATH'"
+
+script_log "Restarting systemd service..."
+sudo systemctl restart reverser
