@@ -38,14 +38,8 @@ if ! package_installed postgresql-13; then
 fi
 
 if ! package_installed nodejs; then
-    wget -qO - https://deb.nodesource.com/setup_14.x | sudo -E bash - >/dev/null 2>&1
+    wget -qO - https://deb.nodesource.com/setup_16.x | sudo -E bash - >/dev/null 2>&1
     script_log "Node.js repository added"
-fi
-
-if ! package_installed yarn; then
-    add_key https://dl.yarnpkg.com/debian/pubkey.gpg
-    echo "deb https://dl.yarnpkg.com/debian/ stable main" > /etc/apt/sources.list.d/yarn.list
-    script_log "yarn repository added"
 fi
 
 if ! package_installed redis-server; then
@@ -66,7 +60,8 @@ apt-get update
 apt-get install -y pkg-config libglib2.0-dev libexpat1-dev
 
 # runtime dependencies
-apt-get install -y postgresql-13 postgresql-server-dev-13 redis-server nodejs yarn nginx
+apt-get install -y postgresql-13 postgresql-server-dev-13 redis-server nodejs nginx
+npm install --global yarn
 
 script_log "Setting up postgres..."
 sed -i -e 's/md5/trust/' /etc/postgresql/13/main/pg_hba.conf
