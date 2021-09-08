@@ -103,7 +103,7 @@ sudo -i -u $USER bash -c "$APP_DIR/vagrant/user-setup.sh '$APP_DIR' '$CHRUBY_PAT
 
 script_log "Setting up nginx..."
 rm -f /etc/nginx/conf.d/default.conf
-ln -sf $APP_DIR/vagrant/reverser.conf /etc/nginx/conf.d
+cp -rf $APP_DIR/vagrant/reverser.conf /etc/nginx/conf.d
 systemctl restart nginx
 
 script_log "Installing shoreman..."
