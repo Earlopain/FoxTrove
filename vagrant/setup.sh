@@ -4,6 +4,8 @@ APP_DIR=/vagrant
 CHRUBY_PATH=/etc/profile.d/chruby.sh
 USER=reverser
 
+POSTGRESQL_VERSION=13
+
 apt-get update
 
 package_installed() {
@@ -31,7 +33,7 @@ if ! grep $USER /etc/passwd >/dev/null; then
     usermod -aG vagrant,www-data $USER
 fi
 
-if ! package_installed postgresql-13; then
+if ! package_installed postgresql-$POSTGRESQL_VERSION; then
     add_key https://www.postgresql.org/media/keys/ACCC4CF8.asc
     echo "deb https://apt.postgresql.org/pub/repos/apt/ focal-pgdg main" > /etc/apt/sources.list.d/pgdg.list
     script_log "PostgreSQL repository added"
@@ -60,11 +62,20 @@ apt-get update
 apt-get install -y pkg-config libglib2.0-dev libexpat1-dev
 
 # runtime dependencies
-apt-get install -y postgresql-13 postgresql-server-dev-13 redis-server nodejs nginx
+apt-get install -y postgresql-$POSTGRESQL_VERSION postgresql-server-dev-$POSTGRESQL_VERSION redis-server nodejs nginx
 npm install --global yarn
 
 script_log "Setting up postgres..."
-sed -i -e 's/md5/trust/' /etc/postgresql/13/main/pg_hba.conf
+sed -i -e 's/md5/trust/' /etc/postgresql/$POSTGRESQL_VERSION/main/pg_hba.conf
+
+# allow connections from the host machine
+if ! grep -q "192" "/etc/postgresql/$POSTGRESQL_VERSION/main/pg_hba.conf"; then
+  echo "host all all 192.168.64.1/32 trust" >> /etc/postgresql/$POSTGRESQL_VERSION/main/pg_hba.conf
+fi
+
+# listen for outside connections
+echo "listen_addresses = '*'" > /etc/postgresql/$POSTGRESQL_VERSION/main/conf.d/listen_addresses.conf
+
 systemctl restart postgresql
 sudo -u postgres createuser -s $USER
 
