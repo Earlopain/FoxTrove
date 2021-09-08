@@ -4,7 +4,11 @@ APP_DIR=/vagrant
 CHRUBY_PATH=/etc/profile.d/chruby.sh
 USER=reverser
 
+CHRUBY_VERSION=0.3.9
+RUBY_INSTALL_VERSION=0.8.2
+VIPS_VERSION=8.11.3
 POSTGRESQL_VERSION=13
+NODE_VERSION=16
 
 apt-get update
 
@@ -40,7 +44,7 @@ if ! package_installed postgresql-$POSTGRESQL_VERSION; then
 fi
 
 if ! package_installed nodejs; then
-    wget -qO - https://deb.nodesource.com/setup_16.x | sudo -E bash - >/dev/null 2>&1
+    wget -qO - https://deb.nodesource.com/setup_$NODE_VERSION.x | sudo -E bash - >/dev/null 2>&1
     script_log "Node.js repository added"
 fi
 
@@ -81,12 +85,12 @@ sudo -u postgres createuser -s $USER
 
 if ! which vipsthumbnail >/dev/null; then
     script_log "Installing libvips..."
-    bash $APP_DIR/vagrant/install/vips.sh
+    bash $APP_DIR/vagrant/install/vips.sh $VIPS_VERSION
 fi
 
 if ! type ruby-install >/dev/null 2>&1; then
     script_log "Installing ruby-install..."
-    bash $APP_DIR/vagrant/install/ruby-install.sh
+    bash $APP_DIR/vagrant/install/ruby-install.sh $RUBY_INSTALL_VERSION
 fi
 
 if [ -f "$CHRUBY_PATH" ]; then
@@ -95,7 +99,7 @@ fi
 
 if ! type chruby >/dev/null 2>&1; then
     script_log "Installing chruby..."
-    bash $APP_DIR/vagrant/install/chruby.sh $CHRUBY_PATH
+    bash $APP_DIR/vagrant/install/chruby.sh $CHRUBY_VERSION $CHRUBY_PATH
 fi
 
 if ! which iqdb >/dev/null; then
