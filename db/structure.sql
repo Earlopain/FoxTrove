@@ -57,7 +57,7 @@ CREATE TABLE public.accounts (
     email character varying NOT NULL,
     level public.account_levels DEFAULT 'unactivated'::public.account_levels NOT NULL,
     permissions public.account_permissions[] DEFAULT '{}'::public.account_permissions[] NOT NULL,
-    bcrypt_password_hash character varying NOT NULL,
+    password_digest character varying NOT NULL,
     last_logged_in_at timestamp without time zone NOT NULL,
     last_ip_addr inet NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
