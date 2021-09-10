@@ -219,8 +219,8 @@ CREATE TABLE public.moderation_logs (
     id bigint NOT NULL,
     creator_id bigint NOT NULL,
     creator_inet inet NOT NULL,
-    model_type text NOT NULL,
-    model_id integer NOT NULL,
+    loggable_type text NOT NULL,
+    loggable_id integer NOT NULL,
     action text NOT NULL,
     payload jsonb NOT NULL,
     created_at timestamp without time zone NOT NULL
@@ -500,17 +500,24 @@ CREATE INDEX index_moderation_logs_on_creator_inet ON public.moderation_logs USI
 
 
 --
--- Name: index_moderation_logs_on_model_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_moderation_logs_on_loggable_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_moderation_logs_on_model_id ON public.moderation_logs USING btree (model_id);
+CREATE INDEX index_moderation_logs_on_loggable_id ON public.moderation_logs USING btree (loggable_id);
 
 
 --
--- Name: index_moderation_logs_on_model_type; Type: INDEX; Schema: public; Owner: -
+-- Name: index_moderation_logs_on_loggable_type; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_moderation_logs_on_model_type ON public.moderation_logs USING btree (model_type);
+CREATE INDEX index_moderation_logs_on_loggable_type ON public.moderation_logs USING btree (loggable_type);
+
+
+--
+-- Name: index_moderation_logs_on_loggable_type_and_loggable_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_moderation_logs_on_loggable_type_and_loggable_id ON public.moderation_logs USING btree (loggable_type, loggable_id);
 
 
 --
@@ -583,7 +590,6 @@ ALTER TABLE ONLY public.artist_urls
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
-('0'),
 ('20210908132036'),
 ('20210908142922'),
 ('20210908165941'),
