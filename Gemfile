@@ -12,3 +12,9 @@ gem "redis"
 gem "ruby-vips"
 gem "activerecord-postgres_enum"
 gem "bcrypt"
+
+group :development do
+  gem "solargraph"
+  gem "rubocop"
+  gem "rubocop-rails"
+end
