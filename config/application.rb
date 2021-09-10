@@ -25,6 +25,8 @@ module Reverser
     config.load_defaults 6.1
     config.active_record.schema_format = :sql
 
+    config.autoload_paths += %W[#{config.root}/app/logical]
+
     # Configuration for the application, engines, and railties goes here.
     #
     # These settings can be overridden in specific environments using the files
