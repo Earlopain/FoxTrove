@@ -263,7 +263,7 @@ CREATE TABLE public.sites (
     id bigint NOT NULL,
     internal_name character varying NOT NULL,
     display_name character varying NOT NULL,
-    homepag character varying NOT NULL,
+    homepage character varying NOT NULL,
     artist_url_format character varying NOT NULL,
     artist_submission_format character varying NOT NULL,
     direct_url_format character varying NOT NULL,
