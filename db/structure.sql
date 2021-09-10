@@ -53,11 +53,11 @@ SET default_table_access_method = heap;
 
 CREATE TABLE public.accounts (
     id bigint NOT NULL,
-    username character varying NOT NULL,
-    email character varying NOT NULL,
+    username text NOT NULL,
+    email text NOT NULL,
     level public.account_levels DEFAULT 'unactivated'::public.account_levels NOT NULL,
     permissions public.account_permissions[] DEFAULT '{}'::public.account_permissions[] NOT NULL,
-    password_digest character varying NOT NULL,
+    password_digest text NOT NULL,
     last_logged_in_at timestamp without time zone NOT NULL,
     last_ip_addr inet NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
@@ -261,16 +261,16 @@ CREATE TABLE public.schema_migrations (
 
 CREATE TABLE public.sites (
     id bigint NOT NULL,
-    internal_name character varying NOT NULL,
-    display_name character varying NOT NULL,
-    homepage character varying NOT NULL,
-    artist_url_format character varying NOT NULL,
-    artist_submission_format character varying NOT NULL,
-    direct_url_format character varying NOT NULL,
+    internal_name text NOT NULL,
+    display_name text NOT NULL,
+    homepage text NOT NULL,
+    artist_url_format text NOT NULL,
+    artist_submission_format text NOT NULL,
+    direct_url_format text NOT NULL,
     allows_hotlinking boolean NOT NULL,
     stores_original boolean NOT NULL,
     original_easily_accessible boolean NOT NULL,
-    notes character varying NOT NULL,
+    notes text NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
