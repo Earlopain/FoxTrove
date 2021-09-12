@@ -14,7 +14,6 @@ module ImageUtils
   def thumbnail(file)
     output_file = Tempfile.new
     begin
-      puts file.path.inspect
       resized_image = Vips::Image.thumbnail(file.path, Reverser.thumbnail_size, **THUMBNAIL_OPTIONS)
     rescue Vips::Error => e
       raise e unless e.message =~ /icc_transform/i
@@ -30,7 +29,7 @@ module ImageUtils
     image = Vips::Image.new_from_file(filename, fail: true)
     image.stats
     false
-  rescue
+  rescue StandardError
     true
   end
 end
