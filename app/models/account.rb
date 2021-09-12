@@ -11,8 +11,8 @@ class Account < ApplicationRecord
     ALLOW_URL_MODERATION = "allow_url_moderation".freeze
   end
 
-  has_many :artists, foreign_key: :creator_id
-  has_many :artist_urls, foreign_key: :creator_id
+  has_many :created_artists, foreign_key: :creator_id, class_name: "Artist"
+  has_many :created_artist_urls, foreign_key: :creator_id, class_name: "ArtistUrl"
   has_many :created_moderation_logs, foreign_key: :creator_id, class_name: "ModerationLog"
 
   has_secure_password
