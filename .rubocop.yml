@@ -7,6 +7,12 @@ AllCops:
     - "bin/*"
     - "node_modules/**/*"
 
+Layout/FirstArrayElementIndentation:
+  EnforcedStyle: consistent
+
+Layout/FirstHashElementIndentation:
+  EnforcedStyle: consistent
+
 Layout/LineLength:
   Enabled: false
 
@@ -40,8 +46,17 @@ Style/EmptyMethod:
 Style/StringLiterals:
   EnforcedStyle: double_quotes
 
+Style/FormatStringToken:
+  EnforcedStyle: template
+
 Style/FrozenStringLiteralComment:
   Enabled: false
+
+Style/TrailingCommaInArrayLiteral:
+  EnforcedStyleForMultiline: consistent_comma
+
+Style/TrailingCommaInHashLiteral:
+  EnforcedStyleForMultiline: consistent_comma
 
 Rails/HasManyOrHasOneDependent:
   Enabled: false
