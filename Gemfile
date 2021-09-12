@@ -12,6 +12,7 @@ gem "redis"
 gem "ruby-vips"
 gem "activerecord-postgres_enum"
 gem "bcrypt"
+gem "httparty"
 
 group :development do
   gem "solargraph"

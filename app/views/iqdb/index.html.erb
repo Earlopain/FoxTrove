@@ -1,0 +1,9 @@
+
+<h1>Similar Images Search</h1>
+<%= form_tag(search_iqdb_path, method: :post, class: "simple_form", multipart: true ) do %>
+  <div class="input string optional fallback">
+    <%= label_tag "file", "File", class: "string optional" %>
+    <%= file_field_tag :file, :size => 50 %>
+  </div>
+  <%= submit_tag "Search" %>
+<% end %>
