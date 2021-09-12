@@ -1,7 +1,6 @@
 module ImageUtils
   module_function
 
-  SQUARE_BOUNDING_BOX = 200
   # https://www.color.org/srgbprofiles.xalter
   SRGB_PROFILE = Rails.root.join("config/sRGB_v4_ICC_preference.icc").to_s.freeze
   # https://libvips.github.io/libvips/API/current/libvips-resample.html#vips-thumbnail
@@ -16,11 +15,11 @@ module ImageUtils
     output_file = Tempfile.new
     begin
       puts file.path.inspect
-      resized_image = Vips::Image.thumbnail(file.path, SQUARE_BOUNDING_BOX, **THUMBNAIL_OPTIONS)
+      resized_image = Vips::Image.thumbnail(file.path, Reverser.thumbnail_size, **THUMBNAIL_OPTIONS)
     rescue Vips::Error => e
       raise e unless e.message =~ /icc_transform/i
 
-      resized_image = Vips::Image.thumbnail(file.path, SQUARE_BOUNDING_BOX, **THUMBNAIL_OPTIONS_NO_ICC)
+      resized_image = Vips::Image.thumbnail(file.path, Reverser.thumbnail_size, **THUMBNAIL_OPTIONS_NO_ICC)
     end
     resized_image.jpegsave(output_file.path, Q: 90, **JPEG_OPTIONS)
 
