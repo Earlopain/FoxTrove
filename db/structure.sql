@@ -518,7 +518,7 @@ CREATE INDEX index_moderation_logs_on_loggable_type_and_loggable_id ON public.mo
 -- Name: index_sites_on_internal_name; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_sites_on_internal_name ON public.sites USING btree (internal_name);
+CREATE UNIQUE INDEX index_sites_on_internal_name ON public.sites USING btree (internal_name);
 
 
 --
@@ -590,6 +590,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20210908173750'),
 ('20210908174953'),
 ('20210908181041'),
-('20210912183057');
+('20210912183057'),
+('20210912205610');
 
 
