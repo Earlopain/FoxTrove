@@ -35,5 +35,9 @@ yarn-debug.log*
 !.yarn/versions
 .pnp.*
 
+# yardoc
+.yardoc
+doc
+
 # Custom
 .vagrant
