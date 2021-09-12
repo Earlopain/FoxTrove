@@ -10,6 +10,7 @@ Vagrant.configure("2") do |config|
     v.cpus = 2
     v.memory = 2048
     config.vm.synced_folder ".", "/vagrant", type: "nfs"
+    config.vbguest.auto_update = false if Vagrant.has_plugin?("vagrant-vbguest")
   end
 
   config.ssh.username = "reverser" if VAGRANT_COMMAND == "ssh"
