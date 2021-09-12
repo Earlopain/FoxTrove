@@ -110,7 +110,6 @@ CREATE TABLE public.artist_submissions (
     file_name text NOT NULL,
     file_extension public.file_extensions NOT NULL,
     sha256 text NOT NULL,
-    direct_url text,
     width integer NOT NULL,
     height integer NOT NULL,
     size integer NOT NULL,
@@ -266,11 +265,6 @@ CREATE TABLE public.sites (
     homepage text NOT NULL,
     artist_url_format text NOT NULL,
     artist_submission_format text NOT NULL,
-    direct_url_format text NOT NULL,
-    allows_hotlinking boolean NOT NULL,
-    stores_original boolean NOT NULL,
-    original_easily_accessible boolean NOT NULL,
-    notes text NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
@@ -595,6 +589,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20210908165941'),
 ('20210908173750'),
 ('20210908174953'),
-('20210908181041');
+('20210908181041'),
+('20210912183057');
 
 
