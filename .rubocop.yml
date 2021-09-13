@@ -46,9 +46,6 @@ Style/EmptyMethod:
 Style/StringLiterals:
   EnforcedStyle: double_quotes
 
-Style/FormatStringToken:
-  EnforcedStyle: template
-
 Style/FrozenStringLiteralComment:
   Enabled: false
 
