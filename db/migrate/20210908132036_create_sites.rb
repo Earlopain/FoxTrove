@@ -5,6 +5,7 @@ class CreateSites < ActiveRecord::Migration[6.1]
       t.text :display_name, null: false
       t.text :homepage, null: false
       t.text :artist_url_format, null: false
+      t.text :artist_identifier_regex, null: false
       t.text :artist_submission_format, null: false
       t.text :direct_url_format, null: false
       t.boolean :allows_hotlinking, null: false
