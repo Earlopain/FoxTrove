@@ -6,11 +6,11 @@ class ArtistUrl < ApplicationRecord
   has_many :submissions, class_name: "ArtistSubmission"
 
   def self.parse(url)
-    site = get_matching_site url
+    site, regex = get_matching_site_and_regex url
     return nil if site.nil?
 
-    matches = site.artist_url_identifier_regex.match url
-    # This shouldn't happen since we definatly already matched in get_matching_site
+    matches = regex.match url
+    # This shouldn't happen since we definitely already matched in get_matching_site
     return nil if matches[:artist_identifier].nil?
 
     {
@@ -19,9 +19,10 @@ class ArtistUrl < ApplicationRecord
     }
   end
 
-  def self.get_matching_site(url)
-    Site.find_each.filter do |site|
-      url =~ site.artist_url_identifier_regex
-    end.first
+  def self.get_matching_site_and_regex(url)
+    Site.find_each.each do |site|
+      regex = site.matching_regex url
+      return [site, regex] if regex
+    end
   end
 end

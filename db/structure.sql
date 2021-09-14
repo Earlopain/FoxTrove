@@ -263,7 +263,7 @@ CREATE TABLE public.sites (
     internal_name text NOT NULL,
     display_name text NOT NULL,
     homepage text NOT NULL,
-    artist_url_format text NOT NULL,
+    artist_url_formats text[] NOT NULL,
     artist_identifier_regex text NOT NULL,
     artist_submission_format text NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
