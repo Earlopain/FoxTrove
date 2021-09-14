@@ -3,28 +3,28 @@ class Site < ApplicationRecord
   has_many :artists, through: :artist_urls
   has_many :submissions, through: :artist_urls
 
-  def artist_url_identifier_regexes
-    artist_url_formats.map do |string|
-      # Escape all characters
-      # Annotated tokens must be used since they contain no characters with special meaning in regex
-      # https://twitter.com/%<site_artist_identifier>s/ => https://twitter\.com/%<site_artist_identifier>s\/
-      first_pass = Regexp.new Regexp.escape string
-      # Replace the identifier with the site specific regex and capture it
-      # https://twitter\.com/%<site_artist_identifier>s\/ => https://twitter\.com/([a-zA-Z0-9_]{1,15})/
-      first_pass_substituted = first_pass.source % { site_artist_identifier: "(?<artist_identifier>#{artist_identifier_regex})" }
-      # Allow matching both https and http
-      # https://twitter\.com/([a-zA-Z0-9_]{1,15})/ => https?://twitter\.com/([a-zA-Z0-9_]{1,15})/
-      allow_http = first_pass_substituted.sub(/^https/, "https?")
-      # Require that the match spans the whole line
-      # https?://twitter\.com/([a-zA-Z0-9_]{1,15})/ => ^https?://twitter\.com/([a-zA-Z0-9_]{1,15})/$
-      match_start_end = "^#{allow_http}$"
-      Regexp.new match_start_end
+  def artist_url_identifier_templates
+    artist_url_templates.map do |template|
+      Addressable::Template.new template
     end
   end
 
-  def matching_regex(url)
-    artist_url_identifier_regexes.find do |regex|
-      url =~ regex
+  def matching_template_and_result(uri)
+    artist_url_identifier_templates.each do |template|
+      matches = template.extract uri, IdentifierProcessor
+      return { template: template, site_artist_identifier: matches["site_artist_identifier"] } if matches
     end
+    nil
+  end
+end
+
+class IdentifierProcessor
+  def self.match(name)
+    return /https?/ if name == "https"
+    return /(www\.)?/ if name == "www"
+    return /((old|new|www)\.)?/ if name == "reddit_old_new_www"
+    return /[a-zA-Z0-9_\-.~]*/ if name == "site_artist_identifier"
+
+    raise StandardError "Unhandled matcher #{name}"
   end
 end
