@@ -94,7 +94,10 @@ update_or_create_site("tumblr", {
 update_or_create_site("reddit", {
   display_name: "Reddit",
   homepage: "https://www.reddit.com",
-  artist_url_templates: ["{reddit_old_new}reddit.com/user/{site_artist_identifier}"],
+  artist_url_templates: [
+    "{reddit_old_new}reddit.com/user/{site_artist_identifier}",
+    "{reddit_old_new}reddit.com/u/{site_artist_identifier}",
+  ],
   artist_identifier_regex: "[a-zA-Z0-9_\-]{3,20}",
   artist_submission_template: "https://redd.it/{site_submission_identifier}/",
 })
