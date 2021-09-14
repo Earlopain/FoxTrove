@@ -102,8 +102,8 @@ update_or_create_site("reddit", {
   artist_submission_template: "https://redd.it/{site_submission_identifier}/",
 })
 
-update_or_create_site("newsground", {
-  display_name: "Newsground",
+update_or_create_site("newgrounds", {
+  display_name: "Newgrounds",
   homepage: "https://www.newgrounds.com",
   artist_url_templates: ["{site_artist_identifier}.newgrounds.com"],
   artist_identifier_regex: "[a-zA-Z0-9~]{1,20}",
