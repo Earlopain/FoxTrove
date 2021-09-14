@@ -10,6 +10,7 @@ class ArtistUrl < ApplicationRecord
     Site.find_each.each do |site|
       match = site.matching_template_and_result uri
       match[:site] = site if match
+      match[:identifier_valid] = Regexp.new("^#{site.artist_identifier_regex}$").match? match[:site_artist_identifier] if match
       return match if match
     end
     nil
