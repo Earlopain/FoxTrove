@@ -5,7 +5,7 @@ class Site < ApplicationRecord
 
   def artist_url_identifier_templates
     artist_url_templates.map do |template|
-      Addressable::Template.new "#{template}{/remaining}{?remaining}{#remaining}"
+      Addressable::Template.new "{prefix}#{template}{/remaining}{?remaining}{#remaining}"
     end
   end
 
@@ -20,9 +20,8 @@ end
 
 class IdentifierProcessor
   def self.match(name)
-    return /https?/ if name == "https"
-    return /(www\.)?/ if name == "www"
-    return /((old|new|www)\.)?/ if name == "reddit_old_new_www"
+    return /^(https?:\/\/)?(www\.)?/ if name == "prefix"
+    return /((old|new)\.)?/ if name == "reddit_old_new"
     return /[a-zA-Z0-9_\-.~]*/ if name == "site_artist_identifier"
     return /.*?/ if name == "remaining"
 
