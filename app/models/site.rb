@@ -5,7 +5,7 @@ class Site < ApplicationRecord
 
   def artist_url_identifier_templates
     artist_url_templates.map do |template|
-      Addressable::Template.new template
+      Addressable::Template.new "#{template}{/remaining}{?remaining}{#remaining}"
     end
   end
 
@@ -24,7 +24,8 @@ class IdentifierProcessor
     return /(www\.)?/ if name == "www"
     return /((old|new|www)\.)?/ if name == "reddit_old_new_www"
     return /[a-zA-Z0-9_\-.~]*/ if name == "site_artist_identifier"
+    return /.*?/ if name == "remaining"
 
-    raise StandardError "Unhandled matcher #{name}"
+    raise StandardError, "Unhandled matcher #{name}"
   end
 end
