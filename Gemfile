@@ -19,4 +19,5 @@ group :development do
   gem "solargraph"
   gem "rubocop"
   gem "rubocop-rails"
+  gem "webrick"
 end
