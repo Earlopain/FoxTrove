@@ -2,7 +2,7 @@
 
 VIPS_VERSION=$1
 
-apt-get install liblcms2-dev libjpeg-turbo8-dev libpng-dev libwebp-dev
+apt-get -y install liblcms2-dev libjpeg-turbo8-dev libpng-dev libwebp-dev
 
 cd /tmp
 wget -q https://github.com/libvips/libvips/releases/download/v$VIPS_VERSION/vips-$VIPS_VERSION.tar.gz
