@@ -63,7 +63,7 @@ fi
 apt-get update
 
 # build dependencies
-apt-get install -y pkg-config libglib2.0-dev libexpat1-dev
+apt-get install -y build-essential pkg-config libglib2.0-dev libexpat1-dev
 
 # runtime dependencies
 apt-get install -y postgresql-$POSTGRESQL_VERSION postgresql-server-dev-$POSTGRESQL_VERSION redis-server nodejs nginx
