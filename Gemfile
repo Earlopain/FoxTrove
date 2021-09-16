@@ -21,3 +21,8 @@ group :development do
   gem "rubocop-rails"
   gem "webrick"
 end
+
+group :development, :test do
+  gem "rspec-rails", "~> 5.0.0"
+  gem "rspec-parameterized"
+end
