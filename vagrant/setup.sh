@@ -73,8 +73,8 @@ script_log "Setting up postgres..."
 sed -i -e 's/md5/trust/' /etc/postgresql/$POSTGRESQL_VERSION/main/pg_hba.conf
 
 # allow connections from the host machine
-if ! grep -q "192" "/etc/postgresql/$POSTGRESQL_VERSION/main/pg_hba.conf"; then
-  echo "host all all 192.168.64.1/32 trust" >> /etc/postgresql/$POSTGRESQL_VERSION/main/pg_hba.conf
+if ! grep -q "0.0.0.0" "/etc/postgresql/$POSTGRESQL_VERSION/main/pg_hba.conf"; then
+  echo "host all all 0.0.0.0/0 trust" >> /etc/postgresql/$POSTGRESQL_VERSION/main/pg_hba.conf
 fi
 
 # listen for outside connections
