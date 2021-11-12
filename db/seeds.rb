@@ -125,3 +125,13 @@ update_or_create_site("instagram", {
   artist_identifier_regex: "[a-zA-Z0-9_\.]{1,30}",
   artist_submission_template: "https://www.instagram.com/p/{site_submission_identifier}/",
 })
+
+Account.find_or_create_by!(username: "admin") do |user|
+  user.password = "test"
+  user.email = "admin@localhost"
+  user.level = Account::Levels::ADMIN
+  user.last_logged_in_at = Time.now
+  user.last_ip_addr = "127.0.0.1"
+  user.created_at = Time.now
+  user.updated_at = Time.now
+end
