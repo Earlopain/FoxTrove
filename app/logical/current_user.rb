@@ -15,6 +15,11 @@ class CurrentUser
     RequestStore[:current_ip_addr]
   end
 
+  # Overwrites class.name
+  def self.name
+    user.name
+  end
+
   def self.method_missing(method, *params, &block)
     user.__send__(method, *params, &block)
   end

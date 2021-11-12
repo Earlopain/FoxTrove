@@ -5,7 +5,7 @@ class ApplicationRecord < ActiveRecord::Base
 
   def self.belongs_to_creator
     class_eval do
-      belongs_to :creator, class_name: "Account"
+      belongs_to :creator, class_name: "User"
     end
   end
 

@@ -1,4 +1,4 @@
-class Account < ApplicationRecord
+class User < ApplicationRecord
   module Levels
     UNACTIVATED = "unactivated".freeze
     MEMBER = "member".freeze
@@ -17,10 +17,10 @@ class Account < ApplicationRecord
 
   has_secure_password
 
-  def self.anonymous
-    user = Account.new
+  def self.anon
+    user = User.new
     user.level = Levels::UNACTIVATED
-    user.username = "Anon"
+    user.name = "anon"
     user.freeze.readonly!
     user
   end

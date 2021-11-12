@@ -10,28 +10,6 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 --
--- Name: account_levels; Type: TYPE; Schema: public; Owner: -
---
-
-CREATE TYPE public.account_levels AS ENUM (
-    'unactivated',
-    'member',
-    'admin'
-);
-
-
---
--- Name: account_permissions; Type: TYPE; Schema: public; Owner: -
---
-
-CREATE TYPE public.account_permissions AS ENUM (
-    'delete_artist',
-    'request_manual_update',
-    'allow_url_moderation'
-);
-
-
---
 -- Name: file_extensions; Type: TYPE; Schema: public; Owner: -
 --
 
@@ -43,46 +21,31 @@ CREATE TYPE public.file_extensions AS ENUM (
 );
 
 
-SET default_tablespace = '';
-
-SET default_table_access_method = heap;
-
 --
--- Name: accounts; Type: TABLE; Schema: public; Owner: -
+-- Name: user_levels; Type: TYPE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.accounts (
-    id bigint NOT NULL,
-    username text NOT NULL,
-    email text NOT NULL,
-    level public.account_levels DEFAULT 'unactivated'::public.account_levels NOT NULL,
-    permissions public.account_permissions[] DEFAULT '{}'::public.account_permissions[] NOT NULL,
-    password_digest text NOT NULL,
-    last_logged_in_at timestamp without time zone NOT NULL,
-    last_ip_addr inet NOT NULL,
-    created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+CREATE TYPE public.user_levels AS ENUM (
+    'unactivated',
+    'member',
+    'admin'
 );
 
 
 --
--- Name: accounts_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: user_permissions; Type: TYPE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE public.accounts_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
+CREATE TYPE public.user_permissions AS ENUM (
+    'delete_artist',
+    'request_manual_update',
+    'allow_url_moderation'
+);
 
 
---
--- Name: accounts_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
+SET default_tablespace = '';
 
-ALTER SEQUENCE public.accounts_id_seq OWNED BY public.accounts.id;
-
+SET default_table_access_method = heap;
 
 --
 -- Name: ar_internal_metadata; Type: TABLE; Schema: public; Owner: -
@@ -291,10 +254,40 @@ ALTER SEQUENCE public.sites_id_seq OWNED BY public.sites.id;
 
 
 --
--- Name: accounts id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: users; Type: TABLE; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.accounts ALTER COLUMN id SET DEFAULT nextval('public.accounts_id_seq'::regclass);
+CREATE TABLE public.users (
+    id bigint NOT NULL,
+    name text NOT NULL,
+    email text NOT NULL,
+    level public.user_levels DEFAULT 'unactivated'::public.user_levels NOT NULL,
+    permissions public.user_permissions[] DEFAULT '{}'::public.user_permissions[] NOT NULL,
+    password_digest text NOT NULL,
+    last_logged_in_at timestamp without time zone NOT NULL,
+    last_ip_addr inet NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: users_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.users_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
 
 
 --
@@ -333,11 +326,10 @@ ALTER TABLE ONLY public.sites ALTER COLUMN id SET DEFAULT nextval('public.sites_
 
 
 --
--- Name: accounts accounts_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: users id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.accounts
-    ADD CONSTRAINT accounts_pkey PRIMARY KEY (id);
+ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_id_seq'::regclass);
 
 
 --
@@ -397,24 +389,11 @@ ALTER TABLE ONLY public.sites
 
 
 --
--- Name: index_accounts_on_email; Type: INDEX; Schema: public; Owner: -
+-- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-CREATE INDEX index_accounts_on_email ON public.accounts USING btree (email);
-
-
---
--- Name: index_accounts_on_level; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_accounts_on_level ON public.accounts USING btree (level);
-
-
---
--- Name: index_accounts_on_username; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_accounts_on_username ON public.accounts USING btree (username);
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_pkey PRIMARY KEY (id);
 
 
 --
@@ -523,11 +502,32 @@ CREATE UNIQUE INDEX index_sites_on_internal_name ON public.sites USING btree (in
 
 
 --
+-- Name: index_users_on_email; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_users_on_email ON public.users USING btree (email);
+
+
+--
+-- Name: index_users_on_level; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_users_on_level ON public.users USING btree (level);
+
+
+--
+-- Name: index_users_on_name; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_users_on_name ON public.users USING btree (name);
+
+
+--
 -- Name: artist_urls fk_rails_1cc82d4704; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.artist_urls
-    ADD CONSTRAINT fk_rails_1cc82d4704 FOREIGN KEY (creator_id) REFERENCES public.accounts(id);
+    ADD CONSTRAINT fk_rails_1cc82d4704 FOREIGN KEY (creator_id) REFERENCES public.users(id);
 
 
 --
@@ -543,7 +543,7 @@ ALTER TABLE ONLY public.artist_submissions
 --
 
 ALTER TABLE ONLY public.artists
-    ADD CONSTRAINT fk_rails_4e3f72966d FOREIGN KEY (creator_id) REFERENCES public.accounts(id);
+    ADD CONSTRAINT fk_rails_4e3f72966d FOREIGN KEY (creator_id) REFERENCES public.users(id);
 
 
 --
@@ -551,7 +551,7 @@ ALTER TABLE ONLY public.artists
 --
 
 ALTER TABLE ONLY public.artist_urls
-    ADD CONSTRAINT fk_rails_79347f77be FOREIGN KEY (approver_id) REFERENCES public.accounts(id);
+    ADD CONSTRAINT fk_rails_79347f77be FOREIGN KEY (approver_id) REFERENCES public.users(id);
 
 
 --
@@ -567,7 +567,7 @@ ALTER TABLE ONLY public.artist_urls
 --
 
 ALTER TABLE ONLY public.moderation_logs
-    ADD CONSTRAINT fk_rails_d8dc8b5e52 FOREIGN KEY (creator_id) REFERENCES public.accounts(id);
+    ADD CONSTRAINT fk_rails_d8dc8b5e52 FOREIGN KEY (creator_id) REFERENCES public.users(id);
 
 
 --
@@ -592,6 +592,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20210908174953'),
 ('20210908181041'),
 ('20210912183057'),
-('20210912205610');
+('20210912205610'),
+('20211112111140');
 
 
