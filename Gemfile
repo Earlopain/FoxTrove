@@ -25,4 +25,5 @@ end
 group :development, :test do
   gem "rspec-rails", "~> 5.0.0"
   gem "rspec-parameterized"
+  gem 'simplecov', require: false
 end

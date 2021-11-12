@@ -42,3 +42,4 @@ doc
 # Custom
 .vagrant
 .idea
+/coverage
