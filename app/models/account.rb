@@ -16,4 +16,12 @@ class Account < ApplicationRecord
   has_many :created_moderation_logs, foreign_key: :creator_id, class_name: "ModerationLog"
 
   has_secure_password
+
+  def self.anonymous
+    user = Account.new
+    user.level = Levels::UNACTIVATED
+    user.username = "Anon"
+    user.freeze.readonly!
+    user
+  end
 end

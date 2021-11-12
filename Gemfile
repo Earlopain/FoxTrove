@@ -14,6 +14,7 @@ gem "activerecord-postgres_enum"
 gem "bcrypt"
 gem "httparty"
 gem "addressable"
+gem "request_store"
 
 group :development do
   gem "solargraph"
