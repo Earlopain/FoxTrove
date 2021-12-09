@@ -11,6 +11,6 @@ module Reverser
   # The server which handles similar images search
   # Must respond like https://github.com/danbooru/iqdb
   def iqdb_server
-    "http://127.0.0.1:5588"
+    "http://iqdb:5588"
   end
 end

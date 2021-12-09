@@ -1,0 +1,32 @@
+version: "3"
+
+services:
+  reverser:
+    build: ./
+    environment:
+      DATABASE_URL: postgresql://reverser@postgres
+    volumes:
+      - .:/app
+      - node_modules:/app/node_modules
+    depends_on:
+      - postgres
+    ports:
+      - 9000:9000
+
+  postgres:
+    image:  postgres:14-alpine
+    environment:
+      - POSTGRES_USER=reverser
+      - POSTGRES_DB=reverser_development
+      - POSTGRES_HOST_AUTH_METHOD=trust
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+  iqdb:
+    build:
+      context: ./docker
+      dockerfile: iqdb.Dockerfile
+
+volumes:
+  db_data:
+  node_modules:

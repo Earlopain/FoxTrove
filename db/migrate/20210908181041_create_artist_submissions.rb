@@ -9,7 +9,7 @@ class CreateArtistSubmissions < ActiveRecord::Migration[6.1]
       t.text :description_on_site, null: true
       t.datetime :created_at_on_site, null: false
       t.text :file_name, null: false
-      t.enum :file_extension, enum_name: :file_extensions, null: false
+      t.enum :file_extension, enum_type: :file_extensions, null: false
       t.text :sha256, null: false, index: true
       t.text :direct_url, null: true
       t.integer :width, null: false

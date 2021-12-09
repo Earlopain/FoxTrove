@@ -1,8 +1,8 @@
 class CreateArtistUrls < ActiveRecord::Migration[6.1]
   def change
     create_table :artist_urls do |t|
-      t.references :creator, foreign_key: { to_table: :accounts }, null: false
-      t.references :approver, foreign_key: { to_table: :accounts }, null: true
+      t.references :creator, foreign_key: { to_table: :users }, null: false
+      t.references :approver, foreign_key: { to_table: :users }, null: true
       t.references :artist, foreign_key: true, null: false
       t.references :site, foreign_key: true, null: false
       t.text :identifier_on_site, null: false, index: true
