@@ -111,6 +111,8 @@ GEM
       parser
       unparser
     public_suffix (4.0.6)
+    puma (5.5.2)
+      nio4r (~> 2.0)
     racc (1.6.0)
     rack (2.2.3)
     rack-proxy (0.7.0)
@@ -211,7 +213,6 @@ GEM
       rack-proxy (>= 0.6.1)
       railties (>= 5.2)
       semantic_range (>= 2.3.0)
-    webrick (1.7.0)
     websocket-driver (0.7.5)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
@@ -227,6 +228,7 @@ DEPENDENCIES
   bootsnap (>= 1.4.4)
   httparty
   pg (~> 1.1)
+  puma (~> 5.5)
   rails (~> 7.0.0.rc1)
   request_store
   rspec-parameterized
@@ -235,7 +237,6 @@ DEPENDENCIES
   sass-rails (>= 6)
   simplecov
   webpacker (~> 5.0)
-  webrick
 
 BUNDLED WITH
-   2.2.31
+   2.2.32
