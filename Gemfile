@@ -5,7 +5,6 @@ gem "pg", "~> 1.1"
 gem "bootsnap", ">= 1.4.4", require: false
 gem "puma", "~> 5.5"
 
-gem "sprockets-rails"
 gem "jsbundling-rails"
 gem "cssbundling-rails"
 

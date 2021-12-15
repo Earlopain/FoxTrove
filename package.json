@@ -8,8 +8,8 @@
     "sass": "^1.44.0"
   },
   "scripts": {
-    "build": "esbuild app/javascript/*.* --bundle --sourcemap --outdir=app/assets/builds",
-    "build:css": "sass ./app/assets/stylesheets/application.sass.scss ./app/assets/builds/application.css --load-path=node_modules"
+    "build": "esbuild app/javascript/*.* --bundle --sourcemap --outdir=./public/assets/builds",
+    "build:css": "sass ./app/stylesheet/application.sass.scss ./public/assets/builds/application.css --load-path=node_modules"
   },
   "version": "0.1.0"
 }
