@@ -8,6 +8,7 @@ services:
     volumes:
       - .:/app
       - node_modules:/app/node_modules
+      - yarn:/app/.yarn
     depends_on:
       - postgres
     ports:
@@ -30,3 +31,4 @@ services:
 volumes:
   db_data:
   node_modules:
+  yarn:

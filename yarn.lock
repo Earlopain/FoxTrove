@@ -2,7 +2,7 @@
 # Manual changes might be lost - proceed with caution!
 
 __metadata:
-  version: 4
+  version: 5
   cacheKey: 8
 
 "@gar/promisify@npm:^1.0.1":
@@ -284,119 +284,119 @@ __metadata:
 "esbuild-android-arm64@npm:0.14.3":
   version: 0.14.3
   resolution: "esbuild-android-arm64@npm:0.14.3"
-  checksum: a84bf830e5bf666748482d41c89e1932e8da9fc489f0f49760747fb3e14d78d3d65bf3f405bd4db121dcc524e9300319c44d3f69c4e8ce1b12da7623fe3c965e
+  conditions: os=android & cpu=arm64
   languageName: node
   linkType: hard
 
 "esbuild-darwin-64@npm:0.14.3":
   version: 0.14.3
   resolution: "esbuild-darwin-64@npm:0.14.3"
-  checksum: 349ea1c1ef2390650edbba048a6e35035f36004ee08939f044da8be822d4af14cc848ef4276965525e63358e383666d0ccb350f0913fab7b7b1e733510ed4f7d
+  conditions: os=darwin & cpu=x64
   languageName: node
   linkType: hard
 
 "esbuild-darwin-arm64@npm:0.14.3":
   version: 0.14.3
   resolution: "esbuild-darwin-arm64@npm:0.14.3"
-  checksum: 7714701abbc66ed061ef4b9aaf30c30a3ffa00b2e12bd6175d12860b033c9cdbad70fb0b3b039bdbb7dfaa23c7aef5220a731878736c802fa3963898ae6e1560
+  conditions: os=darwin & cpu=arm64
   languageName: node
   linkType: hard
 
 "esbuild-freebsd-64@npm:0.14.3":
   version: 0.14.3
   resolution: "esbuild-freebsd-64@npm:0.14.3"
-  checksum: b55b0eafc2fb94a326af7ea4b640d31123f925a7030b95a60b7898fc7b027ac866ee5f61279e3356b275642d0789ff05158dcdd57ddc1377f845085b2baa3738
+  conditions: os=freebsd & cpu=x64
   languageName: node
   linkType: hard
 
 "esbuild-freebsd-arm64@npm:0.14.3":
   version: 0.14.3
   resolution: "esbuild-freebsd-arm64@npm:0.14.3"
-  checksum: d6e50f820f2d2a92e52a67899b513a77865cd17c1eff4a2591f4a89f04fdb3fab659dfcc87655823571f89b74eaacba51263079d469003217924f636ae7f78fb
+  conditions: os=freebsd & cpu=arm64
   languageName: node
   linkType: hard
 
 "esbuild-linux-32@npm:0.14.3":
   version: 0.14.3
   resolution: "esbuild-linux-32@npm:0.14.3"
-  checksum: a0091a6785305c512f111b437eb0543139ea630b745e184adda13995a2680af70ca52466a4a9a368f39a9a3003916dadc10a812106cace7967e4159d00ea6fd9
+  conditions: os=linux & cpu=ia32
   languageName: node
   linkType: hard
 
 "esbuild-linux-64@npm:0.14.3":
   version: 0.14.3
   resolution: "esbuild-linux-64@npm:0.14.3"
-  checksum: d3ada6ee9e32a881a55b2e1c9ae96213feab9fdeaf1993313d96a1035d303a61b1bba92dea6fee6806819ea6727b5e3e335d144c400561ab45b3b61a57716feb
+  conditions: os=linux & cpu=x64
   languageName: node
   linkType: hard
 
 "esbuild-linux-arm64@npm:0.14.3":
   version: 0.14.3
   resolution: "esbuild-linux-arm64@npm:0.14.3"
-  checksum: e43997bc5e375765d9f26f7a7fe973f4d847c9c0c475c5de92d730fb818f0ea7bdbe5a95dcf538583d837ce4dc593e3c456c806ef25d654e835735da1ad74628
+  conditions: os=linux & cpu=arm64
   languageName: node
   linkType: hard
 
 "esbuild-linux-arm@npm:0.14.3":
   version: 0.14.3
   resolution: "esbuild-linux-arm@npm:0.14.3"
-  checksum: 0508cf944ae846f7c35ceca9d0f3e84ee344db6851473dd0c878b1d4842b416af9d82ce383f66f6cf3a4b6f9ce778bb2bd957d8860af713e7592094eef2f9e37
+  conditions: os=linux & cpu=arm
   languageName: node
   linkType: hard
 
 "esbuild-linux-mips64le@npm:0.14.3":
   version: 0.14.3
   resolution: "esbuild-linux-mips64le@npm:0.14.3"
-  checksum: d4145ac0fa53ab99b0d3c471acf67a62041d47972d8410501542a327523461eb372b17c6ed498bb449bc7b0de97120fc3b4ffcd0c3e586e52ec12832ad66aee7
+  conditions: os=linux & cpu=mips64el
   languageName: node
   linkType: hard
 
 "esbuild-linux-ppc64le@npm:0.14.3":
   version: 0.14.3
   resolution: "esbuild-linux-ppc64le@npm:0.14.3"
-  checksum: 6cec08146ef9606563d7e93189674ee6144486ea2a30729edf27d78338086c2c33d6bd4c3048bc59d43a9196fd5bc01edd0299a8374124042d53bf653b0a0eee
+  conditions: os=linux & cpu=ppc64
   languageName: node
   linkType: hard
 
 "esbuild-netbsd-64@npm:0.14.3":
   version: 0.14.3
   resolution: "esbuild-netbsd-64@npm:0.14.3"
-  checksum: e3c0d6b2da15fa4e75100a96f1919a6c780c1ccb0aceae309d70eb32d4ca3bc70ee07995cea1aba4abb6896d78f0edb2a4c690cc24e9e8ad72acca07504bae07
+  conditions: os=netbsd & cpu=x64
   languageName: node
   linkType: hard
 
 "esbuild-openbsd-64@npm:0.14.3":
   version: 0.14.3
   resolution: "esbuild-openbsd-64@npm:0.14.3"
-  checksum: 35029b98178f67090c7e772cc2cf6d3191f7e75a6e6492dca3fc154457d124fd8ef64d6a7c63e1675d09df7df32a0cba8c98caa092a2f3d3315d4c7f944f8746
+  conditions: os=openbsd & cpu=x64
   languageName: node
   linkType: hard
 
 "esbuild-sunos-64@npm:0.14.3":
   version: 0.14.3
   resolution: "esbuild-sunos-64@npm:0.14.3"
-  checksum: e5dc9d97ee62115395e3dce996dde94587bf1d1b33fe2dff4d9d94826c68cf5b85c126434dec5deb662083673580bfd651284f6c87357dbf3ec3fe3b83d4707c
+  conditions: os=sunos & cpu=x64
   languageName: node
   linkType: hard
 
 "esbuild-windows-32@npm:0.14.3":
   version: 0.14.3
   resolution: "esbuild-windows-32@npm:0.14.3"
-  checksum: f5188829862ad80188ec30cac4c98637c4f3a02c8f566a6bb945c9f08737124db2116086a09c812871e90b5d7428cc937562a6ce7a7764e40203b5664bc50c5e
+  conditions: os=win32 & cpu=ia32
   languageName: node
   linkType: hard
 
 "esbuild-windows-64@npm:0.14.3":
   version: 0.14.3
   resolution: "esbuild-windows-64@npm:0.14.3"
-  checksum: d746579488fe9909578557b043fb773471a3d34640eb732d9e9f4ee15b90208ab0f144ce8cda9360644864bf293ba47054cd972df6ec0fe7bb392e8347088551
+  conditions: os=win32 & cpu=x64
   languageName: node
   linkType: hard
 
 "esbuild-windows-arm64@npm:0.14.3":
   version: 0.14.3
   resolution: "esbuild-windows-arm64@npm:0.14.3"
-  checksum: e2738d2cf3b10ad619da4b4551f8f8d8c267244e1533c8e8768786126c8b8670b0a5d71c42882b9654c93177c09b0778c70d3647579e7be51e0160985b55746f
+  conditions: os=win32 & cpu=arm64
   languageName: node
   linkType: hard
 
@@ -489,10 +489,10 @@ __metadata:
 
 "fsevents@patch:fsevents@~2.3.2#~builtin<compat/fsevents>":
   version: 2.3.2
-  resolution: "fsevents@patch:fsevents@npm%3A2.3.2#~builtin<compat/fsevents>::version=2.3.2&hash=1cc4b2"
+  resolution: "fsevents@patch:fsevents@npm%3A2.3.2#~builtin<compat/fsevents>::version=2.3.2&hash=18f3a7"
   dependencies:
     node-gyp: latest
-  checksum: 78db9daf1f6526a49cefee3917cc988f62dc7f25b5dd80ad6de4ffc4af7f0cab7491ac737626ff53e482a111bc53aac9e411fe3602458eca36f6a003ecf69c16
+  conditions: os=darwin
   languageName: node
   linkType: hard
 
@@ -502,6 +502,7 @@ fsevents@~2.3.2:
   dependencies:
     node-gyp: latest
   checksum: 97ade64e75091afee5265e6956cb72ba34db7819b4c3e94c431d4be2b19b8bb7a2d4116da417950c3425f17c8fe693d25e20212cac583ac1521ad066b77ae31f
+  conditions: os=darwin
   languageName: node
   linkType: hard
 

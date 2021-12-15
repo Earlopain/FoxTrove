@@ -2,10 +2,12 @@ FROM ruby:3.0.3-alpine
 
 WORKDIR /app
 
-RUN apk --no-cache add nodejs yarn postgresql-client vips tzdata build-base git libpq-dev nodejs yarn
+# TODO: use node provided corepack when available
+RUN apk --no-cache add nodejs npm postgresql-client vips tzdata build-base git libpq-dev \
+  && npm install -g corepack \
+  && corepack prepare yarn@3.1.1 --activate
 
 COPY package.json yarn.lock .yarnrc.yml ./
-COPY .yarn ./.yarn
 RUN yarn install
 
 COPY Gemfile Gemfile.lock ./
