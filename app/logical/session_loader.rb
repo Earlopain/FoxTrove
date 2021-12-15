@@ -10,6 +10,11 @@ def initialize(request)
 
     return unless @session[:user_id] 
 
-    CurrentUser.user = User.find_by(id: @session[:user_id])
+    user = User.find_by(id: @session[:user_id])
+    if user
+      CurrentUser.user = user
+    else
+      @session.delete(:user_id)
+    end
   end
 end
