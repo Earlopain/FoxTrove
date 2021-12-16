@@ -1,6 +1,6 @@
 source "https://rubygems.org"
 
-gem "rails", "~> 7.0.0.rc1"
+gem "rails", "~> 7.0"
 gem "pg", "~> 1.1"
 gem "bootsnap", ">= 1.4.4", require: false
 gem "puma", "~> 5.5"
