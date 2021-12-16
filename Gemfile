@@ -6,6 +6,7 @@ gem "bootsnap", ">= 1.4.4", require: false
 gem "puma", "~> 5.5"
 
 gem "ruby-vips"
+gem "image_processing"
 gem "bcrypt"
 gem "httparty"
 gem "addressable"

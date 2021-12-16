@@ -12,11 +12,10 @@ module IqdbProxy
   end
 
   # Puts the passed submission into the iqdb server
-  # This assumes that the pregenerated thumbnail will be passed since
-  # iqdb resizes the image to 128x128 anyways
   # This can both insert and update an submission
-  def update_submission(submission_id, image_path)
-    File.open(image_path) do |f|
+  def update_submission(submission)
+    variant = submission.variant(:iqdb_thumb)
+    File.open(variant.service.path_for(variant.key)) do |f|
       make_request "/images/#{submission_id}", :post, { file: f }
     end
   end
@@ -36,8 +35,8 @@ module IqdbProxy
   def query_file(image)
     thumbnail = begin
       # iqdb only supports searching for jpg. Thumbnails are always jpg
-      ImageUtils.thumbnail image
-    rescue StandardError
+      ImageProcessing::Vips.source(image).convert("jpg").resize_to_limit!(Reverser.thumbnail_size, Reverser.thumbnail_size)
+    rescue Vips::Error
       raise Error, "Unsupported file"
     end
     response = make_request "/query", :post, { file: thumbnail }

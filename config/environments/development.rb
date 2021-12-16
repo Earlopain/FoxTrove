@@ -59,4 +59,6 @@ Rails.application.configure do
   # config.action_cable.disable_request_forgery_protection = true
 
   config.web_console.permissions = "192.168.0.0/16"
+
+  config.active_storage.service = :local
 end
