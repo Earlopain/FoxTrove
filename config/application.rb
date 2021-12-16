@@ -27,7 +27,11 @@ module Reverser
     config.active_record.schema_format = :sql
 
     config.autoload_paths += %W[#{config.root}/app/logical]
-
+    if system("git rev-parse --show-toplevel", %i[out err] => File::NULL)
+      config.git_hash = `git rev-parse --short HEAD`.strip
+    else
+      config.git_hash = nil
+    end
     # Configuration for the application, engines, and railties goes here.
     #
     # These settings can be overridden in specific environments using the files

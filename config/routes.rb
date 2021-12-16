@@ -5,6 +5,13 @@ Rails.application.routes.draw do
       post :search
     end
   end
-  resource :session, only: [:create, :destroy]
+  resource :session, only: %i[create destroy]
+  resource :static, controller: "static", only: [] do
+    collection do
+      get :about
+      get :contact
+      get :home
+    end
+  end
   root to: "static#home"
 end

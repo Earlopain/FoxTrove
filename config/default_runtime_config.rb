@@ -6,6 +6,10 @@ module Reverser
     "Reverser"
   end
 
+  def git_url
+    "https://github.com/Earlopain/reverser"
+  end
+
   # How large should the generated thumbnails be
   # This is a bounding box
   def thumbnail_size

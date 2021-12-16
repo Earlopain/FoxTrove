@@ -4,6 +4,11 @@ body {
   font-family: $base-font-family;
   line-height: 1.25em;
   margin: 0 auto;
+
+  // Footer always at bottom setup
+  display: flex; 
+  flex-direction: column; 
+  height: 100vh;
 }
 
 header {
