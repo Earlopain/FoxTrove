@@ -1,0 +1,7 @@
+$devies: ("small": 500px);
+
+@mixin mobile($type) {
+  @media screen and (max-width: map-get($devies, $type)) {
+    @content;
+  }
+}
