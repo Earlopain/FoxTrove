@@ -4,11 +4,10 @@
   "private": true,
   "dependencies": {
     "esbuild": "^0.14.3",
-    "jquery": "^3.6.0",
     "sass": "^1.44.0"
   },
   "scripts": {
-    "build": "esbuild app/javascript/*.* --bundle --sourcemap --outdir=./public/assets/builds",
+    "build": "esbuild app/typescript/*.* --bundle --sourcemap --outdir=./public/assets/builds",
     "build:css": "sass ./app/stylesheet/application.sass.scss ./public/assets/builds/application.css --load-path=node_modules"
   },
   "version": "0.1.0"
