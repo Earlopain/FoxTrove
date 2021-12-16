@@ -1,3 +1,6 @@
-html, body {
-  background-color: blue;
-}
+@import "base/vars.scss";
+@import "base/colors.scss";
+@import "base/links.scss";
+@import "base/base.scss";
+@import "main_layout.scss";
+@import "navbar.scss";

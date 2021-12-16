@@ -2,6 +2,10 @@
 module Reverser
   module_function
 
+  def app_name
+    "Reverser"
+  end
+
   # How large should the generated thumbnails be
   # This is a bounding box
   def thumbnail_size

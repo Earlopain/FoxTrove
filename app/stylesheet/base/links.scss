@@ -1,0 +1,18 @@
+a, a:link, a:visited {
+  color: $color-link;
+  text-decoration: none;
+}
+
+a:hover {
+  color: $color-link-hover;
+  text-decoration: none;
+}
+
+a:active {
+  color: $color-link-active;
+  text-decoration: none;
+}
+
+a.active {
+  font-weight: bold;
+}

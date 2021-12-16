@@ -11,6 +11,9 @@
   </head>
 
   <body>
-    <%= yield %>
+    <%= render "application/navbar" %>
+    <div id="page">
+      <%= yield %>
+    </div>
   </body>
 </html>

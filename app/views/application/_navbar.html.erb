@@ -1,0 +1,13 @@
+<header id="top">
+  <nav id="nav">
+    <menu class="primary-navbar">
+      <%= nav_link_to Reverser.app_name, root_path %>
+      <%= nav_link_to "Search", iqdb_path %>
+    </menu>
+    <% if content_for? :secondary_links %>
+      <menu class="secondary-navbar">
+        <%= yield :secondary_links %>
+      </menu>
+    <% end %>
+  </nav>
+</header>

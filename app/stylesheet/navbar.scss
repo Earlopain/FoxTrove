@@ -1,0 +1,32 @@
+header#top {
+  margin: 0 1rem 0.8rem;
+
+  menu {
+    margin: 0;
+    background-color: $color-foreground;
+    border-radius: $border-radius-full;
+    padding: 0.25rem 1rem;
+
+    li {
+      display: inline;
+    }
+
+    li a {
+      padding: 0.3rem;
+    }
+  }
+
+  menu.primary-navbar {
+    margin-top: 0;
+    background-color: $color-background;
+
+    li a.current {
+      background-color: $color-foreground;
+      font-weight: bold;
+    }
+  }
+
+  menu:only-child {
+    border-bottom: 2px solid $color-foreground;
+  }
+}
