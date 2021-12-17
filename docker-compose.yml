@@ -21,6 +21,8 @@ services:
       - POSTGRES_HOST_AUTH_METHOD=trust
     volumes:
       - db_data:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
 
   iqdb:
     build:
