@@ -5,9 +5,15 @@ services:
     build: ./
     environment:
       DATABASE_URL: postgresql://reverser@postgres
+      # Don't make bootsnap part of the tmpfs
+      BOOTSNAP_CACHE_DIR: /
     volumes:
       - .:/app
       - node_modules:/app/node_modules
+      - yarn:/app/.yarn
+      - bootsnap:/bootsnap
+    tmpfs:
+      - /app/tmp
     depends_on:
       - postgres
     ports:
@@ -32,3 +38,5 @@ services:
 volumes:
   db_data:
   node_modules:
+  yarn:
+  bootsnap:
