@@ -21,6 +21,14 @@ class ApplicationController < ActionController::Base
 
   def rescue_exception(exception)
     @exception = exception
+
+    @params = {
+      params: request.filtered_parameters.except(:authenticity_token),
+      user_id: CurrentUser.id,
+      referrer: request.referer,
+      user_agent: request.user_agent,
+    }
+
     console
     render "static/error", status: EXCEPTION_TYPES[exception.class] || 600
   end

@@ -1,11 +1,20 @@
-.backtrace {
-  font-size: 120%;
+.error-params {
+  background-color: darken($color-foreground, 5%);
+  padding: 0.5rem;
+  border-radius: $border-radius-full;
+
+  pre {
+    font-family: inherit;
+    margin: 0;
+  }
+}
+
+.error-backtrace {
   background-color: darken($color-foreground, 5%);
   border-radius: $border-radius-full;
-  font-family: monospace;
   padding: 0.5rem 0;
 
-  .backtrace-line {
-    padding-left: 1rem;
+  .error-backtrace-line {
+    padding-left: 0.5rem;
   }
 }
