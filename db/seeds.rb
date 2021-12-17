@@ -127,7 +127,7 @@ update_or_create_site("instagram", {
 })
 
 User.find_or_create_by!(name: "admin") do |user|
-  user.password = "test"
+  user.password = "test123"
   user.email = "admin@localhost"
   user.level = User::Levels::ADMIN
   user.last_logged_in_at = Time.now
