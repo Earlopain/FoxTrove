@@ -16,9 +16,13 @@ class User < ApplicationRecord
   has_many :created_moderation_logs, foreign_key: :creator_id, class_name: "ModerationLog"
 
   has_secure_password
+  validates :password, length: { minimum: 6 }, if: ->(rec) { rec.new_record? || rec.password.present? }
 
   validates :name, uniqueness: { case_sensitive: false }
+  validates :name, printable_string: true
+  validates :name, length: { in: 5..20 }
   validates :email, uniqueness: { case_sensitive: false }
+  validates :email, format: { with: URI::MailTo::EMAIL_REGEXP }
 
   def self.anon
     user = User.new
