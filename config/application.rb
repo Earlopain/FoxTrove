@@ -32,6 +32,9 @@ module Reverser
     else
       config.git_hash = nil
     end
+
+    config.action_controller.action_on_unpermitted_parameters = :raise
+
     # Configuration for the application, engines, and railties goes here.
     #
     # These settings can be overridden in specific environments using the files

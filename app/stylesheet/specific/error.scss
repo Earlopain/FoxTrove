@@ -1,0 +1,11 @@
+.backtrace {
+  font-size: 120%;
+  background-color: darken($color-foreground, 5%);
+  border-radius: $border-radius-full;
+  font-family: monospace;
+  padding: 0.5rem 0;
+
+  .backtrace-line {
+    padding-left: 1rem;
+  }
+}
