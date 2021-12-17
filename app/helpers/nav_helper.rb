@@ -8,10 +8,9 @@ module NavHelper
   end
 
   def nav_link_class(url)
-    regex = case params[:controller]
-            when "iqdb"
-              %r{^/iqdb}
-            end
-    regex&.match?(url) ? "current" : ""
+    return "current" if url.start_with? "/#{params[:controller]}"
+    return "current" if url == "/" && request.path == "/"
+
+    ""
   end
 end
