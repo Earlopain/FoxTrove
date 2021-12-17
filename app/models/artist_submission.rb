@@ -8,6 +8,7 @@ class ArtistSubmission < ApplicationRecord
   end
 
   validate :file_present
+  validates :identifier_on_site, uniqueness: { scope: :artist_url_id, case_sensitive: false }
 
   def file_present
     errors.add(:attached_file, "no file added") unless file.attached?

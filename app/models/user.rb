@@ -17,6 +17,9 @@ class User < ApplicationRecord
 
   has_secure_password
 
+  validates :name, uniqueness: { case_sensitive: false }
+  validates :email, uniqueness: { case_sensitive: false }
+
   def self.anon
     user = User.new
     user.level = Levels::UNACTIVATED

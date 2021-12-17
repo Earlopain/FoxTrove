@@ -551,6 +551,13 @@ CREATE UNIQUE INDEX index_active_storage_variant_records_uniqueness ON public.ac
 
 
 --
+-- Name: index_artist_submissions_on_artist_url_and_identifier; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_artist_submissions_on_artist_url_and_identifier ON public.artist_submissions USING btree (artist_url_id, lower(identifier_on_site));
+
+
+--
 -- Name: index_artist_submissions_on_artist_url_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -586,6 +593,13 @@ CREATE INDEX index_artist_urls_on_identifier_on_site ON public.artist_urls USING
 
 
 --
+-- Name: index_artist_urls_on_site_and_identifier; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_artist_urls_on_site_and_identifier ON public.artist_urls USING btree (site_id, lower(identifier_on_site));
+
+
+--
 -- Name: index_artist_urls_on_site_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -597,6 +611,13 @@ CREATE INDEX index_artist_urls_on_site_id ON public.artist_urls USING btree (sit
 --
 
 CREATE INDEX index_artists_on_creator_id ON public.artists USING btree (creator_id);
+
+
+--
+-- Name: index_artists_on_lower_name; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_artists_on_lower_name ON public.artists USING btree (lower(name));
 
 
 --
@@ -660,6 +681,20 @@ CREATE INDEX index_users_on_email ON public.users USING btree (email);
 --
 
 CREATE INDEX index_users_on_level ON public.users USING btree (level);
+
+
+--
+-- Name: index_users_on_lower_email; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_users_on_lower_email ON public.users USING btree (lower(email));
+
+
+--
+-- Name: index_users_on_lower_name; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_users_on_lower_name ON public.users USING btree (lower(name));
 
 
 --
@@ -757,6 +792,5 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20210912183057'),
 ('20210912205610'),
 ('20211216211836'),
-('20211216212437');
-
-
+('20211216212437'),
+('20211217112445');
