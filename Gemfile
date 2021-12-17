@@ -11,6 +11,8 @@ gem "bcrypt"
 gem "httparty"
 gem "addressable"
 gem "request_store"
+gem "simple_form"
+gem "responders"
 
 group :development, :test do
   gem "rspec-rails", "~> 5.0.0"

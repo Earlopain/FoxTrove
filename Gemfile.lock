@@ -151,6 +151,9 @@ GEM
     rake (13.0.6)
     request_store (1.5.0)
       rack (>= 1.4)
+    responders (3.0.1)
+      actionpack (>= 5.0)
+      railties (>= 5.0)
     rspec (3.10.0)
       rspec-core (~> 3.10.0)
       rspec-expectations (~> 3.10.0)
@@ -180,6 +183,9 @@ GEM
     rspec-support (3.10.3)
     ruby-vips (2.1.4)
       ffi (~> 1.12)
+    simple_form (5.1.0)
+      actionpack (>= 5.2)
+      activemodel (>= 5.2)
     simplecov (0.21.2)
       docile (~> 1.1)
       simplecov-html (~> 0.11)
@@ -216,9 +222,11 @@ DEPENDENCIES
   puma (~> 5.5)
   rails (~> 7.0)
   request_store
+  responders
   rspec-parameterized
   rspec-rails (~> 5.0.0)
   ruby-vips
+  simple_form
   simplecov
   web-console
 

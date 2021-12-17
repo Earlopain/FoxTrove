@@ -5,6 +5,7 @@ Rails.application.routes.draw do
       post :search
     end
   end
+  resources :artists, only: %i[index new create show]
   resource :session, only: %i[create destroy]
   resource :static, controller: "static", only: [] do
     collection do

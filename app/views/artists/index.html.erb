@@ -1,0 +1,18 @@
+<%= render "secondary_links" %>
+
+<table>
+  <thead>
+    <tr>
+      <td>ID</td>
+      <td>Name</td>
+    </tr>
+  </thead>
+  <tbody>
+    <% @artists.each do |artist| %>
+      <tr>
+        <td><%= link_to artist.id, artist_path(artist) %></td>
+        <td><%= artist.name %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

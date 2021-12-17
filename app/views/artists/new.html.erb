@@ -1,0 +1,7 @@
+<%= render "secondary_links" %>
+
+<%= @artist.errors.full_messages.join(", ") %>
+<%= simple_form_for @artist do |f| %>
+  <%= f.input :name, as: :string %>
+  <%= f.button :submit %>
+<% end %>
