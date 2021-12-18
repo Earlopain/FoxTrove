@@ -1,6 +1,10 @@
 class UrlParser
   def self.parse(url)
-    uri = Addressable::URI.parse url
+    begin
+      uri = Addressable::URI.parse url
+    rescue Addressable::URI::InvalidURIError
+      nil
+    end
     Site.find_each.lazy.filter_map do |site|
       identifier = get_match_for_site(site, uri)
       next unless identifier
