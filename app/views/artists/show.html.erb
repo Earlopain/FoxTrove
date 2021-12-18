@@ -1,3 +1,11 @@
 <%= render "secondary_links" %>
 
 Name: <%= @artist.name %>
+<br>
+
+Links:
+<ul class="url-list">
+<% @artist.artist_urls.each do |url| %>
+    <li><%= url.site.display_name %>: <%= link_to url.identifier_on_site, link_for_artist_url(url) %></li>
+<% end %>
+</ul>

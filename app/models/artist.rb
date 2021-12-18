@@ -6,4 +6,6 @@ class Artist < ApplicationRecord
   validates :name, uniqueness: { case_sensitive: false }
   validates :name, printable_string: true
   validates :name, length: { in: 1..64 }
+
+  attr_accessor :url_string
 end

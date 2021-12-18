@@ -3,5 +3,6 @@
 <%= @artist.errors.full_messages.join(", ") %>
 <%= simple_form_for @artist do |f| %>
   <%= f.input :name, as: :string %>
+  <%= f.input :url_string, as: :text, label: "Links", input_html: { rows: 10, cols: 50 } %>
   <%= f.button :submit %>
 <% end %>
