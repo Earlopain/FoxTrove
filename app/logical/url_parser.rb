@@ -1,21 +1,22 @@
 class UrlParser
   def self.parse(url)
     uri = Addressable::URI.parse url
-    Site.find_each.each do |site|
-      match = matching_template_and_result site, uri
-      match[:site] = site if match
-      match[:identifier_valid] = Regexp.new("^#{site.artist_identifier_regex}$").match? match[:site_artist_identifier] if match
-      return match if match
-    end
-    nil
+    Site.find_each.lazy.filter_map do |site|
+      identifier = get_match_for_site(site, uri)
+      next unless identifier
+
+      {
+        identifier: identifier,
+        identifier_valid: Regexp.new("^#{site.artist_identifier_regex}$").match?(identifier),
+        site: site,
+      }
+    end.first
   end
 
-  def self.matching_template_and_result(site, uri)
-    artist_url_identifier_templates(site).each do |template|
-      matches = template.extract uri, IdentifierProcessor
-      return { template: template, site_artist_identifier: matches["site_artist_identifier"] } if matches
-    end
-    nil
+  def self.get_match_for_site(site, uri)
+    artist_url_identifier_templates(site).lazy.filter_map do |template|
+      template.extract(uri, IdentifierProcessor).try(:[], "site_artist_identifier")
+    end.first
   end
 
   def self.artist_url_identifier_templates(site)
