@@ -6,15 +6,4 @@ class ArtistUrl < ApplicationRecord
   has_many :submissions, class_name: "ArtistSubmission"
 
   validates :identifier_on_site, uniqueness: { scope: :site_id, case_sensitive: false }
-
-  def self.parse(url)
-    uri = Addressable::URI.parse url
-    Site.find_each.each do |site|
-      match = site.matching_template_and_result uri
-      match[:site] = site if match
-      match[:identifier_valid] = Regexp.new("^#{site.artist_identifier_regex}$").match? match[:site_artist_identifier] if match
-      return match if match
-    end
-    nil
-  end
 end
