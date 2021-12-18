@@ -29,7 +29,7 @@ class IdentifierProcessor
   def self.match(name)
     return /^(https?:\/\/)?(www\.)?/ if name == "prefix"
     return /((old|new)\.)?/ if name == "reddit_old_new"
-    return /[a-zA-Z0-9_\-.~]*/ if name == "site_artist_identifier"
+    return /[^\/?&#]*/ if name == "site_artist_identifier"
     return /.*?/ if name == "remaining"
 
     raise StandardError, "Unhandled matcher #{name}"
