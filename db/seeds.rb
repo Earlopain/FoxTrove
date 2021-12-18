@@ -65,7 +65,7 @@ update_or_create_site("pixiv", {
   display_name: "Pixiv",
   homepage: "https://www.pixiv.net",
   artist_url_templates: [
-    "pixiv.net/users/{site_artist_identifier}",
+    "pixiv.net/{pixiv_lang}users/{site_artist_identifier}",
     "pixiv.net/member.php?id={site_artist_identifier}/",
   ],
   artist_identifier_regex: "[0-9]{1,8}",

@@ -30,6 +30,7 @@ class IdentifierProcessor
   def self.match(name)
     return /^(https?:\/\/)?(www\.)?/ if name == "prefix"
     return /((old|new)\.)?/ if name == "reddit_old_new"
+    return /[a-zA-Z]{2}\/|^$/ if name == "pixiv_lang"
     return /[^\/?&#]*/ if name == "site_artist_identifier"
     return /.*?/ if name == "remaining"
 
