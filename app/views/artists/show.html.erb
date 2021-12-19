@@ -4,8 +4,8 @@ Name: <%= @artist.name %>
 <br>
 
 Links:
-<ul class="url-list">
+<div class="url-list">
 <% @artist.artist_urls.each do |url| %>
-    <li><%= url.site.display_name %>: <%= link_to url.identifier_on_site, url.site.gallery_url(url.identifier_on_site)  %></li>
+  <%= render "artist_link", url: url %>
 <% end %>
-</ul>
+</div>

@@ -7,6 +7,6 @@ class ArtistUrl < ApplicationRecord
   validates :identifier_on_site, uniqueness: { scope: :site_type, case_sensitive: false }
 
   def site
-    Sites::Definitions.from_enum(site_type)
+    @site ||= Sites::Definitions.from_enum(site_type)
   end
 end

@@ -1,0 +1,6 @@
+@mixin icon_with_text($icon_size) {
+  font-size: $icon_size;
+  .site-icon {
+    width: $icon_size;
+  }
+}
