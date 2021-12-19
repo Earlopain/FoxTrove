@@ -10,23 +10,23 @@ class ArtistsController < ApplicationController
     @artist = Artist.new(artist_params)
     @artist.valid?
     @artist.url_string.lines.map(&:strip).reject(&:blank?).each do |url|
-      parsed = UrlParser.parse url
+      result = Sites::Definitions.from_url url
 
-      if !parsed
-        @artist.errors.add(:url, " #{url} is not a supported url") unless parsed
+      if !result
+        @artist.errors.add(:url, " #{url} is not a supported url") unless result
         next
-      elsif !parsed[:identifier_valid]
-        @artist.errors.add(:identifier, "#{parsed[:identifier]} is not valid for #{parsed[:site].display_name}")
+      elsif !result[:identifier_valid]
+        @artist.errors.add(:identifier, "#{result[:identifier]} is not valid for #{result[:site].display_name}")
         next
       end
 
       artist_url = @artist.artist_urls.new(
-        site: parsed[:site],
-        identifier_on_site: parsed[:identifier],
+        site_type: result[:site].enum_value,
+        identifier_on_site: result[:identifier],
         created_at_on_site: Time.now,
         about_on_site: ""
       )
-
+      artist_url.validate
       artist_url.errors.full_messages.each do |msg|
         @artist.errors.add(:url, "#{url} is not valid: #{msg}")
       end

@@ -10,6 +10,28 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 --
+-- Name: artist_url_sites; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.artist_url_sites AS ENUM (
+    'twitter',
+    'furaffinity',
+    'inkbunny',
+    'sofurry',
+    'deviantart',
+    'artstation',
+    'patreon',
+    'pixiv',
+    'weasyl',
+    'tumblr',
+    'reddit',
+    'newgrounds',
+    'vkontakte',
+    'instagram'
+);
+
+
+--
 -- Name: user_levels; Type: TYPE; Schema: public; Owner: -
 --
 
@@ -190,7 +212,6 @@ CREATE TABLE public.artist_urls (
     creator_id bigint NOT NULL,
     approver_id bigint,
     artist_id bigint NOT NULL,
-    site_id bigint NOT NULL,
     identifier_on_site text NOT NULL,
     created_at_on_site timestamp without time zone NOT NULL,
     about_on_site text NOT NULL,
@@ -199,7 +220,8 @@ CREATE TABLE public.artist_urls (
     last_scraped_submission_identifier text,
     sidekiq_job_id text,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    site_type public.artist_url_sites NOT NULL
 );
 
 
@@ -596,14 +618,7 @@ CREATE INDEX index_artist_urls_on_identifier_on_site ON public.artist_urls USING
 -- Name: index_artist_urls_on_site_and_identifier; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_artist_urls_on_site_and_identifier ON public.artist_urls USING btree (site_id, lower(identifier_on_site));
-
-
---
--- Name: index_artist_urls_on_site_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_artist_urls_on_site_id ON public.artist_urls USING btree (site_id);
+CREATE UNIQUE INDEX index_artist_urls_on_site_and_identifier ON public.artist_urls USING btree (site_type, lower(identifier_on_site));
 
 
 --
@@ -737,14 +752,6 @@ ALTER TABLE ONLY public.artist_urls
 
 
 --
--- Name: artist_urls fk_rails_830320186c; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.artist_urls
-    ADD CONSTRAINT fk_rails_830320186c FOREIGN KEY (site_id) REFERENCES public.sites(id);
-
-
---
 -- Name: active_storage_variant_records fk_rails_993965df05; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -793,4 +800,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20210912205610'),
 ('20211216211836'),
 ('20211216212437'),
-('20211217112445');
+('20211217112445'),
+('20211219115819');
+
+
