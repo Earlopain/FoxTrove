@@ -33,7 +33,7 @@ module Sites
       display_name: "Twitter",
       homepage: "https://twitter.com",
       gallery_templates: ["twitter.com/{site_artist_identifier}"],
-      username_identifier_regex: "[a-zA-Z0-9_]{1,15}",
+      username_identifier_regex: /[a-zA-Z0-9_]{1,15}/,
       submission_template: "https://twitter.com/{site_artist_identifier}/status/{site_submission_identifier}/"
     )
 
@@ -42,7 +42,7 @@ module Sites
       display_name: "FurAffinity",
       homepage: "https://www.furaffinity.net",
       gallery_templates: ["furaffinity.net/user/{site_artist_identifier}"],
-      username_identifier_regex: "[a-zA-Z0-9_\-~\.]{1,30}",
+      username_identifier_regex: /[a-zA-Z0-9_\-~.]{1,30}/,
       submission_template: "https://www.furaffinity.net/view/{site_submission_identifier}/"
     )
 
@@ -51,7 +51,7 @@ module Sites
       display_name: "Inkbunny",
       homepage: "https://inkbunny.net",
       gallery_templates: ["inkbunny.net/{site_artist_identifier}"],
-      username_identifier_regex: "[a-zA-Z0-9]{1,22}",
+      username_identifier_regex: /[a-zA-Z0-9]{1,22}/,
       submission_template: "https://inkbunny.net/s/{site_submission_identifier}/"
     )
 
@@ -60,7 +60,7 @@ module Sites
       display_name: "Sofurry",
       homepage: "https://www.sofurry.com",
       gallery_templates: ["{site_artist_identifier}.sofurry.com"],
-      username_identifier_regex: "[a-zA-Z0-9_\-]{1,25}",
+      username_identifier_regex: /[a-zA-Z0-9_\\-]{1,25}/,
       submission_template: "https://www.sofurry.com/view/{site_submission_identifier}/"
     )
 
@@ -72,7 +72,7 @@ module Sites
         "deviantart.com/{site_artist_identifier}",
         "{site_artist_identifier}.deviantart.com",
       ],
-      username_identifier_regex: "[a-zA-Z0-9]{1,20}",
+      username_identifier_regex: /[a-zA-Z0-9\-]{1,20}/,
       submission_template: "https://www.deviantart.com/{site_artist_identifier}/art/{site_submission_identifier}/"
     )
 
@@ -81,7 +81,7 @@ module Sites
       display_name: "ArtStation",
       homepage: "https://www.artstation.com",
       gallery_templates: ["artstation.com/{site_artist_identifier}"],
-      username_identifier_regex: "[a-zA-Z0-9_\-]{3,63}",
+      username_identifier_regex: /[a-zA-Z0-9_\-]{3,63}/,
       submission_template: "https://www.artstation.com/artwork/{site_submission_identifier}/"
     )
 
@@ -90,7 +90,7 @@ module Sites
       display_name: "Patreon",
       homepage: "https://www.patreon.com",
       gallery_templates: ["patreon.com/{site_artist_identifier}"],
-      username_identifier_regex: "[a-zA-Z0-9_]{1,64}",
+      username_identifier_regex: /[a-zA-Z0-9_]{1,64}/,
       submission_template: "https://www.patreon.com/posts/{site_submission_identifier}/"
     )
 
@@ -102,7 +102,7 @@ module Sites
         "pixiv.net/{pixiv_lang}users/{site_artist_identifier}",
         "pixiv.net/member.php?id={site_artist_identifier}/",
       ],
-      username_identifier_regex: "[0-9]{1,8}",
+      username_identifier_regex: /[0-9]{1,8}/,
       submission_template: "https://www.pixiv.net/artworks/{site_submission_identifier}/"
     )
 
@@ -114,7 +114,7 @@ module Sites
         "weasyl.com/~{site_artist_identifier}",
         "weasyl.com/profile/{site_artist_identifier}",
       ],
-      username_identifier_regex: "[a-zA-Z0-9]{1,25}",
+      username_identifier_regex: /[a-zA-Z0-9]{1,25}/,
       submission_template: "https://www.weasyl.com/~{site_artist_identifier}/submissions/{site_submission_identifier}/"
     )
 
@@ -123,7 +123,7 @@ module Sites
       display_name: "Tumblr",
       homepage: "https://www.tumblr.com",
       gallery_templates: ["{site_artist_identifier}.tumblr.com"],
-      username_identifier_regex: "[a-zA-Z0-9]{1,32}",
+      username_identifier_regex: /[a-zA-Z0-9\-]{1,32}/,
       submission_template: "https://{site_artist_identifier}.tumblr.com/post/{site_submission_identifier}/"
     )
 
@@ -135,7 +135,7 @@ module Sites
         "{reddit_old_new}reddit.com/user/{site_artist_identifier}",
         "{reddit_old_new}reddit.com/u/{site_artist_identifier}",
       ],
-      username_identifier_regex: "[a-zA-Z0-9_\-]{3,20}",
+      username_identifier_regex: /[a-zA-Z0-9_\-]{3,20}/,
       submission_template: "https://redd.it/{site_submission_identifier}/"
     )
 
@@ -144,7 +144,7 @@ module Sites
       display_name: "Newgrounds",
       homepage: "https://www.newgrounds.com",
       gallery_templates: ["{site_artist_identifier}.newgrounds.com"],
-      username_identifier_regex: "[a-zA-Z0-9~]{1,20}",
+      username_identifier_regex: /[a-zA-Z0-9~]{1,20}/,
       submission_template: "https://www.newgrounds.com/art/view/{site_artist_identifier}/{site_submission_identifier}/"
     )
 
@@ -153,7 +153,7 @@ module Sites
       display_name: "VK",
       homepage: "https://vk.com",
       gallery_templates: ["vk.com/{site_artist_identifier}"],
-      username_identifier_regex: "[a-zA-Z0-9_]{1,26}",
+      username_identifier_regex: /[a-zA-Z0-9_]{1,26}/,
       submission_template: "https://vk.com/{site_artist_identifier}?z=photo-{site_submission_identifier}/"
     )
 
@@ -162,7 +162,7 @@ module Sites
       display_name: "Instagram",
       homepage: "https://www.instagram.com",
       gallery_templates: ["instagram.com/{site_artist_identifier}"],
-      username_identifier_regex: "[a-zA-Z0-9_\.]{1,30}",
+      username_identifier_regex: /[a-zA-Z0-9_.]{1,30}/,
       submission_template: "https://www.instagram.com/p/{site_submission_identifier}/"
     )
 

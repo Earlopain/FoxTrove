@@ -9,7 +9,7 @@ module Sites
       @homepage = homepage
       @gallery_template_string = gallery_templates.first
       @gallery_templates = gallery_templates.map { |t| Addressable::Template.new("{prefix}#{t}{/remaining}{?remaining}{#remaining}") }
-      @username_identifier_regex = username_identifier_regex
+      @username_identifier_regex = Regexp.new("^#{username_identifier_regex}$")
       @submission_template = Addressable::Template.new(submission_template)
     end
 
@@ -21,7 +21,7 @@ module Sites
 
       {
         identifier: extracted["site_artist_identifier"],
-        identifier_valid: Regexp.new("^#{@username_identifier_regex}$").match?(extracted["site_artist_identifier"]),
+        identifier_valid: @username_identifier_regex.match?(extracted["site_artist_identifier"]),
         site: self,
       }
     end
