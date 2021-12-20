@@ -9,6 +9,7 @@ module Sites
       @homepage = homepage
       @gallery_template_string = gallery_templates.first
       @gallery_templates = gallery_templates.map { |t| Addressable::Template.new("{prefix}#{t}{/remaining}{?remaining}{#remaining}") }
+      @can_match_if_contains = gallery_templates.map { |t| t.gsub(/{[^)]*}/, "") }
       @username_identifier_regex = Regexp.new("^#{username_identifier_regex}$")
       @submission_template = Addressable::Template.new(submission_template) if supports_scraping
       @supports_scraping = supports_scraping
@@ -19,7 +20,9 @@ module Sites
     end
 
     def match_for(uri)
-      extracted = @gallery_templates.filter_map do |template|
+      extracted = @gallery_templates.lazy.filter_map do |template|
+        next if @can_match_if_contains.filter { |a| uri.to_s.include? a }.none?
+
         template.extract(uri, Definitions::IdentifierProcessor)
       end.first
       return unless extracted
