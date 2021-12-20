@@ -11,7 +11,7 @@ module Sites
         return nil
       end
 
-      ALL.filter_map do |definition|
+      ALL.lazy.filter_map do |definition|
         definition.match_for uri
       end.first
     end
@@ -20,6 +20,7 @@ module Sites
       def self.match(name)
         return /^(https?:\/\/)?(www\.)?/ if name == "prefix"
         return /((old|new)\.)?/ if name == "reddit_old_new"
+        return /(sfw\.)?/ if name == "furaffinity_sfw"
         return /[a-zA-Z]{2}\/|^$/ if name == "pixiv_lang"
         return /[^\/?&#]*/ if name == "site_artist_identifier"
         return /.*?/ if name == "remaining"
@@ -32,7 +33,11 @@ module Sites
       enum_value: "twitter",
       display_name: "Twitter",
       homepage: "https://twitter.com",
-      gallery_templates: ["twitter.com/{site_artist_identifier}"],
+      gallery_templates: [
+        "twitter.com/@{site_artist_identifier}",
+        "twitter.com/{site_artist_identifier}",
+        "mobile.twitter.com/{site_artist_identifier}",
+      ],
       username_identifier_regex: /[a-zA-Z0-9_]{1,15}/,
       submission_template: "https://twitter.com/{site_artist_identifier}/status/{site_submission_identifier}/"
     )
@@ -41,7 +46,10 @@ module Sites
       enum_value: "furaffinity",
       display_name: "FurAffinity",
       homepage: "https://www.furaffinity.net",
-      gallery_templates: ["furaffinity.net/user/{site_artist_identifier}"],
+      gallery_templates: [
+        "{furaffinity_sfw}furaffinity.net/user/{site_artist_identifier}",
+        "{furaffinity_sfw}furaffinity.net/gallery/{site_artist_identifier}",
+      ],
       username_identifier_regex: /[a-zA-Z0-9_\-~.]{1,30}/,
       submission_template: "https://www.furaffinity.net/view/{site_submission_identifier}/"
     )
@@ -80,7 +88,10 @@ module Sites
       enum_value: "artstation",
       display_name: "ArtStation",
       homepage: "https://www.artstation.com",
-      gallery_templates: ["artstation.com/{site_artist_identifier}"],
+      gallery_templates: [
+        "artstation.com/{site_artist_identifier}",
+        "{site_artist_identifier}.artstation.com/",
+      ],
       username_identifier_regex: /[a-zA-Z0-9_\-]{3,63}/,
       submission_template: "https://www.artstation.com/artwork/{site_submission_identifier}/"
     )
@@ -144,7 +155,7 @@ module Sites
       display_name: "Newgrounds",
       homepage: "https://www.newgrounds.com",
       gallery_templates: ["{site_artist_identifier}.newgrounds.com"],
-      username_identifier_regex: /[a-zA-Z0-9~]{1,20}/,
+      username_identifier_regex: /[a-zA-Z0-9~\-]{1,20}/,
       submission_template: "https://www.newgrounds.com/art/view/{site_artist_identifier}/{site_submission_identifier}/"
     )
 
@@ -153,7 +164,7 @@ module Sites
       display_name: "VK",
       homepage: "https://vk.com",
       gallery_templates: ["vk.com/{site_artist_identifier}"],
-      username_identifier_regex: /[a-zA-Z0-9_]{1,26}/,
+      username_identifier_regex: /[a-zA-Z0-9_.]{1,26}/,
       submission_template: "https://vk.com/{site_artist_identifier}?z=photo-{site_submission_identifier}/"
     )
 
@@ -164,6 +175,198 @@ module Sites
       gallery_templates: ["instagram.com/{site_artist_identifier}"],
       username_identifier_regex: /[a-zA-Z0-9_.]{1,30}/,
       submission_template: "https://www.instagram.com/p/{site_submission_identifier}/"
+    )
+
+    SUBSCRIBESTAR = Definition.new(
+      enum_value: "subscribestar",
+      display_name: "SubscribeStar",
+      homepage: "https://www.subscribestar.com/",
+      gallery_templates: [
+        "subscribestar.com/{site_artist_identifier}",
+        "subscribestar.adult/{site_artist_identifier}",
+      ],
+      username_identifier_regex: /[a-zA-Z0-9_\-]{3,512}/
+    )
+
+    KOFI = Definition.new(
+      enum_value: "kofi",
+      display_name: "Ko-fi",
+      homepage: "https://ko-fi.com/",
+      gallery_templates: ["ko-fi.com/{site_artist_identifier}"],
+      username_identifier_regex: /[a-zA-Z0-9_]{3,40}/
+    )
+
+    DISCORD = Definition.new(
+      enum_value: "discord",
+      display_name: "Discord",
+      homepage: "https://discord.com/",
+      gallery_templates: [
+        "discord.com/invite/{site_artist_identifier}",
+        "discord.gg/{site_artist_identifier}",
+      ],
+      username_identifier_regex: /[a-zA-Z0-9_\-]{3,25}/
+    )
+
+    FANBOX = Definition.new(
+      enum_value: "fanbox",
+      display_name: "Fanbox",
+      homepage: "https://www.fanbox.cc/",
+      gallery_templates: ["{site_artist_identifier}.fanbox.cc"],
+      username_identifier_regex: /[a-z0-9\-]{3,16}/
+    )
+
+    LINKTREE = Definition.new(
+      enum_value: "linktree",
+      display_name: "linktree",
+      homepage: "https://linktr.ee/",
+      gallery_templates: ["linktr.ee/{site_artist_identifier}"],
+      username_identifier_regex: /[a-zA-Z0-9_.]{3,30}/
+    )
+
+    CARRD = Definition.new(
+      enum_value: "carrd",
+      display_name: "Carrd",
+      homepage: "https://carrd.co/",
+      gallery_templates: ["{site_artist_identifier}.carrd.co"],
+      username_identifier_regex: /[a-z0-9\-]{3,32}/
+    )
+
+    TELEGRAM = Definition.new(
+      enum_value: "telegram",
+      display_name: "Telegram",
+      homepage: "https://telegram.org/",
+      gallery_templates: [
+        "t.me/{site_artist_identifier}",
+        "telegram.me/{site_artist_identifier}",
+      ],
+      username_identifier_regex: /[a-zA-Z0-9_]{5,64}/
+    )
+
+    TWITCH = Definition.new(
+      enum_value: "twitch",
+      display_name: "Twitch",
+      homepage: "https://www.twitch.tv/",
+      gallery_templates: ["twitch.tv/{site_artist_identifier}"],
+      username_identifier_regex: /[a-zA-Z0-9_]{4,25}/
+    )
+
+    PICARTO = Definition.new(
+      enum_value: "picarto",
+      display_name: "Picarto",
+      homepage: "https://picarto.tv/",
+      gallery_templates: ["picarto.tv/{site_artist_identifier}"],
+      username_identifier_regex: /[a-zA-Z0-9]{3,24}/
+    )
+
+    GUMROAD = Definition.new(
+      enum_value: "gumroad",
+      display_name: "Gumroad",
+      homepage: "https://gumroad.com/",
+      gallery_templates: [
+        "{site_artist_identifier}.gumroad.com",
+        "gumroad.com/{site_artist_identifier}",
+      ],
+      username_identifier_regex: /[a-zA-Z0-9_\-]{3,20}/
+    )
+
+    SKEB = Definition.new(
+      enum_value: "skeb",
+      display_name: "Skeb",
+      homepage: "https://skeb.jp/",
+      gallery_templates: ["skeb.jp/@{site_artist_identifier}"],
+      username_identifier_regex: /[a-zA-Z0-9_]{1,15}/
+    )
+
+    PAWOO = Definition.new(
+      enum_value: "pawoo",
+      display_name: "Pawoo",
+      homepage: "https://pawoo.net/",
+      gallery_templates: ["pawoo.net/@{site_artist_identifier}"],
+      username_identifier_regex: /[a-zA-Z0-9_]{1,30}/
+    )
+
+    BARAAG = Definition.new(
+      enum_value: "baraag",
+      display_name: "Baraag",
+      homepage: "https://baraag.net/",
+      gallery_templates: ["baraag.net/@{site_artist_identifier}"],
+      username_identifier_regex: /[a-zA-Z0-9_]{1,30}/
+    )
+
+    YOUTUBE_CHANNEL = Definition.new(
+      enum_value: "youtube_channel",
+      display_name: "Youtube",
+      homepage: "https://youtube.com/",
+      gallery_templates: ["youtube.com/channel/{site_artist_identifier}"],
+      username_identifier_regex: /[a-zA-Z0-9_\-]{24}/
+    )
+
+    YOUTUBE_LEGACY = Definition.new(
+      enum_value: "youtube_legacy",
+      display_name: "Youtube",
+      homepage: "https://youtube.com/",
+      gallery_templates: ["youtube.com/user/{site_artist_identifier}"],
+      username_identifier_regex: /[a-zA-Z0-9]{3,30}/
+    )
+
+    YOUTUBE_VANITY = Definition.new(
+      enum_value: "youtube_vanity",
+      display_name: "Youtube",
+      homepage: "https://youtube.com/",
+      gallery_templates: [
+        "youtube.com/c/{site_artist_identifier}",
+        "youtube.com/{site_artist_identifier}",
+      ],
+      username_identifier_regex: /[a-zA-Z0-9]{1,30}/
+    )
+
+    FACEBOOK = Definition.new(
+      enum_value: "facebook",
+      display_name: "Facebook",
+      homepage: "https://www.facebook.com/",
+      gallery_templates: ["facebook.com/{site_artist_identifier}"],
+      username_identifier_regex: /[a-zA-Z0-9.\-]{1,35}/
+    )
+
+    HENTAI_FOUNDRY = Definition.new(
+      enum_value: "hentai_foundry",
+      display_name: "Hentai Foundry",
+      homepage: "https://www.hentai-foundry.com/",
+      gallery_templates: [
+        "www.hentai-foundry.com/user/{site_artist_identifier}",
+        "www.hentai-foundry.com/pictures/user/{site_artist_identifier}",
+      ],
+      username_identifier_regex: /[a-zA-Z0-9\-]{1,35}/
+    )
+
+    PILLOWFORT = Definition.new(
+      enum_value: "pillowfort",
+      display_name: "Pillowfort",
+      homepage: "https://www.pillowfort.social/",
+      gallery_templates: ["pillowfort.social/{site_artist_identifier}"],
+      username_identifier_regex: /[a-zA-Z0-9_\-]{1,20}/
+    )
+
+    COMMISHES = Definition.new(
+      enum_value: "commishes",
+      display_name: "Commishes",
+      homepage: "https://commishes.com/",
+      gallery_templates: [
+        "portfolio.commishes.com/user/{site_artist_identifier}",
+        "ych.commishes.com/user/{site_artist_identifier}",
+      ],
+      username_identifier_regex: /[a-zA-Z0-9_\-]{3,20}/
+    )
+
+    FURRYNETWORK = Definition.new(
+      enum_value: "furrynetwork",
+      display_name: "FurryNetwork",
+      homepage: "https://furrynetwork.com/",
+      gallery_templates: [
+        "furrynetwork.com/{site_artist_identifier}",
+        "beta.furrynetwork.com/{site_artist_identifier}",
+      ],
+      username_identifier_regex: /[a-zA-Z0-9_\-]{3,15}/
     )
 
     ALL = [
@@ -181,6 +384,27 @@ module Sites
       NEWGROUNDS,
       VKONTAKTE,
       INSTAGRAM,
+      SUBSCRIBESTAR,
+      KOFI,
+      DISCORD,
+      FANBOX,
+      LINKTREE,
+      CARRD,
+      TELEGRAM,
+      TWITCH,
+      PICARTO,
+      GUMROAD,
+      SKEB,
+      PAWOO,
+      BARAAG,
+      YOUTUBE_CHANNEL,
+      YOUTUBE_LEGACY,
+      YOUTUBE_VANITY,
+      FACEBOOK,
+      HENTAI_FOUNDRY,
+      PILLOWFORT,
+      COMMISHES,
+      FURRYNETWORK,
     ].freeze
   end
 end

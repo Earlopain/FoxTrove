@@ -27,7 +27,30 @@ CREATE TYPE public.artist_url_sites AS ENUM (
     'reddit',
     'newgrounds',
     'vkontakte',
-    'instagram'
+    'instagram',
+    'subscribestar',
+    'kofi',
+    'twitch',
+    'picarto',
+    'fanbox',
+    'piczel',
+    'carrd',
+    'youtube',
+    'linktree',
+    'youtube_channel',
+    'youtube_vanity',
+    'youtube_legacy',
+    'gumroad',
+    'discord',
+    'telegram',
+    'skeb',
+    'pawoo',
+    'baraag',
+    'hentai_foundry',
+    'pillowfort',
+    'commishes',
+    'furrynetwork',
+    'facebook'
 );
 
 
@@ -801,6 +824,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20211216211836'),
 ('20211216212437'),
 ('20211217112445'),
-('20211219115819');
+('20211219115819'),
+('20211220080129');
 
 
