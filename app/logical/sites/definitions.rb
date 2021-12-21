@@ -29,7 +29,7 @@ module Sites
       end
     end
 
-    TWITTER = Definition.new(
+    TWITTER = ScraperDefinition.new(
       enum_value: "twitter",
       display_name: "Twitter",
       homepage: "https://twitter.com",
@@ -42,7 +42,7 @@ module Sites
       submission_template: "https://twitter.com/{site_artist_identifier}/status/{site_submission_identifier}/"
     )
 
-    FURAFFINITY = Definition.new(
+    FURAFFINITY = ScraperDefinition.new(
       enum_value: "furaffinity",
       display_name: "FurAffinity",
       homepage: "https://www.furaffinity.net",
@@ -54,7 +54,7 @@ module Sites
       submission_template: "https://www.furaffinity.net/view/{site_submission_identifier}/"
     )
 
-    INKBUNNY = Definition.new(
+    INKBUNNY = ScraperDefinition.new(
       enum_value: "inkbunny",
       display_name: "Inkbunny",
       homepage: "https://inkbunny.net",
@@ -63,7 +63,7 @@ module Sites
       submission_template: "https://inkbunny.net/s/{site_submission_identifier}/"
     )
 
-    SOFURRY = Definition.new(
+    SOFURRY = ScraperDefinition.new(
       enum_value: "sofurry",
       display_name: "Sofurry",
       homepage: "https://www.sofurry.com",
@@ -72,7 +72,7 @@ module Sites
       submission_template: "https://www.sofurry.com/view/{site_submission_identifier}/"
     )
 
-    DEVIANTART = Definition.new(
+    DEVIANTART = ScraperDefinition.new(
       enum_value: "deviantart",
       display_name: "DeviantArt",
       homepage: "https://www.deviantart.com",
@@ -84,7 +84,7 @@ module Sites
       submission_template: "https://www.deviantart.com/{site_artist_identifier}/art/{site_submission_identifier}/"
     )
 
-    ARTSTATION = Definition.new(
+    ARTSTATION = ScraperDefinition.new(
       enum_value: "artstation",
       display_name: "ArtStation",
       homepage: "https://www.artstation.com",
@@ -96,7 +96,7 @@ module Sites
       submission_template: "https://www.artstation.com/artwork/{site_submission_identifier}/"
     )
 
-    PATREON = Definition.new(
+    PATREON = ScraperDefinition.new(
       enum_value: "patreon",
       display_name: "Patreon",
       homepage: "https://www.patreon.com",
@@ -105,7 +105,7 @@ module Sites
       submission_template: "https://www.patreon.com/posts/{site_submission_identifier}/"
     )
 
-    PIXIV = Definition.new(
+    PIXIV = ScraperDefinition.new(
       enum_value: "pixiv",
       display_name: "Pixiv",
       homepage: "https://www.pixiv.net",
@@ -117,7 +117,7 @@ module Sites
       submission_template: "https://www.pixiv.net/artworks/{site_submission_identifier}/"
     )
 
-    WEASYL = Definition.new(
+    WEASYL = ScraperDefinition.new(
       enum_value: "weasyl",
       display_name: "Weasyl",
       homepage: "https://www.weasyl.com",
@@ -129,7 +129,7 @@ module Sites
       submission_template: "https://www.weasyl.com/~{site_artist_identifier}/submissions/{site_submission_identifier}/"
     )
 
-    TUMBLR = Definition.new(
+    TUMBLR = ScraperDefinition.new(
       enum_value: "tumblr",
       display_name: "Tumblr",
       homepage: "https://www.tumblr.com",
@@ -138,7 +138,7 @@ module Sites
       submission_template: "https://{site_artist_identifier}.tumblr.com/post/{site_submission_identifier}/"
     )
 
-    REDDIT = Definition.new(
+    REDDIT = ScraperDefinition.new(
       enum_value: "reddit",
       display_name: "Reddit",
       homepage: "https://www.reddit.com",
@@ -150,7 +150,7 @@ module Sites
       submission_template: "https://redd.it/{site_submission_identifier}/"
     )
 
-    NEWGROUNDS = Definition.new(
+    NEWGROUNDS = ScraperDefinition.new(
       enum_value: "newgrounds",
       display_name: "Newgrounds",
       homepage: "https://www.newgrounds.com",
@@ -159,7 +159,7 @@ module Sites
       submission_template: "https://www.newgrounds.com/art/view/{site_artist_identifier}/{site_submission_identifier}/"
     )
 
-    VKONTAKTE = Definition.new(
+    VKONTAKTE = ScraperDefinition.new(
       enum_value: "vkontakte",
       display_name: "VK",
       homepage: "https://vk.com",
@@ -168,7 +168,7 @@ module Sites
       submission_template: "https://vk.com/{site_artist_identifier}?z=photo-{site_submission_identifier}/"
     )
 
-    INSTAGRAM = Definition.new(
+    INSTAGRAM = ScraperDefinition.new(
       enum_value: "instagram",
       display_name: "Instagram",
       homepage: "https://www.instagram.com",
@@ -177,7 +177,7 @@ module Sites
       submission_template: "https://www.instagram.com/p/{site_submission_identifier}/"
     )
 
-    SUBSCRIBESTAR = Definition.new(
+    SUBSCRIBESTAR = SimpleDefinition.new(
       enum_value: "subscribestar",
       display_name: "SubscribeStar",
       homepage: "https://www.subscribestar.com/",
@@ -188,7 +188,7 @@ module Sites
       username_identifier_regex: /[a-zA-Z0-9_\-]{3,512}/
     )
 
-    KOFI = Definition.new(
+    KOFI = SimpleDefinition.new(
       enum_value: "kofi",
       display_name: "Ko-fi",
       homepage: "https://ko-fi.com/",
@@ -196,7 +196,7 @@ module Sites
       username_identifier_regex: /[a-zA-Z0-9_]{3,40}/
     )
 
-    DISCORD = Definition.new(
+    DISCORD = SimpleDefinition.new(
       enum_value: "discord",
       display_name: "Discord",
       homepage: "https://discord.com/",
@@ -207,7 +207,7 @@ module Sites
       username_identifier_regex: /[a-zA-Z0-9_\-]{3,25}/
     )
 
-    FANBOX = Definition.new(
+    FANBOX = SimpleDefinition.new(
       enum_value: "fanbox",
       display_name: "Fanbox",
       homepage: "https://www.fanbox.cc/",
@@ -215,7 +215,7 @@ module Sites
       username_identifier_regex: /[a-z0-9\-]{3,16}/
     )
 
-    LINKTREE = Definition.new(
+    LINKTREE = SimpleDefinition.new(
       enum_value: "linktree",
       display_name: "linktree",
       homepage: "https://linktr.ee/",
@@ -223,7 +223,7 @@ module Sites
       username_identifier_regex: /[a-zA-Z0-9_.]{3,30}/
     )
 
-    CARRD = Definition.new(
+    CARRD = SimpleDefinition.new(
       enum_value: "carrd",
       display_name: "Carrd",
       homepage: "https://carrd.co/",
@@ -231,7 +231,7 @@ module Sites
       username_identifier_regex: /[a-z0-9\-]{3,32}/
     )
 
-    TELEGRAM = Definition.new(
+    TELEGRAM = SimpleDefinition.new(
       enum_value: "telegram",
       display_name: "Telegram",
       homepage: "https://telegram.org/",
@@ -242,7 +242,7 @@ module Sites
       username_identifier_regex: /[a-zA-Z0-9_]{5,64}/
     )
 
-    TWITCH = Definition.new(
+    TWITCH = SimpleDefinition.new(
       enum_value: "twitch",
       display_name: "Twitch",
       homepage: "https://www.twitch.tv/",
@@ -250,7 +250,7 @@ module Sites
       username_identifier_regex: /[a-zA-Z0-9_]{4,25}/
     )
 
-    PICARTO = Definition.new(
+    PICARTO = SimpleDefinition.new(
       enum_value: "picarto",
       display_name: "Picarto",
       homepage: "https://picarto.tv/",
@@ -258,7 +258,7 @@ module Sites
       username_identifier_regex: /[a-zA-Z0-9]{3,24}/
     )
 
-    GUMROAD = Definition.new(
+    GUMROAD = SimpleDefinition.new(
       enum_value: "gumroad",
       display_name: "Gumroad",
       homepage: "https://gumroad.com/",
@@ -269,7 +269,7 @@ module Sites
       username_identifier_regex: /[a-zA-Z0-9_\-]{3,20}/
     )
 
-    SKEB = Definition.new(
+    SKEB = SimpleDefinition.new(
       enum_value: "skeb",
       display_name: "Skeb",
       homepage: "https://skeb.jp/",
@@ -277,7 +277,7 @@ module Sites
       username_identifier_regex: /[a-zA-Z0-9_]{1,15}/
     )
 
-    PAWOO = Definition.new(
+    PAWOO = SimpleDefinition.new(
       enum_value: "pawoo",
       display_name: "Pawoo",
       homepage: "https://pawoo.net/",
@@ -285,7 +285,7 @@ module Sites
       username_identifier_regex: /[a-zA-Z0-9_]{1,30}/
     )
 
-    BARAAG = Definition.new(
+    BARAAG = SimpleDefinition.new(
       enum_value: "baraag",
       display_name: "Baraag",
       homepage: "https://baraag.net/",
@@ -293,7 +293,7 @@ module Sites
       username_identifier_regex: /[a-zA-Z0-9_]{1,30}/
     )
 
-    YOUTUBE_CHANNEL = Definition.new(
+    YOUTUBE_CHANNEL = SimpleDefinition.new(
       enum_value: "youtube_channel",
       display_name: "Youtube",
       homepage: "https://youtube.com/",
@@ -301,7 +301,7 @@ module Sites
       username_identifier_regex: /[a-zA-Z0-9_\-]{24}/
     )
 
-    YOUTUBE_LEGACY = Definition.new(
+    YOUTUBE_LEGACY = SimpleDefinition.new(
       enum_value: "youtube_legacy",
       display_name: "Youtube",
       homepage: "https://youtube.com/",
@@ -309,7 +309,7 @@ module Sites
       username_identifier_regex: /[a-zA-Z0-9]{3,30}/
     )
 
-    YOUTUBE_VANITY = Definition.new(
+    YOUTUBE_VANITY = SimpleDefinition.new(
       enum_value: "youtube_vanity",
       display_name: "Youtube",
       homepage: "https://youtube.com/",
@@ -320,7 +320,7 @@ module Sites
       username_identifier_regex: /[a-zA-Z0-9]{1,30}/
     )
 
-    FACEBOOK = Definition.new(
+    FACEBOOK = SimpleDefinition.new(
       enum_value: "facebook",
       display_name: "Facebook",
       homepage: "https://www.facebook.com/",
@@ -328,7 +328,7 @@ module Sites
       username_identifier_regex: /[a-zA-Z0-9.\-]{1,35}/
     )
 
-    HENTAI_FOUNDRY = Definition.new(
+    HENTAI_FOUNDRY = SimpleDefinition.new(
       enum_value: "hentai_foundry",
       display_name: "Hentai Foundry",
       homepage: "https://www.hentai-foundry.com/",
@@ -339,7 +339,7 @@ module Sites
       username_identifier_regex: /[a-zA-Z0-9\-]{1,35}/
     )
 
-    PILLOWFORT = Definition.new(
+    PILLOWFORT = SimpleDefinition.new(
       enum_value: "pillowfort",
       display_name: "Pillowfort",
       homepage: "https://www.pillowfort.social/",
@@ -347,7 +347,7 @@ module Sites
       username_identifier_regex: /[a-zA-Z0-9_\-]{1,20}/
     )
 
-    COMMISHES = Definition.new(
+    COMMISHES = SimpleDefinition.new(
       enum_value: "commishes",
       display_name: "Commishes",
       homepage: "https://commishes.com/",
@@ -358,7 +358,7 @@ module Sites
       username_identifier_regex: /[a-zA-Z0-9_\-]{3,20}/
     )
 
-    FURRYNETWORK = Definition.new(
+    FURRYNETWORK = SimpleDefinition.new(
       enum_value: "furrynetwork",
       display_name: "FurryNetwork",
       homepage: "https://furrynetwork.com/",
@@ -369,8 +369,11 @@ module Sites
       username_identifier_regex: /[a-zA-Z0-9_\-]{3,15}/
     )
 
-    ALL = [
+    SCRAPERS = [
       TWITTER,
+    ].freeze
+
+    SIMPLE = [
       FURAFFINITY,
       INKBUNNY,
       SOFURRY,
@@ -406,5 +409,7 @@ module Sites
       COMMISHES,
       FURRYNETWORK,
     ].freeze
+
+    ALL = SCRAPERS + SIMPLE
   end
 end

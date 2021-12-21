@@ -1,9 +1,9 @@
 module Sites
-  class Definition
+  class SimpleDefinition
     attr_reader :enum_value, :display_name, :homepage
 
     def initialize(enum_value:, display_name:, homepage:, gallery_templates:,
-                   username_identifier_regex:, submission_template: nil, supports_scraping: false)
+                   username_identifier_regex:)
       @enum_value = enum_value
       @display_name = display_name
       @homepage = homepage
@@ -11,12 +11,6 @@ module Sites
       @gallery_templates = gallery_templates.map { |t| Addressable::Template.new("{prefix}#{t}{/remaining}{?remaining}{#remaining}") }
       @can_match_if_contains = gallery_templates.map { |t| t.gsub(/{[^)]*}/, "") }
       @username_identifier_regex = Regexp.new("^#{username_identifier_regex}$")
-      @submission_template = Addressable::Template.new(submission_template) if supports_scraping
-      @supports_scraping = supports_scraping
-    end
-
-    def supports_scraping?
-      @supports_scraping
     end
 
     def match_for(uri)
