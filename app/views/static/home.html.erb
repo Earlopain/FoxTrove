@@ -13,6 +13,11 @@
     </div>
 
     <div class="input">
+      <label for="remember_me">Remember</label>
+      <%= check_box_tag :remember_me, "1", true %>
+    </div>
+
+    <div class="input">
       <%= submit_tag "Login", data: { disable_with: "Signing in..." } %>
     </div>
   <% end %>
