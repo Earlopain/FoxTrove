@@ -34,9 +34,8 @@ module Sites
       }
     end
 
-    def icon_path
-      filename = enum_value.starts_with?("youtube") ? "youtube" : enum_value
-      "/icons/#{filename}.png"
+    def icon_class
+      "site-icon-#{enum_value.starts_with?('youtube') ? 'youtube' : enum_value}"
     end
 
     def gallery_url(identifier)

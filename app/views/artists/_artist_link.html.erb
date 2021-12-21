@@ -1,4 +1,3 @@
 <div class="artist-link">
-  <%= image_tag(url.site.icon_path, class: "site-icon", title: url.site.display_name) %>
-  <%= link_to url.identifier_on_site, url.site.gallery_url(url.identifier_on_site)  %>
+  <%= link_to url.identifier_on_site, url.site.gallery_url(url.identifier_on_site), class: url.site.icon_class %>
 </div>
