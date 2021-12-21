@@ -42,7 +42,7 @@ module Sites
       submission_template: "https://twitter.com/{site_artist_identifier}/status/{site_submission_identifier}/"
     )
 
-    FURAFFINITY = ScraperDefinition.new(
+    FURAFFINITY = SimpleDefinition.new(
       enum_value: "furaffinity",
       display_name: "FurAffinity",
       homepage: "https://www.furaffinity.net",
@@ -54,7 +54,7 @@ module Sites
       submission_template: "https://www.furaffinity.net/view/{site_submission_identifier}/"
     )
 
-    INKBUNNY = ScraperDefinition.new(
+    INKBUNNY = SimpleDefinition.new(
       enum_value: "inkbunny",
       display_name: "Inkbunny",
       homepage: "https://inkbunny.net",
@@ -63,7 +63,7 @@ module Sites
       submission_template: "https://inkbunny.net/s/{site_submission_identifier}/"
     )
 
-    SOFURRY = ScraperDefinition.new(
+    SOFURRY = SimpleDefinition.new(
       enum_value: "sofurry",
       display_name: "Sofurry",
       homepage: "https://www.sofurry.com",
@@ -72,7 +72,7 @@ module Sites
       submission_template: "https://www.sofurry.com/view/{site_submission_identifier}/"
     )
 
-    DEVIANTART = ScraperDefinition.new(
+    DEVIANTART = SimpleDefinition.new(
       enum_value: "deviantart",
       display_name: "DeviantArt",
       homepage: "https://www.deviantart.com",
@@ -84,7 +84,7 @@ module Sites
       submission_template: "https://www.deviantart.com/{site_artist_identifier}/art/{site_submission_identifier}/"
     )
 
-    ARTSTATION = ScraperDefinition.new(
+    ARTSTATION = SimpleDefinition.new(
       enum_value: "artstation",
       display_name: "ArtStation",
       homepage: "https://www.artstation.com",
@@ -96,7 +96,7 @@ module Sites
       submission_template: "https://www.artstation.com/artwork/{site_submission_identifier}/"
     )
 
-    PATREON = ScraperDefinition.new(
+    PATREON = SimpleDefinition.new(
       enum_value: "patreon",
       display_name: "Patreon",
       homepage: "https://www.patreon.com",
@@ -105,7 +105,7 @@ module Sites
       submission_template: "https://www.patreon.com/posts/{site_submission_identifier}/"
     )
 
-    PIXIV = ScraperDefinition.new(
+    PIXIV = SimpleDefinition.new(
       enum_value: "pixiv",
       display_name: "Pixiv",
       homepage: "https://www.pixiv.net",
@@ -117,7 +117,7 @@ module Sites
       submission_template: "https://www.pixiv.net/artworks/{site_submission_identifier}/"
     )
 
-    WEASYL = ScraperDefinition.new(
+    WEASYL = SimpleDefinition.new(
       enum_value: "weasyl",
       display_name: "Weasyl",
       homepage: "https://www.weasyl.com",
@@ -129,7 +129,7 @@ module Sites
       submission_template: "https://www.weasyl.com/~{site_artist_identifier}/submissions/{site_submission_identifier}/"
     )
 
-    TUMBLR = ScraperDefinition.new(
+    TUMBLR = SimpleDefinition.new(
       enum_value: "tumblr",
       display_name: "Tumblr",
       homepage: "https://www.tumblr.com",
@@ -138,7 +138,7 @@ module Sites
       submission_template: "https://{site_artist_identifier}.tumblr.com/post/{site_submission_identifier}/"
     )
 
-    REDDIT = ScraperDefinition.new(
+    REDDIT = SimpleDefinition.new(
       enum_value: "reddit",
       display_name: "Reddit",
       homepage: "https://www.reddit.com",
@@ -150,7 +150,7 @@ module Sites
       submission_template: "https://redd.it/{site_submission_identifier}/"
     )
 
-    NEWGROUNDS = ScraperDefinition.new(
+    NEWGROUNDS = SimpleDefinition.new(
       enum_value: "newgrounds",
       display_name: "Newgrounds",
       homepage: "https://www.newgrounds.com",
@@ -159,7 +159,7 @@ module Sites
       submission_template: "https://www.newgrounds.com/art/view/{site_artist_identifier}/{site_submission_identifier}/"
     )
 
-    VKONTAKTE = ScraperDefinition.new(
+    VKONTAKTE = SimpleDefinition.new(
       enum_value: "vkontakte",
       display_name: "VK",
       homepage: "https://vk.com",
@@ -168,7 +168,7 @@ module Sites
       submission_template: "https://vk.com/{site_artist_identifier}?z=photo-{site_submission_identifier}/"
     )
 
-    INSTAGRAM = ScraperDefinition.new(
+    INSTAGRAM = SimpleDefinition.new(
       enum_value: "instagram",
       display_name: "Instagram",
       homepage: "https://www.instagram.com",

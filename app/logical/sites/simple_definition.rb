@@ -2,8 +2,9 @@ module Sites
   class SimpleDefinition
     attr_reader :enum_value, :display_name, :homepage
 
+    # FIXME: Remove submission_template once all scrappers are converted
     def initialize(enum_value:, display_name:, homepage:, gallery_templates:,
-                   username_identifier_regex:)
+                   username_identifier_regex:, submission_template: "")
       @enum_value = enum_value
       @display_name = display_name
       @homepage = homepage
