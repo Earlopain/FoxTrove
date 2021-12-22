@@ -58,13 +58,26 @@ module Scraper
           find_new_tweets_before_empty_response = true
           cursor = extract_cursor json, "top"
         else
-          result.merge!(response.dig("globalObjects", "tweets").reject { |_k, v| v.dig("extended_entities", "media").nil? })
+          result.merge! extract_relevant_tweets(response)
           new_last_tweet_timestamp = DateTime.strptime(tweets.values.last["created_at"], DATETIME_FORMAT)
           find_new_tweets_before_empty_response = false if new_last_tweet_timestamp.before? last_tweet_timestamp
           last_tweet_timestamp = new_last_tweet_timestamp
           cursor = extract_cursor json, "bottom"
         end
         raise ApiError, "Failed to extract cursor: #{url}" if cursor.nil?
+      end
+    end
+
+    def extract_relevant_tweets(response)
+      response.dig("globalObjects", "tweets").reject do |_k, v|
+        media = v.dig("extended_entities", "media")
+        if media.nil?
+          true # Exclude text tweets
+        elsif media.count == 1 && media.first["expanded_url"].downcase.exclude?(@artist_url.identifier_on_site.downcase)
+          true # Exclude quoted(?) tweets
+        else
+          false
+        end
       end
     end
 
