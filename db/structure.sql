@@ -380,6 +380,37 @@ ALTER SEQUENCE public.sites_id_seq OWNED BY public.sites.id;
 
 
 --
+-- Name: submission_files; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.submission_files (
+    id bigint NOT NULL,
+    artist_submission_id bigint NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: submission_files_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.submission_files_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: submission_files_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.submission_files_id_seq OWNED BY public.submission_files.id;
+
+
+--
 -- Name: users; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -473,6 +504,13 @@ ALTER TABLE ONLY public.sites ALTER COLUMN id SET DEFAULT nextval('public.sites_
 
 
 --
+-- Name: submission_files id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.submission_files ALTER COLUMN id SET DEFAULT nextval('public.submission_files_id_seq'::regclass);
+
+
+--
 -- Name: users id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -557,6 +595,14 @@ ALTER TABLE ONLY public.schema_migrations
 
 ALTER TABLE ONLY public.sites
     ADD CONSTRAINT sites_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: submission_files submission_files_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.submission_files
+    ADD CONSTRAINT submission_files_pkey PRIMARY KEY (id);
 
 
 --
@@ -708,6 +754,13 @@ CREATE UNIQUE INDEX index_sites_on_internal_name ON public.sites USING btree (in
 
 
 --
+-- Name: index_submission_files_on_artist_submission_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_submission_files_on_artist_submission_id ON public.submission_files USING btree (artist_submission_id);
+
+
+--
 -- Name: index_users_on_email; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -825,6 +878,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20211216212437'),
 ('20211217112445'),
 ('20211219115819'),
-('20211220080129');
+('20211220080129'),
+('20211222200616');
 
 

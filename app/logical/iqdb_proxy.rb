@@ -11,18 +11,18 @@ module IqdbProxy
     HTTParty.send request_type, url, { body: params }
   end
 
-  # Puts the passed submission into the iqdb server
+  # Puts the passed submission_file into the iqdb server
   # This can both insert and update an submission
-  def update_submission(submission)
-    variant = submission.variant(:iqdb_thumb)
+  def update_submission(submission_file)
+    variant = submission_file.variant(:thumb)
     File.open(variant.service.path_for(variant.key)) do |f|
-      make_request "/images/#{submission_id}", :post, { file: f }
+      make_request "/images/#{submission_file.id}", :post, { file: f }
     end
   end
 
-  # Removes the passed submission from iqdb
-  def remove_submission(submission_id)
-    make_request "/images/#{submission_id}", :delete
+  # Removes the passed submission_file from iqdb
+  def remove_submission(submission_file)
+    make_request "/images/#{submission_file.id}", :delete
   end
 
   # Queries iqdb with the passed url
