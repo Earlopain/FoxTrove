@@ -16,6 +16,9 @@ Layout/FirstHashElementIndentation:
 Layout/LineLength:
   Enabled: false
 
+Lint/SymbolConversion:
+  EnforcedStyle: consistent
+
 Metrics/AbcSize:
   Enabled: false
 
