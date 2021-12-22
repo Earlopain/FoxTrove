@@ -7,6 +7,7 @@ module Scraper
     REQUEST_URL = "https://twitter.com/i/api/2/search/adaptive.json".freeze
     GUEST_TOKEN_REGEX = /document\.cookie = decodeURIComponent\("gt=([0-9]*);/m.freeze
     REQUEST_RETRIES = 5
+    DATETIME_FORMAT = "%a %b %d %H:%M:%S %z %Y".freeze
 
     def initialize(artist_url)
       @artist_url = artist_url
@@ -15,7 +16,8 @@ module Scraper
     end
 
     def scrape!
-      search = "(from:#{@artist_url.identifier_on_site}) until:2030-01-01 since:2000-01-01 filter:images"
+      # `filter:images` can't be used since it won't return sensitive media for guest accounts
+      search = "from:#{@artist_url.identifier_on_site}"
       @guest_token = fetch_guest_token search
       make_request search
     end
@@ -25,8 +27,9 @@ module Scraper
     def make_request(search)
       result = {}
       cursor = ""
+      last_tweet_timestamp = DateTime.now + 60
+      find_new_tweets_before_empty_response = false
       while true
-        # FIXME: Will not get everything, search date must be adjusted for large result sets
         url = "#{REQUEST_URL}?#{query_string(search, cursor)}"
         response = HTTParty.get(url, headers: {
           "User-Agent": @user_agent,
@@ -37,13 +40,35 @@ module Scraper
         })
         # TODO: Error handling
         json = JSON.parse response.body
-        cursor = extract_cursor json
-        result.merge! response.dig("globalObjects", "tweets")
-        return result if response.dig("globalObjects", "tweets").count.zero?
+        tweets = response.dig("globalObjects", "tweets")
+
+        # Cursors seem to only go that far and need to be refreshed every so often
+        # Getting 0 tweets may either mean that this has happended, but it might
+        # also be that there simply aren't any more resuls.
+        # FIXME: On huge profiles cursors seem to get stuck. Refreshing returns
+        # no tweets and using the new cursor from that also returns nothing.
+        # What does work though is searching with `until:2030-01-01 since:2000-01-01`
+        # and bypassing the timerange it gets stuck on. Good luck figuring
+        # the gap out and being certain that the end wasn't simply reached.
+        if tweets.count.zero?
+          # Two times in a row no new tweets were found, even though the
+          # cursor was reset
+          return result if find_new_tweets_before_empty_response
+
+          find_new_tweets_before_empty_response = true
+          cursor = extract_cursor json, "top"
+        else
+          result.merge!(response.dig("globalObjects", "tweets").reject { |_k, v| v.dig("extended_entities", "media").nil? })
+          new_last_tweet_timestamp = DateTime.strptime(tweets.values.last["created_at"], DATETIME_FORMAT)
+          find_new_tweets_before_empty_response = false if new_last_tweet_timestamp.before? last_tweet_timestamp
+          last_tweet_timestamp = new_last_tweet_timestamp
+          cursor = extract_cursor json, "bottom"
+        end
+        raise ApiError, "Failed to extract cursor: #{url}" if cursor.nil?
       end
     end
 
-    def extract_cursor(json)
+    def extract_cursor(json, type)
       instructions = json.dig("timeline", "instructions")
       return unless instructions
 
@@ -53,7 +78,7 @@ module Scraper
         next unless entries
 
         entries.filter_map do |entry|
-          entry.dig("content", "operation", "cursor", "value") if entry["entryId"] == "sq-cursor-bottom"
+          entry.dig("content", "operation", "cursor", "value") if entry["entryId"] == "sq-cursor-#{type}"
         end.first
       end.first
     end
