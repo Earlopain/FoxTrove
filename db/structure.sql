@@ -199,8 +199,8 @@ CREATE TABLE public.artist_submissions (
     id bigint NOT NULL,
     artist_url_id bigint NOT NULL,
     identifier_on_site text NOT NULL,
-    title_on_site text,
-    description_on_site text,
+    title_on_site text NOT NULL,
+    description_on_site text NOT NULL,
     created_at_on_site timestamp without time zone NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
@@ -344,42 +344,6 @@ CREATE TABLE public.schema_migrations (
 
 
 --
--- Name: sites; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.sites (
-    id bigint NOT NULL,
-    internal_name text NOT NULL,
-    display_name text NOT NULL,
-    homepage text NOT NULL,
-    artist_url_templates text[] NOT NULL,
-    artist_identifier_regex text NOT NULL,
-    artist_submission_template text NOT NULL,
-    created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
-);
-
-
---
--- Name: sites_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.sites_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: sites_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.sites_id_seq OWNED BY public.sites.id;
-
-
---
 -- Name: submission_files; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -497,13 +461,6 @@ ALTER TABLE ONLY public.moderation_logs ALTER COLUMN id SET DEFAULT nextval('pub
 
 
 --
--- Name: sites id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.sites ALTER COLUMN id SET DEFAULT nextval('public.sites_id_seq'::regclass);
-
-
---
 -- Name: submission_files id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -587,14 +544,6 @@ ALTER TABLE ONLY public.moderation_logs
 
 ALTER TABLE ONLY public.schema_migrations
     ADD CONSTRAINT schema_migrations_pkey PRIMARY KEY (version);
-
-
---
--- Name: sites sites_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.sites
-    ADD CONSTRAINT sites_pkey PRIMARY KEY (id);
 
 
 --
@@ -747,13 +696,6 @@ CREATE INDEX index_moderation_logs_on_loggable_type_and_loggable_id ON public.mo
 
 
 --
--- Name: index_sites_on_internal_name; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX index_sites_on_internal_name ON public.sites USING btree (internal_name);
-
-
---
 -- Name: index_submission_files_on_artist_submission_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -879,6 +821,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20211217112445'),
 ('20211219115819'),
 ('20211220080129'),
-('20211222200616');
+('20211222200616'),
+('20211223151833');
 
 
