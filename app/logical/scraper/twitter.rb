@@ -19,38 +19,40 @@ module Scraper
       # `filter:images` can't be used since it won't return sensitive media for guest accounts
       search = "from:#{@artist_url.identifier_on_site}"
       @guest_token = fetch_guest_token search
-      result = {}
       cursor = ""
-      last_tweet_timestamp = DateTime.now + 60
+      all_tweets_ids = []
       find_new_tweets_before_empty_response = false
-      while  true
-        response = make_request search, cursor
-        # FIXME: Might be nil
-        tweets = response.dig("globalObjects", "tweets")
+      Enumerator.new do |y|
+        while true
+          response = make_request search, cursor
+          # FIXME: Might be nil
+          tweets = response.dig("globalObjects", "tweets")
+          new_tweet_ids = relevant_tweet_ids(tweets).difference(all_tweets_ids)
+          all_tweets_ids += new_tweet_ids
 
-        # Cursors seem to only go that far and need to be refreshed every so often
-        # Getting 0 tweets may either mean that this has happended, but it might
-        # also be that there simply aren't any more resuls.
-        # FIXME: On huge profiles cursors seem to get stuck. Refreshing returns
-        # no tweets and using the new cursor from that also returns nothing.
-        # What does work though is searching with `until:2030-01-01 since:2000-01-01`
-        # and bypassing the timerange it gets stuck on. Good luck figuring
-        # the gap out and being certain that the end wasn't simply reached.
-        if tweets.count.zero?
-          # Two times in a row no new tweets were found, even though the
-          # cursor was reset
-          return result if find_new_tweets_before_empty_response
+          new_tweet_ids.each { |id| y << tweets[id] }
 
-          find_new_tweets_before_empty_response = true
-          cursor = extract_cursor response, "top"
-        else
-          result.merge! extract_relevant_tweets(response)
-          new_last_tweet_timestamp = DateTime.strptime(tweets.values.last["created_at"], DATETIME_FORMAT)
-          find_new_tweets_before_empty_response = false if new_last_tweet_timestamp.before? last_tweet_timestamp
-          last_tweet_timestamp = new_last_tweet_timestamp
-          cursor = extract_cursor response, "bottom"
+          # Cursors seem to only go that far and need to be refreshed every so often
+          # Getting 0 tweets may either mean that this has happended, but it might
+          # also be that there simply aren't any more resuls.
+          # FIXME: On huge profiles cursors seem to get stuck. Refreshing returns
+          # no tweets and using the new cursor from that also returns nothing.
+          # What does work though is searching with `until:2030-01-01 since:2000-01-01`
+          # and bypassing the timerange it gets stuck on. Good luck figuring
+          # the gap out and being certain that the end wasn't simply reached.
+          if tweets.count.zero?
+            # Two times in a row no new tweets were found, even though the
+            # cursor was reset
+            break if find_new_tweets_before_empty_response
+
+            find_new_tweets_before_empty_response = true
+            cursor = extract_cursor response, "top"
+          else
+            find_new_tweets_before_empty_response = false if new_tweet_ids.present?
+            cursor = extract_cursor response, "bottom"
+          end
+          raise ApiError, "Failed to extract cursor: #{url}" if cursor.nil?
         end
-        raise ApiError, "Failed to extract cursor: #{url}" if cursor.nil?
       end
     end
 
@@ -69,16 +71,15 @@ module Scraper
       JSON.parse response.body
     end
 
-    def extract_relevant_tweets(response)
-      response.dig("globalObjects", "tweets").reject do |_k, v|
-        media = v.dig("extended_entities", "media")
-        if media.nil?
-          true # Exclude text tweets
-        elsif media.count == 1 && media.first["expanded_url"].downcase.exclude?(@artist_url.identifier_on_site.downcase)
-          true # Exclude quoted(?) tweets
-        else
-          false
-        end
+    def relevant_tweet_ids(tweets)
+      tweets.filter_map do |tweet_id, tweet|
+        media = tweet.dig("extended_entities", "media")
+        # Exclude text tweets
+        next if media.nil?
+        # Exclude quoted(?) tweets
+        next if media.count == 1 && media.first["expanded_url"].downcase.exclude?(@artist_url.identifier_on_site.downcase)
+
+        tweet_id
       end
     end
 
