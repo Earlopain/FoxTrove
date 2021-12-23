@@ -17,7 +17,7 @@ module Scraper
 
     def scrape!
       # `filter:images` can't be used since it won't return sensitive media for guest accounts
-      search = "from:#{@artist_url.identifier_on_site}"
+      search = "from:#{@artist_url.identifier_on_site} -filter:retweets"
       @guest_token = fetch_guest_token search
       cursor = ""
       all_tweets_ids = []
