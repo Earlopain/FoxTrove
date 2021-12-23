@@ -21,4 +21,8 @@ module Reverser
   def iqdb_server
     "http://iqdb:5588"
   end
+
+  def redis_url
+    "redis://redis"
+  end
 end

@@ -21,6 +21,7 @@ services:
       - /app/tmp/sockets
     depends_on:
       - postgres
+      - redis
     ports:
       - 9000:9000
 
@@ -35,6 +36,12 @@ services:
     ports:
       - 5432:5432
 
+  redis:
+    image: redis:alpine
+    command: redis-server --save 10 1 --loglevel warning
+    volumes:
+      - redis_data:/data
+
   iqdb:
     build:
       context: ./docker
@@ -42,6 +49,7 @@ services:
 
 volumes:
   db_data:
+  redis_data:
   build_assets:
   active_storage:
   node_modules:

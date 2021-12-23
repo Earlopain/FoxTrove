@@ -1,4 +1,9 @@
+require "sidekiq_unique_jobs/web"
+
 Rails.application.routes.draw do
+  # TODO: constraint
+  mount Sidekiq::Web, at: "/sidekiq"
+
   resource :iqdb, controller: "iqdb", only: [] do
     collection do
       get :index
