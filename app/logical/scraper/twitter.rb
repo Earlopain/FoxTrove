@@ -19,27 +19,13 @@ module Scraper
       # `filter:images` can't be used since it won't return sensitive media for guest accounts
       search = "from:#{@artist_url.identifier_on_site}"
       @guest_token = fetch_guest_token search
-      make_request search
-    end
-
-    private
-
-    def make_request(search)
       result = {}
       cursor = ""
       last_tweet_timestamp = DateTime.now + 60
       find_new_tweets_before_empty_response = false
-      while true
-        url = "#{REQUEST_URL}?#{query_string(search, cursor)}"
-        response = HTTParty.get(url, headers: {
-          "User-Agent": @user_agent,
-          "Authorization": "Bearer #{BEARER_TOKEN}",
-          "Referer": referer_url(search),
-          "Accept-Language": "en-US,en;q=0.5",
-          "x-guest-token": @guest_token,
-        })
-        # TODO: Error handling
-        json = JSON.parse response.body
+      while  true
+        response = make_request search, cursor
+        # FIXME: Might be nil
         tweets = response.dig("globalObjects", "tweets")
 
         # Cursors seem to only go that far and need to be refreshed every so often
@@ -56,16 +42,31 @@ module Scraper
           return result if find_new_tweets_before_empty_response
 
           find_new_tweets_before_empty_response = true
-          cursor = extract_cursor json, "top"
+          cursor = extract_cursor response, "top"
         else
           result.merge! extract_relevant_tweets(response)
           new_last_tweet_timestamp = DateTime.strptime(tweets.values.last["created_at"], DATETIME_FORMAT)
           find_new_tweets_before_empty_response = false if new_last_tweet_timestamp.before? last_tweet_timestamp
           last_tweet_timestamp = new_last_tweet_timestamp
-          cursor = extract_cursor json, "bottom"
+          cursor = extract_cursor response, "bottom"
         end
         raise ApiError, "Failed to extract cursor: #{url}" if cursor.nil?
       end
+    end
+
+    private
+
+    def make_request(search, cursor)
+      url = "#{REQUEST_URL}?#{query_string(search, cursor)}"
+      response = HTTParty.get(url, headers: {
+        "User-Agent": @user_agent,
+        "Authorization": "Bearer #{BEARER_TOKEN}",
+        "Referer": referer_url(search),
+        "Accept-Language": "en-US,en;q=0.5",
+        "x-guest-token": @guest_token,
+      })
+      # TODO: Error handling
+      JSON.parse response.body
     end
 
     def extract_relevant_tweets(response)
@@ -81,8 +82,8 @@ module Scraper
       end
     end
 
-    def extract_cursor(json, type)
-      instructions = json.dig("timeline", "instructions")
+    def extract_cursor(response, type)
+      instructions = response.dig("timeline", "instructions")
       return unless instructions
 
       instructions.filter_map do |instruction|
