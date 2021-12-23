@@ -30,7 +30,7 @@ module Scraper
           new_tweet_ids = relevant_tweet_ids(tweets).difference(all_tweets_ids)
           all_tweets_ids += new_tweet_ids
 
-          new_tweet_ids.each { |id| y << tweets[id] }
+          new_tweet_ids.each { |id| y << to_submission(tweets[id]) }
 
           # Cursors seem to only go that far and need to be refreshed every so often
           # Getting 0 tweets may either mean that this has happended, but it might
@@ -98,6 +98,46 @@ module Scraper
       end.first
     end
 
+    def to_submission(tweet)
+      s = Submission.new
+      s.identifier = tweet["id_str"]
+      s.created_at = DateTime.strptime(tweet["created_at"], DATETIME_FORMAT)
+      s.title = ""
+
+      range = tweet["display_text_range"]
+      description = if range[0] == range[1]
+                      ""
+                    else
+                      tweet["full_text"][range[0]..range[1]]
+                    end
+      tweet["entities"]["urls"].each do |entry|
+        indices = entry["indices"]
+        description[indices[0]..indices[1]] = entry["expanded_url"]
+      end
+      s.description = description
+
+      tweet["extended_entities"]["media"].each do |media|
+        url = case media["type"]
+              when "photo"
+                # https://pbs.twimg.com/media/Ek086oLVgAMjX5h.jpg => https://pbs.twimg.com/media/Ek086oLVgAMjX5h?format=jpg&name=orig
+                regex = %r{media/(\S*)\.(\S*)$}
+                name, ext = media["media_url_https"].scan(regex).first
+                "https://pbs.twimg.com/media/#{name}?format=#{ext}&name=orig"
+              when "video"
+                # get the variant with the highest bitrate
+                variant = media.dig("video_info", "variants").max_by { |v| v["bitrate"].to_i }
+                variant["url"]
+              when "animated_gif"
+                # there is only one variant, get that
+                media.dig("video_info", "variants").first["url"]
+              else
+                raise ApiError, "Unknown media type #{media['type']}"
+              end
+        s.files.push url
+      end
+      s
+    end
+
     def random_user_agent
       "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.#{rand 9999} Safari/537.#{rand 99}"
     end
@@ -127,7 +167,7 @@ module Scraper
       {
         tweet_search_mode: "live",
         tweet_mode: "extended",
-        include_entities: false,
+        include_entities: true,
         include_ext_media_availability: true,
         q: search,
         query_source: "recent_search_click",
