@@ -72,15 +72,15 @@ module Scraper
     end
 
     def relevant_tweet_ids(tweets)
-      tweets.filter_map do |tweet_id, tweet|
+      quoted_tweet_ids = []
+      tweet_ids = tweets.filter_map do |tweet_id, tweet|
         media = tweet.dig("extended_entities", "media")
+        quoted_tweet_ids.push(tweet["quoted_status_id_str"]) if tweet["quoted_status_id_str"]
         # Exclude text tweets
-        next if media.nil?
-        # Exclude quoted(?) tweets
-        next if media.count == 1 && media.first["expanded_url"].downcase.exclude?(@artist_url.identifier_on_site.downcase)
-
-        tweet_id
+        tweet_id unless media.nil?
       end
+      # Exclude quoted tweets
+      tweet_ids.difference quoted_tweet_ids
     end
 
     def extract_cursor(response, type)
