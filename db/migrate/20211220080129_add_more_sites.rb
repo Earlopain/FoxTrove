@@ -1,6 +1,7 @@
 class AddMoreSites < ActiveRecord::Migration[7.0]
   def change
     values = %w[
+      subscribestar
       kofi
       twitch
       picarto
