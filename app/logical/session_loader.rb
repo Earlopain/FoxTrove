@@ -19,7 +19,7 @@ class SessionLoader
       CurrentUser.user = user
     else
       session.delete(:user_id)
-      cookies.encrypted.delete(:remember_me)
+      cookies.delete(:remember_me)
     end
   end
 
