@@ -1,7 +1,7 @@
 module Sites
   module Definitions
     def self.from_enum(value)
-      ALL.detect { |definition| definition.enum_value == value }
+      ENUM_MAP[value]
     end
 
     def self.from_url(url)
@@ -411,5 +411,7 @@ module Sites
     ].freeze
 
     ALL = SCRAPERS + SIMPLE
+
+    ENUM_MAP = ALL.to_h { |definition| [definition.enum_value, definition] }
   end
 end

@@ -8,4 +8,8 @@ class Artist < ApplicationRecord
   validates :name, length: { in: 1..64 }
 
   attr_accessor :url_string
+
+  def recent_submissions
+    submissions.includes(:submission_files).order(created_at_on_site: :desc).limit(10)
+  end
 end

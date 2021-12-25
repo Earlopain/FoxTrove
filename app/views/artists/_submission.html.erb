@@ -1,0 +1,26 @@
+<div class="artist-submission">
+  <div class="submission-source">
+    Source: <%= submission.artist_url.site.display_name %>
+  </div>
+  <div class="submission-link">
+    Link: <%= link_to submission.artist_url.site.submission_url(submission) %>  
+  </div>
+  <div class="submission-time">
+    Time: <%= submission.created_at_on_site %>
+  </div>
+  <% if submission.title_on_site.present? %>
+    <div class="submission-title">
+      Title: <%= submission.title_on_site %>
+    </div>
+  <% end %>
+  <% if submission.description_on_site.present? %>
+    <div class="submission-description">
+      Description: <%= submission.description_on_site %>
+    </div>
+  <% end %>
+  <div class="submission-container">
+    <% submission.submission_files.each do |file| %>
+      <%= render "submission_file", submission_file: file %>
+    <% end %>
+  </div>
+<div>

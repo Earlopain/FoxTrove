@@ -5,7 +5,11 @@ Name: <%= @artist.name %>
 
 Links:
 <div class="url-list">
-<% @artist.artist_urls.each do |url| %>
-  <%= render "artist_link", url: url %>
-<% end %>
+  <% @artist.artist_urls.each do |url| %>
+    <%= render "artist_link", url: url %>
+  <% end %>
 </div>
+
+<% @recent_submissions.each do |submission| %>
+  <%= render "submission", submission: submission %>
+<% end %>

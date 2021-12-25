@@ -45,6 +45,7 @@ class ArtistsController < ApplicationController
 
   def show
     @artist = Artist.find(params[:id])
+    @recent_submissions = @artist.recent_submissions
     respond_with(@artist)
   end
 

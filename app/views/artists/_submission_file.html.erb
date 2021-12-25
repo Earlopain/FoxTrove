@@ -1,0 +1,6 @@
+<%# Figure out something for video previews %>
+<% if submission_file.file.content_type == "image/jpeg" %>
+  <%= image_tag url_for(submission_file.file.variant(:thumb)) %>
+<% else %>
+  Unhandled content_type <%= submission_file.file.content_type %>
+<% end %>
