@@ -6,7 +6,13 @@ class ArtistUrl < ApplicationRecord
 
   validates :identifier_on_site, uniqueness: { scope: :site_type, case_sensitive: false }
 
+  after_save :enqueue_scraping
+
   def site
     @site ||= Sites::Definitions.from_enum(site_type)
+  end
+
+  def enqueue_scraping
+    ScrapeArtistUrlWorker.perform_async id
   end
 end
