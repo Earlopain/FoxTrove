@@ -13,7 +13,7 @@ module Reverser
   # How large should the generated thumbnails be
   # This is a bounding box
   def thumbnail_size
-    200
+    300
   end
 
   # The server which handles similar images search
