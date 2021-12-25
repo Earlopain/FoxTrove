@@ -24,6 +24,7 @@ class ScrapeArtistUrlWorker
         description_on_site: submission.description,
         created_at_on_site: submission.created_at
       )
+      CreateSubmissionWorker.perform_async db_submission.id, submission.files, artist_url.site.enum_value
     end
   end
 end
