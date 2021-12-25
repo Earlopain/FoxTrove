@@ -3,7 +3,12 @@ FROM ruby:3.0.3-alpine
 WORKDIR /app
 
 # TODO: use node provided corepack when available
-RUN apk --no-cache add nodejs npm postgresql-client vips tzdata build-base git libpq-dev \
+RUN apk --no-cache add \
+  tzdata build-base git \
+  nodejs npm \
+  postgresql-client libpq-dev \
+  vips \
+  ffmpeg \
   && npm install -g corepack \
   && corepack prepare yarn@3.1.1 --activate
 
