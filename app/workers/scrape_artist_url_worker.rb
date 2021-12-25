@@ -6,6 +6,7 @@ class ScrapeArtistUrlWorker
   def perform(artist_url_id)
     artist_url = ArtistUrl.find_by id: artist_url_id
     return unless artist_url
+    return unless artist_url.site.class == Sites::ScraperDefinition
 
     scraper = artist_url.site.scraper.new
     scraper.scrape!(identifier: artist_url.identifier_on_site).each do |submission|

@@ -369,11 +369,8 @@ module Sites
       username_identifier_regex: /[a-zA-Z0-9_\-]{3,15}/
     )
 
-    SCRAPERS = [
+    ALL = [
       TWITTER,
-    ].freeze
-
-    SIMPLE = [
       FURAFFINITY,
       INKBUNNY,
       SOFURRY,
@@ -409,8 +406,6 @@ module Sites
       COMMISHES,
       FURRYNETWORK,
     ].freeze
-
-    ALL = SCRAPERS + SIMPLE
 
     ENUM_MAP = ALL.to_h { |definition| [definition.enum_value, definition] }
   end
