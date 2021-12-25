@@ -1,7 +1,7 @@
 class CreateSubmissionWorker
   include Sidekiq::Worker
 
-  sidekiq_options queue: :submission_download, lock: :until_executed, lock_ttl: 1.hour, 
+  sidekiq_options queue: :submission_download, lock: :until_executed, lock_ttl: 1.hour,
                   lock_args_method: :lock_args, on_conflict: :log
 
   def self.lock_args(args)
@@ -23,8 +23,9 @@ class CreateSubmissionWorker
 
       file = scraper.download_file uri
       submission_file = SubmissionFile.new(artist_submission: submission)
-      submission_file.file.attach(io: file, filename: File.basename(uri.path))
-      submission_file.save
+      submission_file.original.attach(io: file, filename: File.basename(uri.path))
+      success = submission_file.save
+      CreateVariantsWorker.perform_async submission_file.id if success
     end
   end
 end

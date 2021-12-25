@@ -3,7 +3,7 @@
     Source: <%= submission.artist_url.site.display_name %>
   </div>
   <div class="submission-link">
-    Link: <%= link_to submission.artist_url.site.submission_url(submission) %>  
+    Link: <%= link_to submission.artist_url.site.submission_url(submission), submission.artist_url.site.submission_url(submission) %>  
   </div>
   <div class="submission-time">
     Time: <%= submission.created_at_on_site %>
@@ -23,4 +23,4 @@
       <%= render "submission_file", submission_file: file %>
     <% end %>
   </div>
-<div>
+</div>
