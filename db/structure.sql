@@ -89,7 +89,7 @@ CREATE TABLE public.active_storage_attachments (
     record_type character varying NOT NULL,
     record_id bigint NOT NULL,
     blob_id bigint NOT NULL,
-    created_at timestamp(6) without time zone NOT NULL
+    created_at timestamp(6) with time zone NOT NULL
 );
 
 
@@ -125,7 +125,7 @@ CREATE TABLE public.active_storage_blobs (
     service_name character varying NOT NULL,
     byte_size bigint NOT NULL,
     checksum character varying,
-    created_at timestamp(6) without time zone NOT NULL
+    created_at timestamp(6) with time zone NOT NULL
 );
 
 
@@ -185,8 +185,8 @@ ALTER SEQUENCE public.active_storage_variant_records_id_seq OWNED BY public.acti
 CREATE TABLE public.ar_internal_metadata (
     key character varying NOT NULL,
     value character varying,
-    created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    created_at timestamp(6) with time zone NOT NULL,
+    updated_at timestamp(6) with time zone NOT NULL
 );
 
 
@@ -200,9 +200,9 @@ CREATE TABLE public.artist_submissions (
     identifier_on_site text NOT NULL,
     title_on_site text NOT NULL,
     description_on_site text NOT NULL,
-    created_at_on_site timestamp without time zone NOT NULL,
-    created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    created_at_on_site timestamp(6) with time zone NOT NULL,
+    created_at timestamp(6) with time zone NOT NULL,
+    updated_at timestamp(6) with time zone NOT NULL
 );
 
 
@@ -235,14 +235,14 @@ CREATE TABLE public.artist_urls (
     approver_id bigint,
     artist_id bigint NOT NULL,
     identifier_on_site text NOT NULL,
-    created_at_on_site timestamp without time zone NOT NULL,
+    created_at_on_site timestamp(6) with time zone NOT NULL,
     about_on_site text NOT NULL,
     scraping_disabled boolean DEFAULT false NOT NULL,
-    last_scraped_at timestamp without time zone,
+    last_scraped_at timestamp(6) with time zone,
     last_scraped_submission_identifier text,
     sidekiq_job_id text,
-    created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL,
+    created_at timestamp(6) with time zone NOT NULL,
+    updated_at timestamp(6) with time zone NOT NULL,
     site_type public.artist_url_sites NOT NULL
 );
 
@@ -274,8 +274,8 @@ CREATE TABLE public.artists (
     id bigint NOT NULL,
     creator_id bigint NOT NULL,
     name text NOT NULL,
-    created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    created_at timestamp(6) with time zone NOT NULL,
+    updated_at timestamp(6) with time zone NOT NULL
 );
 
 
@@ -310,7 +310,7 @@ CREATE TABLE public.moderation_logs (
     loggable_id integer NOT NULL,
     action text NOT NULL,
     payload jsonb NOT NULL,
-    created_at timestamp without time zone NOT NULL
+    created_at timestamp(6) with time zone NOT NULL
 );
 
 
@@ -349,8 +349,8 @@ CREATE TABLE public.schema_migrations (
 CREATE TABLE public.submission_files (
     id bigint NOT NULL,
     artist_submission_id bigint NOT NULL,
-    created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    created_at timestamp(6) with time zone NOT NULL,
+    updated_at timestamp(6) with time zone NOT NULL
 );
 
 
@@ -384,10 +384,11 @@ CREATE TABLE public.users (
     level public.user_levels DEFAULT 'unactivated'::public.user_levels NOT NULL,
     permissions public.user_permissions[] DEFAULT '{}'::public.user_permissions[] NOT NULL,
     password_digest text NOT NULL,
-    last_logged_in_at timestamp without time zone NOT NULL,
+    last_logged_in_at timestamp(6) with time zone NOT NULL,
     last_ip_addr inet NOT NULL,
-    created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    created_at timestamp(6) with time zone NOT NULL,
+    updated_at timestamp(6) with time zone NOT NULL,
+    time_zone text NOT NULL
 );
 
 
@@ -821,6 +822,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20211219115819'),
 ('20211220080129'),
 ('20211222200616'),
-('20211223151833');
+('20211223151833'),
+('20211226145933');
 
 

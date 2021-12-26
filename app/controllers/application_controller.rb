@@ -1,11 +1,16 @@
 class ApplicationController < ActionController::Base
   before_action :set_current_user
+  around_action :with_time_zone
 
   rescue_from Exception, with: :rescue_exception
 
   def set_current_user
     CurrentUser.user = SessionLoader.new(request).load
     CurrentUser.ip_addr = request.remote_ip
+  end
+
+  def with_time_zone
+    Time.use_zone(CurrentUser.time_zone) { yield }
   end
 
   EXCEPTION_TYPES = {
