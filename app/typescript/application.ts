@@ -1,6 +1,7 @@
 // Entry point for the build script in your package.json
-import { helloTest } from "./a/test";
 
-helloTest();
+import TimeAgo from "./time_ago";
 
-console.log("Hello World");
+document.addEventListener("DOMContentLoaded", () => {
+  new TimeAgo().formatAll();
+});

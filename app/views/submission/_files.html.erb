@@ -3,7 +3,7 @@
     <%= link_to submission.artist_url.site.submission_url(submission), submission.artist_url.site.submission_url(submission) %>  
   </div>
   <div class="submission-time">
-    <%= submission.created_at_on_site.to_s :long %>
+    <%= time_ago submission.created_at_on_site %>
   </div>
   <% if submission.title_on_site.present? %>
     <div class="submission-title">
