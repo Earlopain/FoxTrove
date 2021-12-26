@@ -4,7 +4,8 @@ class ApplicationController < ActionController::Base
   rescue_from Exception, with: :rescue_exception
 
   def set_current_user
-    SessionLoader.new(request).load
+    CurrentUser.user = SessionLoader.new(request).load
+    CurrentUser.ip_addr = request.remote_ip
   end
 
   EXCEPTION_TYPES = {

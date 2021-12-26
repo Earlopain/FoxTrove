@@ -8,18 +8,15 @@ class SessionLoader
   end
 
   def load
-    CurrentUser.user = User.anon
-    CurrentUser.ip_addr = request.remote_ip
-
     user_id = fetch_user_id_and_refresh_remember_cookie
-    return unless user_id
 
     user = User.find_by(id: user_id)
     if user
-      CurrentUser.user = user
+      user
     else
       session.delete(:user_id)
       cookies.delete(:remember_me)
+      User.anon
     end
   end
 
