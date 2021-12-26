@@ -1,12 +1,9 @@
 <div class="artist-submission">
-  <div class="submission-source">
-    Source: <%= submission.artist_url.site.display_name %>
-  </div>
   <div class="submission-link">
-    Link: <%= link_to submission.artist_url.site.submission_url(submission), submission.artist_url.site.submission_url(submission) %>  
+    <%= link_to submission.artist_url.site.submission_url(submission), submission.artist_url.site.submission_url(submission) %>  
   </div>
   <div class="submission-time">
-    Time: <%= submission.created_at_on_site %>
+    <%= submission.created_at_on_site.to_s :long %>
   </div>
   <% if submission.title_on_site.present? %>
     <div class="submission-title">
@@ -20,7 +17,7 @@
   <% end %>
   <div class="submission-container">
     <% submission.submission_files.each do |file| %>
-      <%= render "submission_file", submission_file: file %>
+      <%= render "submission_files/sample", submission_file: file %>
     <% end %>
   </div>
 </div>
