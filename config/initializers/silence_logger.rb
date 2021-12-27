@@ -40,6 +40,43 @@ action_controller = proc do
   end
 end
 
+active_record = proc do
+  ActiveRecord::LogSubscriber.class_eval do
+    # Prevent logging of cached sql queries
+    alias_method :original_sql, :sql
+    def sql(event)
+      if event.payload[:cached]
+        self.class.runtime += event.duration
+      else
+        original_sql event
+      end
+    end
+
+    # Because there is one more method called now
+    def extract_query_source_location(locations)
+      traces = backtrace_cleaner.clean(locations.lazy).first(2)
+      return traces.last if traces.size == 2
+    end
+  end
+end
+
+action_view = proc do
+  # Suppress all ActionView logging
+  ActionView::LogSubscriber.class_eval do
+    def render_template(event)
+    end
+
+    def render_partial(event)
+    end
+
+    def render_layout(event)
+    end
+
+    def render_collection(event)
+    end
+  end
+end
+
 # Prevents blank content from creating a line in the log
 class CustomLogger
   def initialize(logger)
@@ -86,4 +123,6 @@ end
 
 silence active_storage, :active_storage_record
 silence action_controller, :action_controller
+silence active_record, :active_record
+silence action_view, :action_view
 rack.call
