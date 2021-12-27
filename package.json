@@ -8,7 +8,11 @@
   },
   "scripts": {
     "build": "esbuild app/typescript/*.* --bundle --sourcemap --outdir=./public/build",
-    "build:css": "sass ./app/stylesheet/application.sass.scss ./public/build/application.css --load-path=node_modules --embed-sources"
+    "build:css": "sass ./app/stylesheet/application.sass.scss ./public/build/application.css --load-path=node_modules --embed-sources",
+    "tsc": "tsc --noEmit"
   },
-  "version": "0.1.0"
+  "version": "0.1.0",
+  "devDependencies": {
+    "typescript": "^4.5.4"
+  }
 }

@@ -25,20 +25,20 @@ export default class TimeAgo {
   }
 
   private format(element: Element, now: Date) {
-    const value = Date.parse(element.getAttribute("datetime"));
-    var elapsed = value - now.getTime();
+    const datetime = Date.parse(element.getAttribute("datetime") as string);
+    var elapsed = datetime - now.getTime();
 
-    const unit = this.getUnit(elapsed);
-    element.innerHTML = TimeAgo.relativeTimeFormatter.format(Math.round(elapsed / TimeAgo.units.get(unit)), unit);
-    element.setAttribute("title", TimeAgo.dateTimeFormatter.format(value));
+    const [unit, value] = this.getUnit(elapsed);
+    element.innerHTML = TimeAgo.relativeTimeFormatter.format(Math.round(elapsed / value), unit);
+    element.setAttribute("title", TimeAgo.dateTimeFormatter.format(datetime));
   }
 
-  private getUnit(elapsed: number): Intl.RelativeTimeFormatUnit {
+  private getUnit(elapsed: number): [Intl.RelativeTimeFormatUnit, number] {
     for (const [key, value] of TimeAgo.units.entries()) {
       if (Math.abs(elapsed) > value) {
-        return key;
+        return [key, value]
       }
     }
-    return "second";
+    return ["second", 1000];
   }
 }
