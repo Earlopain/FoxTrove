@@ -2,9 +2,8 @@ div#page {
   background-color: $color-foreground;
   border-radius: $border-radius-full;
 
-  overflow: visible;
+  flex: 1;
   padding: 0.5rem;
-  height: inherit;
 }
 
 .footer-padding {
