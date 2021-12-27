@@ -10,6 +10,20 @@ module Reverser
     "https://github.com/Earlopain/reverser"
   end
 
+  # Controlls wether or not the logging should be intercepted
+  def silence_log?
+    true
+  end
+
+  # Matches either links or controller actions
+  def log_ignore
+    [
+      "ActiveStorage::DiskController#show",
+      "ActiveStorage::Blobs::RedirectController#show",
+      "/rails/active_storage",
+    ]
+  end
+
   # How large should the generated thumbnails be
   # This is a bounding box
   def thumbnail_size
