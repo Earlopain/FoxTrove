@@ -24,6 +24,7 @@ services:
       - redis
     ports:
       - 9000:9000
+    tty: true
 
   postgres:
     image:  postgres:14-alpine
