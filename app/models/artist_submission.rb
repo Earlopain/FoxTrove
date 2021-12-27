@@ -5,4 +5,6 @@ class ArtistSubmission < ApplicationRecord
   has_many :submission_files
 
   validates :identifier_on_site, uniqueness: { scope: :artist_url_id, case_sensitive: false }
+
+  scope :with_samples, -> { includes(submission_files: [sample_attachment: :blob]) }
 end
