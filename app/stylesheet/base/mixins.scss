@@ -34,21 +34,24 @@ $icons: (
   "youtube"
 );
 
-@mixin icon_with_text($icon_size) {
+@mixin site_icon($icon_size) {
   font-size: $icon_size;
   white-space: nowrap;
   // Arrays start at 1!?
   @for $i from 0 through length($icons) - 1 {
     $icon: nth($icons, $i + 1);
 
-    .site-icon-#{$icon}::before {
-      content: "";
-      width: $icon_size;
-      height: $icon_size;
-      display: inline-block;
-      background: url("/build/icons.png");
-      background-size: $icon_size;
-      background-position: 0px calc(-#{$i} * #{$icon_size});
+    .site-icon-#{$icon} {
+      vertical-align: middle;
+      &::before {
+        content: "";
+        width: $icon_size;
+        height: $icon_size;
+        display: inline-block;
+        background: url("/build/icons.png");
+        background-size: $icon_size;
+        background-position: 0px calc(-#{$i} * #{$icon_size});
+      }
     }
   }
 }

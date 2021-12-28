@@ -1,3 +1,4 @@
 <div class="artist-link">
-  <%= link_to url.identifier_on_site, url.site.gallery_url(url.identifier_on_site), class: url.site.icon_class %>
+  <%= tag.span class: url.site.icon_class, title: url.site.display_name %>
+  <%= link_to url.identifier_on_site, url.site.gallery_url(url.identifier_on_site) %>
 </div>
