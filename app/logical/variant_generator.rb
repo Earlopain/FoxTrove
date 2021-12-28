@@ -5,9 +5,9 @@ module VariantGenerator
     # TODO: Error handling
     case attachment.content_type
     when "image/jpeg", "image/png"
-      image_thumb(path, file, Reverser.thumbnail_size, height: Reverser.thumbnail_size, size: :down)
+      image_thumb(path, file, Config.thumbnail_size, height: Config.thumbnail_size, size: :down)
     when "video/mp4"
-      params = mp4_conversion_parameters(path, file.path, [Reverser.thumbnail_size, Reverser.thumbnail_size])
+      params = mp4_conversion_parameters(path, file.path, [Config.thumbnail_size, Config.thumbnail_size])
       stdout, stderr, status = Open3.capture3("/usr/bin/ffmpeg", *params)
       raise StandardError, "unable to transcode files\n#{stdout.chomp}\n\n#{stderr.chomp}" if status != 0
     else

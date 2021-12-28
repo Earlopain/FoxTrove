@@ -8,7 +8,7 @@ module IqdbProxy
 
   # Makes the actual request to the iqdb server
   def make_request(path, request_type, params = {})
-    url = URI.parse(Reverser.iqdb_server)
+    url = URI.parse(Config.iqdb_server)
     url.path = path
     HTTParty.send request_type, url, { body: params }
   end

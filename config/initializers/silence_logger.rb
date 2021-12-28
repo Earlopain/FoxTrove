@@ -18,7 +18,7 @@ action_controller = proc do
     # Processing by ApplicationController#show as HTML
     def start_processing(event)
       name = "#{event.payload[:controller]}##{event.payload[:action]}"
-      return if Reverser.log_ignore.any? { |ignore| name == ignore }
+      return if Config.log_ignore.any? { |ignore| name == ignore }
 
       original_start_processing event
     end
@@ -26,14 +26,14 @@ action_controller = proc do
     # Completed 200 OK in 290ms (Views: 207.6ms | ActiveRecord: 40.6ms | Allocations: 163661)
     def process_action(event)
       name = "#{event.payload[:controller]}##{event.payload[:action]}"
-      return if Reverser.log_ignore.any? { |ignore| name == ignore }
+      return if Config.log_ignore.any? { |ignore| name == ignore }
 
       original_process_action event
     end
 
     # Redirected to http://localhost:9000/rails/active_storage/disk/:key/sample
     def redirect_to(event)
-      return if Reverser.log_ignore.any? { |ignore| event.payload[:request].fullpath.starts_with? ignore }
+      return if Config.log_ignore.any? { |ignore| event.payload[:request].fullpath.starts_with? ignore }
 
       original_redirect_to event
     end
@@ -104,7 +104,7 @@ rack = proc do
 
     # Started GET "/" for 192.168.96.1 at 2021-12-27 20:17:28 +0000
     def started_request_message(request)
-      return if Reverser.log_ignore.any? { |ignore| request.filtered_path.starts_with? ignore }
+      return if Config.log_ignore.any? { |ignore| request.filtered_path.starts_with? ignore }
 
       original_started_request_message request
     end
@@ -117,7 +117,7 @@ end
 
 def silence(proc, on_load)
   ActiveSupport.on_load(on_load) do
-    proc.call if Reverser.silence_log?
+    proc.call if Config.silence_log?
   end
 end
 
