@@ -13,5 +13,7 @@ class CreateVariantsWorker
     return unless submission_file
 
     submission_file.generate_variants
+    submission_file.save
+    IqdbProxy.update_submission submission_file if submission_file.can_iqdb?
   end
 end

@@ -2,6 +2,8 @@
 module IqdbProxy
   class Error < RuntimeError; end
 
+  VALID_CONTENT_TYPES = ["image/png", "image/jpeg"].freeze
+
   module_function
 
   # Makes the actual request to the iqdb server
@@ -14,8 +16,8 @@ module IqdbProxy
   # Puts the passed submission_file into the iqdb server
   # This can both insert and update an submission
   def update_submission(submission_file)
-    variant = submission_file.variant(:thumb)
-    File.open(variant.service.path_for(variant.key)) do |f|
+    sample = submission_file.sample
+    File.open(sample.service.path_for(sample.key)) do |f|
       make_request "/images/#{submission_file.id}", :post, { file: f }
     end
   end
@@ -32,10 +34,11 @@ module IqdbProxy
 
   # Queries iqdb with the passed file
   # The file is thumbnailed first before being sent to iqdb
-  def query_file(image)
-    thumbnail = begin
+  def query_file(input)
+    thumbnail = Tempfile.new
+    begin
       # iqdb only supports searching for jpg. Thumbnails are always jpg
-      ImageProcessing::Vips.source(image).convert("jpg").resize_to_limit!(Reverser.thumbnail_size, Reverser.thumbnail_size)
+      VariantGenerator.image_thumb input.path, thumbnail, 150, height: 150, size: :force
     rescue Vips::Error
       raise Error, "Unsupported file"
     end
