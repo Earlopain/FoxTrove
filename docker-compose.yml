@@ -47,10 +47,13 @@ services:
     build:
       context: ./docker
       dockerfile: iqdb.Dockerfile
+    volumes:
+      - iqdb_data:/iqdb
 
 volumes:
   db_data:
   redis_data:
+  iqdb_data:
   build_assets:
   active_storage:
   node_modules:

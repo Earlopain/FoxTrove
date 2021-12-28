@@ -12,5 +12,4 @@ RUN apk --no-cache add gd sqlite-libs binutils
 
 COPY --from=builder /iqdb/build/release/src/iqdb /usr/local/bin/
 
-ENTRYPOINT ["iqdb"]
-CMD ["http", "0.0.0.0", "5588", "iqdb.db"]
+CMD ["iqdb", "http", "0.0.0.0", "5588", "/iqdb/data.db"]
