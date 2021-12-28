@@ -28,12 +28,6 @@ module Reverser
     config.load_defaults 7.0
     config.active_record.schema_format = :sql
 
-    if system("git rev-parse --show-toplevel", %i[out err] => File::NULL)
-      config.git_hash = `git rev-parse --short HEAD`.strip
-    else
-      config.git_hash = nil
-    end
-
     config.action_controller.action_on_unpermitted_parameters = :raise
 
     # Configuration for the application, engines, and railties goes here.

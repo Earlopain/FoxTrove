@@ -1,7 +1,7 @@
 <footer>
   Running <%= "#{Reverser.app_name}" %>
-  <% if Rails.application.config.git_hash %>
-    <%= link_to Rails.application.config.git_hash, "#{Reverser.git_url}/tree/#{Rails.application.config.git_hash}" %>
+  <% if Reverser.git_hash %>
+    <%= link_to Reverser.git_hash, "#{Reverser.git_url}/tree/#{Rails.application.config.git_hash}" %>
   <% end %>
   &ndash; <%= link_to "About", about_static_path %>
   &ndash; <%= link_to "Contact", contact_static_path %>
