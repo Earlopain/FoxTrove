@@ -350,7 +350,8 @@ CREATE TABLE public.submission_files (
     id bigint NOT NULL,
     artist_submission_id bigint NOT NULL,
     created_at timestamp(6) with time zone NOT NULL,
-    updated_at timestamp(6) with time zone NOT NULL
+    updated_at timestamp(6) with time zone NOT NULL,
+    direct_url text NOT NULL
 );
 
 
@@ -823,6 +824,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20211220080129'),
 ('20211222200616'),
 ('20211223151833'),
-('20211226145933');
+('20211226145933'),
+('20211228140124');
 
 

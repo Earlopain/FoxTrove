@@ -22,7 +22,7 @@ class CreateSubmissionWorker
       end
 
       file = scraper.download_file uri
-      submission_file = SubmissionFile.new(artist_submission: submission)
+      submission_file = SubmissionFile.new(artist_submission: submission, direct_url: url)
       submission_file.original.attach(io: file, filename: File.basename(uri.path))
       success = submission_file.save
       CreateVariantsWorker.perform_async submission_file.id if success
