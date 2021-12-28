@@ -49,7 +49,15 @@ module IqdbProxy
   def self.process_iqbd_result(json, score_cutoff = 80)
     raise Error, "Server returned an error: #{json['message']}" unless json.is_a?(Array)
 
-    json.filter! { |x| x["score"] >= score_cutoff }
-    json
+    json.filter! { |entry| entry["score"] >= score_cutoff }
+    submission_ids = json.pluck("post_id")
+    submissions = SubmissionFile.where(id: submission_ids).index_by(&:id)
+
+    json.map do |entry|
+      {
+        score: entry["score"],
+        submission: submissions[entry["post_id"]],
+      }
+    end
   end
 end

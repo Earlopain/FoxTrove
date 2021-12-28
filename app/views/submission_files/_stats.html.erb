@@ -2,6 +2,11 @@
 <% artist_submission = submission_file.artist_submission %>
 <% artist_url = artist_submission.artist_url %>
 <div class="submission-stats">
+  <% if similarity %>
+    <span>
+      Similarity: <%= similarity.round(2) %>
+    </span>
+  <% end %>
   <span>
     <%= "#{metadata[:width].to_i}x#{metadata[:height].to_i}" %>, 
     <%= number_to_human_size submission_file.original.byte_size %>

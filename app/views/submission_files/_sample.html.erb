@@ -1,4 +1,5 @@
-<%# Handle missing attachments %>
+<%# TODO: Handle missing attachments %>
+<% similarity ||= nil %>
 <div class="submission-sample">
   <% if submission_file.sample.content_type == "image/jpeg" %>
     <%= image_tag url_for(submission_file.sample), loading: "lazy", class: "submission-file" %>
@@ -7,5 +8,5 @@
   <% else %>
     Unhandled content_type <%= submission_file.sample.content_type %>
   <% end %>
-  <%= render "submission_files/stats", submission_file: submission_file %>
+  <%= render "submission_files/stats", submission_file: submission_file, similarity: similarity %>
 </div>

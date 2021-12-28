@@ -1,4 +1,6 @@
-Server Response:
+<h1>Similar Images Search</h1>
 <div>
-  <%= @results.inspect %>
+  <% @result.each do |entry| %>
+    <%= render "submission_files/sample", submission_file: entry[:submission], similarity: entry[:score] %>
+  <% end %>
 </div>

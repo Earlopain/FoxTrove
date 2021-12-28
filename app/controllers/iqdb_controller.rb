@@ -3,6 +3,6 @@ class IqdbController < ApplicationController
   end
 
   def search
-    @results = IqdbProxy.query_file params[:file]
+    @result = IqdbProxy.query_file params[:file]
   end
 end
