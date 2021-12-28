@@ -8,7 +8,7 @@
   </span>
   <span><%= time_ago artist_submission.created_at_on_site %></span>
   <span class="submission-links">
-      <%= link_to tag.span(class: artist_url.site.icon_class), artist_url.site.gallery_url(artist_url.identifier_on_site) %>
+      <%= site_icon artist_url, link_target: artist_url.site.gallery_url(artist_url.identifier_on_site), title: artist_url.identifier_on_site %>
     | <%= link_to "O", artist_url.site.submission_url(artist_submission), title: "Original Source" %>
     | <%= link_to "D", submission_file.direct_url, title: "Direct Link" %>
   </span>

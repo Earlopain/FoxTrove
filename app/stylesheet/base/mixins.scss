@@ -41,6 +41,10 @@ $icons: (
   @for $i from 0 through length($icons) - 1 {
     $icon: nth($icons, $i + 1);
 
+    .site-icon-text {
+      padding-left: 0.5rem;
+    }
+
     .site-icon-#{$icon} {
       vertical-align: middle;
       &::before {
