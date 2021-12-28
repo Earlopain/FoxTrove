@@ -10,7 +10,7 @@ module Reverser
     "https://github.com/Earlopain/reverser"
   end
 
-  # Controlls wether or not the logging should be intercepted
+  # Controls wether or not the logging should be intercepted
   def silence_log?
     true
   end
@@ -21,6 +21,7 @@ module Reverser
       "ActiveStorage::DiskController#show",
       "ActiveStorage::Blobs::RedirectController#show",
       "/rails/active_storage",
+      "/sidekiq",
     ]
   end
 
