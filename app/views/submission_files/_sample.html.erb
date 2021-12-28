@@ -1,8 +1,11 @@
 <%# Handle missing attachments %>
-<% if submission_file.sample.content_type == "image/jpeg" %>
-  <%= image_tag url_for(submission_file.sample), loading: "lazy" %>
-<% elsif submission_file.sample.content_type == "video/mp4" %>
-  <%= video_tag url_for(submission_file.sample) %>
-<% else %>
-  Unhandled content_type <%= submission_file.sample.content_type %>
-<% end %>
+<div class="submission-sample">
+  <% if submission_file.sample.content_type == "image/jpeg" %>
+    <%= image_tag url_for(submission_file.sample), loading: "lazy", class: "submission-file" %>
+  <% elsif submission_file.sample.content_type == "video/mp4" %>
+    <%= video_tag url_for(submission_file.sample), controls: true, class: "submission-file" %>
+  <% else %>
+    Unhandled content_type <%= submission_file.sample.content_type %>
+  <% end %>
+  <%= render "submission_files/stats", submission_file: submission_file %>
+</div>

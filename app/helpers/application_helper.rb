@@ -4,6 +4,6 @@ module ApplicationHelper
   end
 
   def time_ago(value)
-    tag.div value.to_formatted_s(:long), datetime: value.to_formatted_s(:iso8601), class: "time-ago"
+    tag.span value.to_formatted_s(:long), datetime: value.to_formatted_s(:iso8601), class: "time-ago"
   end
 end

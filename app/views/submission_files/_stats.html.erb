@@ -1,0 +1,10 @@
+<% metadata = submission_file.original.metadata %>
+<% artist_submission = submission_file.artist_submission %>
+<div class="submission-stats">
+  <span>
+    <%= "#{metadata[:width].to_i}x#{metadata[:height].to_i}" %>, 
+    <%= number_to_human_size submission_file.original.byte_size %>
+  </span>
+  <span><%= time_ago artist_submission.created_at_on_site %></span>
+  <%= link_to "Source", artist_submission.artist_url.site.submission_url(artist_submission) %>
+</div>

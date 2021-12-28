@@ -11,5 +11,7 @@ Links:
 </div>
 
 <% @recent_submissions.each do |submission| %>
-  <%= render "submission/files", submission: submission %>
+  <% submission.submission_files.each do |file| %>
+    <%= render "submission_files/sample", submission_file: file %>
+  <% end %>
 <% end %>

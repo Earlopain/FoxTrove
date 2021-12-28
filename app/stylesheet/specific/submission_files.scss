@@ -1,0 +1,15 @@
+.submission-sample {
+  display: inline-block;
+  width: 200px;
+  height: 200px;
+  text-align: center;
+
+  .submission-file {
+    max-width:100%;
+    max-height:100%;
+  }
+
+  .submission-stats {
+    display: grid;
+  }
+}

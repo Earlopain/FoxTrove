@@ -45,7 +45,7 @@ class ArtistsController < ApplicationController
 
   def show
     @artist = Artist.find(params[:id])
-    @recent_submissions = ArtistSubmission.includes(:artist_url).with_samples.where(artist_url: { artist: @artist }).order(created_at_on_site: :desc).limit(10)
+    @recent_submissions = ArtistSubmission.includes(:artist_url).with_files.where(artist_url: { artist: @artist }).order(created_at_on_site: :desc).limit(50)
     respond_with(@artist)
   end
 
