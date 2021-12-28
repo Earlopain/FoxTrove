@@ -12,4 +12,8 @@
   .submission-stats {
     display: grid;
   }
+
+  .submission-links {
+    @include site_icon(1rem)
+  }
 }

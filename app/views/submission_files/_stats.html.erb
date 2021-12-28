@@ -1,10 +1,15 @@
 <% metadata = submission_file.original.metadata %>
 <% artist_submission = submission_file.artist_submission %>
+<% artist_url = artist_submission.artist_url %>
 <div class="submission-stats">
   <span>
     <%= "#{metadata[:width].to_i}x#{metadata[:height].to_i}" %>, 
     <%= number_to_human_size submission_file.original.byte_size %>
   </span>
   <span><%= time_ago artist_submission.created_at_on_site %></span>
-  <%= link_to "Source", artist_submission.artist_url.site.submission_url(artist_submission) %>
+  <span class="submission-links">
+      <%= link_to tag.span(class: artist_url.site.icon_class), artist_url.site.gallery_url(artist_url.identifier_on_site) %>
+    | <%= link_to "O", artist_url.site.submission_url(artist_submission), title: "Original Source" %>
+    | <%= link_to "D", submission_file.direct_url, title: "Direct Link" %>
+  </span>
 </div>
