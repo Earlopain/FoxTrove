@@ -16,6 +16,12 @@ module Sites
       end.first
     end
 
+    def self.for_domain(domain)
+      ALL.lazy.filter do |definition|
+        definition.handles_domain? domain
+      end.first
+    end
+
     class IdentifierProcessor
       def self.match(name)
         return /^(https?:\/\/)?(www\.)?/ if name == "prefix"
@@ -114,7 +120,9 @@ module Sites
         "pixiv.net/member.php?id={site_artist_identifier}/",
       ],
       username_identifier_regex: /[0-9]{1,8}/,
-      submission_template: "https://www.pixiv.net/artworks/{site_submission_identifier}/"
+      submission_template: "https://www.pixiv.net/artworks/{site_submission_identifier}/",
+      image_domains: ["pximg.net"],
+      download_headers: { "Referer" => "https://www.pixiv.net" }
     )
 
     WEASYL = SimpleDefinition.new(

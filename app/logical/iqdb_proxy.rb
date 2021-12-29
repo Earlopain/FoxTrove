@@ -28,13 +28,28 @@ module IqdbProxy
   end
 
   # Queries iqdb with the passed url
-  def query_url(_image_url)
-    raise Error, "Not implemented yet"
+  def query_url(url)
+    begin
+      uri = Addressable::URI.parse url
+    rescue Addressable::URI::InvalidURIError
+      raise Error, "'#{url}' URL not valid"
+    end
+    raise Error, "'#{uri}' is not a valid url" if uri.host.blank? || !uri.scheme.in?(%w[http https])
+
+    file = Tempfile.new(binmode: true)
+    response = Sites.download_file file, uri
+
+    raise Error, "Site responded with status code #{response.code}" if response.code != 200
+
+    query_file(file)
   end
 
   # Queries iqdb with the passed file
   # The file is thumbnailed first before being sent to iqdb
   def query_file(input)
+    mime_type = Marcel::MimeType.for input
+    raise Error, "Unsupported file of type #{mime_type}" if VALID_CONTENT_TYPES.exclude? mime_type
+
     thumbnail = Tempfile.new
     begin
       # iqdb only supports searching for jpg. Thumbnails are always jpg

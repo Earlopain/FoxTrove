@@ -55,15 +55,6 @@ module Scraper
       end
     end
 
-    def download_file(url)
-      file = Tempfile.new(binmode: true)
-      HTTParty.get(url) do |chunk|
-        file.write(chunk)
-      end
-      file.rewind
-      file
-    end
-
     private
 
     def make_request(search, cursor)

@@ -12,7 +12,7 @@ class CreateSubmissionWorker
     submission = ArtistSubmission.find_by id: submission_id
     return unless submission
 
-    scraper = Sites::Definitions.from_enum(site_enum).scraper.new
+    definition = Sites::Definitions.from_enum(site_enum)
     urls.each do |url|
       begin
         uri = Addressable::URI.parse url
@@ -20,8 +20,9 @@ class CreateSubmissionWorker
         logger.info "Invalid url for submission_id #{submission_id}: #{url}"
         next
       end
-
-      file = scraper.download_file uri
+      file = Tempfile.new(binmode: true)
+      # TODO: Error handling
+      Sites.download_file file, uri, definition
       submission_file = SubmissionFile.new(artist_submission: submission, direct_url: url)
       submission_file.original.attach(io: file, filename: File.basename(uri.path))
       success = submission_file.save

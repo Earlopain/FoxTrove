@@ -1,10 +1,11 @@
 module Sites
   class SimpleDefinition
-    attr_reader :enum_value, :display_name, :homepage
+    attr_reader :enum_value, :display_name, :homepage, :image_domains, :download_headers
 
     # FIXME: Remove submission_template once all scrappers are converted
     def initialize(enum_value:, display_name:, homepage:, gallery_templates:,
-                   username_identifier_regex:, submission_template: "")
+                   username_identifier_regex:, submission_template: "",
+                   image_domains: [], download_headers: {})
       @enum_value = enum_value
       @display_name = display_name
       @homepage = homepage
@@ -12,6 +13,9 @@ module Sites
       @gallery_templates = gallery_templates.map { |t| Addressable::Template.new("{prefix}#{t}{/remaining}{?remaining}{#remaining}") }
       @can_match_if_contains = gallery_templates.map { |t| t.gsub(/{[^)]*}/, "") }
       @username_identifier_regex = Regexp.new("^#{username_identifier_regex}$")
+      # Sites like pixiv need headers set in order to download images
+      @image_domains = image_domains
+      @download_headers = download_headers
     end
 
     def match_for(uri)
@@ -27,6 +31,11 @@ module Sites
         identifier_valid: @username_identifier_regex.match?(extracted["site_artist_identifier"]),
         site: self,
       }
+    end
+
+    # Returns true when the site needs special headers to download from
+    def handles_domain?(domain)
+      @image_domains.include? domain
     end
 
     def icon_class
