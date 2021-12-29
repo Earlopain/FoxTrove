@@ -22,9 +22,21 @@ module Config
     end
   end
 
-  def self.method_missing(method, *args)
-    return Static.send method, *args if Static.respond_to? method
+  def self.method_missing(method)
+    if custom_config.keys.include? method.to_s
+      custom_config[method.to_s]
+    elsif Static.respond_to? method
+      Static.send method
+    else
+      RuntimeConfig.send method
+    end
+  end
 
-    RuntimeConfig.send method, *args
+  def self.custom_config
+    @custom_config ||= if ENV.keys.include? "REVERSER_CUSTOM_CONFIG_PATH"
+                         YAML.load_file(ENV["REVERSER_CUSTOM_CONFIG_PATH"])
+                       else
+                         {}
+                       end
   end
 end
