@@ -125,4 +125,4 @@ silence active_storage, :active_storage_record
 silence action_controller, :action_controller
 silence active_record, :active_record
 silence action_view, :action_view
-rack.call
+rack.call if Config.silence_log?
