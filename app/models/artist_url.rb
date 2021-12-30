@@ -12,6 +12,10 @@ class ArtistUrl < ApplicationRecord
     @site ||= Sites.from_enum(site_type)
   end
 
+  def scraper
+    site.scraper.new self
+  end
+
   def enqueue_scraping
     ScrapeArtistUrlWorker.perform_async id
   end

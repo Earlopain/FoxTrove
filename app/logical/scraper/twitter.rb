@@ -9,8 +9,9 @@ module Scraper
     REQUEST_RETRIES = 5
     DATETIME_FORMAT = "%a %b %d %H:%M:%S %z %Y".freeze
 
-    def initialize(identifier:)
-      @identifier = identifier
+    def initialize(artist_url)
+      @identifier = artist_url.identifier_on_site
+      @last_scraped_submission_identifier = artist_url.last_scraped_submission_identifier
       @has_more = true
     end
 
