@@ -10,23 +10,10 @@ class ScrapeArtistUrlWorker
 
     scraper = artist_url.site.scraper.new identifier: artist_url.identifier_on_site
     scraper.init
-    scraper.scrape!.each do |submission|
-      db_submission = ArtistSubmission.find_by(
-        artist_url: artist_url,
-        identifier_on_site: submission.identifier
-      )
-      # There are already files downloaded, no need to do that again
-      next if db_submission&.submission_files&.count.to_i.positive?
-
-      # No submission was created yet
-      db_submission ||= ArtistSubmission.create!(
-        artist_url: artist_url,
-        identifier_on_site: submission.identifier,
-        title_on_site: submission.title,
-        description_on_site: submission.description,
-        created_at_on_site: submission.created_at
-      )
-      CreateSubmissionWorker.perform_async db_submission.id, submission.files, artist_url.site.enum_value
+    while scraper.more?
+      scraper.fetch_next_batch.each do |submission|
+        submission.save artist_url
+      end
     end
   end
 end

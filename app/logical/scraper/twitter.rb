@@ -11,6 +11,7 @@ module Scraper
 
     def initialize(identifier:)
       @identifier = identifier
+      @has_more = true
     end
 
     def init
@@ -23,39 +24,39 @@ module Scraper
       @all_tweets_ids = []
     end
 
-    def scrape!
-      Enumerator.new do |y|
-        while true
-          response = make_request(@search, @cursor)
-          # FIXME: Might be nil
-          tweets = response.dig("globalObjects", "tweets")
-          new_tweet_ids = relevant_tweet_ids(tweets).difference(@all_tweets_ids)
-          @all_tweets_ids += new_tweet_ids
+    def more?
+      @has_more
+    end
 
-          new_tweet_ids.each { |id| y << to_submission(tweets[id]) }
+    def fetch_next_batch
+      response = make_request(@search, @cursor)
+      # FIXME: Might be nil
+      tweets = response.dig("globalObjects", "tweets")
+      new_tweet_ids = relevant_tweet_ids(tweets).difference(@all_tweets_ids)
+      @all_tweets_ids += new_tweet_ids
 
-          # Cursors seem to only go that far and need to be refreshed every so often
-          # Getting 0 tweets may either mean that this has happended, but it might
-          # also be that there simply aren't any more resuls.
-          # FIXME: On huge profiles cursors seem to get stuck. Refreshing returns
-          # no tweets and using the new cursor from that also returns nothing.
-          # What does work though is searching with `until:2030-01-01 since:2000-01-01`
-          # and bypassing the timerange it gets stuck on. Good luck figuring
-          # the gap out and being certain that the end wasn't simply reached.
-          if tweets.count.zero?
-            # Two times in a row no new tweets were found, even though the
-            # cursor was reset
-            break if @find_new_tweets_before_empty_response
+      # Cursors seem to only go that far and need to be refreshed every so often
+      # Getting 0 tweets may either mean that this has happended, but it might
+      # also be that there simply aren't any more resuls.
+      # FIXME: On huge profiles cursors seem to get stuck. Refreshing returns
+      # no tweets and using the new cursor from that also returns nothing.
+      # What does work though is searching with `until:2030-01-01 since:2000-01-01`
+      # and bypassing the timerange it gets stuck on. Good luck figuring
+      # the gap out and being certain that the end wasn't simply reached.
+      if tweets.count.zero?
+        # Two times in a row no new tweets were found, even though the
+        # cursor was reset
+        @has_more = false if @find_new_tweets_before_empty_response
 
-            @find_new_tweets_before_empty_response = true
-            @cursor = extract_cursor response, "top"
-          else
-            @find_new_tweets_before_empty_response = false if new_tweet_ids.present?
-            @cursor = extract_cursor response, "bottom"
-          end
-          raise ApiError, "Failed to extract cursor: #{url}" if @cursor.nil?
-        end
+        @find_new_tweets_before_empty_response = true
+        @cursor = extract_cursor response, "top"
+      else
+        @find_new_tweets_before_empty_response = false if new_tweet_ids.present?
+        @cursor = extract_cursor response, "bottom"
       end
+      raise ApiError, "Failed to extract cursor: #{url}" if @cursor.nil?
+
+      new_tweet_ids.map { |id| to_submission(tweets[id]) }
     end
 
     private
