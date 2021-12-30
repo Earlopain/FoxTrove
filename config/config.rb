@@ -1,42 +1,26 @@
 module Config
-  module Static
-    module_function
+  CUSTOM_CONFIG_ENV_KEY = "REVERSER_CUSTOM_CONFIG_PATH".freeze
 
-    # Controls wether or not the logging should be intercepted
-    def silence_log?
-      true
-    end
+  def self.default_config
+    @default_config ||= YAML.load_file "config.yml"
+  end
 
-    # Matches either links or controller actions
-    def log_ignore
-      [
-        "ActiveStorage::DiskController#show",
-        "ActiveStorage::Blobs::RedirectController#show",
-        "/rails/active_storage",
-        "/sidekiq",
-      ]
-    end
+  def self.custom_config
+    @custom_config ||= ENV[CUSTOM_CONFIG_ENV_KEY] ? YAML.load_file(ENV[CUSTOM_CONFIG_ENV_KEY]) : {}
+  end
 
-    def redis_url
-      "redis://redis"
-    end
+  def self.force_reload
+    @default_config = nil
+    @custom_config = nil
   end
 
   def self.method_missing(method)
     if custom_config.keys.include? method.to_s
       custom_config[method.to_s]
-    elsif Static.respond_to? method
-      Static.send method
+    elsif default_config.keys.include? method.to_s
+      default_config[method.to_s]
     else
-      RuntimeConfig.send method
+      raise StandardError, "Unknown config #{method}"
     end
-  end
-
-  def self.custom_config
-    @custom_config ||= if ENV.keys.include? "REVERSER_CUSTOM_CONFIG_PATH"
-                         YAML.load_file(ENV["REVERSER_CUSTOM_CONFIG_PATH"])
-                       else
-                         {}
-                       end
   end
 end

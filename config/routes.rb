@@ -19,5 +19,9 @@ Rails.application.routes.draw do
       get :home
     end
   end
+  resource :debug, controller: "debug", only: [] do
+    get :index
+    post :reload_config
+  end
   root to: "static#home"
 end
