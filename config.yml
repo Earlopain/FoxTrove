@@ -1,7 +1,5 @@
 # Provide a overwrite file with REVERSER_CUSTOM_CONFIG_PATH
 app_name: "Reverser"
-# TODO: Move to GitHelper
-git_url: "https://github.com/Earlopain/reverser"
 # How large should the generated thumbnails be
 # This is a bounding box
 thumbnail_size: 300
