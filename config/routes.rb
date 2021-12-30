@@ -22,6 +22,9 @@ Rails.application.routes.draw do
   resource :debug, controller: "debug", only: [] do
     get :index
     post :reload_config
+    post :generate_spritemap
+    post :seed_db
+    post :iqdb_readd
   end
   root to: "static#home"
 end

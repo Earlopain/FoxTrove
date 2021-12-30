@@ -1,3 +1,15 @@
 <%= form_with url: reload_config_debug_path, method: :post do |form| %>
   <%= form.submit "Reload Config" %>
 <% end %>
+
+<%= form_with url: generate_spritemap_debug_path, method: :post do |form| %>
+  <%= form.submit "Generate Spritemap" %>
+<% end %>
+
+<%= form_with url: seed_db_debug_path, method: :post do |form| %>
+  <%= form.submit "Seed DB" %>
+<% end %>
+
+<%= form_with url: iqdb_readd_debug_path, method: :post do |form| %>
+  <%= form.submit "IQDB Readd" %>
+<% end %>
