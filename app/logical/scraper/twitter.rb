@@ -11,7 +11,7 @@ module Scraper
 
     def initialize(artist_url)
       @identifier = artist_url.identifier_on_site
-      @last_scraped_submission_identifier = artist_url.last_scraped_submission_identifier
+      @stop_marker = artist_url.last_scraped_submission_identifier.to_i
       @has_more = true
     end
 
@@ -29,12 +29,17 @@ module Scraper
       @has_more
     end
 
+    def last_scraped_submission_identifier
+      @all_tweets_ids.map(&:to_i).max
+    end
+
     def fetch_next_batch
       response = make_request(@search, @cursor)
       # FIXME: Might be nil
       tweets = response.dig("globalObjects", "tweets")
       new_tweet_ids = relevant_tweet_ids(tweets).difference(@all_tweets_ids)
       @all_tweets_ids += new_tweet_ids
+      @has_more = new_tweet_ids.map(&:to_i).none? { |id| id < @stop_marker }
 
       # Cursors seem to only go that far and need to be refreshed every so often
       # Getting 0 tweets may either mean that this has happended, but it might
