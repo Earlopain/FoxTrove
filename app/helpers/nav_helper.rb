@@ -1,10 +1,10 @@
 module NavHelper
-  def nav_link_to(text, url)
-    render "application/primary_link", text: text, url: url
+  def nav_link_to(text, url, **options)
+    render "application/primary_link", text: text, url: url, options: options
   end
 
-  def subnav_link_to(text, url)
-    render "application/secondary_link", text: text, url: url
+  def subnav_link_to(text, url, **options)
+    render "application/secondary_link", text: text, url: url, options: options
   end
 
   def nav_link_class(url)
