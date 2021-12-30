@@ -32,10 +32,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@rails/ujs@npm:^7.0.0":
+  version: 7.0.0
+  resolution: "@rails/ujs@npm:7.0.0"
+  checksum: 5091823fcd94f9a0789e0dcc694a69c6953d47fc5da2fc9f73e9d4a44fe65e3b5a5a09a7cb9e2cd088b9f079aa3b4b17bd4c9e38515a2822c83c05eda250d846
+  languageName: node
+  linkType: hard
+
 "@tootallnate/once@npm:1":
   version: 1.1.2
   resolution: "@tootallnate/once@npm:1.1.2"
   checksum: e1fb1bbbc12089a0cb9433dc290f97bddd062deadb6178ce9bcb93bb7c1aecde5e60184bc7065aec42fe1663622a213493c48bbd4972d931aae48315f18e1be9
+  languageName: node
+  linkType: hard
+
+"@types/rails__ujs@npm:^6.0.1":
+  version: 6.0.1
+  resolution: "@types/rails__ujs@npm:6.0.1"
+  checksum: 8879fe563170719eb54638c31e818e6c8129ccac3cfda68a7cf77a673b09cda2f546a6dd5635eaab4a542b5022af02142969aa3faf6fceba60645c3aae3af005
   languageName: node
   linkType: hard
 
@@ -983,6 +997,8 @@ fsevents@~2.3.2:
   version: 0.0.0-use.local
   resolution: "reverser@workspace:."
   dependencies:
+    "@rails/ujs": ^7.0.0
+    "@types/rails__ujs": ^6.0.1
     esbuild: ^0.14.3
     sass: ^1.44.0
     typescript: ^4.5.4
