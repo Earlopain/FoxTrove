@@ -10,7 +10,9 @@ Rails.application.routes.draw do
       post :search
     end
   end
-  resources :artists, only: %i[index new create show]
+  resources :artists, only: %i[index new create show] do
+    post :enqueue_all_urls
+  end
   resource :session, only: %i[create destroy]
   resource :static, controller: "static", only: [] do
     collection do
