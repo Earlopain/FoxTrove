@@ -17,3 +17,5 @@ log_ignore:
 # Controls wether or not the logging should be intercepted
 silence_log?: true
 redis_url: "redis://redis"
+memcached_servers:
+  - "memcached:11211"

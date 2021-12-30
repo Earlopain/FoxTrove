@@ -43,6 +43,9 @@ services:
     volumes:
       - redis_data:/data
 
+  memcached:
+    image: memcached:alpine
+
   iqdb:
     build:
       context: ./docker

@@ -15,6 +15,7 @@ gem "responders"
 
 gem "sidekiq"
 gem "sidekiq-unique-jobs"
+gem "dalli"
 
 group :development, :test do
   gem "rspec-rails", "~> 5.0.0"

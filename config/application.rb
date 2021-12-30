@@ -30,6 +30,9 @@ module Reverser
 
     config.action_controller.action_on_unpermitted_parameters = :raise
 
+    config.cache_store = :mem_cache_store, Config.memcached_servers, { namespace: Rails.env }
+    config.action_controller.cache_store = config.cache_store
+
     # Configuration for the application, engines, and railties goes here.
     #
     # These settings can be overridden in specific environments using the files
