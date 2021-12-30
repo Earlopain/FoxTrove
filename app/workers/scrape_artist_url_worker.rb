@@ -8,8 +8,9 @@ class ScrapeArtistUrlWorker
     return unless artist_url
     return unless artist_url.site.class == Sites::ScraperDefinition
 
-    scraper = artist_url.site.scraper.new
-    scraper.scrape!(identifier: artist_url.identifier_on_site).each do |submission|
+    scraper = artist_url.site.scraper.new identifier: artist_url.identifier_on_site
+    scraper.init
+    scraper.scrape!.each do |submission|
       db_submission = ArtistSubmission.find_by(
         artist_url: artist_url,
         identifier_on_site: submission.identifier

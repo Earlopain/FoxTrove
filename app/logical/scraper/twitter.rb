@@ -9,25 +9,28 @@ module Scraper
     REQUEST_RETRIES = 5
     DATETIME_FORMAT = "%a %b %d %H:%M:%S %z %Y".freeze
 
-    def initialize
-      @guest_token = nil
-      @user_agent = random_user_agent
+    def initialize(identifier:)
+      @identifier = identifier
     end
 
-    def scrape!(identifier:)
+    def init
       # `filter:images` can't be used since it won't return sensitive media for guest accounts
-      search = "from:#{identifier} -filter:retweets"
-      @guest_token = fetch_guest_token search
-      cursor = ""
-      all_tweets_ids = []
-      find_new_tweets_before_empty_response = false
+      @search = "from:#{@identifier} -filter:retweets"
+      @user_agent = random_user_agent
+      @guest_token = fetch_guest_token(@search)
+      @cursor = ""
+      @find_new_tweets_before_empty_response = false
+      @all_tweets_ids = []
+    end
+
+    def scrape!
       Enumerator.new do |y|
         while true
-          response = make_request search, cursor
+          response = make_request(@search, @cursor)
           # FIXME: Might be nil
           tweets = response.dig("globalObjects", "tweets")
-          new_tweet_ids = relevant_tweet_ids(tweets).difference(all_tweets_ids)
-          all_tweets_ids += new_tweet_ids
+          new_tweet_ids = relevant_tweet_ids(tweets).difference(@all_tweets_ids)
+          @all_tweets_ids += new_tweet_ids
 
           new_tweet_ids.each { |id| y << to_submission(tweets[id]) }
 
@@ -42,15 +45,15 @@ module Scraper
           if tweets.count.zero?
             # Two times in a row no new tweets were found, even though the
             # cursor was reset
-            break if find_new_tweets_before_empty_response
+            break if @find_new_tweets_before_empty_response
 
-            find_new_tweets_before_empty_response = true
-            cursor = extract_cursor response, "top"
+            @find_new_tweets_before_empty_response = true
+            @cursor = extract_cursor response, "top"
           else
-            find_new_tweets_before_empty_response = false if new_tweet_ids.present?
-            cursor = extract_cursor response, "bottom"
+            @find_new_tweets_before_empty_response = false if new_tweet_ids.present?
+            @cursor = extract_cursor response, "bottom"
           end
-          raise ApiError, "Failed to extract cursor: #{url}" if cursor.nil?
+          raise ApiError, "Failed to extract cursor: #{url}" if @cursor.nil?
         end
       end
     end
