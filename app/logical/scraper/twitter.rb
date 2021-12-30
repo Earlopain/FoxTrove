@@ -19,7 +19,9 @@ module Scraper
       # `filter:images` can't be used since it won't return sensitive media for guest accounts
       @search = "from:#{@identifier} -filter:retweets"
       @user_agent = random_user_agent
-      @guest_token = fetch_guest_token(@search)
+      @guest_token = Cache.fetch("twitter-guest-token", 1.hour) do
+        fetch_guest_token(@search)
+      end
       @cursor = ""
       @find_new_tweets_before_empty_response = false
       @all_tweets_ids = []
@@ -165,6 +167,7 @@ module Scraper
       while guest_token.nil? && tries < REQUEST_RETRIES
         response = HTTParty.get(referer_url(search), headers: { "User-Agent": @user_agent })
         guest_token = response.body.scan(GUEST_TOKEN_REGEX).first&.first
+        sleep 5
         tries += 1
       end
       return guest_token unless guest_token.nil?
