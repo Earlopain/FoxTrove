@@ -12,7 +12,7 @@ class CreateSubmissionWorker
     submission = ArtistSubmission.find_by id: submission_id
     return unless submission
 
-    definition = Sites::Definitions.from_enum(site_enum)
+    definition = Sites.from_enum(site_enum)
     urls.each do |url|
       begin
         uri = Addressable::URI.parse url

@@ -9,7 +9,7 @@ class ArtistUrl < ApplicationRecord
   after_save :enqueue_scraping
 
   def site
-    @site ||= Sites::Definitions.from_enum(site_type)
+    @site ||= Sites.from_enum(site_type)
   end
 
   def enqueue_scraping

@@ -1,28 +1,22 @@
 module Sites
   class SimpleDefinition
-    attr_reader :enum_value, :display_name, :homepage, :image_domains, :download_headers
+    delegate :enum_value, :display_name, :homepage, to: :@definition
+    attr_accessor :image_domains, :download_headers
 
-    # FIXME: Remove submission_template once all scrappers are converted
-    def initialize(enum_value:, display_name:, homepage:, gallery_templates:,
-                   username_identifier_regex:, submission_template: "",
-                   image_domains: [], download_headers: {})
-      @enum_value = enum_value
-      @display_name = display_name
-      @homepage = homepage
-      @gallery_template_string = gallery_templates.first
-      @gallery_templates = gallery_templates.map { |t| Addressable::Template.new("{prefix}#{t}{/remaining}{?remaining}{#remaining}") }
-      @can_match_if_contains = gallery_templates.map { |t| t.gsub(/{[^)]*}/, "") }
-      @username_identifier_regex = Regexp.new("^#{username_identifier_regex}$")
-      # Sites like pixiv need headers set in order to download images
-      @image_domains = image_domains
-      @download_headers = download_headers
+    def initialize(definition)
+      @definition = definition
+      @image_domains = definition.respond_to?(:image_domains) ? Array.wrap(definition.image_domains) : []
+      @download_headers = definition.respond_to?(:download_headers) ? definition.download_headers : {}
+      @gallery_templates = Array.wrap(definition.gallery_templates).map { |t| Addressable::Template.new("{prefix}#{t}{/remaining}{?remaining}{#remaining}") }
+      @can_match_if_contains = Array.wrap(definition.gallery_templates).map { |t| t.gsub(/{[^)]*}/, "") }
+      @username_identifier_regex = Regexp.new("^#{definition.username_identifier_regex}$")
     end
 
     def match_for(uri)
       extracted = @gallery_templates.lazy.filter_map do |template|
         next if @can_match_if_contains.filter { |a| uri.to_s.include? a }.none?
 
-        template.extract(uri, Definitions::IdentifierProcessor)
+        template.extract(uri, IdentifierProcessor)
       end.first
       return unless extracted
 
@@ -43,8 +37,7 @@ module Sites
     end
 
     def gallery_url(identifier)
-      Addressable::Template.new("https://#{@gallery_template_string}")
-                           .expand(site_artist_identifier: identifier).to_s
+      "https://#{@gallery_templates.first.expand(site_artist_identifier: identifier)}"
     end
   end
 end

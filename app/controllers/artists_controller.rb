@@ -10,7 +10,7 @@ class ArtistsController < ApplicationController
     @artist = Artist.new(artist_params)
     @artist.valid?
     @artist.url_string.lines.map(&:strip).reject(&:blank?).each do |url|
-      result = Sites::Definitions.from_url url
+      result = Sites.from_url url
 
       if !result
         @artist.errors.add(:url, " #{url} is not a supported url") unless result
