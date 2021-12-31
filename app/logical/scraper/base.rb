@@ -24,11 +24,6 @@ module Scraper
       raise NotImplementedError
     end
 
-    # Identifier to abort scraping instead of going through the whole list again
-    def last_scraped_submission_identifier
-      raise NotImplementedError
-    end
-
     # Make a network request to the service and get an array of entries.
     # Can also return an emptry arrray, scraping is only stopped once end_reached
     # is called.

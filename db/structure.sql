@@ -239,7 +239,6 @@ CREATE TABLE public.artist_urls (
     about_on_site text NOT NULL,
     scraping_disabled boolean DEFAULT false NOT NULL,
     last_scraped_at timestamp(6) with time zone,
-    last_scraped_submission_identifier text,
     sidekiq_job_id text,
     created_at timestamp(6) with time zone NOT NULL,
     updated_at timestamp(6) with time zone NOT NULL,
@@ -827,6 +826,5 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20211223151833'),
 ('20211226145933'),
 ('20211228140124'),
-('20211231152643');
-
-
+('20211231152643'),
+('20211231164336');

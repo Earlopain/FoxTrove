@@ -17,7 +17,6 @@ class ScrapeArtistUrlWorker
         scraper.to_submission(api_submission).save artist_url
       end
     end
-    artist_url.last_scraped_submission_identifier = scraper.last_scraped_submission_identifier
     artist_url.last_scraped_at = Time.current
     artist_url.save
   end

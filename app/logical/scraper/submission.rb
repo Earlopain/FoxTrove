@@ -11,8 +11,6 @@ module Scraper
         artist_url: artist_url,
         identifier_on_site: identifier
       )
-      # There are already files downloaded, no need to do that again
-      return if db_submission&.submission_files&.count.to_i > 0
 
       # No submission was created yet
       db_submission ||= ArtistSubmission.create!(
@@ -22,7 +20,11 @@ module Scraper
         description_on_site: description,
         created_at_on_site: created_at
       )
-      CreateSubmissionWorker.perform_async db_submission.id, files, artist_url.site.enum_value
+      last_scraped = artist_url.last_scraped_at
+      still_to_download = last_scraped ? files.reject { |entry| entry[:created_at].before? last_scraped } : files
+      return if still_to_download.count == 0
+
+      CreateSubmissionWorker.perform_async db_submission.id, still_to_download, artist_url.site.enum_value
     end
   end
 end

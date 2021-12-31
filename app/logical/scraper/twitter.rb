@@ -25,17 +25,13 @@ module Scraper
       true
     end
 
-    def last_scraped_submission_identifier
-      @all_tweets_ids.map(&:to_i).max
-    end
-
     def fetch_next_batch
       response = make_request(@search, @cursor)
       # FIXME: Might be nil
       tweets = response.dig("globalObjects", "tweets")
       new_tweet_ids = relevant_tweet_ids(tweets).difference(@all_tweets_ids)
       @all_tweets_ids += new_tweet_ids
-      end_reached if new_tweet_ids.map(&:to_i).any? { |id| id < @stop_marker.to_i }
+      end_reached if !@stop_marker.nil? && new_tweet_ids.any? { |tweet_id| tweet_timestamp(tweets[tweet_id]).before? @stop_marker }
 
       # Cursors seem to only go that far and need to be refreshed every so often
       # Getting 0 tweets may either mean that this has happended, but it might
@@ -95,7 +91,7 @@ module Scraper
               else
                 raise ApiError, "Unknown media type #{media['type']}"
               end
-        created_at = DateTime.strptime(tweet["created_at"], DATETIME_FORMAT)
+        created_at = tweet_timestamp(tweet)
         s.created_at = created_at
         s.files.push({
           url: url,
@@ -106,6 +102,10 @@ module Scraper
     end
 
     private
+
+    def tweet_timestamp(tweet)
+      DateTime.strptime(tweet["created_at"], DATETIME_FORMAT)
+    end
 
     def make_request(search, cursor)
       url = "#{REQUEST_URL}?#{query_string(search, cursor)}"

@@ -13,6 +13,10 @@ log_ignore:
   - "/rails/active_storage"
   - "/sidekiq"
 
+# Credentials, overwrite in custom file
+inkbunny_user:
+inkbunny_pass:
+
 # These settings require a server restart
 # Controls wether or not the logging should be intercepted
 silence_log?: true
