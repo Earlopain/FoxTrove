@@ -14,7 +14,7 @@
   <span><%= time_ago artist_submission.created_at_on_site %></span>
   <span class="submission-links">
       <%= site_icon artist_url, link_target: gallery_url(artist_url), title: artist_url.identifier_on_site %>
-    | <%= link_to "O", submission_url(artist_submission), title: "Original Source" %>
-    | <%= link_to "D", submission_file.direct_url, title: "Direct Link" %>
+    | <%= link_to_external "S", submission_url(artist_submission), title: "Original Source" %>
+    | <%= link_to_external "E", submission_file.direct_url, title: "Direct Link Offsite" %>
   </span>
 </div>

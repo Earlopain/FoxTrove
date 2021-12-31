@@ -15,4 +15,8 @@ module ApplicationHelper
 
     link_to tag.span(icon), link_target, options
   end
+
+  def link_to_external(text, url, **options)
+    link_to text, url, **options, rel: "nofollow noopener noreferrer"
+  end
 end

@@ -1,6 +1,6 @@
 <div class="artist-submission">
   <div class="submission-link">
-    <%= link_to submission_url(submission), submission_url(submission) %>  
+    <%= link_to_external submission_url(submission), submission_url(submission) %>  
   </div>
   <div class="submission-time">
     <%= time_ago submission.created_at_on_site %>
