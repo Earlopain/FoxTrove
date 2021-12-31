@@ -13,6 +13,12 @@ class ApplicationController < ActionController::Base
     Time.use_zone(CurrentUser.time_zone) { yield }
   end
 
+  User::Levels.ordered.each do |level|
+    define_method("#{level.downcase}_only") do
+      raise StandardError, "Permission Denied!" unless CurrentUser.user.send("is_#{level}?")
+    end
+  end
+
   EXCEPTION_TYPES = {
     ActionController::BadRequest => 400,
     ActionController::ParameterMissing => 400,

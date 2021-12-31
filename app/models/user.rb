@@ -1,8 +1,13 @@
 class User < ApplicationRecord
   module Levels
+    ANON = "anon".freeze
     UNACTIVATED = "unactivated".freeze
     MEMBER = "member".freeze
     ADMIN = "admin".freeze
+
+    def self.ordered
+      [ANON, UNACTIVATED, MEMBER, ADMIN]
+    end
   end
 
   module Permissions
@@ -26,9 +31,16 @@ class User < ApplicationRecord
 
   def self.anon
     user = User.new
-    user.level = Levels::UNACTIVATED
+    user.level = Levels::ANON
     user.name = "anon"
     user.freeze.readonly!
     user
+  end
+
+  Levels.ordered.each.with_index do |level_to_check, index|
+    allowed = Levels.ordered[index..-1]
+    define_method("is_#{level_to_check.downcase}?") do
+      allowed.include? level
+    end
   end
 end

@@ -1,5 +1,7 @@
 class ArtistsController < ApplicationController
   respond_to :html
+  before_action :member_only, only: %i[create new]
+  before_action :admin_only, only: :enqueue_all_urls
 
   def new
     @artist = Artist.new(artist_params)
