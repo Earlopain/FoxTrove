@@ -45,7 +45,7 @@ module Scraper
       # What does work though is searching with `until:2030-01-01 since:2000-01-01`
       # and bypassing the timerange it gets stuck on. Good luck figuring
       # the gap out and being certain that the end wasn't simply reached.
-      if tweets.count.zero?
+      if tweets.count == 0
         # Two times in a row no new tweets were found, even though the
         # cursor was reset
         end_reached if @find_new_tweets_before_empty_response
@@ -163,14 +163,14 @@ module Scraper
       guest_token = nil
       tries = 0
       while guest_token.nil? && tries < REQUEST_RETRIES
+        sleep 5 if tries > 0
         response = HTTParty.get(referer_url(search), headers: { "User-Agent": @user_agent })
         guest_token = response.body.scan(GUEST_TOKEN_REGEX).first&.first
-        sleep 5
         tries += 1
       end
-      return guest_token unless guest_token.nil?
+      raise ApiError, "Failed to get guest_token" unless guest_token
 
-      raise ApiError, "Failed to get guest_token" if guest_token.nil?
+      guest_token
     end
 
     def query_string(search, cursor)

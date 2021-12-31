@@ -12,7 +12,7 @@ module Scraper
         identifier_on_site: identifier
       )
       # There are already files downloaded, no need to do that again
-      return if db_submission&.submission_files&.count.to_i.positive?
+      return if db_submission&.submission_files&.count.to_i > 0
 
       # No submission was created yet
       db_submission ||= ArtistSubmission.create!(
