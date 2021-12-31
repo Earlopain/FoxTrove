@@ -351,7 +351,8 @@ CREATE TABLE public.submission_files (
     created_at timestamp(6) with time zone NOT NULL,
     updated_at timestamp(6) with time zone NOT NULL,
     direct_url text NOT NULL,
-    created_at_on_site timestamp(6) with time zone NOT NULL
+    created_at_on_site timestamp(6) with time zone NOT NULL,
+    file_identifier text NOT NULL
 );
 
 
@@ -704,6 +705,13 @@ CREATE INDEX index_submission_files_on_artist_submission_id ON public.submission
 
 
 --
+-- Name: index_submission_files_on_artist_submission_id_and_file_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_submission_files_on_artist_submission_id_and_file_id ON public.submission_files USING btree (artist_submission_id, file_identifier);
+
+
+--
 -- Name: index_users_on_email; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -827,4 +835,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20211226145933'),
 ('20211228140124'),
 ('20211231152643'),
-('20211231164336');
+('20211231164336'),
+('20211231175728');
+
+

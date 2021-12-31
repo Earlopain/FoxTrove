@@ -74,7 +74,7 @@ module Scraper
       end
       s.description = description
 
-      tweet["extended_entities"]["media"].each do |media|
+      tweet["extended_entities"]["media"].each.with_index do |media, index|
         url = case media["type"]
               when "photo"
                 # https://pbs.twimg.com/media/Ek086oLVgAMjX5h.jpg => https://pbs.twimg.com/media/Ek086oLVgAMjX5h?format=jpg&name=orig
@@ -96,6 +96,7 @@ module Scraper
         s.files.push({
           url: url,
           created_at: created_at,
+          identifier: index,
         })
       end
       s
