@@ -35,7 +35,7 @@ module Scraper
       tweets = response.dig("globalObjects", "tweets")
       new_tweet_ids = relevant_tweet_ids(tweets).difference(@all_tweets_ids)
       @all_tweets_ids += new_tweet_ids
-      end_reached if new_tweet_ids.map(&:to_i).any? { |id| id < @stop_marker }
+      end_reached if new_tweet_ids.map(&:to_i).any? { |id| id < @stop_marker.to_i }
 
       # Cursors seem to only go that far and need to be refreshed every so often
       # Getting 0 tweets may either mean that this has happended, but it might

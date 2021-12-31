@@ -2,7 +2,7 @@ module Scraper
   class Base
     def initialize(artist_url)
       @identifier = artist_url.identifier_on_site
-      @stop_marker = artist_url.last_scraped_submission_identifier.to_i
+      @stop_marker = artist_url.last_scraped_submission_identifier
       @has_more = true
     end
 
