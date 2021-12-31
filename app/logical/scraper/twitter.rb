@@ -64,7 +64,6 @@ module Scraper
     def to_submission(tweet)
       s = Submission.new
       s.identifier = tweet["id_str"]
-      s.created_at = DateTime.strptime(tweet["created_at"], DATETIME_FORMAT)
       s.title = ""
 
       range = tweet["display_text_range"]
@@ -96,7 +95,12 @@ module Scraper
               else
                 raise ApiError, "Unknown media type #{media['type']}"
               end
-        s.files.push url
+        created_at = DateTime.strptime(tweet["created_at"], DATETIME_FORMAT)
+        s.created_at = created_at
+        s.files.push({
+          url: url,
+          created_at: created_at,
+        })
       end
       s
     end
