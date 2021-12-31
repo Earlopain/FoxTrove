@@ -21,6 +21,7 @@ class ApplicationController < ActionController::Base
     ActiveRecord::RecordNotFound => 404,
     ActionController::UnknownFormat => 406,
     ActionView::MissingTemplate => 500,
+    ActionView::Template::Error => 500,
     ActiveRecord::QueryCanceled => 500,
     PG::ConnectionBad => 503,
   }.freeze
@@ -36,6 +37,6 @@ class ApplicationController < ActionController::Base
     }
 
     console
-    render "static/error", status: EXCEPTION_TYPES[exception.class] || 600
+    render "static/error", status: EXCEPTION_TYPES[exception.class] || 500
   end
 end
