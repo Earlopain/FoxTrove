@@ -20,6 +20,10 @@ module Scraper
       @has_more = false
     end
 
+    def enabled?
+      raise NotImplementedError
+    end
+
     # Identifier to abort scraping instead of going through the whole list again
     def last_scraped_submission_identifier
       raise NotImplementedError

@@ -21,6 +21,10 @@ module Scraper
       @all_tweets_ids = []
     end
 
+    def enabled?
+      true
+    end
+
     def last_scraped_submission_identifier
       @all_tweets_ids.map(&:to_i).max
     end
