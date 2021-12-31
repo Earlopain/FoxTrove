@@ -1,7 +1,7 @@
 <% content_for(:secondary_links) do %>
   <%= subnav_link_to "Listing", artists_path %>
   <%= subnav_link_to "New", new_artist_path %>
-  <% if @artist %>
+  <% if @artist&.id %>
     <%= subnav_link_to "Enqueue All", artist_enqueue_all_urls_path(@artist), method: :post %>
   <% end %>
 <% end %>
