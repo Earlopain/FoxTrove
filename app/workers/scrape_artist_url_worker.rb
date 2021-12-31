@@ -11,8 +11,8 @@ class ScrapeArtistUrlWorker
     scraper = artist_url.scraper
     scraper.init
     while scraper.more?
-      scraper.fetch_next_batch.each do |submission|
-        submission.save artist_url
+      scraper.fetch_next_batch.each do |api_submission|
+        scraper.to_submission(api_submission).save artist_url
       end
     end
     artist_url.last_scraped_submission_identifier = scraper.last_scraped_submission_identifier

@@ -1,5 +1,5 @@
 module Scraper
-  class Twitter
+  class Twitter < Base
     # Inspired by https://github.com/JustAnotherArchivist/snscrape/blob/e7d35ec1ebb008108082fc79161f351bc8a707e4/snscrape/modules/twitter.py
     class ApiError < RuntimeError; end
 
@@ -8,12 +8,6 @@ module Scraper
     GUEST_TOKEN_REGEX = /document\.cookie = decodeURIComponent\("gt=([0-9]*);/m.freeze
     REQUEST_RETRIES = 5
     DATETIME_FORMAT = "%a %b %d %H:%M:%S %z %Y".freeze
-
-    def initialize(artist_url)
-      @identifier = artist_url.identifier_on_site
-      @stop_marker = artist_url.last_scraped_submission_identifier.to_i
-      @has_more = true
-    end
 
     def init
       # `filter:images` can't be used since it won't return sensitive media for guest accounts
@@ -27,10 +21,6 @@ module Scraper
       @all_tweets_ids = []
     end
 
-    def more?
-      @has_more
-    end
-
     def last_scraped_submission_identifier
       @all_tweets_ids.map(&:to_i).max
     end
@@ -41,7 +31,7 @@ module Scraper
       tweets = response.dig("globalObjects", "tweets")
       new_tweet_ids = relevant_tweet_ids(tweets).difference(@all_tweets_ids)
       @all_tweets_ids += new_tweet_ids
-      @has_more = new_tweet_ids.map(&:to_i).none? { |id| id < @stop_marker }
+      end_reached if new_tweet_ids.map(&:to_i).any? { |id| id < @stop_marker }
 
       # Cursors seem to only go that far and need to be refreshed every so often
       # Getting 0 tweets may either mean that this has happended, but it might
@@ -54,7 +44,7 @@ module Scraper
       if tweets.count.zero?
         # Two times in a row no new tweets were found, even though the
         # cursor was reset
-        @has_more = false if @find_new_tweets_before_empty_response
+        end_reached if @find_new_tweets_before_empty_response
 
         @find_new_tweets_before_empty_response = true
         @cursor = extract_cursor response, "top"
@@ -64,7 +54,47 @@ module Scraper
       end
       raise ApiError, "Failed to extract cursor: #{url}" if @cursor.nil?
 
-      new_tweet_ids.map { |id| to_submission(tweets[id]) }
+      new_tweet_ids.map { |id| tweets[id] }
+    end
+
+    def to_submission(tweet)
+      s = Submission.new
+      s.identifier = tweet["id_str"]
+      s.created_at = DateTime.strptime(tweet["created_at"], DATETIME_FORMAT)
+      s.title = ""
+
+      range = tweet["display_text_range"]
+      description = if range[0] == range[1]
+                      ""
+                    else
+                      tweet["full_text"][range[0]..range[1]]
+                    end
+      tweet["entities"]["urls"].each do |entry|
+        indices = entry["indices"]
+        description[indices[0]..indices[1]] = entry["expanded_url"]
+      end
+      s.description = description
+
+      tweet["extended_entities"]["media"].each do |media|
+        url = case media["type"]
+              when "photo"
+                # https://pbs.twimg.com/media/Ek086oLVgAMjX5h.jpg => https://pbs.twimg.com/media/Ek086oLVgAMjX5h?format=jpg&name=orig
+                regex = %r{media/(\S*)\.(\S*)$}
+                name, ext = media["media_url_https"].scan(regex).first
+                "https://pbs.twimg.com/media/#{name}?format=#{ext}&name=orig"
+              when "video"
+                # get the variant with the highest bitrate
+                variant = media.dig("video_info", "variants").max_by { |v| v["bitrate"].to_i }
+                variant["url"]
+              when "animated_gif"
+                # there is only one variant, get that
+                media.dig("video_info", "variants").first["url"]
+              else
+                raise ApiError, "Unknown media type #{media['type']}"
+              end
+        s.files.push url
+      end
+      s
     end
 
     private
@@ -107,46 +137,6 @@ module Scraper
           entry.dig("content", "operation", "cursor", "value") if entry["entryId"] == "sq-cursor-#{type}"
         end.first
       end.first
-    end
-
-    def to_submission(tweet)
-      s = Submission.new
-      s.identifier = tweet["id_str"]
-      s.created_at = DateTime.strptime(tweet["created_at"], DATETIME_FORMAT)
-      s.title = ""
-
-      range = tweet["display_text_range"]
-      description = if range[0] == range[1]
-                      ""
-                    else
-                      tweet["full_text"][range[0]..range[1]]
-                    end
-      tweet["entities"]["urls"].each do |entry|
-        indices = entry["indices"]
-        description[indices[0]..indices[1]] = entry["expanded_url"]
-      end
-      s.description = description
-
-      tweet["extended_entities"]["media"].each do |media|
-        url = case media["type"]
-              when "photo"
-                # https://pbs.twimg.com/media/Ek086oLVgAMjX5h.jpg => https://pbs.twimg.com/media/Ek086oLVgAMjX5h?format=jpg&name=orig
-                regex = %r{media/(\S*)\.(\S*)$}
-                name, ext = media["media_url_https"].scan(regex).first
-                "https://pbs.twimg.com/media/#{name}?format=#{ext}&name=orig"
-              when "video"
-                # get the variant with the highest bitrate
-                variant = media.dig("video_info", "variants").max_by { |v| v["bitrate"].to_i }
-                variant["url"]
-              when "animated_gif"
-                # there is only one variant, get that
-                media.dig("video_info", "variants").first["url"]
-              else
-                raise ApiError, "Unknown media type #{media['type']}"
-              end
-        s.files.push url
-      end
-      s
     end
 
     def random_user_agent
