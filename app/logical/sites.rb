@@ -35,11 +35,11 @@ module Sites
 
   SCRAPERS = [
     Definitions::Twitter,
+    Definitions::Inkbunny,
   ].map { |definition| ScraperDefinition.new definition }.freeze
 
   SIMPLE = [
     Definitions::Furaffinity,
-    Definitions::Inkbunny,
     Definitions::Sofurry,
     Definitions::Deviantart,
     Definitions::Artstation,
