@@ -9,6 +9,10 @@ module Cache
     Rails.cache.write(key, value, expires_in: expires_in)
   end
 
+  def delete(key)
+    Rails.cache.delete(key)
+  end
+
   def clear
     Rails.cache.clear
   end
