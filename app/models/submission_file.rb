@@ -5,6 +5,8 @@ class SubmissionFile < ApplicationRecord
 
   validate :original_present
 
+  scope :with_attached, -> { with_attached_sample.with_attached_original }
+
   def original_present
     errors.add(:original_file, "not attached") unless original.attached?
   end
