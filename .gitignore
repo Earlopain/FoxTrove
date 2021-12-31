@@ -44,3 +44,4 @@ doc
 .vagrant
 .idea
 /coverage
+custom_config.yml

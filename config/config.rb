@@ -6,7 +6,7 @@ module Config
   end
 
   def self.custom_config
-    @custom_config ||= ENV[CUSTOM_CONFIG_ENV_KEY] ? YAML.load_file(ENV[CUSTOM_CONFIG_ENV_KEY]) : {}
+    @custom_config ||= File.exist?(ENV[CUSTOM_CONFIG_ENV_KEY]) ? YAML.load_file(ENV[CUSTOM_CONFIG_ENV_KEY]) || {} : {}
   end
 
   def self.force_reload
