@@ -1,5 +1,6 @@
 <h1>Sign in</h1>
 <%= form_with url: session_path do |form| %>
+  <%= form.hidden_field :previous_url, value: params[:previous_url] %>
   <div>
     <%= form.label :username %>
     <%= form.text_field :username %>

@@ -9,9 +9,9 @@ class SessionsController < ApplicationController
       session[:user_id] = user.id
       cookies.encrypted[:remember_me] = { value: user.id, expires: 2.weeks.from_now, httponly: true } if params[:remember_me]
 
-      redirect_to(root_path, notice: "Logged in as #{user.name}")
+      redirect_to(params[:previous_url] || root_path, notice: "Logged in as #{user.name}")
     else
-      redirect_to(root_path, notice: "Username/Password was incorrect")
+      flash[:notice] = "Username/Password was incorrect"
     end
   end
 

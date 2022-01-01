@@ -1,4 +1,10 @@
 class User < ApplicationRecord
+  class PrivilegeError < StandardError
+    def initialize(msg = nil)
+      super msg ? "Access Denied: #{msg}" : "Access Denied"
+    end
+  end
+
   module Levels
     UNACTIVATED = "unactivated".freeze
     MEMBER = "member".freeze

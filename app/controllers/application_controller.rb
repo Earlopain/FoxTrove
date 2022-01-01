@@ -15,7 +15,7 @@ class ApplicationController < ActionController::Base
 
   User::Levels.ordered.each do |level|
     define_method("#{level.downcase}_only") do
-      raise StandardError, "Permission Denied!" unless CurrentUser.user.send("is_#{level}?")
+      raise User::PrivilegeError unless CurrentUser.user.send("is_#{level}?")
     end
   end
 
@@ -34,6 +34,11 @@ class ApplicationController < ActionController::Base
 
   def rescue_exception(exception)
     @exception = exception
+
+    if @exception.is_a?(User::PrivilegeError) && CurrentUser.is_anon?
+      redirect_to new_session_path(previous_url: request.fullpath)
+      return
+    end
 
     @params = {
       params: request.filtered_parameters.except(:authenticity_token),
