@@ -29,7 +29,6 @@ class CreateSubmissionFileWorker
       file_identifier: file_identifier
     )
     submission_file.original.attach(io: bin_file, filename: File.basename(uri.path))
-    success = submission_file.save
-    CreateVariantsWorker.perform_async submission_file.id if success
+    submission_file.save
   end
 end

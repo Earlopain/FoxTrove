@@ -5,6 +5,8 @@ class SubmissionFile < ApplicationRecord
 
   validate :original_present
 
+  after_commit :update_variants_and_iqdb, on: %i[create update]
+
   scope :with_attached, -> { with_attached_sample.with_attached_original }
 
   def original_present
@@ -13,6 +15,12 @@ class SubmissionFile < ApplicationRecord
 
   def can_iqdb?
     IqdbProxy::VALID_CONTENT_TYPES.include? original.content_type
+  end
+
+  def update_variants_and_iqdb
+    return if attachment_changes["original"].blank?
+
+    SubmissionFileUpdateWorker.perform_async id
   end
 
   def generate_variants

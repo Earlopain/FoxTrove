@@ -1,4 +1,4 @@
-class CreateVariantsWorker
+class SubmissionFileUpdateWorker
   include Sidekiq::Worker
 
   sidekiq_options queue: :variant_generation, lock: :until_executed, lock_ttl: 1.hour,
