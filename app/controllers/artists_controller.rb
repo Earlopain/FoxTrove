@@ -1,7 +1,7 @@
 class ArtistsController < ApplicationController
   respond_to :html
   before_action :member_only, only: %i[create new]
-  before_action :admin_only, only: :enqueue_all_urls
+  before_action :admin_only, only: %i[enqueue_all_urls destroy]
 
   def new
     @artist = Artist.new(artist_params)
@@ -46,9 +46,15 @@ class ArtistsController < ApplicationController
   end
 
   def show
-    @artist = Artist.find(params[:id])
+    @artist = Artist.includes(:artist_urls).find(params[:id])
     @recent_submission_files = SubmissionFile.with_attached.includes(artist_submission: :artist_url).where(artist_submission: { artist_urls: { artist: @artist } }).order(created_at_on_site: :desc).limit(50)
     respond_with(@artist)
+  end
+
+  def destroy
+    @artist = Artist.includes(artist_urls: { submissions: :submission_files }).find(params[:id])
+    @artist.destroy
+    redirect_to artists_path
   end
 
   def enqueue_all_urls
