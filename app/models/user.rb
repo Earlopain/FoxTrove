@@ -1,12 +1,11 @@
 class User < ApplicationRecord
   module Levels
-    ANON = "anon".freeze
     UNACTIVATED = "unactivated".freeze
     MEMBER = "member".freeze
     ADMIN = "admin".freeze
 
     def self.ordered
-      [ANON, UNACTIVATED, MEMBER, ADMIN]
+      [UNACTIVATED, MEMBER, ADMIN]
     end
   end
 
@@ -31,10 +30,14 @@ class User < ApplicationRecord
 
   def self.anon
     user = User.new
-    user.level = Levels::ANON
+    user.level = nil
     user.name = "anon"
     user.freeze.readonly!
     user
+  end
+
+  def is_anon?
+    level.nil?
   end
 
   Levels.ordered.each.with_index do |level_to_check, index|
