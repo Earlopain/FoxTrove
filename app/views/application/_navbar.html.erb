@@ -2,6 +2,11 @@
   <nav id="nav">
     <menu class="primary-navbar">
       <%= nav_link_to Config.app_name, root_path %>
+      <% if CurrentUser.is_anon? %>
+        <%= nav_link_to "Login", new_session_path %>
+      <% else %>
+        <%= nav_link_to "Account", user_path(CurrentUser.user) %>
+      <% end %>
       <%= nav_link_to "Search", iqdb_path %>
       <%= nav_link_to "Artists", artists_path %>
       <%= nav_link_to "Debug", debug_path %>

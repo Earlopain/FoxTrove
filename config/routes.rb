@@ -13,7 +13,7 @@ Rails.application.routes.draw do
   resources :artists, only: %i[index new create show destroy] do
     post :enqueue_all_urls
   end
-  resource :session, only: %i[create destroy]
+  resource :session, only: %i[create destroy new]
   resource :static, controller: "static", only: [] do
     collection do
       get :about
@@ -28,5 +28,6 @@ Rails.application.routes.draw do
     post :seed_db
     post :iqdb_readd
   end
+  resources :users, only: %i[show]
   root to: "static#home"
 end

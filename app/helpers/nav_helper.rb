@@ -8,7 +8,7 @@ module NavHelper
   end
 
   def nav_link_class(url)
-    return "current" if url.start_with? "/#{params[:controller]}"
+    return "current" if url.start_with?("/#{params[:controller]}") || url.start_with?("/#{params[:controller].singularize}")
     return "current" if url == "/" && request.path == "/"
 
     ""
