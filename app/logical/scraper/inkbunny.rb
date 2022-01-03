@@ -22,7 +22,6 @@ module Scraper
       end_reached if json["pages_count"] == json["page"]
       submission_ids = json["submissions"].map { |entry| entry["submission_id"] }
       submissions = submission_details(submission_ids).reject { |submission| submission["last_file_update_datetime"].nil? }
-      end_reached if !@stop_marker.nil? && submissions.any? { |submission| DateTime.parse(submission["last_file_update_datetime"]).before? @stop_marker }
       @page += 1
       submissions
     end
@@ -42,6 +41,10 @@ module Scraper
         })
       end
       s
+    end
+
+    def extract_timestamp(submission)
+      DateTime.parse(submission["last_file_update_datetime"])
     end
 
     private

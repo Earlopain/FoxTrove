@@ -13,9 +13,12 @@ class ScrapeArtistUrlWorker
 
     scraper.init
     while scraper.more?
-      scraper.fetch_next_batch.each do |api_submission|
+      submissions = scraper.fetch_next_batch
+      submissions.each do |api_submission|
         scraper.to_submission(api_submission).save artist_url
       end
+      stop_marker = artist_url.last_scraped_at
+      scraper.end_reached if stop_marker.present? && submissions.any? { |submission| scraper.extract_timestamp(submission).before? stop_marker }
     end
     artist_url.last_scraped_at = Time.current
     artist_url.save

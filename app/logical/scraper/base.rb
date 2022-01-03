@@ -1,8 +1,7 @@
 module Scraper
   class Base
-    def initialize(identifier:, stop_marker:)
+    def initialize(identifier:)
       @identifier = identifier
-      @stop_marker = stop_marker
       @has_more = true
     end
 
@@ -33,6 +32,11 @@ module Scraper
 
     # Convert the entries from fetch_next_batch into something generic
     def to_submission
+      raise NotImplementedError
+    end
+
+    # Used to check if the end was reached when scraping already happened
+    def extract_timestamp_from_submission
       raise NotImplementedError
     end
   end

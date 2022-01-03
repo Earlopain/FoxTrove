@@ -13,7 +13,7 @@ class ArtistUrl < ApplicationRecord
   end
 
   def scraper
-    site.scraper.new(identifier: identifier_on_site, stop_marker: last_scraped_at)
+    site.scraper.new(identifier: identifier_on_site)
   end
 
   def enqueue_scraping

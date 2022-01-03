@@ -24,7 +24,6 @@ module Scraper
       end_reached unless json["has_more"]
       @next_offset = json["next_offset"]
       submissions = json["results"]
-      end_reached if !@stop_marker.nil? && submissions.any? { |submission| DateTime.strptime(submission["published_time"], "%s").before? @stop_marker }
       add_downloadable submissions
     end
 
@@ -34,7 +33,7 @@ module Scraper
       s.title = submission["title"]
       # FIXME: Title is only available when doing deviation/{deviationid}?expand=deviation.fulltext
       s.description = ""
-      created_at = DateTime.strptime(submission["published_time"], "%s")
+      created_at = extract_timestamp submission
       s.created_at = created_at
       s.files.push({
         url: submission["download"] ? submission["download"]["src"] : submission["content"]["src"],
@@ -42,6 +41,10 @@ module Scraper
         identifier: "",
       })
       s
+    end
+
+    def extract_timestamp(submission)
+      DateTime.strptime(submission["published_time"], "%s")
     end
 
     private

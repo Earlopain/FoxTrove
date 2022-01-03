@@ -31,7 +31,6 @@ module Scraper
       tweets = response.dig("globalObjects", "tweets")
       new_tweet_ids = relevant_tweet_ids(tweets).difference(@all_tweets_ids)
       @all_tweets_ids += new_tweet_ids
-      end_reached if !@stop_marker.nil? && new_tweet_ids.any? { |tweet_id| tweet_timestamp(tweets[tweet_id]).before? @stop_marker }
 
       # Cursors seem to only go that far and need to be refreshed every so often
       # Getting 0 tweets may either mean that this has happended, but it might
@@ -91,7 +90,7 @@ module Scraper
               else
                 raise ApiError, "Unknown media type #{media['type']}"
               end
-        created_at = tweet_timestamp(tweet)
+        created_at = extract_timestamp(tweet)
         s.created_at = created_at
         s.files.push({
           url: url,
@@ -102,11 +101,11 @@ module Scraper
       s
     end
 
-    private
-
-    def tweet_timestamp(tweet)
+    def extract_timestamp(tweet)
       DateTime.strptime(tweet["created_at"], DATETIME_FORMAT)
     end
+
+    private
 
     def make_request(search, cursor)
       url = "#{REQUEST_URL}?#{query_string(search, cursor)}"
