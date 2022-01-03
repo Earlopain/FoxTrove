@@ -16,6 +16,8 @@ log_ignore:
 # Credentials, overwrite in custom file
 inkbunny_user:
 inkbunny_pass:
+deviantart_client_id:
+deviantart_client_secret:
 
 # These settings require a server restart
 # Controls wether or not the logging should be intercepted
