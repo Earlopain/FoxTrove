@@ -29,7 +29,8 @@ module Scraper
 
     def to_submission(submission)
       s = Submission.new
-      s.identifier = submission["deviationid"]
+      # Extract number from https://www.deviantart.com/kenket/art/Rowdy-829623906
+      s.identifier = submission["url"].match(/-([0-9]*)$/)[1]
       s.title = submission["title"]
       # FIXME: Title is only available when doing deviation/{deviationid}?expand=deviation.fulltext
       s.description = ""
