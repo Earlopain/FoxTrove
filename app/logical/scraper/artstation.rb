@@ -1,0 +1,63 @@
+module Scraper
+  class Artstation < Base
+    def init
+      @page = 1
+    end
+
+    def enabled?
+      true
+    end
+
+    def fetch_next_batch
+      ids = get_ids_from_page(@page)
+      end_reached if ids.count == 0
+      @page += 1
+      get_details(ids)
+    end
+
+    def to_submission(submission)
+      s = Submission.new
+      # Extract number from https://www.deviantart.com/kenket/art/Rowdy-829623906
+      s.identifier = submission["hash_id"]
+      s.title = submission["title"]
+      # FIXME: Title is only available when doing deviation/{deviationid}?expand=deviation.fulltext
+      s.description = Rails::Html::FullSanitizer.new.sanitize submission["description"]
+      created_at = extract_timestamp submission
+      s.created_at = created_at
+
+      submission["assets"].each do |asset|
+        s.files.push({
+          url: asset["image_url"],
+          created_at: created_at,
+          identifier: asset["id"],
+        })
+      end
+      s
+    end
+
+    def extract_timestamp(submission)
+      DateTime.parse submission["created_at"]
+    end
+
+    private
+
+    def get_ids_from_page(page)
+      response = HTTParty.get("https://www.artstation.com/users/#{@identifier}/projects.json?page=#{page}")
+      JSON.parse(response.body)["data"].map { |entry| entry["hash_id"] }
+    end
+
+    def get_details(ids)
+      details = ids.map do |id|
+        HTTParty.get("https://www.artstation.com/projects/#{id}.json")
+      end
+      # Remove any non-image assets
+      details.map do |entry|
+        entry["assets"] = entry["assets"].select { |asset| asset["asset_type"].in? %w[image cover] }
+      end
+      # Remove ids where there are no image assets
+      details.reject do |entry|
+        entry["assets"].count == 0
+      end
+    end
+  end
+end

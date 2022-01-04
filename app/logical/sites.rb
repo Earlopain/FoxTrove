@@ -37,12 +37,12 @@ module Sites
     Definitions::Twitter,
     Definitions::Inkbunny,
     Definitions::Deviantart,
+    Definitions::Artstation,
   ].map { |definition| ScraperDefinition.new definition }.freeze
 
   SIMPLE = [
     Definitions::Furaffinity,
     Definitions::Sofurry,
-    Definitions::Artstation,
     Definitions::Patreon,
     Definitions::Pixiv,
     Definitions::Weasyl,
