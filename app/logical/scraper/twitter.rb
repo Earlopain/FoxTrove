@@ -110,10 +110,7 @@ module Scraper
     def make_request(search, cursor)
       url = "#{REQUEST_URL}?#{query_string(search, cursor)}"
       response = HTTParty.get(url, headers: {
-        "User-Agent": @user_agent,
-        "Authorization": "Bearer #{BEARER_TOKEN}",
-        "Referer": referer_url(search),
-        "Accept-Language": "en-US,en;q=0.5",
+        **api_headers(search),
         "x-guest-token": @guest_token,
       })
       # TODO: Error handling
@@ -147,8 +144,25 @@ module Scraper
       end.first
     end
 
-    def random_user_agent
-      "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.#{rand 9999} Safari/537.#{rand 99}"
+    def fetch_guest_token(search)
+      response = HTTParty.post("https://api.twitter.com/1.1/guest/activate.json", headers: api_headers(search))
+      guest_token = JSON.parse(response.body)["guest_token"]
+      if guest_token.nil?
+        response = HTTParty.get(referer_url(search), headers: { "User-Agent": @user_agent })
+        guest_token = response.body.scan(GUEST_TOKEN_REGEX).first&.first
+      end
+      raise ApiError, "Failed to get guest_token" unless guest_token
+
+      guest_token
+    end
+
+    def api_headers(search)
+      {
+        "User-Agent": @user_agent,
+        "Authorization": "Bearer #{BEARER_TOKEN}",
+        "Referer": referer_url(search),
+        "Accept-Language": "en-US,en;q=0.5",
+      }
     end
 
     def referer_url(search)
@@ -157,20 +171,6 @@ module Scraper
         src: "typed_query",
       }
       "https://twitter.com/search?#{params.to_query}"
-    end
-
-    def fetch_guest_token(search)
-      guest_token = nil
-      tries = 0
-      while guest_token.nil? && tries < REQUEST_RETRIES
-        sleep 5 if tries > 0
-        response = HTTParty.get(referer_url(search), headers: { "User-Agent": @user_agent })
-        guest_token = response.body.scan(GUEST_TOKEN_REGEX).first&.first
-        tries += 1
-      end
-      raise ApiError, "Failed to get guest_token" unless guest_token
-
-      guest_token
     end
 
     def query_string(search, cursor)
@@ -183,6 +183,10 @@ module Scraper
         query_source: "recent_search_click",
         cursor: cursor,
       }.to_query
+    end
+
+    def random_user_agent
+      "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.#{rand 9999} Safari/537.#{rand 99}"
     end
   end
 end
