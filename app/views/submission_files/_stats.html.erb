@@ -17,7 +17,7 @@
     | <%= link_to_external "S", submission_url(artist_submission), title: "Original Source" %>
     | <%= link_to_external "E", submission_file.direct_url, title: "Direct Link Offsite" %>
     <% if CurrentUser.is_member? %>
-      | <%= link_to "D", url_for(submission_file.original), title: "Direct Link Onsite" %>
+      | <%= link_to "D", rails_blob_url(submission_file.original, disposition: :inline), title: "Direct Link Onsite" %>
     <% end %>
   </span>
 </div>
