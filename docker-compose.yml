@@ -23,6 +23,8 @@ services:
     depends_on:
       - postgres
       - redis
+      - memcached
+      - iqdb
     ports:
       - 9000:9000
     tty: true
