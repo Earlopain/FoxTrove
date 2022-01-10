@@ -96,6 +96,18 @@ GEM
     i18n (1.8.11)
       concurrent-ruby (~> 1.0)
     io-wait (0.2.1)
+    kaminari (1.2.2)
+      activesupport (>= 4.1.0)
+      kaminari-actionview (= 1.2.2)
+      kaminari-activerecord (= 1.2.2)
+      kaminari-core (= 1.2.2)
+    kaminari-actionview (1.2.2)
+      actionview
+      kaminari-core (= 1.2.2)
+    kaminari-activerecord (1.2.2)
+      activerecord
+      kaminari-core (= 1.2.2)
+    kaminari-core (1.2.2)
     loofah (2.13.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
@@ -254,6 +266,7 @@ DEPENDENCIES
   bootsnap (>= 1.4.4)
   dalli
   httparty
+  kaminari
   pg (~> 1.1)
   puma (~> 5.5)
   rails (~> 7.0)

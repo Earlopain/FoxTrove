@@ -12,6 +12,7 @@ gem "addressable"
 gem "request_store"
 gem "simple_form"
 gem "responders"
+gem "kaminari"
 
 gem "sidekiq"
 gem "sidekiq-unique-jobs"
