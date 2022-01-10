@@ -17,18 +17,23 @@ action_controller = proc do
 
     # Processing by ApplicationController#show as HTML
     def start_processing(event)
-      name = "#{event.payload[:controller]}##{event.payload[:action]}"
-      return if Config.log_ignore.any? { |ignore| name == ignore }
+      return if matches event
 
       original_start_processing event
     end
 
     # Completed 200 OK in 290ms (Views: 207.6ms | ActiveRecord: 40.6ms | Allocations: 163661)
     def process_action(event)
-      name = "#{event.payload[:controller]}##{event.payload[:action]}"
-      return if Config.log_ignore.any? { |ignore| name == ignore }
+      return if matches event
 
       original_process_action event
+    end
+
+    def matches(event)
+      Config.log_ignore.any? do |entry|
+        name = entry.include?("#") ? "#{event.payload[:controller]}##{event.payload[:action]}" : event.payload[:controller]
+        name == entry
+      end
     end
 
     # Redirected to http://localhost:9000/rails/active_storage/disk/:key/sample
