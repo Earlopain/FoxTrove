@@ -20,4 +20,21 @@
       | <%= link_to "D", rails_blob_url(submission_file.original, disposition: :inline), title: "Direct Link Onsite" %>
     <% end %>
   </span>
+  <span class="e6-links">
+    <% submission_file.e6_iqdb_entries.sort_by(&:similarity_score).reverse.each do |e6_iqdb| %>
+      <div>
+      <%= link_to_external "##{e6_iqdb.post_id}", "https://e621.net/posts/#{e6_iqdb.post_id}"%>
+      <% if e6_iqdb.is_exact_match? %>
+        Exact
+      <% else %>
+        <span class="size-difference">
+          <%= number_to_human_size(e6_iqdb.post_size - submission_file.original.byte_size) %>
+        </span>
+        <span class="dimension-difference" title="<%= "#{e6_iqdb.post_width}x#{e6_iqdb.post_height}" %>">
+          x<%= (e6_iqdb.post_width / metadata[:width].to_d).round(1) %>
+        </span>
+      <% end %>
+      </div>
+    <% end %>
+  </span>
 </div>

@@ -3,6 +3,13 @@ module ApplicationHelper
     value.errors.full_messagess.join(",")
   end
 
+  # The original doesn't seem to handle negatives at all
+  # -312153 => "-312153 Bytes"
+  def number_to_human_size(number, **options)
+    original_result = super(number.abs, **options)
+    "#{number < 0 ? '-' : ''}#{original_result}"
+  end
+
   def time_ago(value)
     tag.span value.to_formatted_s(:long), datetime: value.to_formatted_s(:iso8601), class: "time-ago"
   end
