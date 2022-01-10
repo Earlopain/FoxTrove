@@ -11,7 +11,7 @@ class SessionsController < ApplicationController
 
       redirect_to(params[:previous_url] || root_path, notice: "Logged in as #{user.name}")
     else
-      flash[:notice] = "Username/Password was incorrect"
+      redirect_to(new_session_path(previous_url: params[:previous_url]), notice: "Username/Password was incorrect")
     end
   end
 
