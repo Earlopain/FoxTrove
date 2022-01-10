@@ -14,6 +14,9 @@ class SubmissionFileUpdateWorker
 
     submission_file.generate_variants
     submission_file.save
-    IqdbProxy.update_submission submission_file if submission_file.can_iqdb?
+    return unless submission_file.can_iqdb?
+
+    E6IqdbQueryWorker.perform_async submission_file.id
+    IqdbProxy.update_submission submission_file
   end
 end

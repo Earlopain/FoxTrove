@@ -18,6 +18,8 @@ inkbunny_user:
 inkbunny_pass:
 deviantart_client_id:
 deviantart_client_secret:
+e6_user:
+e6_apikey:
 
 # These settings require a server restart
 # Controls wether or not the logging should be intercepted
