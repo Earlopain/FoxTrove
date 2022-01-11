@@ -1,0 +1,7 @@
+<h1>Submission from <%= @submission_file.artist_submission.artist_url.identifier_on_site %></h1>
+<%= render "submission_files/sample", submission_file: @submission_file %>
+<div>
+  <% @similar.each do |entry| %>
+    <%= render "submission_files/sample", submission_file: entry[:submission], similarity: entry[:score] %>
+  <% end %>
+</div>
