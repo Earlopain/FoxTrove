@@ -1,5 +1,21 @@
 <h1>Submission from <%= @submission_file.artist_submission.artist_url.identifier_on_site %></h1>
-<%= render "submission_files/sample", submission_file: @submission_file %>
+<div class="original">
+  <div>
+    <% if @submission_file.artist_submission.title_on_site.present? %>
+      <div class="title">
+        <h4><%= @submission_file.artist_submission.title_on_site %></h4>
+      </div>
+    <% end %>
+    <div class="description">
+      <%= @submission_file.artist_submission.description_on_site %>
+    </div>
+  </div>
+  <br>
+  <div>
+    <%= render "submission_files/sample", submission_file: @submission_file %>
+  </div>
+</div>
+<h3>Similar</h3>
 <div>
   <% @similar.each do |entry| %>
     <%= render "submission_files/sample", submission_file: entry[:submission], similarity: entry[:score] %>
