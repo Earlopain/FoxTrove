@@ -36,10 +36,6 @@ class SubmissionFile < ApplicationRecord
     SubmissionFileUpdateWorker.perform_async id
   end
 
-  def update_metadata
-    puts original.metadata
-  end
-
   def update_e6_iqdb_data
     e6_iqdb_entries.destroy_all
 
