@@ -4,8 +4,11 @@ module VariantGenerator
     file = Tempfile.new
     # TODO: Error handling
     case attachment.content_type
-    when "image/jpeg", "image/png"
+      # FIXME: alpine vips is currrently not build with cgif, saving animated gifs is not possible
+    when "image/jpeg", "image/png", "image/gif"
       image_thumb(path, file, Config.thumbnail_size, height: Config.thumbnail_size, size: :down)
+    when "image/gif"
+      gif_thumb(path, file, Config.thumbnail_size, height: Config.thumbnail_size, size: :down)
     when "video/mp4"
       params = mp4_conversion_parameters(path, file.path, [Config.thumbnail_size, Config.thumbnail_size])
       stdout, stderr, status = Open3.capture3("/usr/bin/ffmpeg", *params)
@@ -19,6 +22,11 @@ module VariantGenerator
   def self.image_thumb(input_path, outfile, width, **options)
     image = Vips::Image.thumbnail(input_path, width, **options)
     image.jpegsave(outfile.path, Q: 90)
+  end
+
+  def self.gif_thumb(input_path, outfile, width, **options)
+    image = Vips::Image.thumbnail(input_path, width, **options)
+    image.gifsave(outfile.path)
   end
 
   def self.mp4_conversion_parameters(in_path, out_path, dimensions)
