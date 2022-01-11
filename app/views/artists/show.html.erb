@@ -10,6 +10,13 @@ Links:
   <% end %>
 </div>
 
+<div class="search">
+  <%= simple_form_for(:search, url: artist_url(@artist), method: :get) do |f| %>
+    <%= f.input :artist_urls, label: "URLs", collection: @artist.artist_urls.map { |artist_url| ["#{artist_url.identifier_on_site} (#{artist_url.site.display_name})", artist_url.id]}, selected: params.dig(:search, :artist_urls), input_html: { multiple: true } %>
+    <%= f.submit "Search" %>
+  <% end %>
+</div>
+
 <% @submission_files.each do |file| %>
   <%= render "submission_files/sample", submission_file: file %>
 <% end %>

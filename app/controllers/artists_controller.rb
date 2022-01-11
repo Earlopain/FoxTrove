@@ -47,7 +47,7 @@ class ArtistsController < ApplicationController
 
   def show
     @artist = Artist.includes(:artist_urls).find(params[:id])
-    @submission_files = SubmissionFile.with_attached.includes(:e6_iqdb_entries, artist_submission: :artist_url).where(artist_submission: { artist_urls: { artist: @artist } }).order(created_at_on_site: :desc).page params[:page]
+    @submission_files = SubmissionFile.from_url(search_params[:artist_urls]).with_attached.includes(:e6_iqdb_entries, artist_submission: :artist_url).where(artist_submission: { artist_urls: { artist: @artist } }).order(created_at_on_site: :desc).page params[:page]
     respond_with(@artist)
   end
 
@@ -68,5 +68,9 @@ class ArtistsController < ApplicationController
     permitted_params = %i[name url_string]
 
     params.fetch(:artist, {}).permit(permitted_params)
+  end
+
+  def search_params
+    params.fetch(:search, {}).permit(artist_urls: [])
   end
 end

@@ -10,6 +10,8 @@ class SubmissionFile < ApplicationRecord
   after_save_commit :update_variants_and_iqdb
 
   scope :with_attached, -> { with_attached_sample.with_attached_original }
+  # TODO: Move this to the search concern
+  scope :from_url, ->(input) { where(artist_submission: { artist_urls: { id: input } }) unless input.nil? || (input&.size == 1 && input[0].blank?) }
 
   def original_present
     errors.add(:original_file, "not attached") unless original.attached?
