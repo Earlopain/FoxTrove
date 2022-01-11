@@ -1,4 +1,3 @@
-<% metadata = submission_file.original.metadata %>
 <% artist_submission = submission_file.artist_submission %>
 <% artist_url = artist_submission.artist_url %>
 <div class="submission-stats">
@@ -8,8 +7,8 @@
     </span>
   <% end %>
   <span>
-    <%= "#{metadata[:width].to_i}x#{metadata[:height].to_i}" %>, 
-    <%= number_to_human_size submission_file.original.byte_size %>
+    <%= "#{submission_file.width}x#{submission_file.height}" %>, 
+    <%= number_to_human_size submission_file.size %>
   </span>
   <span><%= time_ago artist_submission.created_at_on_site %></span>
   <span class="submission-links">
@@ -28,10 +27,10 @@
         Exact
       <% else %>
         <span class="size-difference">
-          <%= number_to_human_size(e6_iqdb.post_size - submission_file.original.byte_size) %>
+          <%= number_to_human_size(e6_iqdb.post_size - submission_file.size) %>
         </span>
         <span class="dimension-difference" title="<%= "#{e6_iqdb.post_width}x#{e6_iqdb.post_height}" %>">
-          x<%= (e6_iqdb.post_width / metadata[:width].to_d).round(1) %>
+          x<%= (e6_iqdb.post_width / submission_file.width).round(1) %>
         </span>
       <% end %>
       </div>

@@ -30,5 +30,11 @@ class CreateSubmissionFileWorker
     )
     submission_file.original.attach(io: bin_file, filename: File.basename(uri.path))
     submission_file.save
+    submission_file.original.analyze
+    submission_file.update_columns(
+      width: submission_file.original.metadata[:width],
+      height: submission_file.original.metadata[:height],
+      size: submission_file.original.byte_size
+    )
   end
 end

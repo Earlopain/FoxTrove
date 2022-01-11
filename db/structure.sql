@@ -389,7 +389,10 @@ CREATE TABLE public.submission_files (
     updated_at timestamp(6) with time zone NOT NULL,
     direct_url text NOT NULL,
     created_at_on_site timestamp(6) with time zone NOT NULL,
-    file_identifier text NOT NULL
+    file_identifier text NOT NULL,
+    width integer,
+    height integer,
+    size integer
 );
 
 
@@ -896,6 +899,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20211231152643'),
 ('20211231164336'),
 ('20211231175728'),
-('20220110175714');
+('20220110175714'),
+('20220111084241');
 
 
