@@ -11,7 +11,12 @@ class SubmissionFile < ApplicationRecord
 
   scope :with_attached, -> { with_attached_sample.with_attached_original }
   # TODO: Move this to the search concern
-  scope :from_url, ->(input) { where(artist_submission: { artist_urls: { id: input } }) unless input.nil? || (input&.size == 1 && input[0].blank?) }
+  scope :for_url, ->(input) { where(artist_submission: { artist_urls: { id: input } }) unless input.nil? || (input&.size == 1 && input[0].blank?) }
+  scope :for_artist, ->(artist_id) { where(artist_submission: { artist_urls: { artist_id: artist_id } }) }
+  scope :larger_only, ->(treshold) { where("exists (select from e6_iqdb_data where submission_files.id = e6_iqdb_data.submission_file_id and size > post_size) and not exists (select from e6_iqdb_data where submission_files.id = e6_iqdb_data.submission_file_id and size - ? <= post_size)", treshold) }
+  scope :already_uploaded, -> { where("exists (select from e6_iqdb_data where submission_files.id = e6_iqdb_data.submission_file_id)") }
+  scope :not_uploaded, -> { where("not exists (select from e6_iqdb_data where submission_files.id = e6_iqdb_data.submission_file_id)") }
+  scope :exact_match, -> { joins(:e6_iqdb_entries).where("size = post_size") }
 
   def original_present
     errors.add(:original_file, "not attached") unless original.attached?
@@ -29,6 +34,10 @@ class SubmissionFile < ApplicationRecord
     return if attachment_changes["original"].blank?
 
     SubmissionFileUpdateWorker.perform_async id
+  end
+
+  def update_metadata
+    puts original.metadata
   end
 
   def update_e6_iqdb_data
