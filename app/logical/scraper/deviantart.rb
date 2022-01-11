@@ -23,8 +23,7 @@ module Scraper
       })
       end_reached unless json["has_more"]
       @next_offset = json["next_offset"]
-      submissions = json["results"]
-      add_downloadable submissions
+      json["results"]
     end
 
     def to_submission(submission)
@@ -36,11 +35,12 @@ module Scraper
       s.description = ""
       created_at = extract_timestamp submission
       s.created_at = created_at
-      s.files.push({
-        url: submission["download"] ? submission["download"]["src"] : submission["content"]["src"],
-        created_at: created_at,
-        identifier: "",
-      })
+      s.files.push({}.tap do |hash|
+        hash[:url_data] = [submission["deviationid"]] if submission["is_downloadable"]
+        hash[:url] = submission["content"]["src"] unless submission["is_downloadable"]
+        hash[:created_at] = created_at
+        hash[:identifier] = ""
+      end)
       s
     end
 
@@ -48,20 +48,11 @@ module Scraper
       DateTime.strptime(submission["published_time"], "%s")
     end
 
-    private
-
-    def add_downloadable(submissions)
-      submissions.map do |submission|
-        # submission["content"]["filesize"] != submission["download_filesize"] doesn't work, since
-        # content filesize seems to be the download file size for some reason.
-        if submission["is_downloadable"]
-          download_json = make_api_call("deviation/download/#{submission['deviationid']}")
-          submission["download"] = download_json
-          submission
-        end
-        submission
-      end
+    def get_download_link(data)
+      make_api_call("deviation/download/#{data[0]}")["src"]
     end
+
+    private
 
     def make_api_call(endpoint, query = {})
       response = HTTParty.get("#{API_PREFIX}/#{endpoint}", {

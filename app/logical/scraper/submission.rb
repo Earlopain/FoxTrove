@@ -22,7 +22,7 @@ module Scraper
       )
 
       files.each do |file|
-        CreateSubmissionFileWorker.perform_async artist_submission.id, file[:identifier], file[:created_at], file[:url], artist_url.site.enum_value
+        CreateSubmissionFileWorker.perform_async artist_submission.id, file, artist_url.site.enum_value
       end
     end
   end
