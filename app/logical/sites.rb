@@ -38,6 +38,7 @@ module Sites
     Definitions::Inkbunny,
     Definitions::Deviantart,
     Definitions::Artstation,
+    Definitions::Reddit,
   ].map { |definition| ScraperDefinition.new definition }.freeze
 
   SIMPLE = [
@@ -47,7 +48,6 @@ module Sites
     Definitions::Pixiv,
     Definitions::Weasyl,
     Definitions::Tumblr,
-    Definitions::Reddit,
     Definitions::Newgrounds,
     Definitions::Vk,
     Definitions::Instagram,
