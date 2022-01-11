@@ -30,7 +30,7 @@
           <%= number_to_human_size(e6_iqdb.post_size - submission_file.size) %>
         </span>
         <span class="dimension-difference" title="<%= "#{e6_iqdb.post_width}x#{e6_iqdb.post_height}" %>">
-          x<%= (e6_iqdb.post_width / submission_file.width).round(1) %>
+          x<%= (e6_iqdb.post_width / submission_file.width.to_f).round(1) %>
         </span>
       <% end %>
       </div>
