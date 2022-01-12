@@ -29,6 +29,8 @@ Rails.application.routes.draw do
     post :iqdb_readd
   end
   resources :users, only: %i[show]
-  resources :submission_files, only: %i[show]
+  resources :submission_files, only: %i[show] do
+    post :update_e6_iqdb
+  end
   root to: "static#home"
 end

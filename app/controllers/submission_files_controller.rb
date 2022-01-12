@@ -5,4 +5,8 @@ class SubmissionFilesController < ApplicationController
       @similar = IqdbProxy.query_file(f).reject { |entry| entry[:submission].id == @submission_file.id }
     end
   end
+
+  def update_e6_iqdb
+    E6IqdbQueryWorker.perform_async params[:submission_file_id]
+  end
 end
