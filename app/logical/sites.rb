@@ -39,10 +39,10 @@ module Sites
     Definitions::Deviantart,
     Definitions::Artstation,
     Definitions::Reddit,
+    Definitions::Furaffinity,
   ].map { |definition| ScraperDefinition.new definition }.freeze
 
   SIMPLE = [
-    Definitions::Furaffinity,
     Definitions::Sofurry,
     Definitions::Patreon,
     Definitions::Pixiv,

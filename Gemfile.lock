@@ -267,6 +267,7 @@ DEPENDENCIES
   dalli
   httparty
   kaminari
+  nokogiri
   pg (~> 1.1)
   puma (~> 5.5)
   rails (~> 7.0)
