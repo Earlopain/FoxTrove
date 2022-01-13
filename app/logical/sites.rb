@@ -40,13 +40,13 @@ module Sites
     Definitions::Artstation,
     Definitions::Reddit,
     Definitions::Furaffinity,
+    Definitions::Weasyl,
   ].map { |definition| ScraperDefinition.new definition }.freeze
 
   SIMPLE = [
     Definitions::Sofurry,
     Definitions::Patreon,
     Definitions::Pixiv,
-    Definitions::Weasyl,
     Definitions::Tumblr,
     Definitions::Newgrounds,
     Definitions::Vk,
