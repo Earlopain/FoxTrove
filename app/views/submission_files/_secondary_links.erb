@@ -1,3 +1,5 @@
 <% content_for(:secondary_links) do %>
+  <%= subnav_link_to "All From Artist", artist_path(@submission_file.artist_submission.artist_url.artist) %>
+  <%= subnav_link_to "All From URL", artist_path(@submission_file.artist_submission.artist_url.artist, search: { artist_urls: [@submission_file.artist_submission.artist_url.id] }) %>
   <%= subnav_link_to "Update E6 IQDB", submission_file_update_e6_iqdb_path(@submission_file), method: :post %>
 <% end %>
