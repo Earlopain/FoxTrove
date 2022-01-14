@@ -37,24 +37,28 @@ class SubmissionFile < ApplicationRecord
   end
 
   def update_e6_iqdb_data
-    e6_iqdb_entries.destroy_all
+    similar_submission_files = IqdbProxy.query_submission_file(self).pluck :submission
+    to_update = similar_submission_files + [self]
+    to_update.each { |submission_file| submission_file.e6_iqdb_entries.destroy_all }
 
-    sample.open do |file|
-      # FIXME: Error handling
-      response = E6Iqdb.query file
-      json = JSON.parse(response.body)
-      break unless json.is_a? Array
+    to_update.each do |submission_file|
+      submission_file.sample.open do |file|
+        # FIXME: Error handling
+        response = E6Iqdb.query file
+        json = JSON.parse(response.body)
+        break unless json.is_a? Array
 
-      json.each do |entry|
-        post = entry["post"]["posts"]
-        e6_iqdb_entries.create(
-          post_id: post["id"],
-          post_width: post["image_width"],
-          post_height: post["image_height"],
-          post_size: post["file_size"],
-          similarity_score: entry["score"],
-          is_exact_match: md5 == post["md5"]
-        )
+        json.each do |entry|
+          post = entry["post"]["posts"]
+          submission_file.e6_iqdb_entries.create(
+            post_id: post["id"],
+            post_width: post["image_width"],
+            post_height: post["image_height"],
+            post_size: post["file_size"],
+            similarity_score: entry["score"],
+            is_exact_match: submission_file.md5 == post["md5"]
+          )
+        end
       end
     end
   end

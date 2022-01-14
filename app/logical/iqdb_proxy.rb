@@ -27,6 +27,13 @@ module IqdbProxy
     make_request "/images/#{submission_file.id}", :delete
   end
 
+  def query_submission_file(submission_file)
+    File.open(submission_file.sample.service.path_for(submission_file.sample.key)) do |f|
+      # Remove the input submission file, we probably don't want it in the result
+      query_file(f).reject { |entry| entry[:submission].id == submission_file.id }
+    end
+  end
+
   # Queries iqdb with the passed url
   def query_url(url)
     begin
