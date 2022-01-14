@@ -41,6 +41,7 @@ module Sites
     Definitions::Reddit,
     Definitions::Furaffinity,
     Definitions::Weasyl,
+    Definitions::Newgrounds,
   ].map { |definition| ScraperDefinition.new definition }.freeze
 
   SIMPLE = [
@@ -48,7 +49,6 @@ module Sites
     Definitions::Patreon,
     Definitions::Pixiv,
     Definitions::Tumblr,
-    Definitions::Newgrounds,
     Definitions::Vk,
     Definitions::Instagram,
     Definitions::Subscribestar,
