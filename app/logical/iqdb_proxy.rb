@@ -68,7 +68,7 @@ module IqdbProxy
     process_iqbd_result(response.parsed_response)
   end
 
-  def self.process_iqbd_result(json, score_cutoff = 80)
+  def self.process_iqbd_result(json, score_cutoff = 60)
     raise Error, "Server returned an error: #{json['message']}" unless json.is_a?(Array)
 
     json.filter! { |entry| entry["score"] >= score_cutoff }
