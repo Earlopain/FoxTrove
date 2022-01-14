@@ -10,34 +10,7 @@ class ArtistsController < ApplicationController
 
   def create
     @artist = Artist.new(artist_params)
-    @artist.valid?
-    @artist.url_string.lines.map(&:strip).reject(&:blank?).each do |url|
-      result = Sites.from_url url
-
-      if !result
-        @artist.errors.add(:url, " #{url} is not a supported url") unless result
-        next
-      elsif !result[:identifier_valid]
-        @artist.errors.add(:identifier, "#{result[:identifier]} is not valid for #{result[:site].display_name}")
-        next
-      end
-
-      artist_url = @artist.artist_urls.new(
-        site_type: result[:site].enum_value,
-        identifier_on_site: result[:identifier],
-        created_at_on_site: Time.current,
-        about_on_site: ""
-      )
-      artist_url.validate
-      artist_url.errors.full_messages.each do |msg|
-        @artist.errors.add(:url, "#{url} is not valid: #{msg}")
-      end
-    end
-
-    if @artist.errors.none?
-      @artist.artist_urls.each(&:save!)
-      @artist.save
-    end
+    add_new_artist_urls_and_save(@artist)
     respond_with(@artist)
   end
 
@@ -48,6 +21,18 @@ class ArtistsController < ApplicationController
   def show
     @artist = Artist.includes(:artist_urls).find(params[:id])
     @submission_files = instance_search(search_params).for_url(search_params[:artist_urls]).for_artist(@artist.id).with_attached.includes(:e6_iqdb_entries, artist_submission: :artist_url).order(created_at_on_site: :desc).page params[:page]
+    respond_with(@artist)
+  end
+
+  def edit
+    @artist = Artist.includes(:artist_urls).find(params[:id])
+    respond_with(@artist)
+  end
+
+  def update
+    @artist = Artist.find(params[:id])
+    @artist.update(artist_params)
+    add_new_artist_urls_and_save(@artist)
     respond_with(@artist)
   end
 
@@ -91,5 +76,35 @@ class ArtistsController < ApplicationController
           end
     end
     q
+  end
+
+  def add_new_artist_urls_and_save(artist)
+    artist.valid?
+    artist.url_string.lines.map(&:strip).reject(&:blank?).each do |url|
+      result = Sites.from_url url
+
+      if !result
+        artist.errors.add(:url, " #{url} is not a supported url") unless result
+        next
+      elsif !result[:identifier_valid]
+        artist.errors.add(:identifier, "#{result[:identifier]} is not valid for #{result[:site].display_name}")
+        next
+      end
+
+      artist_url = artist.artist_urls.new(
+        site_type: result[:site].enum_value,
+        identifier_on_site: result[:identifier],
+        created_at_on_site: Time.current,
+        about_on_site: ""
+      )
+      artist_url.validate
+      artist_url.errors.full_messages.each do |msg|
+        artist.errors.add(:url, "#{url} is not valid: #{msg}")
+      end
+    end
+    return if artist.errors.any?
+
+    artist.artist_urls.each(&:save!)
+    artist.save
   end
 end

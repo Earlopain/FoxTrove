@@ -10,7 +10,7 @@ Rails.application.routes.draw do
       post :search
     end
   end
-  resources :artists, only: %i[index new create show destroy] do
+  resources :artists, only: %i[index new create show destroy edit update] do
     post :enqueue_all_urls
   end
   resource :session, only: %i[create destroy new]

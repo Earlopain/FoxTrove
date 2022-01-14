@@ -3,6 +3,7 @@
   <%= subnav_link_to "New", new_artist_path %>
   <% if @artist&.id %>
     <%= subnav_link_to "Enqueue All", artist_enqueue_all_urls_path(@artist), method: :post %>
+    <%= subnav_link_to "Edit", edit_artist_path(@artist) %>
     <%= subnav_link_to "Delete", artist_path(@artist), method: :delete, data: { confirm: "Are you sure?" } %>
   <% end %>
 <% end %>
