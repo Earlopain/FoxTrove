@@ -5,7 +5,7 @@ module VariantGenerator
     # TODO: Error handling
     case attachment.content_type
       # FIXME: alpine vips is currrently not build with cgif, saving animated gifs is not possible
-    when "image/jpeg", "image/png", "image/gif"
+    when "image/jpeg", "image/png", "image/webp", "image/gif"
       image_thumb(path, file, Config.thumbnail_size, height: Config.thumbnail_size, size: :down)
     when "image/gif"
       gif_thumb(path, file, Config.thumbnail_size, height: Config.thumbnail_size, size: :down)
