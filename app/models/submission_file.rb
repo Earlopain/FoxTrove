@@ -36,9 +36,9 @@ class SubmissionFile < ApplicationRecord
     SubmissionFileUpdateWorker.perform_async id
   end
 
-  def update_e6_iqdb_data
-    similar_submission_files = IqdbProxy.query_submission_file(self).pluck :submission
-    to_update = similar_submission_files + [self]
+  def update_e6_iqdb_data(remove_similar:)
+    to_update = [self]
+    to_update += IqdbProxy.query_submission_file(self).pluck :submission if remove_similar
     to_update.each { |submission_file| submission_file.e6_iqdb_entries.destroy_all }
 
     to_update.each do |submission_file|

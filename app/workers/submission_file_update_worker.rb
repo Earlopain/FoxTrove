@@ -16,7 +16,7 @@ class SubmissionFileUpdateWorker
     submission_file.save
     return unless submission_file.can_iqdb?
 
-    E6IqdbQueryWorker.perform_async submission_file.id
+    E6IqdbQueryWorker.perform_async submission_file.id, true
     IqdbProxy.update_submission submission_file
   end
 end
