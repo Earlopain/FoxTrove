@@ -66,7 +66,11 @@ module Scraper
       })
       # TODO: Error handling
       html = Nokogiri::HTML(response.body)
-      html.css("#browse-search figure").map do |element|
+      # Searching for "@lower scale" returns results from blue-scale
+      relevant_submissions = html.css("#browse-search figure").select do |element|
+        element.css("figcaption a")[1].content.downcase == @identifier.downcase
+      end
+      relevant_submissions.map do |element|
         element.attributes["id"].value.split("-")[1]
       end
     end
