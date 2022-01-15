@@ -3,6 +3,7 @@ module IqdbProxy
   class Error < RuntimeError; end
 
   VALID_CONTENT_TYPES = ["image/png", "image/jpeg"].freeze
+  IQDB_NUM_PIXELS = 128
 
   module_function
 
@@ -17,9 +18,7 @@ module IqdbProxy
   # This can both insert and update an submission
   def update_submission(submission_file)
     sample = submission_file.sample
-    File.open(sample.service.path_for(sample.key)) do |f|
-      make_request "/images/#{submission_file.id}", :post, { file: f }
-    end
+    make_request "/images/#{submission_file.id}", :post, get_channels_data(sample.service.path_for(sample.key))
   end
 
   # Removes the passed submission_file from iqdb
@@ -57,18 +56,31 @@ module IqdbProxy
     mime_type = Marcel::MimeType.for input
     raise Error, "Unsupported file of type #{mime_type}" if VALID_CONTENT_TYPES.exclude? mime_type
 
-    thumbnail = Tempfile.new
-    begin
-      # iqdb only supports searching for jpg. Thumbnails are always jpg
-      VariantGenerator.image_thumb input.path, thumbnail, 150, height: 150, size: :force
-    rescue Vips::Error
-      raise Error, "Unsupported file"
-    end
-    response = make_request "/query", :post, { file: thumbnail }
+    response = make_request "/query", :post, get_channels_data(input.path)
     process_iqbd_result(response.parsed_response)
   end
 
-  def self.process_iqbd_result(json, score_cutoff = 60)
+  def get_channels_data(file_path)
+    thumbnail = Tempfile.new
+    begin
+      thumbnail = Vips::Image.thumbnail(file_path, IQDB_NUM_PIXELS, height: IQDB_NUM_PIXELS, size: :force)
+    rescue Vips::Error
+      raise Error, "Unsupported file"
+    end
+    r = []
+    g = []
+    b = []
+    thumbnail.to_a.each do |data|
+      data.each do |rgb|
+        r << rgb[0]
+        g << rgb[1]
+        b << rgb[2]
+      end
+    end
+    { channels: { r: r, g: g, b: b } }.to_json
+  end
+
+  def process_iqbd_result(json, score_cutoff = 60)
     raise Error, "Server returned an error: #{json['message']}" unless json.is_a?(Array)
 
     json.filter! { |entry| entry["score"] >= score_cutoff }
