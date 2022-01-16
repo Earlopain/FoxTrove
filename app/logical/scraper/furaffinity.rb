@@ -3,6 +3,8 @@ module Scraper
   class Furaffinity < Base
     def init
       @page = 1
+      @submission_cache = []
+      @will_have_more = true
     end
 
     def enabled?
@@ -10,19 +12,32 @@ module Scraper
     end
 
     def fetch_next_batch
-      submission_ids = get_submission_ids(@page)
-      @page += 1
-      end_reached if submission_ids.empty?
-      submission_ids.map do |id|
-        html = get_submission_html id
+      if @submission_cache.empty?
+        @submission_cache = get_submission_ids(@page)
+        @page += 1
+        @will_have_more = !@submission_cache.empty?
+      end
+
+      single_submission_id = @submission_cache.shift
+      end_reached if @submission_cache.empty? && !@will_have_more
+      # Will happen when the user has no submissions at all
+      return [] if single_submission_id.nil?
+
+      html = get_submission_html single_submission_id
+      # Old(?) text submissions are returned when searching by type  art
+      if html.at("submission-area submission-writing")
+        []
+      else
         time_string = html.css(".submission-id-container .popup_date").first.content.strip
-        {
-          id: id,
-          title: html.css(".submission-title").first.content.strip,
-          description: html.css(".submission-description").first.content.strip,
-          created_at: DateTime.strptime(time_string, "%b %d, %Y %I:%M %p"),
-          url: "https:#{html.css('.download a').first.attributes['href'].value}",
-        }
+        [
+          {
+            id: single_submission_id,
+            title: html.css(".submission-title").first.content.strip,
+            description: html.css(".submission-description").first.content.strip,
+            created_at: DateTime.strptime(time_string, "%b %d, %Y %I:%M %p"),
+            url: "https:#{html.css('.download a').first.attributes['href'].value}",
+          },
+        ]
       end
     end
 
