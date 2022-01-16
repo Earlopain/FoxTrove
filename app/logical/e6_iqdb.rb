@@ -9,7 +9,7 @@ module E6Iqdb
       body: { file: file },
       headers: {
         "Authorization": "Basic #{credentials}",
-        "User-Agent": "#{Config.e6_user} gallery reverse",
+        "User-Agent": "reverser/0.1 (by earlopain) running through #{Config.e6_user}",
       }
     )
   end
