@@ -87,7 +87,9 @@ module IqdbProxy
     submission_ids = json.pluck("post_id")
     submissions = SubmissionFile.where(id: submission_ids).index_by(&:id)
 
-    json.map do |entry|
+    json.filter_map do |entry|
+      next unless submissions[entry["post_id"]]
+
       {
         score: entry["score"],
         submission: submissions[entry["post_id"]],
