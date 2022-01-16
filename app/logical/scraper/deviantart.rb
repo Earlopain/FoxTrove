@@ -15,7 +15,7 @@ module Scraper
     end
 
     def fetch_next_batch
-      json = make_api_call("gallery/allgallery/all", {
+      json = make_api_call("gallery/all", {
         username: @identifier,
         limit: 24,
         mature_content: true,
@@ -23,7 +23,7 @@ module Scraper
       })
       end_reached unless json["has_more"]
       @next_offset = json["next_offset"]
-      json["results"]
+      json["results"].reject { |r| r["content"].nil? }
     end
 
     def to_submission(submission)
