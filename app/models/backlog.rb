@@ -1,0 +1,2 @@
+class Backlog < ApplicationRecord
+end

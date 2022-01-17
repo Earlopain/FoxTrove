@@ -20,7 +20,7 @@ class ArtistsController < ApplicationController
 
   def show
     @artist = Artist.includes(:artist_urls).find(params[:id])
-    @submission_files = instance_search(search_params).for_url(search_params[:artist_urls]).for_artist(@artist.id).with_attached.includes(:e6_iqdb_entries, artist_submission: :artist_url).order(created_at_on_site: :desc).page params[:page]
+    @submission_files = instance_search(search_params).for_url(search_params[:artist_urls]).for_artist(@artist.id).with_everything.page params[:page]
     respond_with(@artist)
   end
 

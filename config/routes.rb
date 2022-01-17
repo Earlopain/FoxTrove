@@ -32,5 +32,8 @@ Rails.application.routes.draw do
   resources :submission_files, only: %i[show] do
     post :update_e6_iqdb
   end
+  resource :backlog, only: %i[create destroy] do
+    get :index
+  end
   root to: "static#home"
 end

@@ -3,13 +3,17 @@ class SubmissionFile < ApplicationRecord
   has_one_attached :original
   has_one_attached :sample
   has_many :e6_iqdb_entries, class_name: "E6IqdbData", dependent: :destroy
+  has_many :backlogs
 
   validate :original_present
 
   after_destroy_commit :remove_from_iqdb
   after_save_commit :update_variants_and_iqdb
 
+  default_scope { order(created_at_on_site: :desc) }
+
   scope :with_attached, -> { with_attached_sample.with_attached_original }
+  scope :with_everything, -> { with_attached.includes(:e6_iqdb_entries, artist_submission: :artist_url) }
   # TODO: Move this to the search concern
   scope :for_url, ->(input) { where(artist_submission: { artist_urls: { id: input } }) unless input.nil? || (input&.size == 1 && input[0].blank?) }
   scope :for_artist, ->(artist_id) { where(artist_submission: { artist_urls: { artist_id: artist_id } }) }
