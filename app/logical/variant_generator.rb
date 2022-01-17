@@ -14,7 +14,7 @@ module VariantGenerator
       stdout, stderr, status = Open3.capture3("/usr/bin/ffmpeg", *params)
       raise StandardError, "unable to transcode files\n#{stdout.chomp}\n\n#{stderr.chomp}" if status != 0
     else
-      raise StandardError, "Unhanlded content_type #{attachment.content_type}"
+      raise StandardError, "Unhandled content_type #{attachment.content_type}"
     end
     file
   end
