@@ -23,22 +23,18 @@ class CreateSubmissionFileWorker
             scraper.init
             scraper.get_download_link file["url_data"]
           end
-    begin
-      uri = Addressable::URI.parse url
-    rescue Addressable::URI::InvalidURIError
-      logger.info "Invalid url for artist_submission_id #{artist_submission_id}: #{url}"
-      return
-    end
     bin_file = Tempfile.new(binmode: true)
-    # TODO: Error handling
-    Sites.download_file bin_file, uri, definition
+    response = Sites.download_file bin_file, url, definition
+
+    raise StandardError, "Failed to download #{uri}: #{response.code}" if response.code != 200
+
     submission_file = SubmissionFile.new(
       artist_submission_id: artist_submission_id,
       direct_url: url,
       created_at_on_site: file["created_at"],
       file_identifier: file["identifier"]
     )
-    submission_file.original.attach(io: bin_file, filename: File.basename(uri.path))
+    submission_file.original.attach(io: bin_file, filename: File.basename(url))
     submission_file.save
     submission_file.original.analyze
     submission_file.update_columns(
