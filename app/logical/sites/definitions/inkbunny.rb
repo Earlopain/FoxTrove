@@ -24,7 +24,7 @@ module Sites
       end
 
       def submission_template
-        "https://inkbunny.net/s/{site_submission_identifier}/"
+        "https://inkbunny.net/s/{site_submission_identifier}"
       end
     end
   end
