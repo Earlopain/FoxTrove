@@ -28,6 +28,12 @@ class CreateSubmissionFileWorker
 
     raise StandardError, "Failed to download #{uri}: #{response.code}" if response.code != 200
 
+    # Deviantart doesn't have to return only images.
+    # No way to find this out through the api response as far as I'm aware.
+    # https://www.deviantart.com/fr95/art/779625010/
+    mime_type = Marcel::MimeType.for bin_file
+    return if mime_type.in? ["image/vnd.adobe.photoshop"]
+
     submission_file = SubmissionFile.new(
       artist_submission_id: artist_submission_id,
       direct_url: url,
