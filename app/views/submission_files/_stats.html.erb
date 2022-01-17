@@ -13,9 +13,10 @@
   <span><%= time_ago artist_submission.created_at_on_site %></span>
   <span class="submission-links">
       <%= site_icon artist_url, link_target: gallery_url(artist_url), title: artist_url.identifier_on_site %>
-    | <%= link_to_external "S", submission_url(artist_submission), title: "Original Source" %>
-    | <%= link_to "D", rails_blob_url(submission_file.original, disposition: :inline), title: "Direct Link Onsite" %>
-    | <%= link_to "R", submission_file_path(submission_file) , title: "Similar Indexed" %>
+    | <%= link_to_external "SRC", submission_url(artist_submission), title: "Original Source" %>
+    | <%= link_to_external "DLE", submission_file.direct_url, title: "Direct Link External" %>
+    | <%= link_to "DLO", rails_blob_url(submission_file.original, disposition: :inline), title: "Direct Link Onsite" %>
+    | <%= link_to "REV", submission_file_path(submission_file) , title: "Similar Indexed" %>
   </span>
   <span class="e6-links">
     <%= render "submission_files/e6_iqdb_stats", submission_file: submission_file %>
