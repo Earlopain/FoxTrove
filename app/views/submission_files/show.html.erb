@@ -1,15 +1,15 @@
 <%= render "secondary_links" %>
 
-<h1>Submission from <%= @submission_file.artist_submission.artist_url.identifier_on_site %></h1>
+<h1>Submission from <%= @submission_file.artist_url.identifier_on_site %></h1>
 <div class="original">
   <div>
-    <% if @submission_file.artist_submission.title_on_site.present? %>
+    <% if @artist_submission.title_on_site.present? %>
       <div class="title">
-        <h4><%= @submission_file.artist_submission.title_on_site %></h4>
+        <h4><%= @artist_submission.title_on_site %></h4>
       </div>
     <% end %>
     <div class="description">
-      <%= @submission_file.artist_submission.description_on_site %>
+      <%= @artist_submission.description_on_site %>
     </div>
   </div>
   <br>

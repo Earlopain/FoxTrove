@@ -22,6 +22,14 @@ class SubmissionFile < ApplicationRecord
   scope :not_uploaded, -> { where("not exists (select from e6_iqdb_data where submission_files.id = e6_iqdb_data.submission_file_id)") }
   scope :exact_match, -> { joins(:e6_iqdb_entries).where("size = post_size") }
 
+  def artist
+    artist_submission.artist_url.artist
+  end
+
+  def artist_url
+    artist_submission.artist_url
+  end
+
   def original_present
     errors.add(:original_file, "not attached") unless original.attached?
   end
