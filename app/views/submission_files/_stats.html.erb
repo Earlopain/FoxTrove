@@ -10,10 +10,12 @@
     <%= "#{submission_file.width}x#{submission_file.height}" %>, 
     <%= number_to_human_size submission_file.size %>
   </span>
-  <span><%= time_ago artist_submission.created_at_on_site %></span>
+  <span class="submission-time-ago">
+    <%= site_icon artist_url, link_target: gallery_url(artist_url), title: artist_url.identifier_on_site %>
+    <%= time_ago artist_submission.created_at_on_site %>
+  </span>
   <span class="submission-links">
-      <%= site_icon artist_url, link_target: gallery_url(artist_url), title: artist_url.identifier_on_site %>
-    | <%= link_to_external "SRC", submission_url(artist_submission), title: "Original Source" %>
+    <%= link_to_external "SRC", submission_url(artist_submission), title: "Original Source" %>
     | <%= link_to_external "DLE", submission_file.direct_url, title: "Direct Link External" %>
     | <%= link_to "DLO", rails_blob_url(submission_file.original, disposition: :inline), title: "Direct Link Onsite" %>
     | <%= link_to "REV", submission_file_path(submission_file) , title: "Similar Indexed" %>
