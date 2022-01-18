@@ -22,6 +22,10 @@ module Scraper
       end_reached if json["pages_count"] == json["page"]
       submission_ids = json["submissions"].map { |entry| entry["submission_id"] }
       submissions = submission_details(submission_ids).reject { |submission| submission["last_file_update_datetime"].nil? }
+      submissions = submissions.filter_map do |s|
+        s["files"].reject! { |file| file["mimetype"].in? %w[application/x-shockwave-flash] }
+        s unless s["files"].empty?
+      end
       @page += 1
       submissions
     end
