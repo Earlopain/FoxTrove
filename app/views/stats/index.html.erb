@@ -1,12 +1,19 @@
+<h1>Artists</h1>
+Total: <%= Artist.count %><br>
+URLs: <%= ArtistUrl.count %><br>
+Submissions: <%= ArtistSubmission.count %><br>
+Files:  <%= SubmissionFile.count %><br>
+
+<h1>Storage</h1>
+Original: <%= number_to_human_size(@original_size) %><br>
+Samples: <%= number_to_human_size(@sample_size) %>
+
 <h1>Sidekiq Stats</h1>
 
-Pending Scraping: <%= SidekiqStats.scraping_queued.values.sum %>
+Pending Scraping: <%= SidekiqStats.scraping_queued.values.sum %><br>
+Pending Submission File Downloads: <%= SidekiqStats.submission_download_queued.values.sum %><br>
+Pending E6 IQDB Calls: <%= SidekiqStats.e6_iqdb_queued.values.sum %><br>
 <br>
-Pending Submission File Downloads: <%= SidekiqStats.submission_download_queued.values.sum %>
-<br>
-Pending E6 IQDB Calls: <%= SidekiqStats.e6_iqdb_queued.values.sum %>
-<br><br>
-
 <% @artist_urls.each do |url| %>
   <%= render "artists/artist_link", url: url %>
 <% end %>
