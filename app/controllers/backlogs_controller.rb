@@ -1,5 +1,17 @@
 class BacklogsController < ApplicationController
-  def index
-    @submission_files = SubmissionFile.with_everything.joins(:backlogs).where(backlogs: { user_id: CurrentUser.id }).page params[:page]
+  before_action :member_only
+
+  def create
+    Backlog.create!(
+      user_id: CurrentUser.id,
+      submission_file_id: params[:submission_file_id]
+    )
+  end
+
+  def destroy
+    backlog = Backlog.find(params[:id])
+    raise User::PrivilegeError if backlog.user != CurrentUser.user
+
+    backlog.destroy
   end
 end

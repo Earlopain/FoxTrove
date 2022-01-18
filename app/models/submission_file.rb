@@ -10,10 +10,8 @@ class SubmissionFile < ApplicationRecord
   after_destroy_commit :remove_from_iqdb
   after_save_commit :update_variants_and_iqdb
 
-  default_scope { order(created_at_on_site: :desc) }
-
   scope :with_attached, -> { with_attached_sample.with_attached_original }
-  scope :with_everything, -> { with_attached.includes(:e6_iqdb_entries, artist_submission: :artist_url) }
+  scope :with_everything, ->(user_id) { with_attached.includes(:e6_iqdb_entries, :backlogs, artist_submission: :artist_url).joins("left outer join backlogs on backlogs.submission_file_id = submission_files.id and backlogs.user_id = #{user_id}") }
   # TODO: Move this to the search concern
   scope :for_url, ->(input) { where(artist_submission: { artist_urls: { id: input } }) unless input.nil? || (input&.size == 1 && input[0].blank?) }
   scope :for_artist, ->(artist_id) { where(artist_submission: { artist_urls: { artist_id: artist_id } }) }

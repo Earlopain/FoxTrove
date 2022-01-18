@@ -13,6 +13,13 @@
   <span class="submission-time-ago">
     <%= site_icon artist_url, link_target: gallery_url(artist_url), title: artist_url.identifier_on_site %>
     <%= time_ago artist_submission.created_at_on_site %>
+    <% if CurrentUser.is_member? %>
+      <% if submission_file.backlogs.first.present? %>
+        <%= link_to "-", backlog_path(submission_file.backlogs.first), method: :delete %>
+      <% else %>
+        <%= link_to "+", backlogs_path(submission_file_id: submission_file.id), method: :post %>
+      <% end %>
+    <% end %>
   </span>
   <span class="submission-links">
     <%= link_to_external "SRC", submission_url(artist_submission), title: "Original Source" %>
