@@ -1,6 +1,6 @@
 class SessionsController < ApplicationController
   def new
-    redirect_to(root_path, notice: "You are already logged in") unless CurrentUser.is_anon?
+    redirect_to(root_path, notice: "You are already logged in") unless current_user.is_anon?
   end
 
   def create

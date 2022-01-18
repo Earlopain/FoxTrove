@@ -13,7 +13,7 @@
   <span class="submission-time-ago">
     <%= site_icon artist_url, link_target: gallery_url(artist_url), title: artist_url.identifier_on_site %>
     <%= time_ago artist_submission.created_at_on_site %>
-    <% if CurrentUser.is_member? %>
+    <% if current_user.is_member? %>
       <% if submission_file.backlogs.first.present? %>
         <%= link_to "-", backlog_path(submission_file.backlogs.first), method: :delete %>
       <% else %>

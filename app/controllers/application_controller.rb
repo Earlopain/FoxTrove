@@ -1,7 +1,8 @@
 class ApplicationController < ActionController::Base
   before_action :normalize_params
-  before_action :set_current_user
   around_action :with_time_zone
+
+  helper_method :current_user
 
   rescue_from Exception, with: :rescue_exception
 
@@ -27,18 +28,21 @@ class ApplicationController < ActionController::Base
     redirect_to url_for(params: new_params) if new_params != request.query_parameters
   end
 
-  def set_current_user
-    CurrentUser.user = SessionLoader.new(request).load
-    CurrentUser.ip_addr = request.remote_ip
+  def current_user
+    @current_user ||= SessionLoader.new(request).load
+  end
+
+  def current_user_ip_addr
+    request.remote_ip
   end
 
   def with_time_zone
-    Time.use_zone(CurrentUser.time_zone) { yield }
+    Time.use_zone(current_user.time_zone) { yield }
   end
 
   User::Levels.ordered.each do |level|
     define_method("#{level.downcase}_only") do
-      raise User::PrivilegeError unless CurrentUser.user.send("is_#{level}?")
+      raise User::PrivilegeError unless current_user.send("is_#{level}?")
     end
   end
 
@@ -58,14 +62,14 @@ class ApplicationController < ActionController::Base
   def rescue_exception(exception)
     @exception = exception
 
-    if @exception.is_a?(User::PrivilegeError) && CurrentUser.is_anon?
+    if @exception.is_a?(User::PrivilegeError) && current_user.is_anon?
       redirect_to new_session_path(previous_url: request.fullpath)
       return
     end
 
     @params = {
       params: request.filtered_parameters.except(:authenticity_token),
-      user_id: CurrentUser.id,
+      user_id: current_user.id,
       referrer: request.referer,
       user_agent: request.user_agent,
     }

@@ -186,8 +186,6 @@ GEM
       zeitwerk (~> 2.5)
     rake (13.0.6)
     redis (4.5.1)
-    request_store (1.5.0)
-      rack (>= 1.4)
     responders (3.0.1)
       actionpack (>= 5.0)
       railties (>= 5.0)
@@ -271,7 +269,6 @@ DEPENDENCIES
   pg (~> 1.1)
   puma (~> 5.5)
   rails (~> 7.0)
-  request_store
   responders
   rspec-parameterized
   rspec-rails (~> 5.0.0)

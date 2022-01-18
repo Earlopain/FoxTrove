@@ -10,6 +10,7 @@ class ArtistsController < ApplicationController
 
   def create
     @artist = Artist.new(artist_params)
+    @artist.creator = current_user
     add_new_artist_urls_and_save(@artist)
     respond_with(@artist)
   end
@@ -23,7 +24,7 @@ class ArtistsController < ApplicationController
     @submission_files = instance_search(search_params)
                         .for_artist(@artist.id)
                         .for_url(search_params[:artist_urls])
-                        .with_everything(CurrentUser.id)
+                        .with_everything(current_user.id)
                         .order(created_at_on_site: :desc)
                         .page params[:page]
     respond_with(@artist)
@@ -97,6 +98,7 @@ class ArtistsController < ApplicationController
       end
 
       artist_url = artist.artist_urls.new(
+        creator: current_user,
         site_type: result[:site].enum_value,
         identifier_on_site: result[:identifier],
         created_at_on_site: Time.current,

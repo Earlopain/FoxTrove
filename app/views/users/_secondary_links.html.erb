@@ -1,5 +1,5 @@
 <% content_for(:secondary_links) do %>
-  <% unless CurrentUser.is_anon? %>
+  <% unless current_user.is_anon? %>
     <%= subnav_link_to "Sign Out", session_path, method: :delete %>
   <% end %>
 <% end %>
