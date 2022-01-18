@@ -1,3 +1,15 @@
 <div class="artist-link">
   <%= site_icon url, text: url.identifier_on_site, link_target: gallery_url(url), title: display_name(url) %>
+  <% if url.id.in? SidekiqStats.scraping_now %>
+    [Scraping now!]
+  <% end %>
+  <% if SidekiqStats.scraping_queued[url.id] %>
+    [Scraping queued]
+  <% end %>
+  <% if SidekiqStats.submission_download_queued[url.id] %>
+    [<%= SidekiqStats.submission_download_queued[url.id] %> pending file downloads]
+  <% end %>
+  <% if SidekiqStats.e6_iqdb_queued[url.id] %>
+    [<%= SidekiqStats.e6_iqdb_queued[url.id] %> pending e6 iqdb calls]
+  <% end %>
 </div>

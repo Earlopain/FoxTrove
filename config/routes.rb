@@ -37,5 +37,6 @@ Rails.application.routes.draw do
     post :update_e6_iqdb
   end
   resources :backlogs, only: %i[create destroy]
+  resources :stats, only: :index
   root to: "static#home"
 end

@@ -239,7 +239,6 @@ CREATE TABLE public.artist_urls (
     about_on_site text NOT NULL,
     scraping_disabled boolean DEFAULT false NOT NULL,
     last_scraped_at timestamp(6) with time zone,
-    sidekiq_job_id text,
     created_at timestamp(6) with time zone NOT NULL,
     updated_at timestamp(6) with time zone NOT NULL,
     site_type public.artist_url_sites NOT NULL
@@ -969,6 +968,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20211231175728'),
 ('20220110175714'),
 ('20220111084241'),
-('20220117214057');
+('20220117214057'),
+('20220118200359');
 
 
