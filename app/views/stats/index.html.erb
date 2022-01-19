@@ -5,6 +5,7 @@ Submissions: <%= ArtistSubmission.count %><br>
 Files:  <%= SubmissionFile.count %><br>
 
 <h1>Storage</h1>
+DB: <%= number_to_human_size(@db_size) %><br>
 Original: <%= number_to_human_size(@original_size) %><br>
 Samples: <%= number_to_human_size(@sample_size) %>
 
