@@ -17,6 +17,7 @@ class ArtistUrl < ApplicationRecord
   end
 
   def enqueue_scraping
-    ScrapeArtistUrlWorker.perform_async id
+    # FIXME: Check if scraper is enabled
+    ScrapeArtistUrlWorker.perform_async id if site.class == Sites::ScraperDefinition
   end
 end
