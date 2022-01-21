@@ -83,7 +83,8 @@ module Scraper
       html = Nokogiri::HTML(response.body)
       # Searching for "@lower scale" returns results from blue-scale
       relevant_submissions = html.css("#browse-search figure").select do |element|
-        element.css("figcaption a")[1].content.downcase == @identifier.downcase
+        # Remove _ from displayname, https://www.furaffinity.net/user/thesecretcave/ => The_Secret_Cave
+        element.css("figcaption a")[1].content.downcase.delete("_") == @identifier.downcase
       end
       relevant_submissions.map do |element|
         element.attributes["id"].value.split("-")[1]
