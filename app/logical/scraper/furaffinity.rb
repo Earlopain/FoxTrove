@@ -25,7 +25,7 @@ module Scraper
 
       html = get_submission_html single_submission_id
       # Old(?) text submissions are returned when searching by type  art
-      if html.at("submission-area submission-writing")
+      if html.at(".submission-area.submission-writing")
         []
       else
         time_string = html.css(".submission-id-container .popup_date").first.content.strip
