@@ -48,7 +48,7 @@ module Scraper
       s.description = submission[:description]
       created_at = extract_timestamp submission
       s.created_at = created_at
-      s.files.push({
+      s.add_file({
         url: submission[:url],
         created_at: created_at,
         identifier: "",

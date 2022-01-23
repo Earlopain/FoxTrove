@@ -36,7 +36,7 @@ module Scraper
       s.created_at = created_at
 
       submission[:files].each_with_index do |url, index|
-        s.files.push({
+        s.add_file({
           url: url,
           created_at: created_at,
           identifier: index,

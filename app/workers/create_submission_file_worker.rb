@@ -32,7 +32,7 @@ class CreateSubmissionFileWorker
     # No way to find this out through the api response as far as I'm aware.
     # https://www.deviantart.com/fr95/art/779625010/
     mime_type = Marcel::MimeType.for bin_file
-    return if mime_type.in? ["image/vnd.adobe.photoshop"]
+    return if mime_type.in? Scraper::Submission::MIME_IGNORE
 
     submission_file = SubmissionFile.new(
       artist_submission_id: artist_submission_id,

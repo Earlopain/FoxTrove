@@ -28,7 +28,7 @@ module Scraper
       s.created_at = created_at
 
       if submission["domain"] == "i.redd.it"
-        s.files.push({
+        s.add_file({
           url: submission["url"],
           created_at: created_at,
           identifier: "",
@@ -36,7 +36,7 @@ module Scraper
       elsif submission["domain"] == "reddit.com" && submission["media_metadata"].present?
         submission["media_metadata"].each do |identifier, data|
           data["m"] = "image/jpeg" if data["m"] == "image/jpg"
-          s.files.push({
+          s.add_file({
             url: "https://i.redd.it/#{identifier}.#{Marcel::EXTENSIONS.invert[data['m']]}",
             created_at: created_at,
             identifier: identifier,

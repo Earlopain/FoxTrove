@@ -92,7 +92,7 @@ module Scraper
               end
         created_at = extract_timestamp(tweet)
         s.created_at = created_at
-        s.files.push({
+        s.add_file({
           url: url,
           created_at: created_at,
           identifier: index,

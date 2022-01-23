@@ -35,7 +35,7 @@ module Scraper
       s.description = ""
       created_at = extract_timestamp submission
       s.created_at = created_at
-      s.files.push({}.tap do |hash|
+      s.add_file({}.tap do |hash|
         hash[:url_data] = [submission["deviationid"]] if submission["is_downloadable"]
         hash[:url] = submission["content"]["src"] unless submission["is_downloadable"]
         hash[:created_at] = created_at

@@ -24,7 +24,7 @@ module Scraper
       s.created_at = created_at
 
       submission["assets"].each do |asset|
-        s.files.push({
+        s.add_file({
           url: asset["image_url"],
           created_at: created_at,
           identifier: asset["id"],

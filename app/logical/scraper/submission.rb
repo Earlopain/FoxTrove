@@ -2,11 +2,26 @@ module Scraper
   class Submission
     attr_accessor :identifier, :created_at, :title, :description, :files
 
+    MIME_IGNORE = %w[
+      application/x-shockwave-flash
+      video/x-flv
+      application/vnd.adobe.flash.movie
+      image/vnd.adobe.photoshop
+    ].freeze
+
     def initialize
       @files = []
     end
 
+    def add_file(file)
+      return if MIME_IGNORE.include? file[:mime_type]
+
+      files.push(file)
+    end
+
     def save(artist_url)
+      return if files.empty?
+
       artist_submission = ArtistSubmission.find_by(
         artist_url: artist_url,
         identifier_on_site: identifier

@@ -32,7 +32,7 @@ module Scraper
       s.created_at = created_at
 
       submission["media"]["submission"].each do |entry|
-        s.files.push({
+        s.add_file({
           url: entry["url"],
           created_at: created_at,
           identifier: entry["mediaid"],
