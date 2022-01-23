@@ -5,6 +5,9 @@
     <tr>
       <td>ID</td>
       <td>Name</td>
+      <td>URLs</td>
+      <td>Submissions</td>
+      <td>Files</td>
     </tr>
   </thead>
   <tbody>
@@ -12,7 +15,12 @@
       <tr>
         <td><%= link_to artist.id, artist_path(artist) %></td>
         <td><%= artist.name %></td>
+        <td><%= artist.artist_urls.count %></td>
+        <td><%= artist.submissions.count %></td>
+        <td><%= artist.submission_files.count %></td>
       </tr>
     <% end %>
   </tbody>
 </table>
+
+<%= paginate @artists %>
