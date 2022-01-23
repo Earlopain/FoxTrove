@@ -64,7 +64,7 @@ module Scraper
       html = Nokogiri::HTML(response.body)
       media_object = html.at("[itemtype='https://schema.org/MediaObject']")
       main_image_url = media_object.at(".image img").attributes["src"].value
-      secondary_image_urls = media_object.css("#author_comments img").map { |e| e.attributes["data-smartload-src"].value }
+      secondary_image_urls = media_object.css("#author_comments img[data-smartload-src]").map { |e| e.attributes["data-smartload-src"].value }
       {
         identifier: url.split("/").pop,
         title: media_object.at("[itemprop='name']").content.strip,
