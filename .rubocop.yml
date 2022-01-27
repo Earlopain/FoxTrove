@@ -55,6 +55,9 @@ Style/StringLiterals:
 Style/FrozenStringLiteralComment:
   Enabled: false
 
+Style/Lambda:
+  EnforcedStyle: literal
+
 Style/NumericPredicate:
   EnforcedStyle: comparison
 
