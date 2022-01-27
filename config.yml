@@ -24,6 +24,8 @@ e6_apikey:
 furaffinity_cookie_a:
 furaffinity_cookie_b:
 weasyl_apikey:
+furrynetwork_user:
+furrynetwork_pass:
 
 # These settings require a server restart
 # Controls wether or not the logging should be intercepted

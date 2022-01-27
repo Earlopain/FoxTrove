@@ -25,6 +25,10 @@ module Sites
       def username_identifier_regex
         /[a-zA-Z0-9_\-]{3,15}/
       end
+
+      def submission_template
+        "https://furrynetwork.com/artwork/{site_submission_identifier}/"
+      end
     end
   end
 end

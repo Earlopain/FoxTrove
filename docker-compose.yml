@@ -25,6 +25,7 @@ services:
       - redis
       - memcached
       - iqdb
+      - selenium
     ports:
       - 9000:9000
     tty: true
@@ -54,6 +55,12 @@ services:
     command: ["iqdb", "http", "0.0.0.0", "5588", "/iqdb/data.db"]
     volumes:
       - iqdb_data:/iqdb
+
+  selenium:
+    image: selenium/standalone-chrome:4.1.1-20220121
+    shm_size: 2gb
+    ports:
+      - 7900:7900
 
 volumes:
   db_data:

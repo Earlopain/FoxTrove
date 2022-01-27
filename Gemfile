@@ -13,6 +13,7 @@ gem "simple_form"
 gem "responders"
 gem "kaminari"
 gem "nokogiri"
+gem "selenium-webdriver"
 
 gem "sidekiq"
 gem "sidekiq-unique-jobs"

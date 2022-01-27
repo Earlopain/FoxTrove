@@ -53,6 +53,7 @@ module Sites
     Definitions::Furaffinity,
     Definitions::Weasyl,
     Definitions::Newgrounds,
+    Definitions::Furrynetwork,
   ].map { |definition| ScraperDefinition.new definition }.freeze
 
   SIMPLE = [
@@ -82,7 +83,6 @@ module Sites
     Definitions::HentaiFoundry,
     Definitions::Pillowfort,
     Definitions::Commishes,
-    Definitions::Furrynetwork,
   ].map { |definition| SimpleDefinition.new definition }.freeze
 
   ALL = (SCRAPERS + SIMPLE).freeze
