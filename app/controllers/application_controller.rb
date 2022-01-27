@@ -63,7 +63,11 @@ class ApplicationController < ActionController::Base
     @exception = exception
 
     if @exception.is_a?(User::PrivilegeError) && current_user.is_anon?
-      redirect_to new_session_path(previous_url: request.fullpath)
+      if request.get?
+        redirect_to new_session_path(previous_url: request.fullpath)
+      else
+        redirect_to new_session_path
+      end
       return
     end
 
