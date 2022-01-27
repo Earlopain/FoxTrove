@@ -54,10 +54,10 @@ module Sites
     Definitions::Weasyl,
     Definitions::Newgrounds,
     Definitions::Furrynetwork,
+    Definitions::Sofurry,
   ].map { |definition| ScraperDefinition.new definition }.freeze
 
   SIMPLE = [
-    Definitions::Sofurry,
     Definitions::Patreon,
     Definitions::Pixiv,
     Definitions::Tumblr,

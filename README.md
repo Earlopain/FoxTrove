@@ -28,6 +28,7 @@ E6 is limiting iqdb to one call per two seconds, which means that you will need 
 * Inkbunny
 * Newgrounds
 * Reddit
+* Sofurry
 * Twitter
 * Weasyl
 
