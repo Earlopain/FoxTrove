@@ -49,6 +49,9 @@ Rails/HttpStatus:
 Style/EmptyMethod:
   EnforcedStyle: expanded
 
+Style/InfiniteLoop:
+  Enabled: false
+
 Style/StringLiterals:
   EnforcedStyle: double_quotes
 
