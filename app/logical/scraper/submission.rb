@@ -7,6 +7,7 @@ module Scraper
       video/x-flv
       application/vnd.adobe.flash.movie
       image/vnd.adobe.photoshop
+      application/pdf
     ].freeze
 
     def initialize
