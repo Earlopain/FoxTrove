@@ -6,6 +6,6 @@ class SubmissionFilesController < ApplicationController
   end
 
   def update_e6_iqdb
-    E6IqdbQueryWorker.perform_async params[:submission_file_id], true
+    E6IqdbQueryWorker.perform_async params[:id], true
   end
 end

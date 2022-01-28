@@ -5,21 +5,19 @@ Rails.application.routes.draw do
   mount Sidekiq::Web, at: "/sidekiq"
 
   resource :iqdb, controller: "iqdb", only: [] do
-    collection do
-      get :index
-      post :search
-    end
+    get :index
+    post :search
   end
   resources :artists, only: %i[index new create show destroy edit update] do
-    post :enqueue_all_urls
+    member do
+      post :enqueue_all_urls
+    end
   end
   resource :session, only: %i[create destroy new]
   resource :static, controller: "static", only: [] do
-    collection do
-      get :about
-      get :contact
-      get :home
-    end
+    get :about
+    get :contact
+    get :home
   end
   resource :debug, controller: "debug", only: [] do
     get :index
@@ -34,7 +32,9 @@ Rails.application.routes.draw do
     end
   end
   resources :submission_files, only: %i[show] do
-    post :update_e6_iqdb
+    member do
+      post :update_e6_iqdb
+    end
   end
   resources :backlogs, only: %i[create destroy]
   resources :stats, only: :index

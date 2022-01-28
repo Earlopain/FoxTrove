@@ -49,7 +49,7 @@ class ArtistsController < ApplicationController
   end
 
   def enqueue_all_urls
-    @artist = Artist.find(params[:artist_id])
+    @artist = Artist.find(params[:id])
     @artist.artist_urls.each(&:enqueue_scraping)
   end
 
