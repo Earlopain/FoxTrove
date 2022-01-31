@@ -18,4 +18,6 @@ RUN yarn install
 COPY Gemfile Gemfile.lock ./
 RUN bundle install && gem install foreman
 
+RUN echo "IRB.conf[:USE_AUTOCOMPLETE] = false" > ~/.irbrc
+
 CMD foreman start
