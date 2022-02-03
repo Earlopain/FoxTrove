@@ -8,6 +8,8 @@ class E6IqdbQueryWorker
   end
 
   def perform(submission_file_id, remove_similar)
+    return unless E6Iqdb.enabled?
+
     submission_file = SubmissionFile.find_by id: submission_file_id
     return unless submission_file
 

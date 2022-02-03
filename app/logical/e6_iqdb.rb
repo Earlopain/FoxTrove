@@ -1,6 +1,10 @@
 module E6Iqdb
   URL = "https://e621.net/iqdb_queries.json".freeze
 
+  def self.enabled?
+    Config.e6_user.present? && Config.e6_apikey.present?
+  end
+
   def self.query(file)
     # FIXME: Proper rate limiting
     sleep 2
