@@ -51,8 +51,7 @@ services:
     image: memcached:alpine
 
   iqdb:
-    build: https://github.com/Earlopain/iqdb.git
-    command: ["iqdb", "http", "0.0.0.0", "5588", "/iqdb/data.db"]
+    build: ./docker/iqdb
     volumes:
       - iqdb_data:/iqdb
 
