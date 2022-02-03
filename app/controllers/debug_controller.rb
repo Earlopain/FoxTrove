@@ -8,7 +8,7 @@ class DebugController < ApplicationController
   end
 
   def generate_spritemap
-    puts `bin/rails assets:generate_spritemap`
+    `bin/rails assets:generate_spritemap`
     redirect_to debug_path
   end
 
