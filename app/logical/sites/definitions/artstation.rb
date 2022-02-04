@@ -17,6 +17,7 @@ module Sites
 
       def gallery_templates
         [
+          "artstation.com/artist/{site_artist_identifier}",
           "artstation.com/{site_artist_identifier}",
           "{site_artist_identifier}.artstation.com/",
         ]
