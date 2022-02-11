@@ -13,8 +13,15 @@ Links:
 <div class="search">
   <%= simple_form_for(:search, url: artist_url(@artist), method: :get) do |f| %>
     <%= f.input :artist_urls, label: "URLs", collection: active_artist_urls_collection(@artist), selected: params.dig(:search, :artist_urls), input_html: { multiple: true } %>
-    <%= f.input :upload_status, label: "Status", collection: [["Larger Only", "larger_only"], ["Already Uploaded", "already_uploaded"], ["Exact Match", "exact_match"], ["Not Uploaded", "not_uploaded"]], include_blank: true, selected: params.dig(:search, :upload_status) %>
-    <%= f.input :larger_only_treshold, label: "Larger Only Treshold (kB)", input_html: { value: params.dig(:search, :larger_only_treshold) } %>
+    <%= f.input :upload_status, label: "Status", collection: [
+      ["Larger Only (Filesize)", "larger_only_filesize"],
+      ["Larger Only (Dimensions)", "larger_only_dimensions"],
+      ["Larger Only (Both)", "larger_only_both"],
+      ["Already Uploaded", "already_uploaded"],
+      ["Exact Match", "exact_match"],
+      ["Not Uploaded", "not_uploaded"]
+    ], include_blank: true, selected: params.dig(:search, :upload_status) %>
+    <%= f.input :larger_only_filesize_treshold, label: "Larger Only Treshold (kB)", input_html: { value: params.dig(:search, :larger_only_size_treshold) } %>
     <%= f.submit "Search" %>
   <% end %>
 </div>

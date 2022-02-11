@@ -62,15 +62,19 @@ class ArtistsController < ApplicationController
   end
 
   def search_params
-    params.fetch(:search, {}).permit(:upload_status, :larger_only_treshold, artist_urls: [])
+    params.fetch(:search, {}).permit(:upload_status, :larger_only_filesize_treshold, artist_urls: [])
   end
 
   def instance_search(params)
     q = SubmissionFile
     if params[:upload_status].present?
       q = case params[:upload_status]
-          when "larger_only"
-            q.larger_only((params[:larger_only_treshold] || 10).to_i.kilobytes)
+          when "larger_only_filesize"
+            q.larger_only_filesize((params[:larger_only_filesize_treshold] || 10).to_i.kilobytes)
+          when "larger_only_dimensions"
+            q.larger_only_dimensions
+          when "larger_only_both"
+            q.larger_only_both((params[:larger_only_filesize_treshold] || 10).to_i.kilobytes)
           when "exact_match"
             q.exact_match
           when "already_uploaded"
