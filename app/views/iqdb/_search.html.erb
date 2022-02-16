@@ -1,0 +1,12 @@
+<%= form_with url: search_iqdb_path do |form| %>
+  <div>
+    <%= form.label :url, "URL" %>
+    <%= form.text_field :url %>
+  </div>
+  <div>
+    <%= form.label :file, "File" %>
+    <%= form.file_field :file %>
+  </div>
+
+  <%= form.submit "Search" %>
+<% end %>
