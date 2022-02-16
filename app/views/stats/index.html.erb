@@ -20,3 +20,5 @@ Pending Submission File Downloads: <%= SidekiqStats.submission_download_queued.v
 <% @artist_urls.each do |url| %>
   <%= render "artists/artist_link", url: url %>
 <% end %>
+
+<% page_title "Stats" %>

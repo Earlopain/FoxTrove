@@ -23,3 +23,5 @@
     <%= render "submission_files/sample", submission_file: entry[:submission], similarity: entry[:score] %>
   <% end %>
 </div>
+
+<% page_title "#{@submission_file.artist.name} on #{@submission_file.artist_url.site.enum_value}" %>

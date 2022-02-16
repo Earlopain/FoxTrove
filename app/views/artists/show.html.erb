@@ -30,3 +30,5 @@ Links:
   <%= render "submission_files/sample", submission_file: file if file.original.analyzed? && file.sample&.attached? %>
 <% end %>
 <%= paginate @submission_files %>
+
+<% page_title "#{@artist.name}" %>

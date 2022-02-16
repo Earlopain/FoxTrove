@@ -26,4 +26,14 @@ module ApplicationHelper
   def link_to_external(text, url, **options)
     link_to text, url, **options, rel: "nofollow noopener noreferrer"
   end
+
+  def page_title(title = nil)
+    if title.present?
+      content_for(:page_title) { title }
+    elsif content_for? :page_title
+      "#{content_for(:page_title)} - #{Config.app_name}"
+    else
+      Config.app_name
+    end
+  end
 end
