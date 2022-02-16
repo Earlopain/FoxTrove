@@ -28,7 +28,7 @@ module Sites
       end
 
       def submission_template
-        "https://www.artstation.com/artwork/{site_submission_identifier}/"
+        "https://www.artstation.com/artwork/{site_submission_identifier}"
       end
     end
   end

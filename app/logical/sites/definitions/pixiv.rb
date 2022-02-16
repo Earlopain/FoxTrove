@@ -27,7 +27,7 @@ module Sites
       end
 
       def submission_template
-        "https://www.pixiv.net/artworks/{site_submission_identifier}/"
+        "https://www.pixiv.net/artworks/{site_submission_identifier}"
       end
 
       # TODO: Hook this up

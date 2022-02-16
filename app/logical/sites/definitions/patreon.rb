@@ -24,7 +24,7 @@ module Sites
       end
 
       def submission_template
-        "https://www.patreon.com/posts/{site_submission_identifier}/"
+        "https://www.patreon.com/posts/{site_submission_identifier}"
       end
     end
   end

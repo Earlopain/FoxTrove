@@ -27,7 +27,7 @@ module Sites
       end
 
       def submission_template
-        "https://furrynetwork.com/artwork/{site_submission_identifier}/"
+        "https://furrynetwork.com/artwork/{site_submission_identifier}"
       end
     end
   end

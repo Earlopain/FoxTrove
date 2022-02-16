@@ -27,7 +27,7 @@ module Sites
       end
 
       def submission_template
-        "https://www.furaffinity.net/view/{site_submission_identifier}/"
+        "https://www.furaffinity.net/view/{site_submission_identifier}"
       end
     end
   end

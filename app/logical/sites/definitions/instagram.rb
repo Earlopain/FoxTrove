@@ -24,7 +24,7 @@ module Sites
       end
 
       def submission_template
-        "https://www.instagram.com/p/{site_submission_identifier}/"
+        "https://www.instagram.com/p/{site_submission_identifier}"
       end
     end
   end

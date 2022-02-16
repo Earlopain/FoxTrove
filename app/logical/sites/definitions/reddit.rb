@@ -27,7 +27,7 @@ module Sites
       end
 
       def submission_template
-        "https://redd.it/{site_submission_identifier}/"
+        "https://redd.it/{site_submission_identifier}"
       end
     end
   end

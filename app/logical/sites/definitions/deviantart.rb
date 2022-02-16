@@ -27,7 +27,7 @@ module Sites
       end
 
       def submission_template
-        "https://www.deviantart.com/{site_artist_identifier}/art/{site_submission_identifier}/"
+        "https://www.deviantart.com/{site_artist_identifier}/art/{site_submission_identifier}"
       end
     end
   end

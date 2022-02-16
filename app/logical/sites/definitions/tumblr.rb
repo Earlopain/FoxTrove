@@ -24,7 +24,7 @@ module Sites
       end
 
       def submission_template
-        "https://{site_artist_identifier}.tumblr.com/post/{site_submission_identifier}/"
+        "https://{site_artist_identifier}.tumblr.com/post/{site_submission_identifier}"
       end
     end
   end

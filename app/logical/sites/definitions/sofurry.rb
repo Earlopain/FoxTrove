@@ -24,7 +24,7 @@ module Sites
       end
 
       def submission_template
-        "https://www.sofurry.com/view/{site_submission_identifier}/"
+        "https://www.sofurry.com/view/{site_submission_identifier}"
       end
     end
   end

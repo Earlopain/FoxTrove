@@ -27,7 +27,7 @@ module Sites
       end
 
       def submission_template
-        "https://www.weasyl.com/~{site_artist_identifier}/submissions/{site_submission_identifier}/"
+        "https://www.weasyl.com/~{site_artist_identifier}/submissions/{site_submission_identifier}"
       end
     end
   end

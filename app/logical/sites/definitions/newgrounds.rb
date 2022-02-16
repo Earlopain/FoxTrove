@@ -24,7 +24,7 @@ module Sites
       end
 
       def submission_template
-        "https://www.newgrounds.com/art/view/{site_artist_identifier}/{site_submission_identifier}/"
+        "https://www.newgrounds.com/art/view/{site_artist_identifier}/{site_submission_identifier}"
       end
     end
   end

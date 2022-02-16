@@ -28,7 +28,7 @@ module Sites
       end
 
       def submission_template
-        "https://twitter.com/{site_artist_identifier}/status/{site_submission_identifier}/"
+        "https://twitter.com/{site_artist_identifier}/status/{site_submission_identifier}"
       end
     end
   end
