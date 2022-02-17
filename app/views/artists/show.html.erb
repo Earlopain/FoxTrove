@@ -12,7 +12,7 @@ Links:
 
 <div class="search">
   <%= hideable_search(artist_url(@artist)) do |f| %>
-    <%= f.input :artist_urls, label: "URLs", collection: active_artist_urls_collection(@artist), selected: params.dig(:search, :artist_urls), input_html: { multiple: true } %>
+    <%= f.input :artist_urls, label: "URLs", collection: active_artist_urls_collection(@artist), input_html: { multiple: true } %>
     <%= f.input :upload_status, label: "Status", collection: [
       ["Larger Only (Filesize)", "larger_only_filesize"],
       ["Larger Only (Dimensions)", "larger_only_dimensions"],
@@ -20,8 +20,8 @@ Links:
       ["Already Uploaded", "already_uploaded"],
       ["Exact Match", "exact_match"],
       ["Not Uploaded", "not_uploaded"]
-    ], include_blank: true, selected: params.dig(:search, :upload_status) %>
-    <%= f.input :larger_only_filesize_treshold, label: "Larger Only Treshold (kB)", input_html: { value: params.dig(:search, :larger_only_size_treshold) } %>
+    ], include_blank: true %>
+    <%= f.input :larger_only_filesize_treshold, label: "Larger Only Treshold (kB)" %>
     <%= f.submit "Search" %>
   <% end %>
 </div>
