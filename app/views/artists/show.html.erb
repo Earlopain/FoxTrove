@@ -11,7 +11,7 @@ Links:
 </div>
 
 <div class="search">
-  <%= simple_form_for(:search, url: artist_url(@artist), method: :get) do |f| %>
+  <%= hideable_search(artist_url(@artist)) do |f| %>
     <%= f.input :artist_urls, label: "URLs", collection: active_artist_urls_collection(@artist), selected: params.dig(:search, :artist_urls), input_html: { multiple: true } %>
     <%= f.input :upload_status, label: "Status", collection: [
       ["Larger Only (Filesize)", "larger_only_filesize"],
