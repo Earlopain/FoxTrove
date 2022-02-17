@@ -9,6 +9,7 @@ class ApplicationController < ActionController::Base
   def normalize_params
     return unless request.get?
 
+    params[:search] ||= ActionController::Parameters.new
     deep_reject_blank = lambda do |hash|
       hash.transform_values do |v|
         if v.blank?
