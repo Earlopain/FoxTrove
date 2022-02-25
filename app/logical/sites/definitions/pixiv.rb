@@ -18,7 +18,7 @@ module Sites
       def gallery_templates
         [
           "pixiv.net/{pixiv_lang}users/{site_artist_identifier}",
-          "pixiv.net/member.php?id={site_artist_identifier}/",
+          "pixiv.net/member.php?id={site_artist_identifier}",
         ]
       end
 
