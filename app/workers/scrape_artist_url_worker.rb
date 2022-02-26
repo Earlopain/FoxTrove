@@ -9,7 +9,7 @@ class ScrapeArtistUrlWorker
     return unless artist_url.site.class == Sites::ScraperDefinition
 
     scraper = artist_url.scraper
-    return unless scraper.enabled?
+    return if !scraper.enabled? || Config.send("#{artist_url.site_type}_disabled?")
 
     scraper.init
     while scraper.more?

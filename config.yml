@@ -13,6 +13,18 @@ log_ignore:
   - "/rails/active_storage"
   - "/sidekiq"
 
+# Disable individual scrapers
+artstation_disabled?: false
+deviantart_disabled?: false
+furaffinity_disabled?: false
+furrynetwork_disabled?: false
+inkbunny_disabled?: false
+newgrounds_disabled?: false
+reddit_disabled?: false
+sofurry_disabled?: false
+twitter_disabled?: false
+weasyl_disabled?: false
+
 # Credentials, overwrite in custom file
 inkbunny_user:
 inkbunny_pass:
