@@ -5,7 +5,7 @@ module Cache
     Rails.cache.fetch(key, expires_in: expires_in, &block)
   end
 
-  def write(key, expires_in = nil)
+  def write(key, value, expires_in = nil)
     Rails.cache.write(key, value, expires_in: expires_in)
   end
 
