@@ -14,6 +14,7 @@ gem "responders"
 gem "kaminari"
 gem "nokogiri"
 gem "selenium-webdriver"
+gem "rotp"
 
 gem "sidekiq"
 gem "sidekiq-unique-jobs"

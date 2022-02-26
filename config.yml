@@ -28,6 +28,10 @@ furrynetwork_user:
 furrynetwork_pass:
 sofurry_user:
 sofurry_pass:
+twitter_user:
+twitter_pass:
+# Only set if your account requires 2fa
+twitter_otp_secret:
 
 # These settings require a server restart
 # Controls wether or not the logging should be intercepted

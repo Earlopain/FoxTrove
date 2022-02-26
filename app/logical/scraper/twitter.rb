@@ -13,8 +13,8 @@ module Scraper
       # `filter:images` can't be used since it won't return sensitive media for guest accounts
       @search = "from:#{@identifier} -filter:retweets"
       @user_agent = random_user_agent
-      @guest_token = Cache.fetch("twitter-guest-token", 1.hour) do
-        fetch_guest_token(@search)
+      @auth_token, @csrf_token = Cache.fetch("twitter-tokens", 55.minutes) do
+        fetch_tokens
       end
       @cursor = ""
       @find_new_tweets_before_empty_response = false
@@ -22,7 +22,7 @@ module Scraper
     end
 
     def enabled?
-      true
+      Config.twitter_user.present? && Config.twitter_pass.present?
     end
 
     def fetch_next_batch
@@ -111,7 +111,8 @@ module Scraper
       url = "#{REQUEST_URL}?#{query_string(search, cursor)}"
       response = HTTParty.get(url, headers: {
         **api_headers(search),
-        "x-guest-token": @guest_token,
+        "x-csrf-token": @csrf_token,
+        "Cookie": "ct0=#{@csrf_token}; auth_token=#{@auth_token}",
       })
       # TODO: Error handling
       JSON.parse response.body
@@ -144,16 +145,30 @@ module Scraper
       end.first
     end
 
-    def fetch_guest_token(search)
-      response = HTTParty.post("https://api.twitter.com/1.1/guest/activate.json", headers: api_headers(search))
-      guest_token = JSON.parse(response.body)["guest_token"]
-      if guest_token.nil?
-        response = HTTParty.get(referer_url(search), headers: { "User-Agent": @user_agent })
-        guest_token = response.body.scan(GUEST_TOKEN_REGEX).first&.first
-      end
-      raise ApiError, "Failed to get guest_token" unless guest_token
+    def fetch_tokens
+      SeleniumWrapper.driver do |driver|
+        driver.navigate.to "https://twitter.com/"
+        wait = Selenium::WebDriver::Wait.new(timeout: 10)
+        # There are two different layouts for the homepage, the loginflow is always the same though
+        wait.until { driver.find_element(xpath: "//*[text()='Sign in'] | //*[text()='Log in']") }.click
 
-      guest_token
+        wait.until { driver.find_element(css: "input[autocomplete='username']") }.send_keys Config.twitter_user
+        driver.find_element(xpath: "//*[text()='Next']").click
+
+        wait.until { driver.find_element(css: "input[type='password']") }.send_keys Config.twitter_pass
+        driver.find_element(xpath: "//*[text()='Log in']").click
+
+        if Config.twitter_otp_secret.present?
+          otp = ROTP::TOTP.new(Config.twitter_otp_secret).now
+          wait.until { driver.find_element(css: "input") }.send_keys otp
+          driver.find_element(xpath: "//*[text()='Next']").click
+        end
+
+        # The auth_token cookie isn't available immediately, so wait a bit
+        auth_token = wait.until { driver.manage.cookie_named("auth_token")[:value] rescue nil }
+        csrf_token = driver.manage.cookie_named("ct0")[:value]
+        [auth_token, csrf_token]
+      end
     end
 
     def api_headers(search)
