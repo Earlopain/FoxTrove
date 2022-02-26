@@ -1,8 +1,28 @@
-<h1>Artists</h1>
-Total: <%= Artist.count %><br>
-URLs: <%= ArtistUrl.count %><br>
-Submissions: <%= ArtistSubmission.count %><br>
-Files:  <%= SubmissionFile.count %><br>
+<h1>Scraped</h1>
+<table>
+  <thead>
+    <tr>
+      <td>Scraper</td>
+      <td>Status</td>
+      <td>Artist Count</td>
+      <td>URL Count</td>
+      <td>Submission Count</td>
+      <td>File Count</td>
+    </tr>
+  </thead>
+  <tbody>
+    <% @scrapers.sort_by(&:site_enum).each do |scraper| %>
+      <tr>
+        <td><%= scraper.class.name.demodulize %></abbr></td>
+        <td><%= scraper.enabled? ? "Enabled" : "Disabled" %></td>
+        <td><%= @counts[scraper.site_enum]["artist_count"] %></td>
+        <td><%= @counts[scraper.site_enum]["url_count"] %></td>
+        <td><%= @counts[scraper.site_enum]["submission_count"] %></td>
+        <td><%= @counts[scraper.site_enum]["file_count"] %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
 
 <h1>Storage</h1>
 DB: <%= number_to_human_size(@db_size) %><br>

@@ -10,6 +10,10 @@ module Scraper
     def init
     end
 
+    def site_enum
+      self.class.name.demodulize.underscore
+    end
+
     # Will there possibly be more results when calling fetch_next_batch
     def more?
       @has_more
