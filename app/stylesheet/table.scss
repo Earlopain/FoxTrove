@@ -1,0 +1,32 @@
+table.table {
+  border-collapse: collapse;
+
+  tr {
+    border-bottom: 1px solid $color-foreground;
+  }
+
+
+  thead {
+    background-color: darken($color-table-section, 5%);
+
+    th {
+      text-align: left;
+      color: darken($color-text, 10%);
+      padding: 0.25rem;
+    }
+  }
+
+  tbody {
+    tr {
+      background-color: $color-table-section;
+
+      td {
+        padding: 0.5rem 0.25rem;
+      }
+
+      &:hover {
+        background-color: lighten($color-table-section, 10%);
+      }
+    }
+  }
+}
