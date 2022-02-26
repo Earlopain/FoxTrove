@@ -49,5 +49,6 @@ twitter_otp_secret:
 # Controls wether or not the logging should be intercepted
 silence_log?: true
 redis_url: "redis://redis"
+selenium_url: "http://selenium:4444"
 memcached_servers:
   - "memcached:11211"
