@@ -13,7 +13,10 @@
   <body>
     <%= render "application/navbar" %>
     <div id="page">
-      <%= yield %>
+      <div id="content">
+        <%= yield %>
+      </div>
+      <%= content_for(:paginator) if content_for? :paginator %>
     </div>
     <div class="footer-padding"></div>
     <%= render "application/footer" %>

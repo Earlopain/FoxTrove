@@ -45,4 +45,8 @@ module ApplicationHelper
       show.concat(hide).concat(tag.span(form, id: "hideable-search-form", class: ("hidden" if params[:search].blank?)))
     end
   end
+
+  def paginated(values)
+    content_for(:paginator) { paginate values }
+  end
 end

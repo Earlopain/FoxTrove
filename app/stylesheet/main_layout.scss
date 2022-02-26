@@ -2,6 +2,8 @@ div#page {
   background-color: $color-foreground;
   border-radius: $border-radius-full;
 
+  display: flex;
+  flex-direction: column;
   flex: 1;
   padding: 0.5rem;
 }
@@ -20,4 +22,6 @@ footer {
 
 .pagination {
   text-align: center;
+  padding-top: 0.5rem;
+  margin-top: auto;
 }
