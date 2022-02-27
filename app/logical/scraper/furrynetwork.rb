@@ -19,7 +19,7 @@ module Scraper
       @offset = 0
     end
 
-    def enabled?
+    def self.enabled?
       Config.furrynetwork_user.present? && Config.furrynetwork_pass.present?
     end
 

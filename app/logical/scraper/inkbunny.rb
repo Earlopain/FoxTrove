@@ -9,7 +9,7 @@ module Scraper
       @page = 1
     end
 
-    def enabled?
+    def self.enabled?
       Config.inkbunny_user.present? && Config.inkbunny_pass.present?
     end
 

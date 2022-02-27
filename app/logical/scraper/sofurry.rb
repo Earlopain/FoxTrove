@@ -15,7 +15,7 @@ module Scraper
       @previous_ids = []
     end
 
-    def enabled?
+    def self.enabled?
       Config.sofurry_user.present? && Config.sofurry_pass.present?
     end
 

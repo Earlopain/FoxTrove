@@ -12,12 +12,7 @@ class ArtistUrl < ApplicationRecord
     @site ||= Sites.from_enum(site_type)
   end
 
-  def scraper
-    site.scraper.new(identifier: identifier_on_site)
-  end
-
   def enqueue_scraping
-    # FIXME: Check if scraper is enabled
-    ScrapeArtistUrlWorker.perform_async id if site.class == Sites::ScraperDefinition
+    ScrapeArtistUrlWorker.perform_async id if site.scraper_enabled?
   end
 end

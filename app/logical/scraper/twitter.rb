@@ -21,7 +21,7 @@ module Scraper
       @all_tweets_ids = []
     end
 
-    def enabled?
+    def self.enabled?
       Config.twitter_user.present? && Config.twitter_pass.present?
     end
 

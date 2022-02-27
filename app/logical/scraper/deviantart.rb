@@ -10,7 +10,7 @@ module Scraper
       @next_offset = nil
     end
 
-    def enabled?
+    def self.enabled?
       Config.deviantart_client_id.present? && Config.deviantart_client_secret.present?
     end
 

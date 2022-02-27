@@ -6,7 +6,7 @@ module Scraper
       @will_have_more = true
     end
 
-    def enabled?
+    def self.enabled?
       true
     end
 

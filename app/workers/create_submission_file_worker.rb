@@ -19,7 +19,7 @@ class CreateSubmissionFileWorker
           else
             # FIXME: This is kind of stupid
             identifier = ArtistSubmission.find(artist_submission_id).artist_url.identifier_on_site
-            scraper = definition.scraper.new(identifier: identifier)
+            scraper = definition.new_scraper identifier
             scraper.init
             scraper.get_download_link file["url_data"]
           end

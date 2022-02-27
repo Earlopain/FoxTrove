@@ -4,7 +4,7 @@ module Scraper
       @nextid = nil
     end
 
-    def enabled?
+    def self.enabled?
       Config.weasyl_apikey.present?
     end
 

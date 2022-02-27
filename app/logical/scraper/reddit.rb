@@ -4,7 +4,7 @@ module Scraper
       @after = nil
     end
 
-    def enabled?
+    def self.enabled?
       true
     end
 

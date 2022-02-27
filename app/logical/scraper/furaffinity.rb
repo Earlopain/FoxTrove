@@ -7,7 +7,7 @@ module Scraper
       @will_have_more = true
     end
 
-    def enabled?
+    def self.enabled?
       Config.furaffinity_cookie_a.present? && Config.furaffinity_cookie_b.present?
     end
 

@@ -23,10 +23,6 @@ module Scraper
       @has_more = false
     end
 
-    def enabled?
-      raise NotImplementedError
-    end
-
     # Make a network request to the service and get an array of entries.
     # Can also return an emptry arrray, scraping is only stopped once end_reached
     # is called.

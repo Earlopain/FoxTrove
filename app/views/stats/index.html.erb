@@ -11,14 +11,14 @@
     </tr>
   </thead>
   <tbody>
-    <% @scrapers.sort_by(&:site_enum).each do |scraper| %>
+    <% @counts.keys.sort.each do |key| %>
       <tr>
-        <td><%= scraper.class.name.demodulize %></abbr></td>
-        <td><%= scraper.enabled? ? "Enabled" : "Disabled" %></td>
-        <td><%= @counts[scraper.site_enum]["artist_count"] %></td>
-        <td><%= @counts[scraper.site_enum]["url_count"] %></td>
-        <td><%= @counts[scraper.site_enum]["submission_count"] %></td>
-        <td><%= @counts[scraper.site_enum]["file_count"] %></td>
+        <td><%= Sites.from_enum(key).display_name %></abbr></td>
+        <td><%= Sites.from_enum(key).scraper_enabled? ? "Enabled" : "Disabled" %></td>
+        <td><%= @counts[key]["artist_count"] %></td>
+        <td><%= @counts[key]["url_count"] %></td>
+        <td><%= @counts[key]["submission_count"] %></td>
+        <td><%= @counts[key]["file_count"] %></td>
       </tr>
     <% end %>
   </tbody>

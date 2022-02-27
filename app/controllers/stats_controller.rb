@@ -5,7 +5,6 @@ class StatsController < ApplicationController
     @sample_size = sum_for("sample", "SubmissionFile")
     db_name = Rails.configuration.database_configuration[Rails.env]["database"]
     @db_size = ActiveRecord::Base.connection.execute("SELECT pg_database_size('#{db_name}');").first["pg_database_size"]
-    @scrapers = Sites::SCRAPERS.map { |site| site.scraper.new identifier: "test" }
     @counts = SubmissionFile.select(
       :site_type,
       "count(distinct artist_id) as artist_count",

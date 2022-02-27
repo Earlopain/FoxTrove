@@ -39,5 +39,9 @@ module Sites
     def gallery_url(identifier)
       "https://#{@gallery_templates.first.expand(site_artist_identifier: identifier)}"
     end
+
+    def scraper_enabled?
+      false
+    end
   end
 end

@@ -4,7 +4,7 @@ module Scraper
       @page = 1
     end
 
-    def enabled?
+    def self.enabled?
       true
     end
 
