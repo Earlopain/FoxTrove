@@ -49,6 +49,12 @@ module Scraper
       submission[:created_at]
     end
 
+    def fetch_api_identifier
+      response = HTTParty.get("https://#{@identifier}.newgrounds.com/")
+      html = Nokogiri::HTML(response.body)
+      html.at("#topsearch-elastic input[name='u']")&.attribute("value")&.value
+    end
+
     private
 
     def get_from_page(page)

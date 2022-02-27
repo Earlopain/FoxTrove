@@ -37,6 +37,13 @@ module Scraper
       DateTime.parse submission["created_at"]
     end
 
+    def fetch_api_identifier
+      response = HTTParty.get("https://www.artstation.com/users/#{@identifier}/quick.json")
+      return nil if response.code == 404
+
+      JSON.parse(response.body)["id"]
+    end
+
     private
 
     def get_ids_from_page(page)

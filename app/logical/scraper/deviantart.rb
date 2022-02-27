@@ -1,4 +1,6 @@
 module Scraper
+  # https://www.deviantart.com/developers/http/v1/20210526
+  # https://www.deviantart.com/developers/console
   class Deviantart < Base
     API_PREFIX = "https://www.deviantart.com/api/v1/oauth2".freeze
 
@@ -50,6 +52,13 @@ module Scraper
 
     def get_download_link(data)
       make_api_call("deviation/download/#{data[0]}")["src"]
+    end
+
+    def fetch_api_identifier
+      json = make_api_call("user/profile/#{@identifier}")
+      return nil if json["error_code"] == 2
+
+      json.dig("user", "userid")
     end
 
     private

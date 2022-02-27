@@ -4,9 +4,6 @@ module Scraper
     class ApiError < RuntimeError; end
 
     BEARER_TOKEN = "AAAAAAAAAAAAAAAAAAAAANRILgAAAAAAnNwIzUejRCOuH5E6I8xnZz4puTs=1Zv7ttfk8LF81IUq16cHjhLTvJu4FA33AGWWjCpTnA".freeze
-    REQUEST_URL = "https://twitter.com/i/api/2/search/adaptive.json".freeze
-    GUEST_TOKEN_REGEX = /document\.cookie = decodeURIComponent\("gt=([0-9]*);/m.freeze
-    REQUEST_RETRIES = 5
     DATETIME_FORMAT = "%a %b %d %H:%M:%S %z %Y".freeze
 
     def init
@@ -26,7 +23,15 @@ module Scraper
     end
 
     def fetch_next_batch
-      response = make_request(@search, @cursor)
+      response = make_request("https://twitter.com/i/api/2/search/adaptive.json", {
+        tweet_search_mode: "live",
+        tweet_mode: "extended",
+        include_entities: true,
+        include_ext_media_availability: true,
+        q: @search,
+        query_source: "recent_search_click",
+        cursor: @cursor,
+      })
       # FIXME: Might be nil
       tweets = response.dig("globalObjects", "tweets")
       new_tweet_ids = relevant_tweet_ids(tweets).difference(@all_tweets_ids)
@@ -105,12 +110,18 @@ module Scraper
       DateTime.strptime(tweet["created_at"], DATETIME_FORMAT)
     end
 
+    def fetch_api_identifier
+      user_json = make_request("https://twitter.com/i/api/graphql/7mjxD3-C6BxitPMVQ6w0-Q/UserByScreenName", {
+        variables: { screen_name: @identifier, withSuperFollowsUserFields: true }.to_json,
+      })
+      user_json.dig("data", "user", "result", "rest_id")
+    end
+
     private
 
-    def make_request(search, cursor)
-      url = "#{REQUEST_URL}?#{query_string(search, cursor)}"
-      response = HTTParty.get(url, headers: {
-        **api_headers(search),
+    def make_request(url, params = {})
+      response = HTTParty.get(url, query: params, headers: {
+        **api_headers(@search),
         "x-csrf-token": @csrf_token,
         "Cookie": "ct0=#{@csrf_token}; auth_token=#{@auth_token}",
       })
@@ -186,18 +197,6 @@ module Scraper
         src: "typed_query",
       }
       "https://twitter.com/search?#{params.to_query}"
-    end
-
-    def query_string(search, cursor)
-      {
-        tweet_search_mode: "live",
-        tweet_mode: "extended",
-        include_entities: true,
-        include_ext_media_availability: true,
-        q: search,
-        query_source: "recent_search_click",
-        cursor: cursor,
-      }.to_query
     end
 
     def random_user_agent

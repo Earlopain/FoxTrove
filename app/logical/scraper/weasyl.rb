@@ -1,4 +1,5 @@
 module Scraper
+  # https://projects.weasyl.com/weasylapi/
   class Weasyl < Base
     def init
       @nextid = nil
@@ -43,6 +44,13 @@ module Scraper
 
     def extract_timestamp(submission)
       DateTime.parse submission["posted_at"]
+    end
+
+    # Unfortunately the api doesn't seem to return this information
+    def fetch_api_identifier
+      response = HTTParty.get("https://www.weasyl.com/~#{@identifier}", headers: { "X-Weasyl-API-Key": Config.weasyl_apikey })
+      html = Nokogiri::HTML(response.body)
+      html.at("#user-shouts .comment-form input[name='userid']")&.attribute("value")&.value
     end
   end
 end

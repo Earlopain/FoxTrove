@@ -60,6 +60,11 @@ module Scraper
       submission[:created_at]
     end
 
+    # No api and usernames cannot be changed
+    def fetch_api_identifier
+      @identifier
+    end
+
     private
 
     def get_submission_ids(page)

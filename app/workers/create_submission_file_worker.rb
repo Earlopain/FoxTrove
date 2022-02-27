@@ -18,9 +18,8 @@ class CreateSubmissionFileWorker
             file["url"]
           else
             # FIXME: This is kind of stupid
-            identifier = ArtistSubmission.find(artist_submission_id).artist_url.identifier_on_site
-            scraper = definition.new_scraper identifier
-            scraper.init
+            artist_url = ArtistSubmission.find(artist_submission_id).artist_url
+            scraper = definition.new_scraper artist_url
             scraper.get_download_link file["url_data"]
           end
     bin_file = Tempfile.new(binmode: true)

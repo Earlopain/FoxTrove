@@ -66,6 +66,11 @@ module Scraper
       DateTime.strptime(submission["created"].to_s, "%s")
     end
 
+    def fetch_api_identifier
+      json = make_request("https://oauth.reddit.com/user/#{@identifier}/about.json")
+      json.dig("data", "id")
+    end
+
     private
 
     def make_request(url, query = {})

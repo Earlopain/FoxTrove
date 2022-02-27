@@ -15,10 +15,12 @@ module Sites
       @scraper.enabled? && !Config.send("#{enum_value}_disabled?")
     end
 
-    def new_scraper(identifier)
+    def new_scraper(artist_url)
       raise StandardError, "This scraper is not enabled!" unless scraper_enabled?
 
-      @scraper.new(identifier: identifier)
+      s = @scraper.new(identifier: artist_url.identifier_on_site, api_identifier: artist_url.api_identifier)
+      s.init
+      s
     end
   end
 end

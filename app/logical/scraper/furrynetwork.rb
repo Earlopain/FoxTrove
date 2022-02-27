@@ -1,6 +1,7 @@
 module Scraper
   class Furrynetwork < Base
     PER_REQUEST = 72
+    API_PREFIX = "https://furrynetwork.com/api".freeze
 
     def init
       # This whole thing is very brittle and may break at any moment
@@ -24,7 +25,13 @@ module Scraper
     end
 
     def fetch_next_batch
-      json = make_request(@offset)
+      json = make_request("search", {
+        size: PER_REQUEST,
+        from: @offset,
+        character: @identifier,
+        types: ["artwork"],
+        sort: "published",
+      })
       end_reached if @offset + PER_REQUEST >= json["total"]
       @offset += PER_REQUEST
       json["hits"].map { |s| s["_source"] }
@@ -50,17 +57,15 @@ module Scraper
       DateTime.parse submission["created"]
     end
 
+    def fetch_api_identifier
+      make_request("character/#{@identifier}")["id"]
+    end
+
     private
 
-    def make_request(offset)
-      response = HTTParty.get("https://furrynetwork.com/api/search", {
-        query: {
-          size: PER_REQUEST,
-          from: offset,
-          character: @identifier,
-          types: ["artwork"],
-          sort: "published",
-        },
+    def make_request(endpoint, query = {})
+      response = HTTParty.get("#{API_PREFIX}/#{endpoint}", {
+        query: query,
         headers: {
           Authorization: "Bearer #{@bearer_token}",
         },

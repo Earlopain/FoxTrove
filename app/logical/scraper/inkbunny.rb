@@ -48,6 +48,13 @@ module Scraper
       DateTime.parse(submission["last_file_update_datetime"])
     end
 
+    def fetch_api_identifier
+      url = "https://inkbunny.net/api_username_autosuggest.php"
+      response = make_request(url, { username: @identifier })
+      users = response["results"].select { |entry| entry["value"].casecmp? @identifier }
+      users[0]&.[]("id")
+    end
+
     private
 
     def submission_details(submission_ids)

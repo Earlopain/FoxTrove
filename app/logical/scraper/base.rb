@@ -1,7 +1,8 @@
 module Scraper
   class Base
-    def initialize(identifier:)
+    def initialize(identifier:, api_identifier:)
       @identifier = identifier
+      @api_identifier = api_identifier
       @has_more = true
     end
 
@@ -37,6 +38,13 @@ module Scraper
 
     # Used to check if the end was reached when scraping already happened
     def extract_timestamp_from_submission
+      raise NotImplementedError
+    end
+
+    # Converts the user-facing value into something that is more permanent.
+    # Might be the same, but most sites use a permanent numeric identifier.
+    # Used to prevent duplicate accounts in cases where they can be renamed.
+    def fetch_api_identifier
       raise NotImplementedError
     end
   end

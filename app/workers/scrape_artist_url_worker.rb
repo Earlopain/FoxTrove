@@ -9,8 +9,7 @@ class ScrapeArtistUrlWorker
     return unless artist_url.site.class == Sites::ScraperDefinition
     return unless artist_url.site.scraper_enabled?
 
-    scraper = artist_url.site.new_scraper(artist_url.identifier_on_site)
-    scraper.init
+    scraper = artist_url.site.new_scraper(artist_url)
     while scraper.more?
       submissions = scraper.fetch_next_batch
       submissions.each do |api_submission|

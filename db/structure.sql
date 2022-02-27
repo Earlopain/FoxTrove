@@ -241,7 +241,8 @@ CREATE TABLE public.artist_urls (
     last_scraped_at timestamp(6) with time zone,
     created_at timestamp(6) with time zone NOT NULL,
     updated_at timestamp(6) with time zone NOT NULL,
-    site_type public.artist_url_sites NOT NULL
+    site_type public.artist_url_sites NOT NULL,
+    api_identifier text
 );
 
 
@@ -827,6 +828,13 @@ CREATE INDEX index_moderation_logs_on_loggable_type_and_loggable_id ON public.mo
 
 
 --
+-- Name: index_site_type_on_api_identifier; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_site_type_on_api_identifier ON public.artist_urls USING btree (site_type, api_identifier);
+
+
+--
 -- Name: index_submission_files_on_artist_submission_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -969,6 +977,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220110175714'),
 ('20220111084241'),
 ('20220117214057'),
-('20220118200359');
+('20220118200359'),
+('20220227111715');
 
 

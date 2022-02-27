@@ -1,5 +1,6 @@
 module Scraper
   # This is unnecessarily convoluted. Let's hope Sofurry Next will actually happen sometime
+  # https://wiki.sofurry.com/wiki/SoFurry_2.0_API
   # https://wiki.sofurry.com/wiki/How_to_use_OTP_authentication
   class Sofurry < Base
     def init
@@ -8,10 +9,6 @@ module Scraper
       @otp_pad = ""
       @otp_salt = ""
       @request_retries = 0
-
-      user_json = make_request "https://api2.sofurry.com/std/getUserProfile", username: @identifier
-      # TODO: Save this in the db. A few scraper can probably benefit from it as well
-      @uid = user_json["userID"]
       @previous_ids = []
     end
 
@@ -20,7 +17,7 @@ module Scraper
     end
 
     def fetch_next_batch
-      json = make_request "https://api2.sofurry.com/browse/user/art", "uid": @uid, "art-page": @page, "format": "json"
+      json = make_request "https://api2.sofurry.com/browse/user/art", "uid": @api_identifier, "art-page": @page, "format": "json"
       items = json["items"]
       ids = items.map { |item| item["id"] }
       # API always returns 30 items, could also use that to check, though I'm not sure if that will always be the case.
@@ -54,6 +51,15 @@ module Scraper
     def extract_timestamp(submission)
       DateTime.strptime(submission["postTime"], "%s")
     end
+
+    def fetch_api_identifier
+      user_json = make_request "https://api2.sofurry.com/std/getUserProfile", username: @identifier
+      return nil unless user_json["useralias"]&.casecmp? @identifier
+
+      user_json["userID"]
+    end
+
+    private
 
     def make_request(url, **query)
       while true
