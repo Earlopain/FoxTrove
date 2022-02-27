@@ -32,14 +32,21 @@ module Scraper
       artist_submission ||= ArtistSubmission.create!(
         artist_url: artist_url,
         identifier_on_site: identifier,
-        title_on_site: title,
-        description_on_site: description,
+        title_on_site: fix_encoding(title),
+        description_on_site: fix_encoding(description),
         created_at_on_site: created_at
       )
 
       files.each do |file|
         CreateSubmissionFileWorker.perform_async artist_submission.id, file, artist_url.site.enum_value
       end
+    end
+
+    private
+
+    def fix_encoding(input)
+      # https://www.furaffinity.net/view/33525724 contains invalid UTF-8
+      input.encode(input.encoding, input.encoding, invalid: :replace)
     end
   end
 end
