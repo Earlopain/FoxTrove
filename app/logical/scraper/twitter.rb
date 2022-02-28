@@ -5,17 +5,15 @@ module Scraper
 
     BEARER_TOKEN = "AAAAAAAAAAAAAAAAAAAAANRILgAAAAAAnNwIzUejRCOuH5E6I8xnZz4puTs=1Zv7ttfk8LF81IUq16cHjhLTvJu4FA33AGWWjCpTnA".freeze
     DATETIME_FORMAT = "%a %b %d %H:%M:%S %z %Y".freeze
+    API_BASE_URL = "https://twitter.com/i/api/graphql".freeze
 
     def init
       # `filter:images` can't be used since it won't return sensitive media for guest accounts
-      @search = "from:#{@identifier} -filter:retweets"
       @user_agent = random_user_agent
       @auth_token, @csrf_token = Cache.fetch("twitter-tokens", 55.minutes) do
         fetch_tokens
       end
       @cursor = ""
-      @find_new_tweets_before_empty_response = false
-      @all_tweets_ids = []
     end
 
     def self.enabled?
@@ -23,46 +21,39 @@ module Scraper
     end
 
     def fetch_next_batch
-      response = make_request("https://twitter.com/i/api/2/search/adaptive.json", {
-        tweet_search_mode: "live",
-        tweet_mode: "extended",
-        include_entities: true,
-        include_ext_media_availability: true,
-        q: @search,
-        query_source: "recent_search_click",
-        cursor: @cursor,
-      })
-      # FIXME: Might be nil
-      tweets = response.dig("globalObjects", "tweets")
-      new_tweet_ids = relevant_tweet_ids(tweets).difference(@all_tweets_ids)
-      @all_tweets_ids += new_tweet_ids
+      params = {
+        userId: @api_identifier,
+        count: 100,
+        includePromotedContent: false,
+        withSuperFollowsUserFields: false,
+        withDownvotePerspective: false,
+        withReactionsMetadata: false,
+        withReactionsPerspective: false,
+        withSuperFollowsTweetFields: false,
+        withClientEventToken: false,
+        withBirdwatchNotes: false,
+        withVoice: false,
+        withV2Timeline: true,
+      }
+      params[:cursor] = @cursor if @cursor.present?
+      response = make_request("laAWxgrzEYIlGLcOucDFMw/UserMedia", params)
 
-      # Cursors seem to only go that far and need to be refreshed every so often
-      # Getting 0 tweets may either mean that this has happended, but it might
-      # also be that there simply aren't any more resuls.
-      # FIXME: On huge profiles cursors seem to get stuck. Refreshing returns
-      # no tweets and using the new cursor from that also returns nothing.
-      # What does work though is searching with `until:2030-01-01 since:2000-01-01`
-      # and bypassing the timerange it gets stuck on. Good luck figuring
-      # the gap out and being certain that the end wasn't simply reached.
-      if tweets.count == 0
-        # Two times in a row no new tweets were found, even though the
-        # cursor was reset
-        end_reached if @find_new_tweets_before_empty_response
-
-        @find_new_tweets_before_empty_response = true
-        @cursor = extract_cursor response, "top"
-      else
-        @find_new_tweets_before_empty_response = false if new_tweet_ids.present?
-        @cursor = extract_cursor response, "bottom"
-      end
-      raise ApiError, "Failed to extract cursor: #{url}" if @cursor.nil?
-
-      new_tweet_ids.map { |id| tweets[id] }
+      instructions = response.dig("data", "user", "result", "timeline_v2", "timeline", "instructions")
+      timeline_add_entries = instructions.find { |instruction| instruction["type"] == "TimelineAddEntries" }["entries"].map { |entry| entry["content"] }
+      tweets = entries_by_type(timeline_add_entries, "TimelineTimelineItem").map { |content| content.dig("itemContent", "tweet_results", "result") }
+      # Tweets deleted by the author
+      tweets = tweets.reject { |tweet| tweet["__typename"] == "TweetTombstone" }
+      # Tweets without downloadable content, like embeded youtube videos
+      tweets = tweets.select { |tweet| tweet.dig("legacy", "extended_entities", "media") }
+      cursor_entry = entries_by_type(timeline_add_entries, "TimelineTimelineCursor").find { |cursor| cursor["cursorType"] == "Bottom" }
+      @cursor = cursor_entry["value"]
+      end_reached if tweets.empty? && cursor_entry["stopOnEmptyResponse"]
+      tweets
     end
 
-    def to_submission(tweet)
+    def to_submission(tweet_data)
       s = Submission.new
+      tweet = tweet_data["legacy"]
       s.identifier = tweet["id_str"]
       s.title = ""
 
@@ -95,7 +86,7 @@ module Scraper
               else
                 raise ApiError, "Unknown media type #{media['type']}"
               end
-        created_at = extract_timestamp(tweet)
+        created_at = extract_timestamp(tweet_data)
         s.created_at = created_at
         s.add_file({
           url: url,
@@ -106,54 +97,28 @@ module Scraper
       s
     end
 
-    def extract_timestamp(tweet)
-      DateTime.strptime(tweet["created_at"], DATETIME_FORMAT)
+    def extract_timestamp(tweet_data)
+      DateTime.strptime(tweet_data["legacy"]["created_at"], DATETIME_FORMAT)
     end
 
     def fetch_api_identifier
-      user_json = make_request("https://twitter.com/i/api/graphql/7mjxD3-C6BxitPMVQ6w0-Q/UserByScreenName", {
-        variables: { screen_name: @identifier, withSuperFollowsUserFields: true }.to_json,
+      user_json = make_request("7mjxD3-C6BxitPMVQ6w0-Q/UserByScreenName", {
+        screen_name: @identifier,
+        withSuperFollowsUserFields: true,
       })
       user_json.dig("data", "user", "result", "rest_id")
     end
 
     private
 
+    def entries_by_type(entries, type)
+      entries.select { |entry| entry["entryType"] == type }
+    end
+
     def make_request(url, params = {})
-      response = HTTParty.get(url, query: params, headers: {
-        **api_headers(@search),
-        "x-csrf-token": @csrf_token,
-        "Cookie": "ct0=#{@csrf_token}; auth_token=#{@auth_token}",
-      })
+      response = HTTParty.get("#{API_BASE_URL}/#{url}", query: { variables: params.to_json }, headers: api_headers)
       # TODO: Error handling
       JSON.parse response.body
-    end
-
-    def relevant_tweet_ids(tweets)
-      quoted_tweet_ids = []
-      tweet_ids = tweets.filter_map do |tweet_id, tweet|
-        media = tweet.dig("extended_entities", "media")
-        quoted_tweet_ids.push(tweet["quoted_status_id_str"]) if tweet["quoted_status_id_str"]
-        # Exclude text tweets
-        tweet_id unless media.nil?
-      end
-      # Exclude quoted tweets
-      tweet_ids.difference quoted_tweet_ids
-    end
-
-    def extract_cursor(response, type)
-      instructions = response.dig("timeline", "instructions")
-      return unless instructions
-
-      instructions.filter_map do |instruction|
-        entries = [instruction.dig("replaceEntry", "entry")] if instruction.key? "replaceEntry"
-        entries = instruction.dig("addEntries", "entries") if instruction.key? "addEntries"
-        next unless entries
-
-        entries.filter_map do |entry|
-          entry.dig("content", "operation", "cursor", "value") if entry["entryId"] == "sq-cursor-#{type}"
-        end.first
-      end.first
     end
 
     def fetch_tokens
@@ -182,21 +147,15 @@ module Scraper
       end
     end
 
-    def api_headers(search)
+    def api_headers
       {
         "User-Agent": @user_agent,
         "Authorization": "Bearer #{BEARER_TOKEN}",
-        "Referer": referer_url(search),
+        "Referer": "https://twitter.com/#{@identifier}/media",
         "Accept-Language": "en-US,en;q=0.5",
+        "x-csrf-token": @csrf_token,
+        "Cookie": "ct0=#{@csrf_token}; auth_token=#{@auth_token}",
       }
-    end
-
-    def referer_url(search)
-      params = {
-        q: search,
-        src: "typed_query",
-      }
-      "https://twitter.com/search?#{params.to_query}"
     end
 
     def random_user_agent
