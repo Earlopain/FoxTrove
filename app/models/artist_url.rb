@@ -6,7 +6,7 @@ class ArtistUrl < ApplicationRecord
 
   validate :set_api_identifier, on: :create
   validates :identifier_on_site, uniqueness: { scope: :site_type, case_sensitive: false }
-  validates :api_identifier, uniqueness: { scope: :site_type, case_sensitive: false }
+  validates :api_identifier, uniqueness: { scope: :site_type, case_sensitive: false, allow_nil: true }
 
   after_save :enqueue_scraping
 
