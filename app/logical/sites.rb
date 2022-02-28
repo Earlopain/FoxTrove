@@ -32,6 +32,9 @@ module Sites
     unencoded = Addressable::URI.unencode(url)
     escaped = Addressable::URI.escape(unencoded)
     uri = Addressable::URI.parse(escaped)
+    # https://www.newgrounds.com/art/view/nawka/comm-soot-and-lunamew
+    # Secondary image url is missing the scheme, just assume https in those cases
+    uri.scheme = "https" unless uri.scheme
     raise Addressable::URI::InvalidURIError, "scheme must be http(s)" unless uri.scheme.in?(%w[http https])
     raise Addressable::URI::InvalidURIError, "host must be set" if uri.host.blank?
 
