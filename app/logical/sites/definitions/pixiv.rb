@@ -30,7 +30,6 @@ module Sites
         "https://www.pixiv.net/artworks/{site_submission_identifier}"
       end
 
-      # TODO: Hook this up
       def image_domains
         "pximg.net"
       end
