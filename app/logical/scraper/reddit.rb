@@ -78,7 +78,6 @@ module Scraper
         query: query,
         headers: { "User-Agent": "reverser.0.1 by earlopain", "Authorization": "bearer #{@access_token}" },
       })
-      # TODO: Error handling
       JSON.parse(response.body)
     end
   end

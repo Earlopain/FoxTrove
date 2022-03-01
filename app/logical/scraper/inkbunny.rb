@@ -100,7 +100,6 @@ module Scraper
         username: Config.inkbunny_user,
         password: Config.inkbunny_pass,
       })
-      # TODO: Error handling
       JSON.parse(response.body)["sid"]
     end
   end

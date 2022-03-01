@@ -16,7 +16,6 @@ module Scraper
         headers: { "X-Weasyl-API-Key": Config.weasyl_apikey },
         query: {}.tap { |h| h[:nextid] = @nextid if @nextid }
       )
-      # TODO: Error handling
       json = JSON.parse(response.body)
       @nextid = json["nextid"]
       end_reached if @nextid.nil?

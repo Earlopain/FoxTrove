@@ -73,7 +73,6 @@ module Scraper
           "dA-minor-version": "20210526",
         },
       })
-      # TODO: Error handlings
       JSON.parse(response.body)
     end
 
@@ -83,7 +82,6 @@ module Scraper
         client_id: Config.deviantart_client_id,
         client_secret: Config.deviantart_client_secret,
       })
-      # TODO: Error handling
       JSON.parse(response.body)["access_token"]
     end
   end

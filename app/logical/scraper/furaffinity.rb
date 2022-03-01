@@ -84,7 +84,6 @@ module Scraper
           "mode": "extended",
         },
       })
-      # TODO: Error handling
       html = Nokogiri::HTML(response.body)
       # Searching for "@lower scale" returns results from blue-scale
       relevant_submissions = html.css("#browse-search figure").select do |element|
