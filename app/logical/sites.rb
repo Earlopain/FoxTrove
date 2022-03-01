@@ -58,11 +58,11 @@ module Sites
     Definitions::Newgrounds,
     Definitions::Furrynetwork,
     Definitions::Sofurry,
+    Definitions::Pixiv,
   ].map { |definition| ScraperDefinition.new definition }.freeze
 
   SIMPLE = [
     Definitions::Patreon,
-    Definitions::Pixiv,
     Definitions::Tumblr,
     Definitions::Vk,
     Definitions::Instagram,

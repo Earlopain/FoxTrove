@@ -24,6 +24,7 @@ reddit_disabled?: false
 sofurry_disabled?: false
 twitter_disabled?: false
 weasyl_disabled?: false
+pixiv_disabled?: false
 
 # Credentials, overwrite in custom file
 inkbunny_user:
@@ -46,6 +47,8 @@ twitter_pass:
 twitter_otp_secret:
 reddit_client_id:
 reddit_client_secret:
+pixiv_user:
+pixiv_pass:
 
 # These settings require a server restart
 # Controls wether or not the logging should be intercepted
