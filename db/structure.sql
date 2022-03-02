@@ -234,7 +234,7 @@ CREATE TABLE public.artist_urls (
     creator_id bigint NOT NULL,
     approver_id bigint,
     artist_id bigint NOT NULL,
-    identifier_on_site text NOT NULL,
+    url_identifier text NOT NULL,
     created_at_on_site timestamp(6) with time zone NOT NULL,
     about_on_site text NOT NULL,
     scraping_disabled boolean DEFAULT false NOT NULL,
@@ -730,17 +730,17 @@ CREATE INDEX index_artist_urls_on_creator_id ON public.artist_urls USING btree (
 
 
 --
--- Name: index_artist_urls_on_identifier_on_site; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_artist_urls_on_identifier_on_site ON public.artist_urls USING btree (identifier_on_site);
-
-
---
 -- Name: index_artist_urls_on_site_and_identifier; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_artist_urls_on_site_and_identifier ON public.artist_urls USING btree (site_type, lower(identifier_on_site));
+CREATE UNIQUE INDEX index_artist_urls_on_site_and_identifier ON public.artist_urls USING btree (site_type, lower(url_identifier));
+
+
+--
+-- Name: index_artist_urls_on_url_identifier; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_artist_urls_on_url_identifier ON public.artist_urls USING btree (url_identifier);
 
 
 --
@@ -978,6 +978,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220111084241'),
 ('20220117214057'),
 ('20220118200359'),
-('20220227111715');
+('20220227111715'),
+('20220302162603');
 
 

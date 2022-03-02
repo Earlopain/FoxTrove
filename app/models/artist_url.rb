@@ -5,7 +5,7 @@ class ArtistUrl < ApplicationRecord
   has_many :submissions, class_name: "ArtistSubmission", dependent: :destroy
 
   validate :set_api_identifier, on: :create
-  validates :identifier_on_site, uniqueness: { scope: :site_type, case_sensitive: false }
+  validates :url_identifier, uniqueness: { scope: :site_type, case_sensitive: false }
   validates :api_identifier, uniqueness: { scope: :site_type, case_sensitive: false, allow_nil: true }
 
   after_save :enqueue_scraping

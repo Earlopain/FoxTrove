@@ -1,6 +1,6 @@
 module ArtistUrlHelper
   def gallery_url(artist_url)
-    artist_url.site.gallery_url(artist_url.identifier_on_site)
+    artist_url.site.gallery_url(artist_url.url_identifier)
   end
 
   def submission_url(submission)

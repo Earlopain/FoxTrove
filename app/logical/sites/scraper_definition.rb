@@ -7,7 +7,7 @@ module Sites
     end
 
     def submission_url(submission)
-      @submission_template.expand(site_artist_identifier: submission.artist_url.identifier_on_site,
+      @submission_template.expand(site_artist_identifier: submission.artist_url.url_identifier,
                                   site_submission_identifier: submission.identifier_on_site).to_s
     end
 
@@ -18,7 +18,7 @@ module Sites
     def new_scraper(artist_url)
       raise StandardError, "This scraper is not enabled!" unless scraper_enabled?
 
-      s = @scraper.new(identifier: artist_url.identifier_on_site, api_identifier: artist_url.api_identifier)
+      s = @scraper.new(url_identifier: artist_url.url_identifier, api_identifier: artist_url.api_identifier)
       s.init
       s
     end

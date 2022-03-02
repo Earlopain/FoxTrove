@@ -62,7 +62,7 @@ module Scraper
 
     # No api and usernames cannot be changed
     def fetch_api_identifier
-      @identifier
+      @url_identifier
     end
 
     private
@@ -73,7 +73,7 @@ module Scraper
         headers: headers,
         body: {
           "page": page,
-          "q": "@lower #{@identifier}",
+          "q": "@lower #{@url_identifier}",
           "order-by": "date",
           "order-direction": "desc",
           "range": "all",
@@ -88,7 +88,7 @@ module Scraper
       # Searching for "@lower scale" returns results from blue-scale
       relevant_submissions = html.css("#browse-search figure").select do |element|
         # Remove _ from displayname, https://www.furaffinity.net/user/thesecretcave/ => The_Secret_Cave
-        element.css("figcaption a")[1].content.downcase.delete("_") == @identifier.downcase
+        element.css("figcaption a")[1].content.downcase.delete("_") == @url_identifier.downcase
       end
       relevant_submissions.map do |element|
         element.attributes["id"].value.split("-")[1]

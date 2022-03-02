@@ -2,8 +2,8 @@
 
 Current Links:
 <div class="url-list">
-  <% @artist.artist_urls.each do |url| %>
-    <%= render "artist_link", url: url %>
+  <% @artist.artist_urls.each do |artist_url| %>
+    <%= render "artist_link", artist_url: artist_url %>
   <% end %>
 </div>
 <%= @artist.errors.full_messages.join(", ") %>

@@ -1,7 +1,7 @@
 module Scraper
   class Base
-    def initialize(identifier:, api_identifier:)
-      @identifier = identifier
+    def initialize(url_identifier:, api_identifier:)
+      @url_identifier = url_identifier
       @api_identifier = api_identifier
       @has_more = true
     end

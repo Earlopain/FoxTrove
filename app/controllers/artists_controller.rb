@@ -104,7 +104,7 @@ class ArtistsController < ApplicationController
       artist_url = artist.artist_urls.new(
         creator: current_user,
         site_type: result[:site].enum_value,
-        identifier_on_site: result[:identifier],
+        url_identifier: result[:identifier],
         created_at_on_site: Time.current,
         about_on_site: ""
       )

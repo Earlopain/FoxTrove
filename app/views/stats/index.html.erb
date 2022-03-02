@@ -37,8 +37,8 @@ Pending Submission File Downloads: <%= SidekiqStats.submission_download_queued.v
   Pending E6 IQDB Calls: <%= SidekiqStats.e6_iqdb_queued.values.sum %><br>
 <% end %>
 <br>
-<% @artist_urls.each do |url| %>
-  <%= render "artists/artist_link", url: url %>
+<% @artist_urls.each do |artist_url| %>
+  <%= render "artists/artist_link", artist_url: artist_url %>
 <% end %>
 
 <% page_title "Stats" %>

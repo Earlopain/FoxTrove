@@ -28,7 +28,7 @@ module Scraper
       json = make_request("search", {
         size: PER_REQUEST,
         from: @offset,
-        character: @identifier,
+        character: @url_identifier,
         types: ["artwork"],
         sort: "published",
       })
@@ -58,7 +58,7 @@ module Scraper
     end
 
     def fetch_api_identifier
-      make_request("character/#{@identifier}")["id"]
+      make_request("character/#{@url_identifier}")["id"]
     end
 
     private

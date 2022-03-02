@@ -11,7 +11,7 @@
     <%= number_to_human_size submission_file.size %>
   </span>
   <span class="submission-time-ago">
-    <%= site_icon artist_url, link_target: gallery_url(artist_url), title: artist_url.identifier_on_site %>
+    <%= site_icon artist_url, link_target: gallery_url(artist_url), title: artist_url.url_identifier %>
     <%= time_ago artist_submission.created_at_on_site %>
     <% if current_user.is_member? %>
       <% if E6Iqdb.enabled? %>
