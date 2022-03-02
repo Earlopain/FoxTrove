@@ -34,8 +34,8 @@ deviantart_client_secret:
 e6_user:
 e6_apikey:
 # Set timezone to 00:00 without daylight saving correction. Modern Theme required. Full Date Format.
-furaffinity_cookie_a:
-furaffinity_cookie_b:
+furaffinity_user:
+furaffinity_pass:
 weasyl_apikey:
 furrynetwork_user:
 furrynetwork_pass:

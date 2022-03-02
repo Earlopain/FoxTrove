@@ -5,10 +5,11 @@ module Scraper
       @page = 1
       @submission_cache = []
       @will_have_more = true
+      @cookie_a, @cookie_b = Cache.fetch("furaffinity-cookies", 2.weeks) { fetch_cookies }
     end
 
     def self.enabled?
-      Config.furaffinity_cookie_a.present? && Config.furaffinity_cookie_b.present?
+      Config.furaffinity_user.present? && Config.furaffinity_pass.present?
     end
 
     def fetch_next_batch
@@ -102,7 +103,22 @@ module Scraper
     end
 
     def headers
-      { "Cookie": "a=#{Config.furaffinity_cookie_a}; b=#{Config.furaffinity_cookie_b}" }
+      { Cookie: "a=#{@cookie_a}; b=#{@cookie_b}" }
+    end
+
+    def fetch_cookies
+      SeleniumWrapper.driver do |driver|
+        driver.navigate.to "https://www.furaffinity.net/login"
+        wait = Selenium::WebDriver::Wait.new(timeout: 10)
+
+        wait.until { driver.find_element(css: "#login-form input[name='name']") }.send_keys Config.furaffinity_user
+        driver.find_element(css: "#login-form input[name='pass']").send_keys Config.furaffinity_pass
+        driver.find_element(id: "login-button").click
+
+        cookie_a = wait.until { driver.manage.cookie_named("a")[:value] rescue nil }
+        cookie_b = driver.manage.cookie_named("b")[:value]
+        [cookie_a, cookie_b]
+      end
     end
   end
 end
