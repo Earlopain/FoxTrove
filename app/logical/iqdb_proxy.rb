@@ -67,11 +67,12 @@ module IqdbProxy
     r = []
     g = []
     b = []
+    is_grayscale = thumbnail.bands == 1
     thumbnail.to_a.each do |data|
       data.each do |rgb|
         r << rgb[0]
-        g << rgb[1]
-        b << rgb[2]
+        g << (is_grayscale ? rgb[0] : rgb[1])
+        b << (is_grayscale ? rgb[0] : rgb[2])
       end
     end
     { channels: { r: r, g: g, b: b } }.to_json
