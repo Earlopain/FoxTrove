@@ -22,7 +22,7 @@ class ArtistsController < ApplicationController
   def show
     @artist = Artist.includes(:artist_urls).find(params[:id])
     @submission_files = SubmissionFile
-                        .search(instance_search_params.to_h.deep_merge({ artist_submission: { artist_url: { artist: { id: @artist.id } } } }))
+                        .search(instance_search_params.merge({ artist_id: @artist.id }))
                         .with_everything(current_user.id)
                         .page params[:page]
     respond_with(@artist)
@@ -60,11 +60,11 @@ class ArtistsController < ApplicationController
   end
 
   def index_search_params
-    params.fetch(:search, {}).permit(:name, artist_urls: :url_identifier)
+    params.fetch(:search, {}).permit(:name, :url_identifier)
   end
 
   def instance_search_params
-    params.fetch(:search, {}).permit(:upload_status, :larger_only_filesize_treshold, { artist_submission: { artist_url: { id: [] } } })
+    params.fetch(:search, {}).permit(:upload_status, :larger_only_filesize_treshold, { artist_url_id: [] })
   end
 
   def add_new_artist_urls_and_save(artist)

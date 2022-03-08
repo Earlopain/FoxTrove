@@ -106,8 +106,15 @@ class SubmissionFile < ApplicationRecord
                 q.none
               end
         end
-        q = q.attributes_matching({ artist_submission: { artist_url: [:id, { artist: :id }] } }, params)
+        q = q.attributes_matching(%i[artist_url_id artist_id], params)
         q.order(created_at_on_site: :desc)
+      end
+
+      def shorthand_attribute_access
+        {
+          artist_url_id: { artist_submission: { artist_url: :id } },
+          artist_id: { artist_submission: { artist_url: { artist: :id } } },
+        }
       end
     end
   end
