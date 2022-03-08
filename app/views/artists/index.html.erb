@@ -1,5 +1,10 @@
 <%= render "secondary_links" %>
 
+  <%= hideable_search(artists_url) do |f| %>
+    <%= f.input :name %>
+    <%= f.submit "Search" %>
+  <% end %>
+
 <table class="table full-width">
   <thead>
     <tr>

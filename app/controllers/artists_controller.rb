@@ -16,14 +16,14 @@ class ArtistsController < ApplicationController
   end
 
   def index
-    @artists = Artist.all.order(id: :desc).page params[:page]
+    @artists = Artist.search(index_search_params).page params[:page]
   end
 
   def show
     @artist = Artist.includes(:artist_urls).find(params[:id])
-    @submission_files = instance_search(search_params)
+    @submission_files = instance_search(instance_search_params)
                         .for_artist(@artist.id)
-                        .for_url(search_params[:artist_urls])
+                        .for_url(instance_search_params[:artist_urls])
                         .with_everything(current_user.id)
                         .order(created_at_on_site: :desc)
                         .page params[:page]
@@ -61,7 +61,11 @@ class ArtistsController < ApplicationController
     params.fetch(:artist, {}).permit(permitted_params)
   end
 
-  def search_params
+  def index_search_params
+    params.fetch(:search, {}).permit(:name)
+  end
+
+  def instance_search_params
     params.fetch(:search, {}).permit(:upload_status, :larger_only_filesize_treshold, artist_urls: [])
   end
 

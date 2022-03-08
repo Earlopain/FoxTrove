@@ -9,4 +9,15 @@ class Artist < ApplicationRecord
   validates :name, length: { in: 1..64 }
 
   attr_accessor :url_string
+
+  concerning :SearchMethods do
+    class_methods do
+      def search(params)
+        q = all
+
+        q.attributes_matching([:name], params)
+        q.order(id: :desc)
+      end
+    end
+  end
 end
