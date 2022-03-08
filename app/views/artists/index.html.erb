@@ -2,6 +2,7 @@
 
   <%= hideable_search(artists_url) do |f| %>
     <%= f.input :name %>
+    <%= f.input :url_identifier, input_html: { name: "search[artist_urls][url_identifier]" } %>
     <%= f.submit "Search" %>
   <% end %>
 

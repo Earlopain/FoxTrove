@@ -16,9 +16,6 @@ class SubmissionFile < ApplicationRecord
     query = query.joins("left outer join backlogs on backlogs.submission_file_id = submission_files.id and backlogs.user_id = #{user_id}") if user_id
     query
   end
-  # TODO: Move this to the search concern
-  scope :for_url, ->(input) { where(artist_submission: { artist_urls: { id: input } }) unless input.nil? || (input&.size == 1 && input[0].blank?) }
-  scope :for_artist, ->(artist_id) { where(artist_submission: { artist_urls: { artist_id: artist_id } }) }
   scope :larger_only_filesize, ->(treshold) { where("exists (select from e6_iqdb_data where submission_files.id = e6_iqdb_data.submission_file_id and size > post_size) and not exists (select from e6_iqdb_data where submission_files.id = e6_iqdb_data.submission_file_id and size - ? <= post_size)", treshold) }
   scope :larger_only_dimensions, -> { where("exists (select from e6_iqdb_data where submission_files.id = e6_iqdb_data.submission_file_id and width > post_width and height > post_height) and not exists (select from e6_iqdb_data where submission_files.id = e6_iqdb_data.submission_file_id and width <= post_width and height <= post_height)") }
   scope :larger_only_both, ->(treshhold) { larger_only_filesize(treshhold).larger_only_dimensions }
@@ -109,8 +106,7 @@ class SubmissionFile < ApplicationRecord
                 q.none
               end
         end
-        q = q.for_artist(params[:artist_id])
-        q = q.for_url(params[:artist_urls])
+        q = q.attributes_matching({ artist_submission: { artist_url: [:id, { artist: :id }] } }, params)
         q.order(created_at_on_site: :desc)
       end
     end

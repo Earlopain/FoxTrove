@@ -12,7 +12,7 @@ Links:
 
 <div class="search">
   <%= hideable_search(artist_url(@artist)) do |f| %>
-    <%= f.input :artist_urls, label: "URLs", collection: active_artist_urls_collection(@artist), input_html: { multiple: true } %>
+    <%= f.input :artist_urls, label: "URLs", collection: active_artist_urls_collection(@artist), input_html: { multiple: true, name: "search[artist_submission][artist_url][id][]" } %>
     <%= f.input :upload_status, label: "Status", collection: [
       ["Larger Only (Filesize)", "larger_only_filesize"],
       ["Larger Only (Dimensions)", "larger_only_dimensions"],

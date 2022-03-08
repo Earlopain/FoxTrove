@@ -15,7 +15,7 @@ class Artist < ApplicationRecord
       def search(params)
         q = all
 
-        q.attributes_matching([:name], params)
+        q = q.attributes_matching([:name, { artist_urls: :url_identifier }], params)
         q.order(id: :desc)
       end
     end
