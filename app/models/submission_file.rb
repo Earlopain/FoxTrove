@@ -86,4 +86,33 @@ class SubmissionFile < ApplicationRecord
   def generate_variants
     sample.attach(io: VariantGenerator.sample(original), filename: "sample")
   end
+
+  concerning :SearchMethods do
+    class_methods do
+      def search(params)
+        q = all
+        if params[:upload_status].present?
+          q = case params[:upload_status]
+              when "larger_only_filesize"
+                q.larger_only_filesize((params[:larger_only_filesize_treshold] || 10).to_i.kilobytes)
+              when "larger_only_dimensions"
+                q.larger_only_dimensions
+              when "larger_only_both"
+                q.larger_only_both((params[:larger_only_filesize_treshold] || 10).to_i.kilobytes)
+              when "exact_match"
+                q.exact_match
+              when "already_uploaded"
+                q.already_uploaded
+              when "not_uploaded"
+                q.not_uploaded
+              else
+                q.none
+              end
+        end
+        q = q.for_artist(params[:artist_id])
+        q = q.for_url(params[:artist_urls])
+        q.order(created_at_on_site: :desc)
+      end
+    end
+  end
 end

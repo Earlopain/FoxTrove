@@ -21,11 +21,9 @@ class ArtistsController < ApplicationController
 
   def show
     @artist = Artist.includes(:artist_urls).find(params[:id])
-    @submission_files = instance_search(instance_search_params)
-                        .for_artist(@artist.id)
-                        .for_url(instance_search_params[:artist_urls])
+    @submission_files = SubmissionFile
+                        .search(instance_search_params.merge({ artist_id: @artist.id }))
                         .with_everything(current_user.id)
-                        .order(created_at_on_site: :desc)
                         .page params[:page]
     respond_with(@artist)
   end
@@ -69,32 +67,9 @@ class ArtistsController < ApplicationController
     params.fetch(:search, {}).permit(:upload_status, :larger_only_filesize_treshold, artist_urls: [])
   end
 
-  def instance_search(params)
-    q = SubmissionFile
-    if params[:upload_status].present?
-      q = case params[:upload_status]
-          when "larger_only_filesize"
-            q.larger_only_filesize((params[:larger_only_filesize_treshold] || 10).to_i.kilobytes)
-          when "larger_only_dimensions"
-            q.larger_only_dimensions
-          when "larger_only_both"
-            q.larger_only_both((params[:larger_only_filesize_treshold] || 10).to_i.kilobytes)
-          when "exact_match"
-            q.exact_match
-          when "already_uploaded"
-            q.already_uploaded
-          when "not_uploaded"
-            q.not_uploaded
-          else
-            q.none
-          end
-    end
-    q
-  end
-
   def add_new_artist_urls_and_save(artist)
     artist.valid?
-    artist.url_string.lines.map(&:strip).reject(&:blank?).each do |url|
+    artist.url_string.lines.map(&:strip).compact_blank.each do |url|
       result = Sites.from_url url
 
       if !result
