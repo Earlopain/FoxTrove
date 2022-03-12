@@ -424,7 +424,8 @@ CREATE TABLE public.submission_files (
     file_identifier text NOT NULL,
     width integer,
     height integer,
-    size integer
+    size integer,
+    content_type text
 );
 
 
@@ -979,6 +980,5 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220117214057'),
 ('20220118200359'),
 ('20220227111715'),
-('20220302162603');
-
-
+('20220302162603'),
+('20220312164752');

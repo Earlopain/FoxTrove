@@ -106,7 +106,7 @@ class SubmissionFile < ApplicationRecord
                 q.none
               end
         end
-        q = q.attributes_matching(%i[artist_url_id artist_id], params)
+        q = q.attributes_matching(%i[artist_url_id artist_id content_type], params)
         q.order(created_at_on_site: :desc)
       end
 

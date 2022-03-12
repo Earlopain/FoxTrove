@@ -22,6 +22,10 @@ Links:
       ["Not Uploaded", "not_uploaded"]
     ], include_blank: true %>
     <%= f.input :larger_only_filesize_treshold, label: "Larger Only Treshold (kB)" %>
+    <%= f.input :content_type, collection: [
+      ["Animation Only", "video/mp4,image/gif"],
+      ["Pictures Only", "image/png,image/jpeg,"],
+    ], include_blank: true %>
     <%= f.submit "Search" %>
   <% end %>
 </div>

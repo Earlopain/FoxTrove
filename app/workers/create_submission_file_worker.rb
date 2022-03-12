@@ -45,6 +45,7 @@ class CreateSubmissionFileWorker
     submission_file.update_columns(
       width: submission_file.original.metadata[:width],
       height: submission_file.original.metadata[:height],
+      content_type: submission_file.original.content_type,
       size: submission_file.original.byte_size
     )
   end
