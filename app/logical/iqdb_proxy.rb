@@ -2,7 +2,7 @@
 module IqdbProxy
   class Error < RuntimeError; end
 
-  VALID_CONTENT_TYPES = ["image/png", "image/jpeg"].freeze
+  VALID_CONTENT_TYPES = ["image/png", "image/jpeg", "image/webp"].freeze
   IQDB_NUM_PIXELS = 128
 
   module_function
