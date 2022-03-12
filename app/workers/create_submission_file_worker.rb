@@ -39,14 +39,22 @@ class CreateSubmissionFileWorker
       created_at_on_site: file["created_at"],
       file_identifier: file["identifier"]
     )
-    submission_file.original.attach(io: bin_file, filename: File.basename(url))
-    submission_file.save
-    submission_file.original.analyze
-    submission_file.update_columns(
-      width: submission_file.original.metadata[:width],
-      height: submission_file.original.metadata[:height],
-      content_type: submission_file.original.content_type,
-      size: submission_file.original.byte_size
-    )
+    blob = ActiveStorage::Blob.create_and_upload!(io: bin_file, filename: File.basename(url))
+    blob.analyze
+    raise StandardError, "Failed to analyze" if blob.content_type == "application/octet-stream"
+
+    begin
+      submission_file.original.attach(blob)
+      submission_file.attributes = {
+        width: blob.metadata[:width],
+        height: blob.metadata[:height],
+        content_type: blob.content_type,
+        size: blob.byte_size,
+      }
+      submission_file.save
+    rescue StandardError => e
+      blob.purge
+      raise e
+    end
   end
 end

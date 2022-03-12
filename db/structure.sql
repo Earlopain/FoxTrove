@@ -422,10 +422,10 @@ CREATE TABLE public.submission_files (
     direct_url text NOT NULL,
     created_at_on_site timestamp(6) with time zone NOT NULL,
     file_identifier text NOT NULL,
-    width integer,
-    height integer,
-    size integer,
-    content_type text
+    width integer NOT NULL,
+    height integer NOT NULL,
+    size integer NOT NULL,
+    content_type text NOT NULL
 );
 
 
@@ -981,4 +981,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220118200359'),
 ('20220227111715'),
 ('20220302162603'),
-('20220312164752');
+('20220312164752'),
+('20220312195219');
+
+
