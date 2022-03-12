@@ -39,16 +39,17 @@ class ApplicationRecord < ActiveRecord::Base
 
         column = model_class.column_for_attribute(attribute)
         qualified_column = "#{model_class.table_name}.#{column.name}"
+        values = (value.is_a?(Array) ? value : value.to_s.split(",")).first(100)
         case column.sql_type_metadata.type
         when :text
-          value = value.gsub("_", "\\_").gsub("%", "\\%").gsub("*", "%").gsub("\\", "\\\\\\\\")
-          where("#{qualified_column} ILIKE ?", value)
-        when :integer
-          if value.is_a?(Array)
-            where("#{qualified_column} IN(?)", value.first(100))
+          if values.count == 1
+            value = values.first.gsub("_", "\\_").gsub("%", "\\%").gsub("*", "%").gsub("\\", "\\\\\\\\")
+            where("#{qualified_column} ILIKE ?", value)
           else
-            where("#{qualified_column} IN(?)", value.to_s.split(",").first(100))
+            where("LOWER(#{qualified_column}) IN(?)", values.map(&:downcase))
           end
+        when :integer
+          where("#{qualified_column} IN(?)", values)
         else
           raise ArgumentError, "unhandled attribute type: #{column.sql_type_metadata.type}"
         end
