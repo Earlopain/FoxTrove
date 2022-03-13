@@ -51,6 +51,11 @@ class ArtistsController < ApplicationController
     @artist.artist_urls.each(&:enqueue_scraping)
   end
 
+  def update_all_iqdb
+    @artist = Artist.find(params[:id])
+    @artist.update_all_iqdb
+  end
+
   private
 
   def artist_params

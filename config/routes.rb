@@ -11,6 +11,7 @@ Rails.application.routes.draw do
   resources :artists, only: %i[index new create show destroy edit update] do
     member do
       post :enqueue_all_urls
+      post :update_all_iqdb
     end
   end
   resource :session, only: %i[create destroy new]

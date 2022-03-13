@@ -10,6 +10,16 @@ class Artist < ApplicationRecord
 
   attr_accessor :url_string
 
+  def update_all_iqdb
+    artist_urls.each do |artist_url|
+      artist_url.submissions.each do |submission|
+        submission.submission_files.each do |file|
+          E6IqdbQueryWorker.perform_async(file.id, false)
+        end
+      end
+    end
+  end
+
   concerning :SearchMethods do
     class_methods do
       def search(params)
