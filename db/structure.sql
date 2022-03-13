@@ -9,50 +9,6 @@ SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
 
---
--- Name: artist_url_sites; Type: TYPE; Schema: public; Owner: -
---
-
-CREATE TYPE public.artist_url_sites AS ENUM (
-    'twitter',
-    'furaffinity',
-    'inkbunny',
-    'sofurry',
-    'deviantart',
-    'artstation',
-    'patreon',
-    'pixiv',
-    'weasyl',
-    'tumblr',
-    'reddit',
-    'newgrounds',
-    'vkontakte',
-    'instagram',
-    'subscribestar',
-    'kofi',
-    'twitch',
-    'picarto',
-    'fanbox',
-    'piczel',
-    'linktree',
-    'carrd',
-    'youtube_channel',
-    'youtube_vanity',
-    'youtube_legacy',
-    'gumroad',
-    'discord',
-    'telegram',
-    'skeb',
-    'pawoo',
-    'baraag',
-    'hentai_foundry',
-    'pillowfort',
-    'commishes',
-    'furrynetwork',
-    'facebook'
-);
-
-
 SET default_tablespace = '';
 
 SET default_table_access_method = heap;
@@ -219,8 +175,8 @@ CREATE TABLE public.artist_urls (
     last_scraped_at timestamp(6) with time zone,
     created_at timestamp(6) with time zone NOT NULL,
     updated_at timestamp(6) with time zone NOT NULL,
-    site_type public.artist_url_sites NOT NULL,
-    api_identifier text
+    api_identifier text,
+    site_type integer NOT NULL
 );
 
 
@@ -708,10 +664,10 @@ CREATE INDEX index_artist_urls_on_creator_id ON public.artist_urls USING btree (
 
 
 --
--- Name: index_artist_urls_on_site_and_identifier; Type: INDEX; Schema: public; Owner: -
+-- Name: index_artist_urls_on_site_and_url_identifier; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_artist_urls_on_site_and_identifier ON public.artist_urls USING btree (site_type, lower(url_identifier));
+CREATE UNIQUE INDEX index_artist_urls_on_site_and_url_identifier ON public.artist_urls USING btree (site_type, lower(url_identifier));
 
 
 --
@@ -953,6 +909,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220302162603'),
 ('20220312164752'),
 ('20220312195219'),
-('20220313184210');
+('20220313184210'),
+('20220313192715');
 
 

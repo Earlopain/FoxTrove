@@ -12,6 +12,7 @@ class StatsController < ApplicationController
       "count(distinct artist_submission_id) as submission_count",
       "count(*) as file_count",
       ).joins(artist_submission: { artist_url: :artist }).group(:site_type).reorder("").index_by(&:site_type)
+    @counts.transform_keys! { |id| ArtistUrl.site_types.invert[id] }
   end
 
   private
