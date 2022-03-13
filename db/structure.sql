@@ -53,28 +53,6 @@ CREATE TYPE public.artist_url_sites AS ENUM (
 );
 
 
---
--- Name: user_levels; Type: TYPE; Schema: public; Owner: -
---
-
-CREATE TYPE public.user_levels AS ENUM (
-    'unactivated',
-    'member',
-    'admin'
-);
-
-
---
--- Name: user_permissions; Type: TYPE; Schema: public; Owner: -
---
-
-CREATE TYPE public.user_permissions AS ENUM (
-    'delete_artist',
-    'request_manual_update',
-    'allow_url_moderation'
-);
-
-
 SET default_tablespace = '';
 
 SET default_table_access_method = heap;
@@ -456,14 +434,13 @@ CREATE TABLE public.users (
     id bigint NOT NULL,
     name text NOT NULL,
     email text NOT NULL,
-    level public.user_levels DEFAULT 'unactivated'::public.user_levels NOT NULL,
-    permissions public.user_permissions[] DEFAULT '{}'::public.user_permissions[] NOT NULL,
     password_digest text NOT NULL,
     last_logged_in_at timestamp(6) with time zone NOT NULL,
     last_ip_addr inet NOT NULL,
     created_at timestamp(6) with time zone NOT NULL,
     updated_at timestamp(6) with time zone NOT NULL,
-    time_zone text NOT NULL
+    time_zone text NOT NULL,
+    level integer NOT NULL
 );
 
 
@@ -857,13 +834,6 @@ CREATE INDEX index_users_on_email ON public.users USING btree (email);
 
 
 --
--- Name: index_users_on_level; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_users_on_level ON public.users USING btree (level);
-
-
---
 -- Name: index_users_on_lower_email; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -982,6 +952,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220227111715'),
 ('20220302162603'),
 ('20220312164752'),
-('20220312195219');
+('20220312195219'),
+('20220313184210');
 
 

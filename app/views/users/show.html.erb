@@ -2,7 +2,7 @@
 Username: <%= @user.name %><br>
 Level: <%= @user.level.titlecase %><br>
 Created: <%= @user.created_at.to_formatted_s(:long) %><br>
-<% if current_user == @user || current_user.is_admin? %>
+<% if current_user == @user || current_user.admin? %>
   Email: <%= @user.email %><br>
 <% end %>
 

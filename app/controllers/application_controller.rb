@@ -41,9 +41,9 @@ class ApplicationController < ActionController::Base
     Time.use_zone(current_user.time_zone) { yield }
   end
 
-  User::Levels.ordered.each do |level|
-    define_method("#{level.downcase}_only") do
-      raise User::PrivilegeError unless current_user.send("is_#{level}?")
+  User.levels.each_key do |level|
+    define_method("#{level}_only") do
+      raise User::PrivilegeError unless current_user.send("#{level}?")
     end
   end
 
@@ -63,7 +63,7 @@ class ApplicationController < ActionController::Base
   def rescue_exception(exception)
     @exception = exception
 
-    if @exception.is_a?(User::PrivilegeError) && current_user.is_anon?
+    if @exception.is_a?(User::PrivilegeError) && current_user.anon?
       if request.get?
         redirect_to new_session_path(previous_url: request.fullpath)
       else

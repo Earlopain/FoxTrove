@@ -5,21 +5,10 @@ class User < ApplicationRecord
     end
   end
 
-  module Levels
-    UNACTIVATED = "unactivated".freeze
-    MEMBER = "member".freeze
-    ADMIN = "admin".freeze
-
-    def self.ordered
-      [UNACTIVATED, MEMBER, ADMIN]
-    end
-  end
-
-  module Permissions
-    DELETE_ARTIST = "delete_artist".freeze
-    REQUEST_MANUAL_UPDATE = "request_manual_update".freeze
-    ALLOW_URL_MODERATION = "allow_url_moderation".freeze
-  end
+  enum level: {
+    member: 0,
+    admin: 100,
+  }
 
   has_many :created_artists, foreign_key: :creator_id, class_name: "Artist"
   has_many :created_artist_urls, foreign_key: :creator_id, class_name: "ArtistUrl"
@@ -42,14 +31,13 @@ class User < ApplicationRecord
     user
   end
 
-  def is_anon?
+  def anon?
     level.nil?
   end
 
-  Levels.ordered.each.with_index do |level_to_check, index|
-    allowed = Levels.ordered[index..-1]
-    define_method("is_#{level_to_check.downcase}?") do
-      allowed.include? level
+  User.levels.each do |key, value|
+    define_method("#{key}?") do
+      !anon? && User.levels[level] >= value
     end
   end
 end
