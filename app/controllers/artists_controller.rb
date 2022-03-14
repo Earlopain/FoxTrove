@@ -4,7 +4,7 @@ class ArtistsController < ApplicationController
   before_action :admin_only, only: %i[enqueue_all_urls destroy]
 
   def new
-    @artist = Artist.new(artist_params)
+    @artist = Artist.new
     respond_with(@artist)
   end
 

@@ -1,6 +1,23 @@
 class UsersController < ApplicationController
+  respond_to :html
+
   def show
     @user = User.find(params[:id])
+  end
+
+  def new
+    @user = User.new
+    respond_with(@user)
+  end
+
+  def create
+    @user = User.new(user_params)
+    @user.last_logged_in_at = Time.zone.now
+    @user.last_ip_addr = current_ip_addr
+    @user.level = :member
+    @user.save
+    session[:user_id] = user.id if @user.errors.empty?
+    respond_with(@user)
   end
 
   def backlog
@@ -16,5 +33,11 @@ class UsersController < ApplicationController
 
   def backlog_search_params
     params.fetch(:search, {}).permit(SubmissionFile.search_params)
+  end
+
+  def user_params
+    permitted_params = %i[name api_key password password_confirmation]
+
+    params.fetch(:user, {}).permit(permitted_params)
   end
 end

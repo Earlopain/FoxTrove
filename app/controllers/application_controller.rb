@@ -33,7 +33,7 @@ class ApplicationController < ActionController::Base
     @current_user ||= SessionLoader.new(request).load
   end
 
-  def current_user_ip_addr
+  def current_ip_addr
     request.remote_ip
   end
 

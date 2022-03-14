@@ -16,12 +16,26 @@ class User < ApplicationRecord
 
   has_secure_password
   validates :password, length: { minimum: 6 }, if: ->(rec) { rec.new_record? || rec.password.present? }
-
   validates :name, uniqueness: { case_sensitive: false }
-  validates :name, printable_string: true
-  validates :name, length: { in: 5..20 }
-  validates :email, uniqueness: { case_sensitive: false }
-  validates :email, format: { with: URI::MailTo::EMAIL_REGEXP }
+  validates :e6_user_id, uniqueness: true
+  validate :set_e6_data, on: :create
+
+  attr_accessor :api_key
+
+  def set_e6_data
+    e6_user = E6ApiClient.new(name, api_key).user_by_name(name)
+    if e6_user["success"] == false
+      errors.add(:api_key, "is not valid")
+      throw :abort
+    end
+    if e6_user["email"].blank?
+      errors.add(:api_key, "does not match the user")
+      throw :abort
+    end
+    self.name = e6_user["name"]
+    self.e6_user_id = e6_user["id"]
+    self.time_zone = e6_user["time_zone"]
+  end
 
   def self.anon
     user = User.new

@@ -1,0 +1,10 @@
+<%= @user.errors.full_messages.join(", ") %>
+<%= simple_form_for @user do |f| %>
+  <%= f.input :name, as: :string %>
+  <%= f.input :api_key %>
+  <%= f.input :password %>
+  <%= f.input :password_confirmation %>
+  <%= f.button :submit %>
+<% end %>
+
+<% page_title "Create Account" %>

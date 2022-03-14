@@ -12,6 +12,7 @@ class SessionLoader
 
     user = User.find_by(id: user_id)
     if user
+      user.update_attribute(:last_logged_in_at, Time.zone.now) if user.last_logged_in_at > 1.day.ago
       user
     else
       session.delete(:user_id)

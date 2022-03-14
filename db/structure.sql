@@ -389,14 +389,14 @@ ALTER SEQUENCE public.submission_files_id_seq OWNED BY public.submission_files.i
 CREATE TABLE public.users (
     id bigint NOT NULL,
     name text NOT NULL,
-    email text NOT NULL,
     password_digest text NOT NULL,
     last_logged_in_at timestamp(6) with time zone NOT NULL,
     last_ip_addr inet NOT NULL,
     created_at timestamp(6) with time zone NOT NULL,
     updated_at timestamp(6) with time zone NOT NULL,
     time_zone text NOT NULL,
-    level integer NOT NULL
+    level integer NOT NULL,
+    e6_user_id integer NOT NULL
 );
 
 
@@ -720,6 +720,13 @@ CREATE INDEX index_e6_iqdb_data_on_submission_file_id ON public.e6_iqdb_data USI
 
 
 --
+-- Name: index_e6_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_e6_user_id ON public.users USING btree (e6_user_id);
+
+
+--
 -- Name: index_moderation_logs_on_action; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -780,20 +787,6 @@ CREATE INDEX index_submission_files_on_artist_submission_id ON public.submission
 --
 
 CREATE UNIQUE INDEX index_submission_files_on_artist_submission_id_and_file_id ON public.submission_files USING btree (artist_submission_id, file_identifier);
-
-
---
--- Name: index_users_on_email; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_users_on_email ON public.users USING btree (email);
-
-
---
--- Name: index_users_on_lower_email; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX index_users_on_lower_email ON public.users USING btree (lower(email));
 
 
 --
@@ -910,6 +903,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220312164752'),
 ('20220312195219'),
 ('20220313184210'),
-('20220313192715');
+('20220313192715'),
+('20220314114806');
 
 
