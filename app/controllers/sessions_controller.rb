@@ -4,7 +4,7 @@ class SessionsController < ApplicationController
   end
 
   def create
-    user = User.find_by(name: params[:username])
+    user = User.where("lower(name) = ?", params[:username].downcase.tr(" ", "_")).first
     if user&.authenticate params[:password]
       session[:user_id] = user.id
       cookies.encrypted[:remember_me] = { value: user.id, expires: 2.weeks.from_now, httponly: true } if params[:remember_me]
