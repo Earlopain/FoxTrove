@@ -53,7 +53,7 @@ class SubmissionFile < ApplicationRecord
     e6_iqdb_entries.destroy_all
     sample.open do |file|
       # FIXME: Error handling
-      response = E6Iqdb.query file
+      response = E6ApiClient.iqdb_query file
       json = JSON.parse(response.body)
       break unless json.is_a? Array
 

@@ -1,19 +1,19 @@
-module E6Iqdb
-  URL = "https://e621.net/iqdb_queries.json".freeze
+class E6ApiClient
+  API_BASE = "https://e621.net".freeze
 
-  def self.enabled?
+  def self.iqdb_enabled?
     Config.e6_user.present? && Config.e6_apikey.present?
   end
 
-  def self.query(file)
+  def self.iqdb_query(file)
     # FIXME: Proper rate limiting
     sleep 2
     HTTParty.post(
-      URL,
+      "#{API_BASE}/iqdb_queries.json",
       body: { file: file },
       headers: {
         "Authorization": "Basic #{credentials}",
-        "User-Agent": "reverser/0.1 (by earlopain) running through #{Config.e6_user}",
+        "User-Agent": "reverser/0.1 (by earlopain)",
       }
     )
   end
