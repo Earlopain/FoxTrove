@@ -11,23 +11,7 @@ Links:
 </div>
 
 <div class="search">
-  <%= hideable_search(artist_url(@artist)) do |f| %>
-    <%= f.input :artist_url_id, label: "URLs", collection: active_artist_urls_collection(@artist), input_html: { multiple: true } %>
-    <%= f.input :upload_status, label: "Status", collection: [
-      ["Larger Only (Filesize)", "larger_only_filesize"],
-      ["Larger Only (Dimensions)", "larger_only_dimensions"],
-      ["Larger Only (Both)", "larger_only_both"],
-      ["Already Uploaded", "already_uploaded"],
-      ["Exact Match", "exact_match"],
-      ["Not Uploaded", "not_uploaded"]
-    ], include_blank: true %>
-    <%= f.input :larger_only_filesize_treshold, label: "Larger Only Treshold (kB)" %>
-    <%= f.input :content_type, collection: [
-      ["Animation Only", "video/mp4,image/gif"],
-      ["Pictures Only", "image/png,image/jpeg,"],
-    ], include_blank: true %>
-    <%= f.submit "Search" %>
-  <% end %>
+  <%= render "submission_files/search", path: artist_url(@artist), artist_urls: active_artist_urls_collection(@artist) %>
 </div>
 
 <% @submission_files.each do |file| %>

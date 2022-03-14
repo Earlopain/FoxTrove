@@ -69,7 +69,7 @@ class ArtistsController < ApplicationController
   end
 
   def instance_search_params
-    params.fetch(:search, {}).permit(:upload_status, :larger_only_filesize_treshold, :content_type, { artist_url_id: [] })
+    params.fetch(:search, {}).permit(SubmissionFile.search_params)
   end
 
   def add_new_artist_urls_and_save(artist)

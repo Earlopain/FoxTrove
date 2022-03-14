@@ -106,7 +106,7 @@ class SubmissionFile < ApplicationRecord
                 q.none
               end
         end
-        q = q.attributes_matching(%i[artist_url_id artist_id content_type], params)
+        q = q.attributes_matching(%i[artist_url_id artist_id content_type backlog_user_id], params)
         q.order(created_at_on_site: :desc)
       end
 
@@ -114,7 +114,12 @@ class SubmissionFile < ApplicationRecord
         {
           artist_url_id: { artist_submission: { artist_url: :id } },
           artist_id: { artist_submission: { artist_url: { artist: :id } } },
+          backlog_user_id: { backlogs: :user_id },
         }
+      end
+
+      def search_params
+        [:upload_status, :larger_only_filesize_treshold, :content_type, { artist_url_id: [] }]
       end
     end
   end
