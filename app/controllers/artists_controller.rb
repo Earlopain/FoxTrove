@@ -1,7 +1,7 @@
 class ArtistsController < ApplicationController
   respond_to :html
-  before_action :member_only, only: %i[create new]
-  before_action :admin_only, only: %i[enqueue_all_urls destroy]
+  before_action :member_only, only: %i[create new edit update]
+  before_action :admin_only, only: %i[enqueue_all_urls update_all_iqdb destroy]
 
   def new
     @artist = Artist.new
