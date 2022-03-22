@@ -4,19 +4,6 @@ module Scraper
     API_PREFIX = "https://furrynetwork.com/api".freeze
 
     def init
-      # This whole thing is very brittle and may break at any moment
-      @bearer_token = Cache.fetch("furrynetwork-token", 55.minutes) do
-        SeleniumWrapper.driver do |driver|
-          driver.navigate.to "https://furrynetwork.com/login"
-          driver.manage.window.maximize
-          driver.find_element(id: "email").send_keys Config.furrynetwork_user
-          driver.find_element(id: "password").send_keys Config.furrynetwork_pass
-          driver.find_element(css: ".page--login__form button[type='submit']").click
-          wait = Selenium::WebDriver::Wait.new(timeout: 10)
-          wait.until { driver.find_element(class: "profile-switcher-menu") }
-          driver.execute_script "return JSON.parse(window.localStorage.getItem('token')).access_token"
-        end
-      end
       @offset = 0
     end
 
@@ -67,10 +54,26 @@ module Scraper
       response = HTTParty.get("#{API_PREFIX}/#{endpoint}", {
         query: query,
         headers: {
-          Authorization: "Bearer #{@bearer_token}",
+          Authorization: "Bearer #{bearer_token}",
         },
       })
       JSON.parse(response.body)
+    end
+
+    # This whole thing is very brittle and may break at any moment
+    def bearer_token
+      Cache.fetch("furrynetwork-token", 55.minutes) do
+        SeleniumWrapper.driver do |driver|
+          driver.navigate.to "https://furrynetwork.com/login"
+          driver.manage.window.maximize
+          driver.find_element(id: "email").send_keys Config.furrynetwork_user
+          driver.find_element(id: "password").send_keys Config.furrynetwork_pass
+          driver.find_element(css: ".page--login__form button[type='submit']").click
+          wait = Selenium::WebDriver::Wait.new(timeout: 10)
+          wait.until { driver.find_element(class: "profile-switcher-menu") }
+          driver.execute_script "return JSON.parse(window.localStorage.getItem('token')).access_token"
+        end
+      end
     end
   end
 end

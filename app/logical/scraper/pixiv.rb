@@ -16,9 +16,6 @@ module Scraper
     PER_PAGE = 30
 
     def init
-      @access_token = Cache.fetch("pixiv-token", 55.minutes) do
-        fetch_access_token
-      end
       @offset = 0
     end
 
@@ -75,46 +72,48 @@ module Scraper
     def make_request(endpoint, query = {})
       response = HTTParty.get("#{API_BASE_URL}/#{endpoint}", query: query, headers: {
         **headers,
-        Authorization: "Bearer #{@access_token}",
+        Authorization: "Bearer #{access_token}",
       })
       JSON.parse response.body
     end
 
     private
 
-    def fetch_access_token
-      SeleniumWrapper.driver(with_performance: true) do |driver|
-        code_verifier = urlsafe_b64 SecureRandom.base64(32)
-        code_challenge = urlsafe_b64 Digest::SHA256.base64digest(code_verifier)
+    def access_token
+      Cache.fetch("pixiv-token", 55.minutes) do
+        SeleniumWrapper.driver(with_performance: true) do |driver|
+          code_verifier = urlsafe_b64 SecureRandom.base64(32)
+          code_challenge = urlsafe_b64 Digest::SHA256.base64digest(code_verifier)
 
-        login_params = {
-          code_challenge: code_challenge,
-          code_challenge_method: "S256",
-          client: "pixiv-android",
-        }
+          login_params = {
+            code_challenge: code_challenge,
+            code_challenge_method: "S256",
+            client: "pixiv-android",
+          }
 
-        driver.navigate.to "#{LOGIN_URL}?#{login_params.to_query}"
-        wait = Selenium::WebDriver::Wait.new(timeout: 10)
-        wait.until { driver.find_element(css: "#LoginComponent [autocomplete='username']") }.send_keys Config.pixiv_user
-        driver.find_element(css: "#LoginComponent [autocomplete='current-password']").send_keys Config.pixiv_pass
-        driver.find_element(css: "#LoginComponent .signup-form__submit").click
+          driver.navigate.to "#{LOGIN_URL}?#{login_params.to_query}"
+          wait = Selenium::WebDriver::Wait.new(timeout: 10)
+          wait.until { driver.find_element(css: "#LoginComponent [autocomplete='username']") }.send_keys Config.pixiv_user
+          driver.find_element(css: "#LoginComponent [autocomplete='current-password']").send_keys Config.pixiv_pass
+          driver.find_element(css: "#LoginComponent .signup-form__submit").click
 
-        code = nil
-        wait.until do
-          logs = driver.logs.get("performance")
-          code = fetch_code_from_logs logs
-          true if code
+          code = nil
+          wait.until do
+            logs = driver.logs.get("performance")
+            code = fetch_code_from_logs logs
+            true if code
+          end
+          response = HTTParty.post(AUTH_TOKEN_URL, headers: headers, body: {
+            client_id: CLIENT_ID,
+            client_secret: CLIENT_SECRET,
+            code: code,
+            code_verifier: code_verifier,
+            grant_type: "authorization_code",
+            unclude_policy: true,
+            redirect_uri: REDIRECT_URI,
+          })
+          response["access_token"]
         end
-        response = HTTParty.post(AUTH_TOKEN_URL, headers: headers, body: {
-          client_id: CLIENT_ID,
-          client_secret: CLIENT_SECRET,
-          code: code,
-          code_verifier: code_verifier,
-          grant_type: "authorization_code",
-          unclude_policy: true,
-          redirect_uri: REDIRECT_URI,
-        })
-        response["access_token"]
       end
     end
 

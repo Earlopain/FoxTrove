@@ -8,11 +8,7 @@ module Scraper
     API_BASE_URL = "https://twitter.com/i/api/graphql".freeze
 
     def init
-      # `filter:images` can't be used since it won't return sensitive media for guest accounts
       @user_agent = random_user_agent
-      @auth_token, @csrf_token = Cache.fetch("twitter-tokens", 55.minutes) do
-        fetch_tokens
-      end
       @cursor = ""
     end
 
@@ -120,40 +116,43 @@ module Scraper
       JSON.parse response.body
     end
 
-    def fetch_tokens
-      SeleniumWrapper.driver do |driver|
-        driver.navigate.to "https://twitter.com/"
-        wait = Selenium::WebDriver::Wait.new(timeout: 10)
-        # There are two different layouts for the homepage, the loginflow is always the same though
-        wait.until { driver.find_element(xpath: "//*[text()='Sign in'] | //*[text()='Log in']") }.click
+    def tokens
+      Cache.fetch("twitter-tokens", 55.minutes) do
+        SeleniumWrapper.driver do |driver|
+          driver.navigate.to "https://twitter.com/"
+          wait = Selenium::WebDriver::Wait.new(timeout: 10)
+          # There are two different layouts for the homepage, the loginflow is always the same though
+          wait.until { driver.find_element(xpath: "//*[text()='Sign in'] | //*[text()='Log in']") }.click
 
-        wait.until { driver.find_element(css: "input[autocomplete='username']") }.send_keys Config.twitter_user
-        driver.find_element(xpath: "//*[text()='Next']").click
-
-        wait.until { driver.find_element(css: "input[type='password']") }.send_keys Config.twitter_pass
-        driver.find_element(xpath: "//*[text()='Log in']").click
-
-        if Config.twitter_otp_secret.present?
-          otp = ROTP::TOTP.new(Config.twitter_otp_secret).now
-          wait.until { driver.find_element(css: "input") }.send_keys otp
+          wait.until { driver.find_element(css: "input[autocomplete='username']") }.send_keys Config.twitter_user
           driver.find_element(xpath: "//*[text()='Next']").click
-        end
 
-        # The auth_token cookie isn't available immediately, so wait a bit
-        auth_token = wait.until { driver.manage.cookie_named("auth_token")[:value] rescue nil }
-        csrf_token = driver.manage.cookie_named("ct0")[:value]
-        [auth_token, csrf_token]
+          wait.until { driver.find_element(css: "input[type='password']") }.send_keys Config.twitter_pass
+          driver.find_element(xpath: "//*[text()='Log in']").click
+
+          if Config.twitter_otp_secret.present?
+            otp = ROTP::TOTP.new(Config.twitter_otp_secret).now
+            wait.until { driver.find_element(css: "input") }.send_keys otp
+            driver.find_element(xpath: "//*[text()='Next']").click
+          end
+
+          # The auth_token cookie isn't available immediately, so wait a bit
+          auth_token = wait.until { driver.manage.cookie_named("auth_token")[:value] rescue nil }
+          csrf_token = driver.manage.cookie_named("ct0")[:value]
+          [auth_token, csrf_token]
+        end
       end
     end
 
     def api_headers
+      auth_token, csrf_token = tokens
       {
         "User-Agent": @user_agent,
         "Authorization": "Bearer #{BEARER_TOKEN}",
         "Referer": "https://twitter.com/#{@url_identifier}/media",
         "Accept-Language": "en-US,en;q=0.5",
-        "x-csrf-token": @csrf_token,
-        "Cookie": "ct0=#{@csrf_token}; auth_token=#{@auth_token}",
+        "x-csrf-token": csrf_token,
+        "Cookie": "ct0=#{csrf_token}; auth_token=#{auth_token}",
       }
     end
 

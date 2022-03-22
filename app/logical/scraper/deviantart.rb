@@ -5,10 +5,6 @@ module Scraper
     API_PREFIX = "https://www.deviantart.com/api/v1/oauth2".freeze
 
     def init
-      # Tokens seem to expire after one hour
-      @access_token = Cache.fetch("deviantart-token", 55.minutes) do
-        fetch_access_token
-      end
       @next_offset = nil
     end
 
@@ -66,7 +62,7 @@ module Scraper
     def make_api_call(endpoint, query = {})
       response = HTTParty.get("#{API_PREFIX}/#{endpoint}", {
         query: {
-          access_token: @access_token,
+          access_token: access_token,
           **query,
         },
         headers: {
@@ -76,13 +72,15 @@ module Scraper
       JSON.parse(response.body)
     end
 
-    def fetch_access_token
-      response = HTTParty.get("https://www.deviantart.com/oauth2/token", query: {
-        grant_type: "client_credentials",
-        client_id: Config.deviantart_client_id,
-        client_secret: Config.deviantart_client_secret,
-      })
-      JSON.parse(response.body)["access_token"]
+    def access_token
+      Cache.fetch("deviantart-token", 55.minutes) do
+        response = HTTParty.get("https://www.deviantart.com/oauth2/token", query: {
+          grant_type: "client_credentials",
+          client_id: Config.deviantart_client_id,
+          client_secret: Config.deviantart_client_secret,
+        })
+        JSON.parse(response.body)["access_token"]
+      end
     end
   end
 end
