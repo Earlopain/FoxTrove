@@ -2,6 +2,7 @@
 
 import TimeAgo from "./time_ago";
 import Search from "./search";
+import Samples from "./samples";
 
 import Rails from "@rails/ujs"
 Rails.start()
@@ -9,4 +10,5 @@ Rails.start()
 document.addEventListener("DOMContentLoaded", () => {
   new TimeAgo().formatAll();
   Search.init();
+  Samples.init();
 });
