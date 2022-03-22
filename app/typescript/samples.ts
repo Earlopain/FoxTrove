@@ -14,12 +14,12 @@ export default class Samples {
   }
 
   private static hide(thumbnail: Element) {
-    thumbnail.classList.add("hidden");
+    thumbnail.classList.add("active-thumbnail");
     thumbnail.nextElementSibling?.classList.remove("hidden");
   }
 
   private static show(thumbnail?: Element) {
-    thumbnail?.classList.remove("hidden");
+    thumbnail?.classList.remove("active-thumbnail");
     thumbnail?.nextElementSibling?.classList.add("hidden");
   }
 }
