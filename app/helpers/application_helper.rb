@@ -38,11 +38,11 @@ module ApplicationHelper
   end
 
   def hideable_search(path, &block)
-    tag.div(id: "hideable-search-container") do
-      show = tag.div("Show Search Options", href: "#", id: "hideable-search-show", class: "link #{'hidden' if params[:search].present?}")
-      hide = tag.div("Hide Search Options", href: "#", id: "hideable-search-hide", class: "link #{'hidden' if params[:search].blank?}")
+    tag.div(class: "hideable-search-container") do
+      show = tag.div("Show Search Options", href: "#", class: "hideable-search-show link #{'hidden' if params[:search].present?}")
+      hide = tag.div("Hide Search Options", href: "#", class: "hideable-search-hide link #{'hidden' if params[:search].blank?}")
       form = simple_form_for(:search, method: :get, url: path, defaults: { required: false }, builder: HideableSearchFormBuilder, search_params: params[:search], &block)
-      show.concat(hide).concat(tag.span(form, id: "hideable-search-form", class: ("hidden" if params[:search].blank?)))
+      show.concat(hide).concat(tag.span(form, class: "hideable-search-form #{'hidden' if params[:search].blank?}"))
     end
   end
 
