@@ -1,25 +1,35 @@
 export default class Samples {
-  public static init() {
-    let currentActive: Element | undefined;
+  private currentActive: Element | undefined;
+
+  public constructor() {
     for (const thumbnail of document.querySelectorAll(".submission-file")) {
       thumbnail.addEventListener("click", () => {
-        this.show(currentActive);
-        currentActive = thumbnail;
-        this.hide(thumbnail);
-        thumbnail.nextElementSibling?.addEventListener("click", () => {
-          this.show(thumbnail);
-        }, { once: true });
+        if (thumbnail.isSameNode(this.currentActive)) {
+          this.removeCurrentActive();
+        } else {
+          this.hideLarge(this.currentActive);
+          this.currentActive = thumbnail;
+          this.showLarge(thumbnail);
+          thumbnail.nextElementSibling?.addEventListener("click", () => {
+            this.removeCurrentActive();
+          }, { once: true });
+        }
       });
     }
   }
 
-  private static hide(thumbnail: Element) {
+  private showLarge(thumbnail: Element) {
     thumbnail.classList.add("active-thumbnail");
     thumbnail.nextElementSibling?.classList.remove("hidden");
   }
 
-  private static show(thumbnail?: Element) {
+  private hideLarge(thumbnail?: Element) {
     thumbnail?.classList.remove("active-thumbnail");
     thumbnail?.nextElementSibling?.classList.add("hidden");
+  }
+
+  private removeCurrentActive() {
+    this.hideLarge(this.currentActive);
+    this.currentActive = undefined;
   }
 }

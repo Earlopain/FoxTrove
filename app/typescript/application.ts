@@ -10,5 +10,5 @@ Rails.start()
 document.addEventListener("DOMContentLoaded", () => {
   new TimeAgo().formatAll();
   Search.init();
-  Samples.init();
+  new Samples();
 });
