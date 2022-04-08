@@ -1,5 +1,7 @@
 module Scraper
   class Newgrounds < Base
+    COOKIE_NAME = "vmkIdu5l8m".freeze
+
     def init
       @page = 1
       @submission_cache = []
@@ -7,7 +9,7 @@ module Scraper
     end
 
     def self.enabled?
-      true
+      Config.newgrounds_user.present? && Config.newgrounds_pass.present?
     end
 
     def fetch_next_batch
@@ -16,10 +18,10 @@ module Scraper
       # it can be checked on each submission one after the other
       if @submission_cache.empty?
         response = get_from_page(@page)
-        submissions = response["sequence"].map { |year| response["years"][year.to_s]["items"] }.flatten
+        submissions = response["items"].keys.map { |year| response["items"][year] }.flatten
         @submission_cache = submissions.map { |entry| Nokogiri::HTML(entry).css("a").first.attributes["href"].value }
         @page += 1
-        @will_have_more = response["more"].present?
+        @will_have_more = response["load_more"].strip.present?
       end
 
       single_submission_url = @submission_cache.shift
@@ -61,12 +63,13 @@ module Scraper
       url = "https://#{@url_identifier}.newgrounds.com/art/page/#{page}"
       response = HTTParty.get(url, headers: {
         "X-Requested-With": "XMLHttpRequest",
+        "Cookie": "#{COOKIE_NAME}=#{fetch_cookie}",
       })
       JSON.parse(response.body)
     end
 
     def get_submission_details(url)
-      response = HTTParty.get(url)
+      response = HTTParty.get(url, headers: { Cookie: "#{COOKIE_NAME}=#{fetch_cookie}" })
       html = Nokogiri::HTML(response.body)
       media_object = html.at("[itemtype='https://schema.org/MediaObject']")
       main_image_url = media_object.at(".image img").attributes["src"].value
@@ -78,6 +81,19 @@ module Scraper
         created_at: DateTime.parse(media_object.at("[itemprop='datePublished']").attributes["content"].value),
         files: [main_image_url] + secondary_image_urls,
       }
+    end
+
+    def fetch_cookie
+      Cache.fetch("newgrounds-cookie", 2.weeks) do
+        SeleniumWrapper.driver do |driver|
+          driver.navigate.to "https://www.newgrounds.com/passport"
+          wait = Selenium::WebDriver::Wait.new(timeout: 10)
+          wait.until { driver.find_element(css: "input[name='username']") }.send_keys Config.newgrounds_user
+          driver.find_element(css: "input[name='password']").send_keys Config.newgrounds_pass
+          driver.find_element(css: "button.PassportLoginBtn").click
+          wait.until { driver.manage.cookie_named(COOKIE_NAME)[:value] rescue nil }
+        end
+      end
     end
   end
 end

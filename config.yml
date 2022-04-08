@@ -49,6 +49,8 @@ reddit_client_id:
 reddit_client_secret:
 pixiv_user:
 pixiv_pass:
+newgrounds_user:
+newgrounds_pass:
 
 # These settings require a server restart
 # Controls wether or not the logging should be intercepted
