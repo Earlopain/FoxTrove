@@ -1,4 +1,8 @@
 module GitHelper
+  def self.enabled?
+    hash.present?
+  end
+
   def self.hash
     return @hash if instance_variable_defined? :@hash
 

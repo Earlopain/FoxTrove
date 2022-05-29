@@ -1,7 +1,8 @@
 <footer>
   Running <%= "#{Config.app_name}" %>
-  <%= link_to GitHelper.hash, "#{GitHelper.url}/tree/#{GitHelper.hash}" %>
   &ndash; <%= link_to "About", about_static_path %>
   &ndash; <%= link_to "Contact", contact_static_path %>
-  &ndash; <%= link_to "Github", GitHelper.url %>
+  <% if GitHelper.enabled? %>
+    &ndash; <%= link_to "Github", GitHelper.url %> (<%= link_to GitHelper.hash, "#{GitHelper.url}/tree/#{GitHelper.hash}" %>)
+  <% end %>
 </footer>
