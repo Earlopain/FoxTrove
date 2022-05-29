@@ -25,7 +25,7 @@ class CreateSubmissionFileWorker
     bin_file = Tempfile.new(binmode: true)
     response = Sites.download_file bin_file, url, definition
 
-    raise StandardError, "Failed to download #{uri}: #{response.code}" if response.code != 200
+    raise StandardError, "Failed to download #{url}: #{response.code}" if response.code != 200
 
     # Deviantart doesn't have to return only images.
     # No way to find this out through the api response as far as I'm aware.
