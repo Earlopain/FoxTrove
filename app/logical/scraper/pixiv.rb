@@ -93,9 +93,9 @@ module Scraper
 
           driver.navigate.to "#{LOGIN_URL}?#{login_params.to_query}"
           wait = Selenium::WebDriver::Wait.new(timeout: 10)
-          wait.until { driver.find_element(css: "#LoginComponent [autocomplete='username']") }.send_keys Config.pixiv_user
-          driver.find_element(css: "#LoginComponent [autocomplete='current-password']").send_keys Config.pixiv_pass
-          driver.find_element(css: "#LoginComponent .signup-form__submit").click
+          wait.until { driver.find_element(css: "form input[autocomplete='username']") }.send_keys Config.pixiv_user
+          driver.find_element(css: "form input[autocomplete='current-password']").send_keys Config.pixiv_pass
+          driver.find_element(css: "form button[type='submit'").click
 
           code = nil
           wait.until do
