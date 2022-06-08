@@ -1,4 +1,4 @@
-FROM ruby:3.1.0-alpine
+FROM ruby:3.1.2-alpine
 
 WORKDIR /app
 
@@ -10,13 +10,13 @@ RUN apk --no-cache add \
   vips \
   ffmpeg \
   && npm install -g corepack \
-  && corepack prepare yarn@3.1.1 --activate
+  && corepack prepare yarn@3.2.1 --activate
 
 COPY package.json yarn.lock .yarnrc.yml ./
 RUN yarn install
 
 COPY Gemfile Gemfile.lock ./
-RUN bundle install && gem install foreman
+RUN gem i bundler:2.3.15 foreman && bundle install
 
 RUN echo "IRB.conf[:USE_AUTOCOMPLETE] = false" > ~/.irbrc
 

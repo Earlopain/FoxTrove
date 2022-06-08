@@ -56,7 +56,7 @@ services:
       - iqdb_data:/iqdb
 
   selenium:
-    image: selenium/standalone-chrome:4.1.1-20220121
+    image: selenium/standalone-chrome:4.2.1-20220608
     shm_size: 2gb
     ports:
       - 7900:7900
