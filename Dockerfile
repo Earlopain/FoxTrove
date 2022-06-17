@@ -12,6 +12,8 @@ RUN apk --no-cache add \
   && npm install -g corepack \
   && corepack prepare yarn@3.2.1 --activate
 
+RUN git config --global --add safe.directory /app
+
 COPY package.json yarn.lock .yarnrc.yml ./
 RUN yarn install
 
