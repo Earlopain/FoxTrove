@@ -34,6 +34,11 @@ module Scraper
       params[:cursor] = @cursor if @cursor.present?
       response = make_request("laAWxgrzEYIlGLcOucDFMw/UserMedia", params)
 
+      if response.dig("data", "user", "result", "__typename") == "UserUnavailable"
+        end_reached
+        return []
+      end
+
       instructions = response.dig("data", "user", "result", "timeline_v2", "timeline", "instructions")
       timeline_add_entries = instructions.find { |instruction| instruction["type"] == "TimelineAddEntries" }["entries"].map { |entry| entry["content"] }
       tweets = entries_by_type(timeline_add_entries, "TimelineTimelineItem").map { |content| content.dig("itemContent", "tweet_results", "result") }
