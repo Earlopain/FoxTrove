@@ -57,6 +57,8 @@ services:
 
   selenium:
     image: selenium/standalone-chrome:4.2.1-20220608
+    environment:
+      - VNC_NO_PASSWORD=1
     shm_size: 2gb
     ports:
       - 7900:7900
