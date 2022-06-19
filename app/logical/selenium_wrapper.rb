@@ -12,6 +12,6 @@ class SeleniumWrapper
     driver = Selenium::WebDriver.for :remote, capabilities: [options, cps], url: Config.selenium_url
     yield driver
   ensure
-    driver.quit
+    driver&.quit
   end
 end
