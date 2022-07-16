@@ -266,10 +266,10 @@ ALTER SEQUENCE public.e6_iqdb_data_id_seq OWNED BY public.e6_iqdb_data.id;
 
 
 --
--- Name: moderation_logs; Type: TABLE; Schema: public; Owner: -
+-- Name: log_events; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.moderation_logs (
+CREATE TABLE public.log_events (
     id bigint NOT NULL,
     loggable_type text NOT NULL,
     loggable_id integer NOT NULL,
@@ -280,10 +280,10 @@ CREATE TABLE public.moderation_logs (
 
 
 --
--- Name: moderation_logs_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: log_events_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE public.moderation_logs_id_seq
+CREATE SEQUENCE public.log_events_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -292,10 +292,10 @@ CREATE SEQUENCE public.moderation_logs_id_seq
 
 
 --
--- Name: moderation_logs_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: log_events_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE public.moderation_logs_id_seq OWNED BY public.moderation_logs.id;
+ALTER SEQUENCE public.log_events_id_seq OWNED BY public.log_events.id;
 
 
 --
@@ -397,10 +397,10 @@ ALTER TABLE ONLY public.e6_iqdb_data ALTER COLUMN id SET DEFAULT nextval('public
 
 
 --
--- Name: moderation_logs id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: log_events id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.moderation_logs ALTER COLUMN id SET DEFAULT nextval('public.moderation_logs_id_seq'::regclass);
+ALTER TABLE ONLY public.log_events ALTER COLUMN id SET DEFAULT nextval('public.log_events_id_seq'::regclass);
 
 
 --
@@ -475,11 +475,11 @@ ALTER TABLE ONLY public.e6_iqdb_data
 
 
 --
--- Name: moderation_logs moderation_logs_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: log_events log_events_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.moderation_logs
-    ADD CONSTRAINT moderation_logs_pkey PRIMARY KEY (id);
+ALTER TABLE ONLY public.log_events
+    ADD CONSTRAINT log_events_pkey PRIMARY KEY (id);
 
 
 --
@@ -576,31 +576,31 @@ CREATE INDEX index_e6_iqdb_data_on_submission_file_id ON public.e6_iqdb_data USI
 
 
 --
--- Name: index_moderation_logs_on_action; Type: INDEX; Schema: public; Owner: -
+-- Name: index_log_events_on_action; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_moderation_logs_on_action ON public.moderation_logs USING btree (action);
-
-
---
--- Name: index_moderation_logs_on_loggable_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_moderation_logs_on_loggable_id ON public.moderation_logs USING btree (loggable_id);
+CREATE INDEX index_log_events_on_action ON public.log_events USING btree (action);
 
 
 --
--- Name: index_moderation_logs_on_loggable_type; Type: INDEX; Schema: public; Owner: -
+-- Name: index_log_events_on_loggable_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_moderation_logs_on_loggable_type ON public.moderation_logs USING btree (loggable_type);
+CREATE INDEX index_log_events_on_loggable_id ON public.log_events USING btree (loggable_id);
 
 
 --
--- Name: index_moderation_logs_on_loggable_type_and_loggable_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_log_events_on_loggable_type; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_moderation_logs_on_loggable_type_and_loggable_id ON public.moderation_logs USING btree (loggable_type, loggable_id);
+CREATE INDEX index_log_events_on_loggable_type ON public.log_events USING btree (loggable_type);
+
+
+--
+-- Name: index_log_events_on_loggable_type_and_loggable_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_log_events_on_loggable_type_and_loggable_id ON public.log_events USING btree (loggable_type, loggable_id);
 
 
 --
@@ -713,6 +713,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220716130948'),
 ('20220716142252'),
 ('20220716145739'),
-('20220716151643');
+('20220716151643'),
+('20220716195525');
 
 

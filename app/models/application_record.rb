@@ -1,7 +1,16 @@
 class ApplicationRecord < ActiveRecord::Base
   self.abstract_class = true
 
-  has_many :moderation_logs, as: :loggable
+  has_many :log_events, as: :loggable
+
+  def add_log_event(action, **payload)
+    LogEvent.create!(
+      loggable_id: id,
+      loggable_type: self.class.name,
+      action:,
+      payload:,
+    )
+  end
 
   concerning :SearchMethods do
     class_methods do
