@@ -59,6 +59,7 @@ module Sites
     Definitions::Furrynetwork,
     Definitions::Sofurry,
     Definitions::Pixiv,
+    Definitions::Piczel,
   ].map { |definition| ScraperDefinition.new definition }.freeze
 
   SIMPLE = [

@@ -25,6 +25,7 @@ sofurry_disabled?: false
 twitter_disabled?: false
 weasyl_disabled?: false
 pixiv_disabled?: false
+piczel_disabled?: false
 
 # Credentials, overwrite in custom file
 inkbunny_user:
