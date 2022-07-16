@@ -3,7 +3,6 @@ class SubmissionFile < ApplicationRecord
   has_one_attached :original
   has_one_attached :sample
   has_many :e6_iqdb_entries, class_name: "E6IqdbData", dependent: :destroy
-  has_many :backlogs
 
   validate :original_present
 
@@ -11,7 +10,7 @@ class SubmissionFile < ApplicationRecord
   after_save_commit :update_variants_and_iqdb
 
   scope :with_attached, -> { with_attached_sample.with_attached_original }
-  scope :with_everything, -> { with_attached.includes(:e6_iqdb_entries, :backlogs, artist_submission: :artist_url) }
+  scope :with_everything, -> { with_attached.includes(:e6_iqdb_entries, artist_submission: :artist_url) }
   scope :larger_only_filesize, ->(treshold) { where("exists (select from e6_iqdb_data where submission_files.id = e6_iqdb_data.submission_file_id and size > post_size) and not exists (select from e6_iqdb_data where submission_files.id = e6_iqdb_data.submission_file_id and size - ? <= post_size)", treshold) }
   scope :larger_only_dimensions, -> { where("exists (select from e6_iqdb_data where submission_files.id = e6_iqdb_data.submission_file_id and width > post_width and height > post_height) and not exists (select from e6_iqdb_data where submission_files.id = e6_iqdb_data.submission_file_id and width <= post_width and height <= post_height)") }
   scope :larger_only_both, ->(treshhold) { larger_only_filesize(treshhold).larger_only_dimensions }

@@ -27,12 +27,16 @@ Rails.application.routes.draw do
     post :seed_db
     post :iqdb_readd
   end
-  resources :submission_files, only: %i[index show] do
+  resources :submission_files, only: %i[show] do
     member do
       post :update_e6_iqdb
+      post :add_to_backlog
+      delete :remove_from_backlog
+    end
+    collection do
+      get :backlog
     end
   end
-  resources :backlogs, only: %i[create destroy]
   resources :stats, only: :index
   root to: "static#home"
 end

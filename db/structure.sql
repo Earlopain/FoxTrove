@@ -353,7 +353,9 @@ CREATE TABLE public.submission_files (
     width integer NOT NULL,
     height integer NOT NULL,
     size integer NOT NULL,
-    content_type text NOT NULL
+    content_type text NOT NULL,
+    in_backlog boolean DEFAULT false NOT NULL,
+    added_to_backlog_at timestamp without time zone
 );
 
 
@@ -745,6 +747,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220313184210'),
 ('20220313192715'),
 ('20220314114806'),
-('20220716130948');
+('20220716130948'),
+('20220716142252');
 
 

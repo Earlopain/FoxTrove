@@ -1,10 +1,9 @@
 class SubmissionFilesController < ApplicationController
-  def index
+  def backlog
     @submission_files = SubmissionFile.search(search_params)
                                       .with_everything
-                                      .reorder("backlogs.created_at desc")
-                                      .select("submission_files.*, backlogs.created_at")
-                                      .where("backlogs.submission_file_id = submission_files.id")
+                                      .reorder(added_to_backlog_at: :desc)
+                                      .where(in_backlog: true)
                                       .page params[:page]
   end
 
@@ -12,6 +11,20 @@ class SubmissionFilesController < ApplicationController
     @submission_file = SubmissionFile.find(params[:id])
     @artist_submission = @submission_file.artist_submission
     @similar = IqdbProxy.query_submission_file(@submission_file)
+  end
+
+  def add_to_backlog
+    submission_file = SubmissionFile.find(params[:id])
+    submission_file.in_backlog = true
+    submission_file.added_to_backlog_at = Time.current
+    submission_file.save!
+  end
+
+  def remove_from_backlog
+    submission_file = SubmissionFile.find(params[:id])
+    submission_file.in_backlog = false
+    submission_file.added_to_backlog_at = nil
+    submission_file.save!
   end
 
   def update_e6_iqdb

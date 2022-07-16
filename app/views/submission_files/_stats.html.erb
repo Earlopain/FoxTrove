@@ -16,10 +16,10 @@
     <% if E6ApiClient.iqdb_enabled? %>
       <%= link_to "UREV", update_e6_iqdb_submission_file_path(submission_file), method: :post %>
     <% end %>
-    <% if submission_file.backlogs.first.present? %>
-      <%= link_to "-", backlog_path(submission_file.backlogs.first), method: :delete %>
+    <% if submission_file.in_backlog? %>
+      <%= link_to "-", remove_from_backlog_submission_file_path(submission_file), method: :delete %>
     <% else %>
-      <%= link_to "+", backlogs_path(submission_file_id: submission_file.id), method: :post %>
+      <%= link_to "+", add_to_backlog_submission_file_path(submission_file), method: :post %>
     <% end %>
   </span>
   <span class="submission-links">
