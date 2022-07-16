@@ -625,11 +625,27 @@ CREATE UNIQUE INDEX index_submission_files_on_artist_submission_id_and_file_id O
 
 
 --
+-- Name: e6_iqdb_data fk_rails_259e338a6c; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.e6_iqdb_data
+    ADD CONSTRAINT fk_rails_259e338a6c FOREIGN KEY (submission_file_id) REFERENCES public.submission_files(id);
+
+
+--
 -- Name: artist_submissions fk_rails_2ebf31f3af; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.artist_submissions
     ADD CONSTRAINT fk_rails_2ebf31f3af FOREIGN KEY (artist_url_id) REFERENCES public.artist_urls(id);
+
+
+--
+-- Name: submission_files fk_rails_82aa353edd; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.submission_files
+    ADD CONSTRAINT fk_rails_82aa353edd FOREIGN KEY (artist_submission_id) REFERENCES public.artist_submissions(id);
 
 
 --
@@ -696,6 +712,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220314114806'),
 ('20220716130948'),
 ('20220716142252'),
-('20220716145739');
+('20220716145739'),
+('20220716151643');
 
 
