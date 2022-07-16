@@ -3,6 +3,6 @@
 <%= render "search", path: backlog_submission_files_path, artist_urls: backlog_artist_urls_collection %>
 
 <% @submission_files.each do |file| %>
-  <%= render "sample", submission_file: file if file.original.analyzed? && file.sample&.attached? %>
+  <%= render "sample", submission_file: file %>
 <% end %>
 <%= paginated @submission_files %>

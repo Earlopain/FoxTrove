@@ -1,15 +1,18 @@
-<%# TODO: Handle missing attachments %>
 <% similarity ||= nil %>
 <div class="submission-sample">
-  <div class="file-container">
-    <% if submission_file.sample.content_type.in? %w[image/jpeg image/gif] %>
-      <%= image_tag url_for(submission_file.sample), loading: "lazy", class: "submission-file" %>
-      <%= image_tag url_for(submission_file.original), loading: "lazy", class: "submission-file-hover hidden" %>
-    <% elsif submission_file.sample.content_type == "video/mp4" %>
-      <%= video_tag url_for(submission_file.sample), controls: true, class: "submission-file" %>
-    <% else %>
-      Unhandled content_type <%= submission_file.sample.content_type %>
-    <% end %>
-  </div>
+  <% if submission_file.original.analyzed? && submission_file.sample&.attached? %>
+    <div class="file-container">
+      <% if submission_file.sample.content_type.in? %w[image/jpeg image/gif] %>
+        <%= image_tag url_for(submission_file.sample), loading: "lazy", class: "submission-file" %>
+        <%= image_tag url_for(submission_file.original), loading: "lazy", class: "submission-file-hover hidden" %>
+      <% elsif submission_file.sample.content_type == "video/mp4" %>
+        <%= video_tag url_for(submission_file.sample), controls: true, class: "submission-file" %>
+      <% else %>
+        Unhandled content_type <%= submission_file.sample.content_type %>
+      <% end %>
+    </div>
+  <% else %>
+    Sample not generated
+  <% end %>
   <%= render "submission_files/stats", submission_file: submission_file, similarity: similarity %>
 </div>

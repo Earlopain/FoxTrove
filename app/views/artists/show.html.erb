@@ -15,7 +15,7 @@ Links:
 </div>
 
 <% @submission_files.each do |file| %>
-  <%= render "submission_files/sample", submission_file: file if file.original.analyzed? && file.sample&.attached? %>
+  <%= render "submission_files/sample", submission_file: file %>
 <% end %>
 <%= paginated @submission_files %>
 
