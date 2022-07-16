@@ -1,6 +1,6 @@
 <%= render "secondary_links" %>
 
-  <%= hideable_search(artists_url) do |f| %>
+  <%= hideable_search(artists_path) do |f| %>
     <%= f.input :name %>
     <%= f.input :url_identifier %>
     <%= f.submit "Search" %>

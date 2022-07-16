@@ -3,12 +3,6 @@ class ApplicationRecord < ActiveRecord::Base
 
   has_many :moderation_logs, as: :loggable
 
-  def self.belongs_to_creator
-    class_eval do
-      belongs_to :creator, class_name: "User"
-    end
-  end
-
   concerning :SearchMethods do
     class_methods do
       def attributes_matching(attributes, params)

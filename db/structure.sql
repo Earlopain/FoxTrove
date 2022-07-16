@@ -165,8 +165,6 @@ ALTER SEQUENCE public.artist_submissions_id_seq OWNED BY public.artist_submissio
 
 CREATE TABLE public.artist_urls (
     id bigint NOT NULL,
-    creator_id bigint NOT NULL,
-    approver_id bigint,
     artist_id bigint NOT NULL,
     url_identifier text NOT NULL,
     created_at_on_site timestamp(6) with time zone NOT NULL,
@@ -205,7 +203,6 @@ ALTER SEQUENCE public.artist_urls_id_seq OWNED BY public.artist_urls.id;
 
 CREATE TABLE public.artists (
     id bigint NOT NULL,
-    creator_id bigint NOT NULL,
     name text NOT NULL,
     created_at timestamp(6) with time zone NOT NULL,
     updated_at timestamp(6) with time zone NOT NULL
@@ -237,7 +234,6 @@ ALTER SEQUENCE public.artists_id_seq OWNED BY public.artists.id;
 
 CREATE TABLE public.backlogs (
     id bigint NOT NULL,
-    user_id bigint NOT NULL,
     submission_file_id bigint NOT NULL,
     created_at timestamp(6) with time zone NOT NULL,
     updated_at timestamp(6) with time zone NOT NULL
@@ -306,8 +302,6 @@ ALTER SEQUENCE public.e6_iqdb_data_id_seq OWNED BY public.e6_iqdb_data.id;
 
 CREATE TABLE public.moderation_logs (
     id bigint NOT NULL,
-    creator_id bigint NOT NULL,
-    creator_inet inet NOT NULL,
     loggable_type text NOT NULL,
     loggable_id integer NOT NULL,
     action text NOT NULL,
@@ -383,43 +377,6 @@ ALTER SEQUENCE public.submission_files_id_seq OWNED BY public.submission_files.i
 
 
 --
--- Name: users; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.users (
-    id bigint NOT NULL,
-    name text NOT NULL,
-    password_digest text NOT NULL,
-    last_logged_in_at timestamp(6) with time zone NOT NULL,
-    last_ip_addr inet NOT NULL,
-    created_at timestamp(6) with time zone NOT NULL,
-    updated_at timestamp(6) with time zone NOT NULL,
-    time_zone text NOT NULL,
-    level integer NOT NULL,
-    e6_user_id integer NOT NULL
-);
-
-
---
--- Name: users_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.users_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
-
-
---
 -- Name: active_storage_attachments id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -487,13 +444,6 @@ ALTER TABLE ONLY public.moderation_logs ALTER COLUMN id SET DEFAULT nextval('pub
 --
 
 ALTER TABLE ONLY public.submission_files ALTER COLUMN id SET DEFAULT nextval('public.submission_files_id_seq'::regclass);
-
-
---
--- Name: users id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_id_seq'::regclass);
 
 
 --
@@ -593,14 +543,6 @@ ALTER TABLE ONLY public.submission_files
 
 
 --
--- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.users
-    ADD CONSTRAINT users_pkey PRIMARY KEY (id);
-
-
---
 -- Name: index_active_storage_attachments_on_blob_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -643,24 +585,10 @@ CREATE INDEX index_artist_submissions_on_artist_url_id ON public.artist_submissi
 
 
 --
--- Name: index_artist_urls_on_approver_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_artist_urls_on_approver_id ON public.artist_urls USING btree (approver_id);
-
-
---
 -- Name: index_artist_urls_on_artist_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_artist_urls_on_artist_id ON public.artist_urls USING btree (artist_id);
-
-
---
--- Name: index_artist_urls_on_creator_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_artist_urls_on_creator_id ON public.artist_urls USING btree (creator_id);
 
 
 --
@@ -678,13 +606,6 @@ CREATE INDEX index_artist_urls_on_url_identifier ON public.artist_urls USING btr
 
 
 --
--- Name: index_artists_on_creator_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_artists_on_creator_id ON public.artists USING btree (creator_id);
-
-
---
 -- Name: index_artists_on_lower_name; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -699,20 +620,6 @@ CREATE INDEX index_backlogs_on_submission_file_id ON public.backlogs USING btree
 
 
 --
--- Name: index_backlogs_on_user_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_backlogs_on_user_id ON public.backlogs USING btree (user_id);
-
-
---
--- Name: index_backlogs_on_user_id_and_submission_file_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX index_backlogs_on_user_id_and_submission_file_id ON public.backlogs USING btree (user_id, submission_file_id);
-
-
---
 -- Name: index_e6_iqdb_data_on_submission_file_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -720,31 +627,10 @@ CREATE INDEX index_e6_iqdb_data_on_submission_file_id ON public.e6_iqdb_data USI
 
 
 --
--- Name: index_e6_user_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX index_e6_user_id ON public.users USING btree (e6_user_id);
-
-
---
 -- Name: index_moderation_logs_on_action; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_moderation_logs_on_action ON public.moderation_logs USING btree (action);
-
-
---
--- Name: index_moderation_logs_on_creator_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_moderation_logs_on_creator_id ON public.moderation_logs USING btree (creator_id);
-
-
---
--- Name: index_moderation_logs_on_creator_inet; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_moderation_logs_on_creator_inet ON public.moderation_logs USING btree (creator_inet);
 
 
 --
@@ -790,49 +676,11 @@ CREATE UNIQUE INDEX index_submission_files_on_artist_submission_id_and_file_id O
 
 
 --
--- Name: index_users_on_lower_name; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX index_users_on_lower_name ON public.users USING btree (lower(name));
-
-
---
--- Name: index_users_on_name; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_users_on_name ON public.users USING btree (name);
-
-
---
--- Name: artist_urls fk_rails_1cc82d4704; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.artist_urls
-    ADD CONSTRAINT fk_rails_1cc82d4704 FOREIGN KEY (creator_id) REFERENCES public.users(id);
-
-
---
 -- Name: artist_submissions fk_rails_2ebf31f3af; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.artist_submissions
     ADD CONSTRAINT fk_rails_2ebf31f3af FOREIGN KEY (artist_url_id) REFERENCES public.artist_urls(id);
-
-
---
--- Name: artists fk_rails_4e3f72966d; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.artists
-    ADD CONSTRAINT fk_rails_4e3f72966d FOREIGN KEY (creator_id) REFERENCES public.users(id);
-
-
---
--- Name: artist_urls fk_rails_79347f77be; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.artist_urls
-    ADD CONSTRAINT fk_rails_79347f77be FOREIGN KEY (approver_id) REFERENCES public.users(id);
 
 
 --
@@ -849,14 +697,6 @@ ALTER TABLE ONLY public.active_storage_variant_records
 
 ALTER TABLE ONLY public.active_storage_attachments
     ADD CONSTRAINT fk_rails_c3b3935057 FOREIGN KEY (blob_id) REFERENCES public.active_storage_blobs(id);
-
-
---
--- Name: moderation_logs fk_rails_d8dc8b5e52; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.moderation_logs
-    ADD CONSTRAINT fk_rails_d8dc8b5e52 FOREIGN KEY (creator_id) REFERENCES public.users(id);
 
 
 --
@@ -904,6 +744,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220312195219'),
 ('20220313184210'),
 ('20220313192715'),
-('20220314114806');
+('20220314114806'),
+('20220716130948');
 
 

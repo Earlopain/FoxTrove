@@ -13,15 +13,13 @@
   <span class="submission-time-ago">
     <%= site_icon artist_url, link_target: gallery_url(artist_url), title: artist_url.url_identifier %>
     <%= time_ago artist_submission.created_at_on_site %>
-    <% if current_user.member? %>
-      <% if E6ApiClient.iqdb_enabled? %>
-        <%= link_to "UREV", update_e6_iqdb_submission_file_path(submission_file), method: :post %>
-      <% end %>
-      <% if submission_file.backlogs.first.present? %>
-        <%= link_to "-", backlog_path(submission_file.backlogs.first), method: :delete %>
-      <% else %>
-        <%= link_to "+", backlogs_path(submission_file_id: submission_file.id), method: :post %>
-      <% end %>
+    <% if E6ApiClient.iqdb_enabled? %>
+      <%= link_to "UREV", update_e6_iqdb_submission_file_path(submission_file), method: :post %>
+    <% end %>
+    <% if submission_file.backlogs.first.present? %>
+      <%= link_to "-", backlog_path(submission_file.backlogs.first), method: :delete %>
+    <% else %>
+      <%= link_to "+", backlogs_path(submission_file_id: submission_file.id), method: :post %>
     <% end %>
   </span>
   <span class="submission-links">

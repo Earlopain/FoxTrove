@@ -6,10 +6,6 @@ class E6ApiClient
     @api_key = api_key
   end
 
-  def user_by_name(username)
-    make_request("users/#{username}.json")
-  end
-
   def make_request(path, query = {})
     response = HTTParty.get(
       "#{API_BASE}/#{path}",

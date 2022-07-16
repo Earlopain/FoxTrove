@@ -1,7 +1,5 @@
 class ArtistsController < ApplicationController
   respond_to :html
-  before_action :member_only, only: %i[create new edit update]
-  before_action :admin_only, only: %i[enqueue_all_urls update_all_iqdb destroy]
 
   def new
     @artist = Artist.new
@@ -10,7 +8,6 @@ class ArtistsController < ApplicationController
 
   def create
     @artist = Artist.new(artist_params)
-    @artist.creator = current_user
     add_new_artist_urls_and_save(@artist)
     respond_with(@artist)
   end
@@ -23,7 +20,7 @@ class ArtistsController < ApplicationController
     @artist = Artist.includes(:artist_urls).find(params[:id])
     @submission_files = SubmissionFile
                         .search(instance_search_params.merge({ artist_id: @artist.id }))
-                        .with_everything(current_user.id)
+                        .with_everything
                         .page params[:page]
     respond_with(@artist)
   end
@@ -86,7 +83,6 @@ class ArtistsController < ApplicationController
       end
 
       artist_url = artist.artist_urls.new(
-        creator: current_user,
         site_type: result[:site].enum_value,
         url_identifier: result[:identifier],
         created_at_on_site: Time.current,

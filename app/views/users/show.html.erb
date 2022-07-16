@@ -1,6 +1,0 @@
-<%= render "secondary_links" %>
-Username: <%= link_to @user.name, "https://e621.net/users/#{@user.e6_user_id}" %><br>
-Level: <%= @user.level.titlecase %><br>
-Created: <%= @user.created_at.to_formatted_s(:long) %><br>
-
-<% page_title "@#{@user.name}" %>

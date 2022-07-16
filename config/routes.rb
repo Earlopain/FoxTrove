@@ -27,12 +27,7 @@ Rails.application.routes.draw do
     post :seed_db
     post :iqdb_readd
   end
-  resources :users, only: %i[show new create] do
-    member do
-      get :backlog
-    end
-  end
-  resources :submission_files, only: %i[show] do
+  resources :submission_files, only: %i[index show] do
     member do
       post :update_e6_iqdb
     end

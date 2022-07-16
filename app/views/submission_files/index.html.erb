@@ -1,0 +1,8 @@
+<h3>Backlog</h3>
+
+<%= render "search", path: submission_files_path, artist_urls: backlog_artist_urls_collection %>
+
+<% @submission_files.each do |file| %>
+  <%= render "submission_files/sample", submission_file: file if file.original.analyzed? && file.sample&.attached? %>
+<% end %>
+<%= paginated @submission_files %>

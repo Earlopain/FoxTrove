@@ -11,11 +11,7 @@ class SubmissionFile < ApplicationRecord
   after_save_commit :update_variants_and_iqdb
 
   scope :with_attached, -> { with_attached_sample.with_attached_original }
-  scope :with_everything, ->(user_id) do
-    query = with_attached.includes(:e6_iqdb_entries, :backlogs, artist_submission: :artist_url)
-    query = query.joins("left outer join backlogs on backlogs.submission_file_id = submission_files.id and backlogs.user_id = #{user_id}") if user_id
-    query
-  end
+  scope :with_everything, -> { with_attached.includes(:e6_iqdb_entries, :backlogs, artist_submission: :artist_url) }
   scope :larger_only_filesize, ->(treshold) { where("exists (select from e6_iqdb_data where submission_files.id = e6_iqdb_data.submission_file_id and size > post_size) and not exists (select from e6_iqdb_data where submission_files.id = e6_iqdb_data.submission_file_id and size - ? <= post_size)", treshold) }
   scope :larger_only_dimensions, -> { where("exists (select from e6_iqdb_data where submission_files.id = e6_iqdb_data.submission_file_id and width > post_width and height > post_height) and not exists (select from e6_iqdb_data where submission_files.id = e6_iqdb_data.submission_file_id and width <= post_width and height <= post_height)") }
   scope :larger_only_both, ->(treshhold) { larger_only_filesize(treshhold).larger_only_dimensions }
@@ -106,7 +102,7 @@ class SubmissionFile < ApplicationRecord
                 q.none
               end
         end
-        q = q.attributes_matching(%i[artist_url_id artist_id content_type backlog_user_id], params)
+        q = q.attributes_matching(%i[artist_url_id artist_id content_type], params)
         q.order(created_at_on_site: :desc)
       end
 
@@ -114,7 +110,6 @@ class SubmissionFile < ApplicationRecord
         {
           artist_url_id: { artist_submission: { artist_url: :id } },
           artist_id: { artist_submission: { artist_url: { artist: :id } } },
-          backlog_user_id: { backlogs: :user_id },
         }
       end
 
