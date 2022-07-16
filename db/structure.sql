@@ -229,37 +229,6 @@ ALTER SEQUENCE public.artists_id_seq OWNED BY public.artists.id;
 
 
 --
--- Name: backlogs; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.backlogs (
-    id bigint NOT NULL,
-    submission_file_id bigint NOT NULL,
-    created_at timestamp(6) with time zone NOT NULL,
-    updated_at timestamp(6) with time zone NOT NULL
-);
-
-
---
--- Name: backlogs_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.backlogs_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: backlogs_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.backlogs_id_seq OWNED BY public.backlogs.id;
-
-
---
 -- Name: e6_iqdb_data; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -421,13 +390,6 @@ ALTER TABLE ONLY public.artists ALTER COLUMN id SET DEFAULT nextval('public.arti
 
 
 --
--- Name: backlogs id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.backlogs ALTER COLUMN id SET DEFAULT nextval('public.backlogs_id_seq'::regclass);
-
-
---
 -- Name: e6_iqdb_data id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -502,14 +464,6 @@ ALTER TABLE ONLY public.artist_urls
 
 ALTER TABLE ONLY public.artists
     ADD CONSTRAINT artists_pkey PRIMARY KEY (id);
-
-
---
--- Name: backlogs backlogs_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.backlogs
-    ADD CONSTRAINT backlogs_pkey PRIMARY KEY (id);
 
 
 --
@@ -612,13 +566,6 @@ CREATE INDEX index_artist_urls_on_url_identifier ON public.artist_urls USING btr
 --
 
 CREATE UNIQUE INDEX index_artists_on_lower_name ON public.artists USING btree (lower(name));
-
-
---
--- Name: index_backlogs_on_submission_file_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_backlogs_on_submission_file_id ON public.backlogs USING btree (submission_file_id);
 
 
 --
@@ -748,6 +695,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220313192715'),
 ('20220314114806'),
 ('20220716130948'),
-('20220716142252');
+('20220716142252'),
+('20220716145739');
 
 
