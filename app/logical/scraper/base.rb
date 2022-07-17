@@ -2,9 +2,9 @@
 
 module Scraper
   class Base
-    def initialize(url_identifier:, api_identifier:)
-      @url_identifier = url_identifier
-      @api_identifier = api_identifier
+    delegate :url_identifier, :api_identifier, to: :@artist_url
+    def initialize(artist_url)
+      @artist_url = artist_url
       @has_more = true
     end
 
@@ -33,10 +33,10 @@ module Scraper
       raise NotImplementedError
     end
 
-    def fetch_and_save_next_submissions(artist_url)
+    def fetch_and_save_next_submissions
       fetch_next_batch.map do |api_submission|
         submission = to_submission(api_submission)
-        submission.save(artist_url)
+        submission.save(@artist_url)
         submission
       end
     end

@@ -12,7 +12,7 @@ module Scraper
     end
 
     def fetch_next_batch
-      url = "https://www.weasyl.com/api/users/#{@url_identifier}/gallery"
+      url = "https://www.weasyl.com/api/users/#{url_identifier}/gallery"
       response = HTTParty.get(
         url,
         headers: { "X-Weasyl-API-Key": Config.weasyl_apikey },
@@ -44,7 +44,7 @@ module Scraper
 
     # Unfortunately the api doesn't seem to return this information
     def fetch_api_identifier
-      response = HTTParty.get("https://www.weasyl.com/~#{@url_identifier}", headers: { "X-Weasyl-API-Key": Config.weasyl_apikey })
+      response = HTTParty.get("https://www.weasyl.com/~#{url_identifier}", headers: { "X-Weasyl-API-Key": Config.weasyl_apikey })
       html = Nokogiri::HTML(response.body)
       html.at("#user-shouts .comment-form input[name='userid']")&.attribute("value")&.value
     end

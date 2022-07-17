@@ -11,7 +11,7 @@ class ScrapeArtistUrlWorker
 
     scraper = artist_url.site.new_scraper(artist_url)
     while scraper.more?
-      submissions = scraper.fetch_and_save_next_submissions(artist_url)
+      submissions = scraper.fetch_and_save_next_submissions
       stop_marker = artist_url.last_scraped_at
       scraper.end_reached if stop_marker.present? && submissions.any? { |submission| submission.created_at.before? stop_marker }
     end

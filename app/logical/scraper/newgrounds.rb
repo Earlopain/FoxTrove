@@ -49,7 +49,7 @@ module Scraper
     end
 
     def fetch_api_identifier
-      response = HTTParty.get("https://#{@url_identifier}.newgrounds.com/")
+      response = HTTParty.get("https://#{url_identifier}.newgrounds.com/")
       html = Nokogiri::HTML(response.body)
       html.at("#topsearch-elastic input[name='u']")&.attribute("value")&.value
     end
@@ -57,7 +57,7 @@ module Scraper
     private
 
     def get_from_page(page)
-      url = "https://#{@url_identifier}.newgrounds.com/art/page/#{page}"
+      url = "https://#{url_identifier}.newgrounds.com/art/page/#{page}"
       response = HTTParty.get(url, headers: {
         "X-Requested-With": "XMLHttpRequest",
         "Cookie": "#{COOKIE_NAME}=#{fetch_cookie}",

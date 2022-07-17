@@ -20,7 +20,7 @@ module Scraper
 
     def fetch_next_batch
       params = {
-        userId: @api_identifier,
+        userId: api_identifier,
         count: 100,
         includePromotedContent: false,
         withSuperFollowsUserFields: false,
@@ -79,7 +79,7 @@ module Scraper
 
     def fetch_api_identifier
       user_json = make_request("7mjxD3-C6BxitPMVQ6w0-Q/UserByScreenName", {
-        screen_name: @url_identifier,
+        screen_name: url_identifier,
         withSuperFollowsUserFields: true,
       })
       user_json.dig("data", "user", "result", "rest_id")
@@ -160,7 +160,7 @@ module Scraper
       {
         "User-Agent": @user_agent,
         "Authorization": "Bearer #{BEARER_TOKEN}",
-        "Referer": "https://twitter.com/#{@url_identifier}/media",
+        "Referer": "https://twitter.com/#{url_identifier}/media",
         "Accept-Language": "en-US,en;q=0.5",
         "x-csrf-token": csrf_token,
         "Cookie": "ct0=#{csrf_token}; auth_token=#{auth_token}",

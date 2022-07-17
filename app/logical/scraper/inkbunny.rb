@@ -48,8 +48,8 @@ module Scraper
 
     def fetch_api_identifier
       url = "https://inkbunny.net/api_username_autosuggest.php"
-      response = make_request(url, { username: @url_identifier })
-      users = response["results"].select { |entry| entry["value"].casecmp? @url_identifier }
+      response = make_request(url, { username: url_identifier })
+      users = response["results"].select { |entry| entry["value"].casecmp? url_identifier }
       users[0]&.[]("id")
     end
 
@@ -66,7 +66,7 @@ module Scraper
         get_rid: "yes",
         submission_ids_only: "yes",
         submissions_per_page: 100,
-        username: @url_identifier,
+        username: url_identifier,
         type: "1,2,3,4,5,8,9,13",
         orderby: "last_file_update_datetime",
       }

@@ -27,7 +27,7 @@ module Scraper
 
     def fetch_next_batch
       json = make_request("user/illusts", {
-        user_id: @api_identifier,
+        user_id: api_identifier,
         type: "illust",
         offset: @offset,
       })
@@ -63,7 +63,7 @@ module Scraper
 
     # The url identifier is already the api identifier
     def fetch_api_identifier
-      @url_identifier
+      url_identifier
     end
 
     def make_request(endpoint, query = {})

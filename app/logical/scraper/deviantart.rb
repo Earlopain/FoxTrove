@@ -16,7 +16,7 @@ module Scraper
 
     def fetch_next_batch
       json = make_api_call("gallery/all", {
-        username: @url_identifier,
+        username: url_identifier,
         limit: 24,
         mature_content: true,
         offset: @next_offset,
@@ -48,7 +48,7 @@ module Scraper
     end
 
     def fetch_api_identifier
-      json = make_api_call("user/profile/#{@url_identifier}")
+      json = make_api_call("user/profile/#{url_identifier}")
       return nil if json["error_code"] == 2
 
       json.dig("user", "userid")

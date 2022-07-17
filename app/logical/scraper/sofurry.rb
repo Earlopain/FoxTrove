@@ -19,7 +19,7 @@ module Scraper
     end
 
     def fetch_next_batch
-      json = make_request "https://api2.sofurry.com/browse/user/art", "uid": @api_identifier, "art-page": @page, "format": "json"
+      json = make_request "https://api2.sofurry.com/browse/user/art", "uid": api_identifier, "art-page": @page, "format": "json"
       items = json["items"]
       ids = items.map { |item| item["id"] }
       # API always returns 30 items, could also use that to check, though I'm not sure if that will always be the case.
@@ -50,8 +50,8 @@ module Scraper
     end
 
     def fetch_api_identifier
-      user_json = make_request "https://api2.sofurry.com/std/getUserProfile", username: @url_identifier
-      return nil unless user_json["useralias"]&.casecmp? @url_identifier
+      user_json = make_request "https://api2.sofurry.com/std/getUserProfile", username: url_identifier
+      return nil unless user_json["useralias"]&.casecmp? url_identifier
 
       user_json["userID"]
     end

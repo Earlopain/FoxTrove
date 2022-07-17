@@ -35,7 +35,7 @@ module Scraper
     end
 
     def fetch_api_identifier
-      response = HTTParty.get("https://www.artstation.com/users/#{@url_identifier}/quick.json")
+      response = HTTParty.get("https://www.artstation.com/users/#{url_identifier}/quick.json")
       return nil if response.code == 404
 
       JSON.parse(response.body)["id"]
@@ -44,7 +44,7 @@ module Scraper
     private
 
     def get_ids_from_page(page)
-      response = HTTParty.get("https://www.artstation.com/users/#{@url_identifier}/projects.json?page=#{page}")
+      response = HTTParty.get("https://www.artstation.com/users/#{url_identifier}/projects.json?page=#{page}")
       JSON.parse(response.body)["data"].map { |entry| entry["hash_id"] }
     end
 

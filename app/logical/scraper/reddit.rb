@@ -12,7 +12,7 @@ module Scraper
     end
 
     def fetch_next_batch
-      response = make_request("https://oauth.reddit.com/user/#{@url_identifier}/submitted.json", {
+      response = make_request("https://oauth.reddit.com/user/#{url_identifier}/submitted.json", {
         after: @after,
         limit: 100,
         sort: "new",
@@ -54,7 +54,7 @@ module Scraper
     end
 
     def fetch_api_identifier
-      json = make_request("https://oauth.reddit.com/user/#{@url_identifier}/about.json")
+      json = make_request("https://oauth.reddit.com/user/#{url_identifier}/about.json")
       json.dig("data", "id")
     end
 
