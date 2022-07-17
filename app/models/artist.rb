@@ -25,7 +25,7 @@ class Artist < ApplicationRecord
         q = all
 
         q = q.attribute_matches(params[:name], :name)
-        q = q.attribute_matches(params[:url_identifier], artist_urls: :url_identifier)
+        q = q.join_attribute_matches(params[:url_identifier], artist_urls: :url_identifier)
         q.order(id: :desc)
       end
     end

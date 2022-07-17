@@ -17,6 +17,12 @@ class ApplicationRecord < ActiveRecord::Base
       def attribute_matches(value, attribute)
         return all if value.nil?
 
+        column_matches(self, attribute, value)
+      end
+
+      def join_attribute_matches(value, attribute)
+        return all if value.nil?
+
         column, model_class = get_column_and_model_class(attribute)
         q = distinct.joins(join_hash(attribute))
         q.column_matches(model_class, column, value)

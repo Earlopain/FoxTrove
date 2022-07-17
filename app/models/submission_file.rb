@@ -88,9 +88,9 @@ class SubmissionFile < ApplicationRecord
                 q.none
               end
         end
-        q = q.attribute_matches(params[:artist_url_id], artist_submission: { artist_url: :id })
-        q = q.attribute_matches(params[:artist_id], artist_submission: { artist_url: { artist: :id } })
         q = q.attribute_matches(params[:content_type], :content_type)
+        q = q.join_attribute_matches(params[:artist_url_id], artist_submission: { artist_url: :id })
+        q = q.join_attribute_matches(params[:artist_id], artist_submission: { artist_url: { artist: :id } })
         q.order(created_at_on_site: :desc)
       end
 
