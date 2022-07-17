@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Sites
   class IdentifierProcessor
     def self.match(name)

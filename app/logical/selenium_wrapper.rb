@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class SeleniumWrapper
   def self.driver(with_performance: false)
     options = Selenium::WebDriver::Chrome::Options.new

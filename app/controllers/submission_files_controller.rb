@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class SubmissionFilesController < ApplicationController
   def backlog
     @submission_files = SubmissionFile.search(search_params)

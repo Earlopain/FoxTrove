@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class MakeSiteInternalNameIndexUnique < ActiveRecord::Migration[6.1]
   def change
     remove_index :sites, :internal_name

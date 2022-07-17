@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class MoveToE6Users < ActiveRecord::Migration[7.0]
   def change
     add_column :users, :e6_user_id, :integer

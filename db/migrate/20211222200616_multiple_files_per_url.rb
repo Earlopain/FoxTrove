@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class MultipleFilesPerUrl < ActiveRecord::Migration[7.0]
   def change
     create_table :submission_files do |t|

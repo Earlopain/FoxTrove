@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 module Scraper
   class Newgrounds < Base
-    COOKIE_NAME = "vmkIdu5l8m".freeze
+    COOKIE_NAME = "vmkIdu5l8m"
 
     def init
       @page = 1

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Scraper
   # https://projects.weasyl.com/weasylapi/
   class Weasyl < Base

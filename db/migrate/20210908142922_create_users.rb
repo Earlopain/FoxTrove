@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateUsers < ActiveRecord::Migration[6.1]
   def change
     create_enum :user_levels, %w[unactivated member admin]

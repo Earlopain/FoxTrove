@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ScrapeArtistUrlWorker
   include Sidekiq::Worker
 

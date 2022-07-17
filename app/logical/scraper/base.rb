@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Scraper
   class Base
     def initialize(url_identifier:, api_identifier:)

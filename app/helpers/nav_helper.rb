@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module NavHelper
   def nav_link_to(text, url, **options)
     render "application/primary_link", text: text, url: url, options: options

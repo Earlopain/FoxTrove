@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Scraper
   # https://wiki.inkbunny.net/wiki/API
   class Inkbunny < Base

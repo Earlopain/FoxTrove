@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Sites
   class SimpleDefinition
     delegate :enum_value, :display_name, :homepage, to: :@definition

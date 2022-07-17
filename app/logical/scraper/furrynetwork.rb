@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 module Scraper
   class Furrynetwork < Base
     PER_REQUEST = 72
-    API_PREFIX = "https://furrynetwork.com/api".freeze
+    API_PREFIX = "https://furrynetwork.com/api"
 
     def init
       @offset = 0

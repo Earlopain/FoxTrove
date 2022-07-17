@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ArtistHelper
   def active_artist_urls_collection(artist)
     scraping_enabled = artist.artist_urls.select { |url| url.site.class == Sites::ScraperDefinition }

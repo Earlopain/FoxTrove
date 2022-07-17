@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 gem "ruby-vips"
 
 namespace :assets do

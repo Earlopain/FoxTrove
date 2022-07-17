@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # This is certainly something
 active_storage = proc do
   # Filter out ActiveStorage related logging

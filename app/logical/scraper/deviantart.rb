@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 module Scraper
   # https://www.deviantart.com/developers/http/v1/20210526
   # https://www.deviantart.com/developers/console
   class Deviantart < Base
-    API_PREFIX = "https://www.deviantart.com/api/v1/oauth2".freeze
+    API_PREFIX = "https://www.deviantart.com/api/v1/oauth2"
 
     def init
       @next_offset = nil

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module VariantGenerator
   def self.sample(attachment)
     input_path = ActiveStorage::Blob.service.path_for(attachment.key)

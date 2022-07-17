@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddSubmissionFileIdentifier < ActiveRecord::Migration[7.0]
   def change
     add_column :submission_files, :file_identifier, :text, null: false

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 namespace :iqdb do
   desc "Readd all files to iqdb"
   task readd: :environment do

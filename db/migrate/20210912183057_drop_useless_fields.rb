@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class DropUselessFields < ActiveRecord::Migration[6.1]
   def change
     remove_column :sites, :direct_url_format, :string

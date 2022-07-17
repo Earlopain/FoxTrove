@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 class E6ApiClient
-  API_BASE = "https://e621.net".freeze
+  API_BASE = "https://e621.net"
 
   def initialize(username = nil, api_key = nil)
     @username = username

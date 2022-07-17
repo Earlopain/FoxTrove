@@ -1,18 +1,20 @@
+# frozen_string_literal: true
+
 module Scraper
   # https://gist.github.com/upbit/6edda27cb1644e94183291109b8a5fde
   # https://github.com/upbit/pixivpy/wiki/Sniffer-for-iOS-6.x---Common-API
   # https://gist.github.com/ZipFile/3ba99b47162c23f8aea5d5942bb557b1
   # https://github.com/upbit/pixivpy/blob/master/pixivpy3/api.py
   class Pixiv < Base
-    API_BASE_URL = "https://app-api.pixiv.net/v1".freeze
-    LOGIN_URL = "https://app-api.pixiv.net/web/v1/login".freeze
-    REDIRECT_URI = "https://app-api.pixiv.net/web/v1/users/auth/pixiv/callback".freeze
-    AUTH_TOKEN_URL = "https://oauth.secure.pixiv.net/auth/token".freeze
-    OS_VERSION = "14.6".freeze
-    APP_VERSION = "7.13.3".freeze
+    API_BASE_URL = "https://app-api.pixiv.net/v1"
+    LOGIN_URL = "https://app-api.pixiv.net/web/v1/login"
+    REDIRECT_URI = "https://app-api.pixiv.net/web/v1/users/auth/pixiv/callback"
+    AUTH_TOKEN_URL = "https://oauth.secure.pixiv.net/auth/token"
+    OS_VERSION = "14.6"
+    APP_VERSION = "7.13.3"
     USER_AGENT = "PixivIOSApp/#{APP_VERSION} (iOS #{OS_VERSION}; iPhone13,2)".freeze
-    CLIENT_ID = "MOBrBDS8blbauoSck0ZfDbtuzpyT".freeze
-    CLIENT_SECRET = "lsACyCD94FhDUtGTXi3QzcFE2uU1hqtDaKeqrdwj".freeze
+    CLIENT_ID = "MOBrBDS8blbauoSck0ZfDbtuzpyT"
+    CLIENT_SECRET = "lsACyCD94FhDUtGTXi3QzcFE2uU1hqtDaKeqrdwj"
     PER_PAGE = 30
 
     def init

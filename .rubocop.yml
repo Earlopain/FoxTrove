@@ -60,9 +60,6 @@ Style/StringLiterals:
 Style/TrailingCommaInArguments:
   EnforcedStyleForMultiline: comma
 
-Style/FrozenStringLiteralComment:
-  Enabled: false
-
 Style/Lambda:
   EnforcedStyle: literal
 

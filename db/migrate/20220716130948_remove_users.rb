@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class RemoveUsers < ActiveRecord::Migration[7.0]
   def change
     remove_column :moderation_logs, :creator_id

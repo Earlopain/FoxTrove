@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Scraper
   # https://www.reddit.com/dev/api/
   class Reddit < Base

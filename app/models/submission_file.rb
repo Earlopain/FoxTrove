@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class SubmissionFile < ApplicationRecord
   belongs_to :artist_submission
   has_one_attached :original

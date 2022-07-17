@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateArtistUrls < ActiveRecord::Migration[6.1]
   def change
     create_table :artist_urls do |t|

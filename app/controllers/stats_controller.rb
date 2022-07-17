@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class StatsController < ApplicationController
   def index
     @artist_urls = ArtistUrl.where id: SidekiqStats.active_urls

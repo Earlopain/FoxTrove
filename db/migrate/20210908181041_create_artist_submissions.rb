@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateArtistSubmissions < ActiveRecord::Migration[6.1]
   def change
     create_enum :file_extensions, %w[png jpg gif webp]

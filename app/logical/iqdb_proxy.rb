@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Contains functions to interact with the iqdb server
 module IqdbProxy
   class Error < RuntimeError; end

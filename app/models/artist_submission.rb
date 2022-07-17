@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ArtistSubmission < ApplicationRecord
   belongs_to :artist_url
   has_one :artist, through: :artist_url

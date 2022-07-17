@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddUniqueIndicies < ActiveRecord::Migration[7.0]
   def change
     add_index :artists, "lower(name)", name: "index_artists_on_lower_name", unique: true

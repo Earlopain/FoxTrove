@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class PrintableStringValidator < ActiveModel::EachValidator
   REGEX = /^[0-9a-zA-Z_.+()\-]*$/
 

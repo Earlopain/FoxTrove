@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Scraper
   class Piczel < Base
     def init

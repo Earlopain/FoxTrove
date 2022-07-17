@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 source "https://rubygems.org"
 
 gem "bootsnap", ">= 1.4.4", require: false

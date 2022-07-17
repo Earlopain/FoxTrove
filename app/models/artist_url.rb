@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ArtistUrl < ApplicationRecord
   belongs_to :artist
   has_many :submissions, class_name: "ArtistSubmission", dependent: :destroy
