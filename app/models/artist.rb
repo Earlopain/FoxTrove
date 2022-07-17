@@ -24,14 +24,9 @@ class Artist < ApplicationRecord
       def search(params)
         q = all
 
-        q = q.attributes_matching(%i[name url_identifier], params)
+        q = q.attribute_matches(params[:name], :name)
+        q = q.attribute_matches(params[:url_identifier], artist_urls: :url_identifier)
         q.order(id: :desc)
-      end
-
-      def shorthand_attribute_access
-        {
-          url_identifier: { artist_urls: :url_identifier },
-        }
       end
     end
   end
