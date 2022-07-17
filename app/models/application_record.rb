@@ -31,20 +31,27 @@ class ApplicationRecord < ActiveRecord::Base
       def column_matches(model_class, column_name, value)
         column = model_class.column_for_attribute(column_name)
         qualified_column = "#{model_class.table_name}.#{column.name}"
-        values = (value.is_a?(Array) ? value : value.to_s.split(",")).first(100)
+        values = value.is_a?(Array) ? value : value.to_s.split(",")
+        return if values.empty?
+
         case column.sql_type_metadata.type
         when :text
-          if values.count == 1
-            value = values.first.gsub("_", "\\_").gsub("%", "\\%").gsub("*", "%").gsub("\\", "\\\\\\\\")
-            where("#{qualified_column} ILIKE ?", value)
-          else
-            where("LOWER(#{qualified_column}) IN(?)", values.map(&:downcase))
-          end
+          text_column_matches(qualified_column, values)
         when :integer
           where("#{qualified_column} IN(?)", values)
         else
           raise ArgumentError, "unhandled attribute type: #{column.sql_type_metadata.type}"
         end
+      end
+
+      def text_column_matches(qualified_column, values)
+        wildcard_text, non_wildcard_text = values.partition { |e| e.include?("*") }
+        q = where("LOWER(#{qualified_column}) IN(?)", non_wildcard_text.map(&:downcase))
+        wildcard_text.each do |text|
+          condition = where("#{qualified_column} ILIKE ?", text.gsub("_", "\\_").gsub("%", "\\%").gsub("*", "%").gsub("\\", "\\\\\\\\"))
+          q = q.or(condition)
+        end
+        q
       end
 
       def get_column_and_model_class(attribute)
