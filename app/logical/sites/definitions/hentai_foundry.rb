@@ -2,9 +2,7 @@
 
 module Sites
   module Definitions
-    module HentaiFoundry
-      module_function
-
+    class HentaiFoundry < SimpleDefinition
       def enum_value
         "hentai_foundry"
       end

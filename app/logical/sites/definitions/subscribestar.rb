@@ -2,9 +2,7 @@
 
 module Sites
   module Definitions
-    module Subscribestar
-      module_function
-
+    class Subscribestar < SimpleDefinition
       def enum_value
         "subscribestar"
       end

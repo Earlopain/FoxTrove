@@ -2,9 +2,7 @@
 
 module Sites
   module Definitions
-    module Vk
-      module_function
-
+    class Vk < SimpleDefinition
       def enum_value
         "vkontakte"
       end

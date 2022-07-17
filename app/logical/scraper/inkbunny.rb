@@ -33,7 +33,7 @@ module Scraper
       s.identifier = inkbunny_submission["submission_id"]
       s.title = inkbunny_submission["title"]
       s.description = inkbunny_submission["description"]
-      s.created_at = DateTime.parse(inkbunny_submission["create_datetime"])
+      s.created_at = DateTime.parse inkbunny_submission["create_datetime"]
 
       inkbunny_submission["files"].each do |file|
         s.add_file({
@@ -44,10 +44,6 @@ module Scraper
         })
       end
       s
-    end
-
-    def extract_timestamp(submission)
-      DateTime.parse(submission["last_file_update_datetime"])
     end
 
     def fetch_api_identifier

@@ -2,9 +2,7 @@
 
 module Sites
   module Definitions
-    module Patreon
-      module_function
-
+    class Patreon < SimpleDefinition
       def enum_value
         "patreon"
       end

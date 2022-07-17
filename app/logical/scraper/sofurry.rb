@@ -39,19 +39,14 @@ module Scraper
       s.identifier = submission["id"]
       s.title = submission["title"]
       s.description = Rails::Html::FullSanitizer.new.sanitize(submission["description"]) || ""
-      created_at = extract_timestamp submission
-      s.created_at = created_at
+      s.created_at = DateTime.strptime(submission["postTime"], "%s")
 
       s.add_file({
         url: "https://www.sofurryfiles.com/std/content?page=#{submission['id']}",
-        created_at: created_at,
+        created_at: s.created_at,
         identifier: "",
       })
       s
-    end
-
-    def extract_timestamp(submission)
-      DateTime.strptime(submission["postTime"], "%s")
     end
 
     def fetch_api_identifier

@@ -2,9 +2,7 @@
 
 module Sites
   module Definitions
-    module Pillowfort
-      module_function
-
+    class Pillowfort < SimpleDefinition
       def enum_value
         "pillowfort"
       end

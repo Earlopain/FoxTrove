@@ -2,9 +2,7 @@
 
 module Sites
   module Definitions
-    module Reddit
-      module_function
-
+    class Reddit < ScraperDefinition
       def enum_value
         "reddit"
       end

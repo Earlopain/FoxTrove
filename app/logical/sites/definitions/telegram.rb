@@ -2,9 +2,7 @@
 
 module Sites
   module Definitions
-    module Telegram
-      module_function
-
+    class Telegram < SimpleDefinition
       def enum_value
         "telegram"
       end

@@ -33,19 +33,14 @@ module Scraper
       s.title = submission["title"]
       # FIXME: Title is only available when doing deviation/{deviationid}?expand=deviation.fulltext
       s.description = ""
-      created_at = extract_timestamp submission
-      s.created_at = created_at
+      s.created_at = DateTime.strptime(submission["published_time"], "%s")
       s.add_file({}.tap do |hash|
         hash[:url_data] = [submission["deviationid"]] if submission["is_downloadable"]
         hash[:url] = submission["content"]["src"].sub("q_80,strp", "q_100") unless submission["is_downloadable"]
-        hash[:created_at] = created_at
+        hash[:created_at] = s.created_at
         hash[:identifier] = ""
       end)
       s
-    end
-
-    def extract_timestamp(submission)
-      DateTime.strptime(submission["published_time"], "%s")
     end
 
     def get_download_link(data)

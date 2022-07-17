@@ -2,9 +2,7 @@
 
 module Sites
   module Definitions
-    module Newgrounds
-      module_function
-
+    class Newgrounds < ScraperDefinition
       def enum_value
         "newgrounds"
       end

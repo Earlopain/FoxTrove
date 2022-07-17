@@ -33,13 +33,16 @@ module Scraper
       raise NotImplementedError
     end
 
-    # Convert the entries from fetch_next_batch into something generic
-    def to_submission
-      raise NotImplementedError
+    def fetch_and_save_next_submissions(artist_url)
+      fetch_next_batch.map do |api_submission|
+        submission = to_submission(api_submission)
+        submission.save(artist_url)
+        submission
+      end
     end
 
-    # Used to check if the end was reached when scraping already happened
-    def extract_timestamp_from_submission
+    # Convert the entries from fetch_next_batch into something generic
+    def to_submission
       raise NotImplementedError
     end
 

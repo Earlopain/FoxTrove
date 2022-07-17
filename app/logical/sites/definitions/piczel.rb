@@ -2,9 +2,7 @@
 
 module Sites
   module Definitions
-    module Piczel
-      module_function
-
+    class Piczel < ScraperDefinition
       def enum_value
         "piczel"
       end

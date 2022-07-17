@@ -31,19 +31,14 @@ module Scraper
       s.identifier = submission["id"]
       s.title = submission["title"]
       s.description = submission["description"] || ""
-      created_at = extract_timestamp submission
-      s.created_at = created_at
+      s.created_at = DateTime.parse submission["created"]
 
       s.add_file({
         url: submission["images"]["original"],
-        created_at: created_at,
+        created_at: s.created_at,
         identifier: "",
       })
       s
-    end
-
-    def extract_timestamp(submission)
-      DateTime.parse submission["created"]
     end
 
     def fetch_api_identifier

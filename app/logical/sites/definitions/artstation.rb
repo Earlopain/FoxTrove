@@ -2,9 +2,7 @@
 
 module Sites
   module Definitions
-    module Artstation
-      module_function
-
+    class Artstation < ScraperDefinition
       def enum_value
         "artstation"
       end

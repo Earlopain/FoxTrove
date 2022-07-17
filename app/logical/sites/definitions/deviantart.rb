@@ -2,9 +2,7 @@
 
 module Sites
   module Definitions
-    module Deviantart
-      module_function
-
+    class Deviantart < ScraperDefinition
       def enum_value
         "deviantart"
       end

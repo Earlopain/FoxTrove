@@ -2,9 +2,7 @@
 
 module Sites
   module Definitions
-    module Pawoo
-      module_function
-
+    class Pawoo < SimpleDefinition
       def enum_value
         "pawoo"
       end

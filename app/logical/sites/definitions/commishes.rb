@@ -2,9 +2,7 @@
 
 module Sites
   module Definitions
-    module Commishes
-      module_function
-
+    class Commishes < SimpleDefinition
       def enum_value
         "commishes"
       end

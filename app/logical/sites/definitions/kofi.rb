@@ -2,9 +2,7 @@
 
 module Sites
   module Definitions
-    module Kofi
-      module_function
-
+    class Kofi < SimpleDefinition
       def enum_value
         "kofi"
       end

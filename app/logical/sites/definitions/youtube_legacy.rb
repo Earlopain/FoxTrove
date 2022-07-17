@@ -2,9 +2,7 @@
 
 module Sites
   module Definitions
-    module YoutubeLegacy
-      module_function
-
+    class YoutubeLegacy < SimpleDefinition
       def enum_value
         "youtube_legacy"
       end

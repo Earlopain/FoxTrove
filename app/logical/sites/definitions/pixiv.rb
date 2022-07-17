@@ -2,9 +2,7 @@
 
 module Sites
   module Definitions
-    module Pixiv
-      module_function
-
+    class Pixiv < ScraperDefinition
       def enum_value
         "pixiv"
       end

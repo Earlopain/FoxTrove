@@ -2,9 +2,7 @@
 
 module Sites
   module Definitions
-    module Carrd
-      module_function
-
+    class Carrd < SimpleDefinition
       def enum_value
         "carrd"
       end

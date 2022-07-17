@@ -2,9 +2,7 @@
 
 module Sites
   module Definitions
-    module Discord
-      module_function
-
+    class Discord < SimpleDefinition
       def enum_value
         "discord"
       end

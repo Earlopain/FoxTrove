@@ -2,9 +2,9 @@
 
 module Sites
   class ScraperDefinition < SimpleDefinition
-    def initialize(definition)
+    def initialize
       super
-      @submission_template = Addressable::Template.new(definition.submission_template)
+      @submission_template = Addressable::Template.new(submission_template)
       @scraper = "Scraper::#{enum_value.camelize}".constantize
     end
 

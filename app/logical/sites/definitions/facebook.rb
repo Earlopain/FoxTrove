@@ -2,9 +2,7 @@
 
 module Sites
   module Definitions
-    module Facebook
-      module_function
-
+    class Facebook < SimpleDefinition
       def enum_value
         "facebook"
       end

@@ -2,9 +2,7 @@
 
 module Sites
   module Definitions
-    module Furrynetwork
-      module_function
-
+    class Furrynetwork < ScraperDefinition
       def enum_value
         "furrynetwork"
       end

@@ -2,9 +2,7 @@
 
 module Sites
   module Definitions
-    module Baraag
-      module_function
-
+    class Baraag < SimpleDefinition
       def enum_value
         "baraag"
       end

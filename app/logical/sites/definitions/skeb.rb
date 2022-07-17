@@ -2,9 +2,7 @@
 
 module Sites
   module Definitions
-    module Skeb
-      module_function
-
+    class Skeb < SimpleDefinition
       def enum_value
         "skeb"
       end

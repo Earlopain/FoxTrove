@@ -22,7 +22,7 @@ class ArtistUrl < ApplicationRecord
   after_save :enqueue_scraping
 
   def set_api_identifier
-    return unless site.scraper_enabled?
+    return unless scraper_enabled?
 
     scraper = site.new_scraper self
     self.api_identifier = scraper.fetch_api_identifier
@@ -36,7 +36,15 @@ class ArtistUrl < ApplicationRecord
     @site ||= Sites.from_enum(site_type)
   end
 
+  def scraper?
+    site.is_a?(Sites::ScraperDefinition)
+  end
+
+  def scraper_enabled?
+    scraper? && site.scraper_enabled?
+  end
+
   def enqueue_scraping
-    ScrapeArtistUrlWorker.perform_async id if site.scraper_enabled?
+    ScrapeArtistUrlWorker.perform_async id if scraper_enabled?
   end
 end

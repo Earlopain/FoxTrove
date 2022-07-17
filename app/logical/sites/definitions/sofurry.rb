@@ -2,9 +2,7 @@
 
 module Sites
   module Definitions
-    module Sofurry
-      module_function
-
+    class Sofurry < ScraperDefinition
       def enum_value
         "sofurry"
       end

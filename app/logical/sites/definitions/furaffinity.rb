@@ -2,9 +2,7 @@
 
 module Sites
   module Definitions
-    module Furaffinity
-      module_function
-
+    class Furaffinity < ScraperDefinition
       def enum_value
         "furaffinity"
       end

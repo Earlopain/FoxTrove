@@ -2,16 +2,14 @@
 
 module Sites
   class SimpleDefinition
-    delegate :enum_value, :display_name, :homepage, to: :@definition
     attr_accessor :image_domains, :download_headers
 
-    def initialize(definition)
-      @definition = definition
-      @image_domains = definition.respond_to?(:image_domains) ? Array.wrap(definition.image_domains) : []
-      @download_headers = definition.respond_to?(:download_headers) ? definition.download_headers : {}
-      @gallery_templates = Array.wrap(definition.gallery_templates).map { |t| Addressable::Template.new("{prefix}#{t}{/remaining}{?remaining}{#remaining}") }
-      @can_match_if_contains = Array.wrap(definition.gallery_templates).map { |t| t.gsub(/{[^)]*}/, "") }
-      @username_identifier_regex = Regexp.new("^#{definition.username_identifier_regex}$")
+    def initialize
+      @image_domains = respond_to?(:image_domains) ? Array.wrap(image_domains) : []
+      @download_headers = respond_to?(:download_headers) ? download_headers : {}
+      @gallery_templates = Array.wrap(gallery_templates).map { |t| Addressable::Template.new("{prefix}#{t}{/remaining}{?remaining}{#remaining}") }
+      @can_match_if_contains = Array.wrap(gallery_templates).map { |t| t.gsub(/{[^)]*}/, "") }
+      @username_identifier_regex = Regexp.new("^#{username_identifier_regex}$")
     end
 
     def match_for(uri)
@@ -40,10 +38,6 @@ module Sites
 
     def gallery_url(identifier)
       "https://#{@gallery_templates.first.expand(site_artist_identifier: identifier)}"
-    end
-
-    def scraper_enabled?
-      false
     end
   end
 end

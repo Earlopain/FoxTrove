@@ -2,9 +2,7 @@
 
 module Sites
   module Definitions
-    module Weasyl
-      module_function
-
+    class Weasyl < ScraperDefinition
       def enum_value
         "weasyl"
       end

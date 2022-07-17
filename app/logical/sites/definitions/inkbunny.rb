@@ -2,9 +2,7 @@
 
 module Sites
   module Definitions
-    module Inkbunny
-      module_function
-
+    class Inkbunny < ScraperDefinition
       def enum_value
         "inkbunny"
       end

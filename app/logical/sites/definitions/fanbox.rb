@@ -2,9 +2,7 @@
 
 module Sites
   module Definitions
-    module Fanbox
-      module_function
-
+    class Fanbox < SimpleDefinition
       def enum_value
         "fanbox"
       end

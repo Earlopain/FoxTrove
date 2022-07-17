@@ -2,9 +2,7 @@
 
 module Sites
   module Definitions
-    module YoutubeVanity
-      module_function
-
+    class YoutubeVanity < SimpleDefinition
       def enum_value
         "youtube_vanity"
       end

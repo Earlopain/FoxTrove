@@ -48,18 +48,13 @@ module Scraper
       s.identifier = submission[:id]
       s.title = submission[:title]
       s.description = submission[:description]
-      created_at = extract_timestamp submission
-      s.created_at = created_at
+      s.created_at = submission[:created_at]
       s.add_file({
         url: submission[:url],
-        created_at: created_at,
+        created_at: s.created_at,
         identifier: "",
       })
       s
-    end
-
-    def extract_timestamp(submission)
-      submission[:created_at]
     end
 
     # No api and usernames cannot be changed

@@ -2,9 +2,7 @@
 
 module Sites
   module Definitions
-    module Tumblr
-      module_function
-
+    class Tumblr < SimpleDefinition
       def enum_value
         "tumblr"
       end

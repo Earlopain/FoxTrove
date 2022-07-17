@@ -2,9 +2,7 @@
 
 module Sites
   module Definitions
-    module YoutubeChannel
-      module_function
-
+    class YoutubeChannel < SimpleDefinition
       def enum_value
         "youtube_channel"
       end

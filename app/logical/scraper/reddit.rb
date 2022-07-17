@@ -32,13 +32,12 @@ module Scraper
       s.identifier = submission["id"]
       s.title = submission["title"]
       s.description = ""
-      created_at = extract_timestamp submission
-      s.created_at = created_at
+      s.created_at = DateTime.strptime(submission["created"].to_s, "%s")
 
       if submission["domain"] == "i.redd.it"
         s.add_file({
           url: submission["url"],
-          created_at: created_at,
+          created_at: s.created_at,
           identifier: "",
         })
       elsif submission["domain"] == "reddit.com" && submission["media_metadata"].present?
@@ -46,16 +45,12 @@ module Scraper
           data["m"] = "image/jpeg" if data["m"] == "image/jpg"
           s.add_file({
             url: "https://i.redd.it/#{identifier}.#{Marcel::EXTENSIONS.invert[data['m']]}",
-            created_at: created_at,
+            created_at: s.created_at,
             identifier: identifier,
           })
         end
       end
       s
-    end
-
-    def extract_timestamp(submission)
-      DateTime.strptime(submission["created"].to_s, "%s")
     end
 
     def fetch_api_identifier

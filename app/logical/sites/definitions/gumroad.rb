@@ -2,9 +2,7 @@
 
 module Sites
   module Definitions
-    module Gumroad
-      module_function
-
+    class Gumroad < SimpleDefinition
       def enum_value
         "gumroad"
       end

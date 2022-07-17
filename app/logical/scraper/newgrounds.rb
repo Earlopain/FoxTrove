@@ -36,21 +36,16 @@ module Scraper
       s.identifier = submission[:identifier]
       s.title = submission[:title]
       s.description = submission[:description]
-      created_at = extract_timestamp submission
-      s.created_at = created_at
+      s.created_at = submission[:created_at]
 
       submission[:files].each_with_index do |url, index|
         s.add_file({
           url: url,
-          created_at: created_at,
+          created_at: s.created_at,
           identifier: index,
         })
       end
       s
-    end
-
-    def extract_timestamp(submission)
-      submission[:created_at]
     end
 
     def fetch_api_identifier

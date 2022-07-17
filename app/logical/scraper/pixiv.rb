@@ -41,29 +41,24 @@ module Scraper
       s.identifier = submission["id"]
       s.title = submission["title"]
       s.description = submission["caption"]
-      created_at = extract_timestamp submission
-      s.created_at = created_at
+      s.created_at = DateTime.parse submission["create_date"]
 
       if submission.dig("meta_single_page", "original_image_url")
         s.add_file({
           url: submission["meta_single_page"]["original_image_url"],
-          created_at: created_at,
+          created_at: s.created_at,
           identifier: 0,
         })
       else
         submission["meta_pages"].each.with_index do |entry, index|
           s.add_file({
             url: entry["image_urls"]["original"],
-            created_at: created_at,
+            created_at: s.created_at,
             identifier: index,
           })
         end
       end
       s
-    end
-
-    def extract_timestamp(submission)
-      DateTime.parse submission["create_date"]
     end
 
     # The url identifier is already the api identifier

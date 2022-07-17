@@ -30,21 +30,16 @@ module Scraper
       s.title = submission["title"]
       # Only returned when doing individual requests for submissions
       s.description = ""
-      created_at = extract_timestamp submission
-      s.created_at = created_at
+      s.created_at = DateTime.parse submission["posted_at"]
 
       submission["media"]["submission"].each do |entry|
         s.add_file({
           url: entry["url"],
-          created_at: created_at,
+          created_at: s.created_at,
           identifier: entry["mediaid"],
         })
       end
       s
-    end
-
-    def extract_timestamp(submission)
-      DateTime.parse submission["posted_at"]
     end
 
     # Unfortunately the api doesn't seem to return this information

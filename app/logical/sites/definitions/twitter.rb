@@ -2,9 +2,7 @@
 
 module Sites
   module Definitions
-    module Twitter
-      module_function
-
+    class Twitter < ScraperDefinition
       def enum_value
         "twitter"
       end

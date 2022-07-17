@@ -2,9 +2,7 @@
 
 module Sites
   module Definitions
-    module Linktree
-      module_function
-
+    class Linktree < SimpleDefinition
       def enum_value
         "linktree"
       end

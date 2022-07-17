@@ -2,9 +2,7 @@
 
 module Sites
   module Definitions
-    module Instagram
-      module_function
-
+    class Instagram < SimpleDefinition
       def enum_value
         "instagram"
       end

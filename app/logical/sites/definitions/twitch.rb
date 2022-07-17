@@ -2,9 +2,7 @@
 
 module Sites
   module Definitions
-    module Twitch
-      module_function
-
+    class Twitch < SimpleDefinition
       def enum_value
         "twitch"
       end

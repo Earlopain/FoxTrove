@@ -2,7 +2,7 @@
 
 module ArtistHelper
   def active_artist_urls_collection(artist)
-    scraping_enabled = artist.artist_urls.select { |url| url.site.class == Sites::ScraperDefinition }
+    scraping_enabled = artist.artist_urls.select(&:scraper?)
     scraping_enabled.map { |artist_url| ["#{artist_url.url_identifier} (#{artist_url.site.display_name})", artist_url.id] }
   end
 

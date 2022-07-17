@@ -2,9 +2,7 @@
 
 module Sites
   module Definitions
-    module Picarto
-      module_function
-
+    class Picarto < SimpleDefinition
       def enum_value
         "picarto"
       end

@@ -49,49 +49,7 @@ module Sites
     response
   end
 
-  SCRAPERS = [
-    Definitions::Twitter,
-    Definitions::Inkbunny,
-    Definitions::Deviantart,
-    Definitions::Artstation,
-    Definitions::Reddit,
-    Definitions::Furaffinity,
-    Definitions::Weasyl,
-    Definitions::Newgrounds,
-    Definitions::Furrynetwork,
-    Definitions::Sofurry,
-    Definitions::Pixiv,
-    Definitions::Piczel,
-  ].map { |definition| ScraperDefinition.new definition }.freeze
-
-  SIMPLE = [
-    Definitions::Patreon,
-    Definitions::Tumblr,
-    Definitions::Vk,
-    Definitions::Instagram,
-    Definitions::Subscribestar,
-    Definitions::Kofi,
-    Definitions::Discord,
-    Definitions::Fanbox,
-    Definitions::Linktree,
-    Definitions::Carrd,
-    Definitions::Telegram,
-    Definitions::Twitch,
-    Definitions::Picarto,
-    Definitions::Gumroad,
-    Definitions::Skeb,
-    Definitions::Pawoo,
-    Definitions::Baraag,
-    Definitions::YoutubeChannel,
-    Definitions::YoutubeLegacy,
-    Definitions::YoutubeVanity,
-    Definitions::Facebook,
-    Definitions::HentaiFoundry,
-    Definitions::Pillowfort,
-    Definitions::Commishes,
-  ].map { |definition| SimpleDefinition.new definition }.freeze
-
-  ALL = (SCRAPERS + SIMPLE).freeze
+  ALL = Definitions.constants.map { |name| Definitions.const_get(name).new }
 
   ENUM_MAP = ALL.index_by(&:enum_value).freeze
 end

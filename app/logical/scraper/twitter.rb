@@ -64,22 +64,17 @@ module Scraper
         description[indices[0]..indices[1]] = entry["expanded_url"]
       end
       s.description = description
+      s.created_at = DateTime.strptime(tweet_data["legacy"]["created_at"], DATETIME_FORMAT)
 
       tweet["extended_entities"]["media"].each.with_index do |media, index|
         url = extract_url_from_media(media)
-        created_at = extract_timestamp(tweet_data)
-        s.created_at = created_at
         s.add_file({
           url: url,
-          created_at: created_at,
+          created_at: s.created_at,
           identifier: index,
         })
       end
       s
-    end
-
-    def extract_timestamp(tweet_data)
-      DateTime.strptime(tweet_data["legacy"]["created_at"], DATETIME_FORMAT)
     end
 
     def fetch_api_identifier
