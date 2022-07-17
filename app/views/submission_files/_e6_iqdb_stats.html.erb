@@ -5,7 +5,7 @@
     Exact
   <% else %>
     <span class="size-difference">
-      <%= number_to_human_size(e6_iqdb.post_size - submission_file.size) %>
+      <%= number_to_human_size(e6_iqdb.post_size - submission_file.size, precision: 2) %>
     </span>
     <span class="dimension-difference" title="<%= "#{e6_iqdb.post_width}x#{e6_iqdb.post_height}" %>">
       x<%= (e6_iqdb.post_width / submission_file.width.to_f).round(1) %>
