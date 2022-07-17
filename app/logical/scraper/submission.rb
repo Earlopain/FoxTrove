@@ -26,7 +26,7 @@ module Scraper
 
       artist_submission = ArtistSubmission.find_by(
         artist_url: artist_url,
-        identifier_on_site: identifier
+        identifier_on_site: identifier,
       )
 
       # No submission was created yet
@@ -35,7 +35,7 @@ module Scraper
         identifier_on_site: identifier,
         title_on_site: fix_encoding(title),
         description_on_site: fix_encoding(description),
-        created_at_on_site: created_at
+        created_at_on_site: created_at,
       )
 
       files.each do |file|

@@ -11,7 +11,7 @@ module ApplicationHelper
   end
 
   def time_ago(value)
-    tag.span value.to_formatted_s(:long), datetime: value.to_formatted_s(:iso8601), class: "time-ago"
+    tag.span value.to_fs(:long), datetime: value.to_fs(:iso8601), class: "time-ago"
   end
 
   def site_icon(artist_url, text: nil, link_target: nil, **options)
@@ -37,11 +37,11 @@ module ApplicationHelper
     end
   end
 
-  def hideable_search(path, &block)
+  def hideable_search(path, &)
     tag.div(class: "hideable-search-container") do
       show = tag.div("Show Search Options", href: "#", class: "hideable-search-show link #{'hidden' if params[:search].present?}")
       hide = tag.div("Hide Search Options", href: "#", class: "hideable-search-hide link #{'hidden' if params[:search].blank?}")
-      form = simple_form_for(:search, method: :get, url: path, defaults: { required: false }, builder: HideableSearchFormBuilder, search_params: params[:search], &block)
+      form = simple_form_for(:search, method: :get, url: path, defaults: { required: false }, builder: HideableSearchFormBuilder, search_params: params[:search], &)
       show.concat(hide).concat(tag.span(form, class: "hideable-search-form #{'hidden' if params[:search].blank?}"))
     end
   end

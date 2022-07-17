@@ -72,30 +72,34 @@ class ArtistsController < ApplicationController
   def add_new_artist_urls_and_save(artist)
     artist.valid?
     artist.url_string.lines.map(&:strip).compact_blank.each do |url|
-      result = Sites.from_url url
-
-      if !result
-        artist.errors.add(:url, " #{url} is not a supported url") unless result
-        next
-      elsif !result[:identifier_valid]
-        artist.errors.add(:identifier, "#{result[:identifier]} is not valid for #{result[:site].display_name}")
-        next
-      end
-
-      artist_url = artist.artist_urls.new(
-        site_type: result[:site].enum_value,
-        url_identifier: result[:identifier],
-        created_at_on_site: Time.current,
-        about_on_site: ""
-      )
-      artist_url.validate
-      artist_url.errors.full_messages.each do |msg|
-        artist.errors.add(:url, "#{url} is not valid: #{msg}")
-      end
+      add_artist_url(artist, url)
     end
     return if artist.errors.any?
 
     artist.artist_urls.each(&:save!)
     artist.save
+  end
+
+  def add_artist_url(artist, url)
+    result = Sites.from_url url
+
+    if !result
+      artist.errors.add(:url, " #{url} is not a supported url") unless result
+      return
+    elsif !result[:identifier_valid]
+      artist.errors.add(:identifier, "#{result[:identifier]} is not valid for #{result[:site].display_name}")
+      return
+    end
+
+    artist_url = artist.artist_urls.new(
+      site_type: result[:site].enum_value,
+      url_identifier: result[:identifier],
+      created_at_on_site: Time.current,
+      about_on_site: "",
+    )
+    artist_url.validate
+    artist_url.errors.full_messages.each do |msg|
+      artist.errors.add(:url, "#{url} is not valid: #{msg}")
+    end
   end
 end

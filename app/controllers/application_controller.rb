@@ -5,31 +5,17 @@ class ApplicationController < ActionController::Base
   rescue_from Exception, with: :rescue_exception
 
   def normalize_params
-    return unless request.get?
+    return unless request.get? || request.head?
 
     params[:search] ||= ActionController::Parameters.new
-    deep_reject_blank = lambda do |hash|
-      hash.transform_values do |v|
-        if v.blank?
-          nil
-        elsif v.is_a?(Array)
-          compact_array = v.compact_blank
-          compact_array.empty? ? nil : compact_array
-        elsif v.is_a?(Hash)
-          deep_reject_blank.call v
-        else
-          v
-        end
-      end.compact
-    end
-    new_params = deep_reject_blank.call request.query_parameters
+    new_params = deep_reject_blank request.query_parameters
 
     redirect_to url_for(params: new_params) if new_params != request.query_parameters
   end
 
-  def with_time_zone
+  def with_time_zone(&)
     # TODO: timezone cookie
-    Time.use_zone("Berlin") { yield }
+    Time.use_zone("Berlin", &)
   end
 
   EXCEPTION_TYPES = {
@@ -56,5 +42,22 @@ class ApplicationController < ActionController::Base
 
     console
     render "static/error", status: EXCEPTION_TYPES[exception.class] || 500
+  end
+
+  private
+
+  def deep_reject_blank(hash)
+    hash.transform_values do |v|
+      if v.blank?
+        nil
+      elsif v.is_a?(Array)
+        compact_array = v.compact_blank
+        compact_array.empty? ? nil : compact_array
+      elsif v.is_a?(Hash)
+        deep_reject_blank v
+      else
+        v
+      end
+    end.compact
   end
 end

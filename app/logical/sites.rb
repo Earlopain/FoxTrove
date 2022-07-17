@@ -18,9 +18,9 @@ module Sites
   end
 
   def for_domain(domain)
-    ALL.lazy.filter do |definition|
+    ALL.find do |definition|
       definition.handles_domain? domain
-    end.first
+    end
   end
 
   def download_file(outfile, url, definition = nil)
@@ -91,5 +91,5 @@ module Sites
 
   ALL = (SCRAPERS + SIMPLE).freeze
 
-  ENUM_MAP = ALL.to_h { |definition| [definition.enum_value, definition] }
+  ENUM_MAP = ALL.index_by(&:enum_value).freeze
 end

@@ -37,7 +37,7 @@ class CreateSubmissionFileWorker
       artist_submission_id: artist_submission_id,
       direct_url: url,
       created_at_on_site: file["created_at"],
-      file_identifier: file["identifier"]
+      file_identifier: file["identifier"],
     )
 
     blob = ActiveStorage::Blob.create_and_upload!(io: bin_file, filename: File.basename(url))

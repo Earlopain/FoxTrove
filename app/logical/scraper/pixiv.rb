@@ -81,52 +81,45 @@ module Scraper
 
     def access_token
       Cache.fetch("pixiv-token", 55.minutes) do
-        SeleniumWrapper.driver(with_performance: true) do |driver|
-          code_verifier = urlsafe_b64 SecureRandom.base64(32)
-          code_challenge = urlsafe_b64 Digest::SHA256.base64digest(code_verifier)
-
-          login_params = {
-            code_challenge: code_challenge,
-            code_challenge_method: "S256",
-            client: "pixiv-android",
-          }
-
-          driver.navigate.to "#{LOGIN_URL}?#{login_params.to_query}"
-          wait = Selenium::WebDriver::Wait.new(timeout: 10)
-          wait.until { driver.find_element(css: "form input[autocomplete='username']") }.send_keys Config.pixiv_user
-          driver.find_element(css: "form input[autocomplete='current-password']").send_keys Config.pixiv_pass
-          driver.find_element(css: "form button[type='submit'").click
-
-          code = nil
-          wait.until do
-            logs = driver.logs.get("performance")
-            code = fetch_code_from_logs logs
-            true if code
-          end
-          response = HTTParty.post(AUTH_TOKEN_URL, headers: headers, body: {
-            client_id: CLIENT_ID,
-            client_secret: CLIENT_SECRET,
-            code: code,
-            code_verifier: code_verifier,
-            grant_type: "authorization_code",
-            unclude_policy: true,
-            redirect_uri: REDIRECT_URI,
-          })
-          response["access_token"]
-        end
+        code_verifier = urlsafe_b64 SecureRandom.base64(32)
+        code = fetch_code code_verifier
+        response = HTTParty.post(AUTH_TOKEN_URL, headers: headers, body: {
+          client_id: CLIENT_ID,
+          client_secret: CLIENT_SECRET,
+          code: code,
+          code_verifier: code_verifier,
+          grant_type: "authorization_code",
+          unclude_policy: true,
+          redirect_uri: REDIRECT_URI,
+        })
+        response["access_token"]
       end
     end
 
-    def headers
-      {
-        "User-Agent": USER_AGENT,
-        "App-OS-Version": OS_VERSION,
-        "App-OS": "ios",
-      }
-    end
+    def fetch_code(code_verifier)
+      SeleniumWrapper.driver(with_performance: true) do |driver|
+        code_challenge = urlsafe_b64 Digest::SHA256.base64digest(code_verifier)
 
-    def urlsafe_b64(input)
-      input.tr("+/", "-_").tr("=", "")
+        login_params = {
+          code_challenge: code_challenge,
+          code_challenge_method: "S256",
+          client: "pixiv-android",
+        }
+
+        driver.navigate.to "#{LOGIN_URL}?#{login_params.to_query}"
+        wait = Selenium::WebDriver::Wait.new(timeout: 10)
+        wait.until { driver.find_element(css: "form input[autocomplete='username']") }.send_keys Config.pixiv_user
+        driver.find_element(css: "form input[autocomplete='current-password']").send_keys Config.pixiv_pass
+        driver.find_element(css: "form button[type='submit'").click
+
+        code = nil
+        wait.until do
+          logs = driver.logs.get("performance")
+          code = fetch_code_from_logs logs
+          true if code
+        end
+        code
+      end
     end
 
     def fetch_code_from_logs(logs)
@@ -139,6 +132,18 @@ module Scraper
         return uri.query_values["code"] if uri.scheme == "pixiv"
       end
       nil
+    end
+
+    def headers
+      {
+        "User-Agent": USER_AGENT,
+        "App-OS-Version": OS_VERSION,
+        "App-OS": "ios",
+      }
+    end
+
+    def urlsafe_b64(input)
+      input.tr("+/", "-_").tr("=", "")
     end
   end
 end

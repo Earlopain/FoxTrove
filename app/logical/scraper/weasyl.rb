@@ -14,7 +14,7 @@ module Scraper
       response = HTTParty.get(
         url,
         headers: { "X-Weasyl-API-Key": Config.weasyl_apikey },
-        query: {}.tap { |h| h[:nextid] = @nextid if @nextid }
+        query: {}.tap { |h| h[:nextid] = @nextid if @nextid },
       )
       json = JSON.parse(response.body)
       @nextid = json["nextid"]

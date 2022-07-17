@@ -10,7 +10,7 @@ class E6ApiClient
     response = HTTParty.get(
       "#{API_BASE}/#{path}",
       query: query,
-      headers: self.class.headers(@username, @api_key)
+      headers: self.class.headers(@username, @api_key),
     )
     JSON.parse response.body
   end
@@ -25,7 +25,7 @@ class E6ApiClient
     HTTParty.post(
       "#{API_BASE}/iqdb_queries.json",
       body: { file: file },
-      headers: headers(Config.e6_user, Config.e6_apikey)
+      headers: headers(Config.e6_user, Config.e6_apikey),
     )
   end
 

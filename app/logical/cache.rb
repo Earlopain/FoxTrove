@@ -1,8 +1,8 @@
 module Cache
   module_function
 
-  def fetch(key, expires_in = nil, &block)
-    Rails.cache.fetch(key, expires_in: expires_in, &block)
+  def fetch(key, expires_in = nil, &)
+    Rails.cache.fetch(key, expires_in: expires_in, &)
   end
 
   def write(key, value, expires_in = nil)

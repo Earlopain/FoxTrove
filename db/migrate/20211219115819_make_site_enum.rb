@@ -18,7 +18,7 @@ class MakeSiteEnum < ActiveRecord::Migration[7.0]
     ]
 
     change_table :artist_urls do |t|
-      t.remove :site_id 
+      t.remove :site_id
       t.enum :site_type, enum_type: :artist_url_sites, null: false
     end
     execute "CREATE UNIQUE INDEX index_artist_urls_on_site_and_identifier ON artist_urls (site_type, lower(identifier_on_site));"

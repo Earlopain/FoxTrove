@@ -22,7 +22,7 @@ module Scraper
       # Gifs are not videos
       # TODO: videos are not a single file, but a dash stream
       # TODO: figure out if stuff can still be searched for, but images are gone
-      entries.map{ |e| e["data"] }.select { |e| e["domain"] == "i.redd.it" || (e["domain"] == "reddit.com" && e["media_metadata"].present?) }
+      entries.map { |e| e["data"] }.select { |e| e["domain"] == "i.redd.it" || (e["domain"] == "reddit.com" && e["media_metadata"].present?) }
     end
 
     def to_submission(submission)
@@ -77,7 +77,7 @@ module Scraper
           "https://www.reddit.com/api/v1/access_token",
           body: "grant_type=client_credentials",
           basic_auth: { username: Config.reddit_client_id, password: Config.reddit_client_secret },
-          headers: { "Content-Type": "application/x-www-form-urlencoded", "User-Agent": "reverser.0.1 by earlopain" }
+          headers: { "Content-Type": "application/x-www-form-urlencoded", "User-Agent": "reverser.0.1 by earlopain" },
         )
         json = JSON.parse response.body
         json["access_token"]

@@ -1,14 +1,14 @@
 class ApplicationRecord < ActiveRecord::Base
   self.abstract_class = true
 
-  has_many :log_events, as: :loggable
+  has_many :log_events, as: :loggable, dependent: nil
 
   def add_log_event(action, **payload)
     LogEvent.create!(
       loggable_id: id,
       loggable_type: self.class.name,
-      action:,
-      payload:,
+      action: action,
+      payload: payload,
     )
   end
 
@@ -143,9 +143,9 @@ class ApplicationRecord < ActiveRecord::Base
           params.dig(*previous_keys, key).nil?
         end
 
-        input.map do |key, value|
+        input.to_h do |key, value|
           [key, join_hash(value, params, previous_keys + [key])]
-        end.to_h
+        end
       end
 
       def shorthand_attribute_access

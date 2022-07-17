@@ -15,3 +15,17 @@ class SeleniumWrapper
     driver&.quit
   end
 end
+
+module Selenium
+  module WebDriver
+    module Remote
+      class Driver
+        def cookie_value(cookie_name)
+          manage.cookie_named(cookie_name)[:value]
+        rescue Selenium::WebDriver::Error::NoSuchCookieError
+          nil
+        end
+      end
+    end
+  end
+end

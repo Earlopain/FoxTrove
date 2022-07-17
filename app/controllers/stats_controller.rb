@@ -11,13 +11,13 @@ class StatsController < ApplicationController
       "count(distinct artist_url_id) as url_count",
       "count(distinct artist_submission_id) as submission_count",
       "count(*) as file_count",
-      ).joins(artist_submission: { artist_url: :artist }).group(:site_type).reorder("").index_by(&:site_type)
+    ).joins(artist_submission: { artist_url: :artist }).group(:site_type).reorder("").index_by(&:site_type)
     @counts.transform_keys! { |id| ArtistUrl.site_types.invert[id] }
   end
 
   private
 
   def sum_for(name, record_type)
-    ActiveStorage::Blob.joins(:attachments).where(attachments: { name: , record_type: }).sum(:byte_size)
+    ActiveStorage::Blob.joins(:attachments).where(attachments: { name: name, record_type: record_type }).sum(:byte_size)
   end
 end

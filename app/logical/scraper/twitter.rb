@@ -39,14 +39,7 @@ module Scraper
         return []
       end
 
-      instructions = response.dig("data", "user", "result", "timeline_v2", "timeline", "instructions")
-      timeline_add_entries = instructions.find { |instruction| instruction["type"] == "TimelineAddEntries" }["entries"].map { |entry| entry["content"] }
-      tweets = entries_by_type(timeline_add_entries, "TimelineTimelineItem").map { |content| content.dig("itemContent", "tweet_results", "result") }
-      # Tweets deleted by the author
-      tweets = tweets.reject { |tweet| tweet["__typename"] == "TweetTombstone" }
-      # Tweets without downloadable content, like embeded youtube videos
-      tweets = tweets.select { |tweet| tweet.dig("legacy", "extended_entities", "media") }
-      cursor_entry = entries_by_type(timeline_add_entries, "TimelineTimelineCursor").find { |cursor| cursor["cursorType"] == "Bottom" }
+      tweets, cursor_entry = extract_tweets_and_cursor_entry(response)
       @cursor = cursor_entry["value"]
       end_reached if tweets.empty? && cursor_entry["stopOnEmptyResponse"]
       tweets
@@ -71,22 +64,7 @@ module Scraper
       s.description = description
 
       tweet["extended_entities"]["media"].each.with_index do |media, index|
-        url = case media["type"]
-              when "photo"
-                # https://pbs.twimg.com/media/Ek086oLVgAMjX5h.jpg => https://pbs.twimg.com/media/Ek086oLVgAMjX5h?format=jpg&name=orig
-                regex = %r{media/(\S*)\.(\S*)$}
-                name, ext = media["media_url_https"].scan(regex).first
-                "https://pbs.twimg.com/media/#{name}?format=#{ext}&name=orig"
-              when "video"
-                # get the variant with the highest bitrate
-                variant = media.dig("video_info", "variants").max_by { |v| v["bitrate"].to_i }
-                variant["url"]
-              when "animated_gif"
-                # there is only one variant, get that
-                media.dig("video_info", "variants").first["url"]
-              else
-                raise ApiError, "Unknown media type #{media['type']}"
-              end
+        url = extract_url_from_media(media)
         created_at = extract_timestamp(tweet_data)
         s.created_at = created_at
         s.add_file({
@@ -112,8 +90,39 @@ module Scraper
 
     private
 
+    def extract_tweets_and_cursor_entry(response)
+      instructions = response.dig("data", "user", "result", "timeline_v2", "timeline", "instructions")
+      timeline_add_entries = instructions.find { |instruction| instruction["type"] == "TimelineAddEntries" }["entries"].map { |entry| entry["content"] }
+      tweets = entries_by_type(timeline_add_entries, "TimelineTimelineItem").map { |content| content.dig("itemContent", "tweet_results", "result") }
+      # Tweets deleted by the author
+      tweets = tweets.reject { |tweet| tweet["__typename"] == "TweetTombstone" }
+      # Tweets without downloadable content, like embeded youtube videos
+      tweets = tweets.select { |tweet| tweet.dig("legacy", "extended_entities", "media") }
+      cursor_entry = entries_by_type(timeline_add_entries, "TimelineTimelineCursor").find { |cursor| cursor["cursorType"] == "Bottom" }
+      [tweets, cursor_entry]
+    end
+
     def entries_by_type(entries, type)
       entries.select { |entry| entry["entryType"] == type }
+    end
+
+    def extract_url_from_media(media)
+      case media["type"]
+      when "photo"
+        # https://pbs.twimg.com/media/Ek086oLVgAMjX5h.jpg => https://pbs.twimg.com/media/Ek086oLVgAMjX5h?format=jpg&name=orig
+        regex = %r{media/(\S*)\.(\S*)$}
+        name, ext = media["media_url_https"].scan(regex).first
+        "https://pbs.twimg.com/media/#{name}?format=#{ext}&name=orig"
+      when "video"
+        # get the variant with the highest bitrate
+        variant = media.dig("video_info", "variants").max_by { |v| v["bitrate"].to_i }
+        variant["url"]
+      when "animated_gif"
+        # there is only one variant, get that
+        media.dig("video_info", "variants").first["url"]
+      else
+        raise ApiError, "Unknown media type #{media['type']}"
+      end
     end
 
     def make_request(url, params = {})
@@ -142,8 +151,8 @@ module Scraper
           end
 
           # The auth_token cookie isn't available immediately, so wait a bit
-          auth_token = wait.until { driver.manage.cookie_named("auth_token")[:value] rescue nil }
-          csrf_token = driver.manage.cookie_named("ct0")[:value]
+          auth_token = wait.until { driver.cookie_value("auth_token") }
+          csrf_token = driver.cookie_value("ct0")
           [auth_token, csrf_token]
         end
       end

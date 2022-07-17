@@ -1,5 +1,5 @@
 class HideableSearchFormBuilder < SimpleForm::FormBuilder
-  def input(attribute_name, options = {}, &block)
+  def input(attribute_name, options = {}, &)
     value = @options[:search_params][attribute_name]
     options[:input_html] ||= {}
     if options[:collection]
@@ -9,6 +9,6 @@ class HideableSearchFormBuilder < SimpleForm::FormBuilder
     else
       options[:input_html].merge! value: value
     end
-    super(attribute_name, options, &block)
+    super(attribute_name, options, &)
   end
 end

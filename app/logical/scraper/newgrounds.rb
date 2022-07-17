@@ -91,7 +91,7 @@ module Scraper
           wait.until { driver.find_element(css: "input[name='username']") }.send_keys Config.newgrounds_user
           driver.find_element(css: "input[name='password']").send_keys Config.newgrounds_pass
           driver.find_element(css: "button.PassportLoginBtn").click
-          wait.until { driver.manage.cookie_named(COOKIE_NAME)[:value] rescue nil }
+          wait.until { driver.cookie_value(COOKIE_NAME) }
         end
       end
     end

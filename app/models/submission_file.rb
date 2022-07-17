@@ -18,13 +18,7 @@ class SubmissionFile < ApplicationRecord
   scope :not_uploaded, -> { where("not exists (select from e6_iqdb_data where submission_files.id = e6_iqdb_data.submission_file_id)") }
   scope :exact_match, -> { joins(:e6_iqdb_entries).where("size = post_size") }
 
-  def artist
-    artist_submission.artist_url.artist
-  end
-
-  def artist_url
-    artist_submission.artist_url
-  end
+  delegate :artist_url, :artist, to: :artist_submission
 
   def original_present
     errors.add(:original_file, "not attached") unless original.attached?
@@ -60,7 +54,7 @@ class SubmissionFile < ApplicationRecord
           post_height: post["image_height"],
           post_size: post["file_size"],
           similarity_score: entry["score"],
-          is_exact_match: md5 == post["md5"]
+          is_exact_match: md5 == post["md5"],
         )
       end
     end
@@ -85,18 +79,11 @@ class SubmissionFile < ApplicationRecord
         q = all
         if params[:upload_status].present?
           q = case params[:upload_status]
-              when "larger_only_filesize"
-                q.larger_only_filesize((params[:larger_only_filesize_treshold] || 10).to_i.kilobytes)
-              when "larger_only_dimensions"
-                q.larger_only_dimensions
-              when "larger_only_both"
-                q.larger_only_both((params[:larger_only_filesize_treshold] || 10).to_i.kilobytes)
-              when "exact_match"
-                q.exact_match
-              when "already_uploaded"
-                q.already_uploaded
-              when "not_uploaded"
-                q.not_uploaded
+              when "larger_only_filesize", "larger_only_both"
+                size = (params[:larger_only_filesize_treshold] || 10).to_i.kilobytes
+                q.send(params[:upload_status], size)
+              when "larger_only_dimensions", "exact_match", "already_uploaded", "not_uploaded"
+                q.send(params[:upload_status])
               else
                 q.none
               end

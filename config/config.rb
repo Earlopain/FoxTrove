@@ -15,12 +15,12 @@ module Config
   end
 
   def self.method_missing(method)
-    if custom_config.keys.include? method.to_s
-      custom_config[method.to_s]
-    elsif default_config.keys.include? method.to_s
-      default_config[method.to_s]
-    else
-      raise StandardError, "Unknown config #{method}"
-    end
+    raise StandardError, "Unknown config #{method}" unless respond_to_missing?(method)
+
+    custom_config[method.to_s] || default_config[method.to_s]
+  end
+
+  def self.respond_to_missing?(method, *)
+    custom_config.keys.concat(default_config.keys).include? method.to_s
   end
 end

@@ -3,8 +3,8 @@ gem "ruby-vips"
 namespace :assets do
   desc "Generate the icon spritemap"
   task generate_spritemap: :environment do
-    icon_folder = Rails.root.join("public/icons")
-    target_file = Rails.root.join("public/build/icons.png")
+    icon_folder = Rails.public_path.join("icons")
+    target_file = Rails.public_path.join("build/icons.png")
     icon_size = 64
 
     files = Dir.glob("#{icon_folder}/*.png")

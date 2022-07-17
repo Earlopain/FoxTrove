@@ -1,4 +1,3 @@
-
 module Scraper
   class Furaffinity < Base
     def init
@@ -115,8 +114,8 @@ module Scraper
         driver.find_element(css: "#login-form input[name='pass']").send_keys Config.furaffinity_pass
         driver.find_element(id: "login-button").click
 
-        cookie_a = wait.until { driver.manage.cookie_named("a")[:value] rescue nil }
-        cookie_b = driver.manage.cookie_named("b")[:value]
+        cookie_a = wait.until { driver.cookie_value("a") }
+        cookie_b = driver.cookie_value("b")
         [cookie_a, cookie_b]
       end
     end

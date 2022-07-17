@@ -6,6 +6,7 @@ AllCops:
   Exclude:
     - "bin/*"
     - "node_modules/**/*"
+  TargetRubyVersion: 3.1
 
 Layout/FirstArrayElementIndentation:
   EnforcedStyle: consistent
@@ -23,12 +24,13 @@ Metrics/AbcSize:
   Enabled: false
 
 Metrics/BlockLength:
-  Enabled: false
+  IgnoredMethods:
+    - "class_methods"
+    - "concerning"
+  Exclude:
+    - "config/routes.rb"
 
 Metrics/ClassLength:
-  Enabled: false
-
-Metrics/CyclomaticComplexity:
   Enabled: false
 
 Metrics/MethodLength:
@@ -37,23 +39,26 @@ Metrics/MethodLength:
 Metrics/ModuleLength:
   Enabled: false
 
-Metrics/ParameterLists:
-  CountKeywordArgs: false
-
-Metrics/PerceivedComplexity:
-  Enabled: false
-
 Rails/HttpStatus:
   EnforcedStyle: numeric
 
+Style/Documentation:
+  Enabled: false
+
 Style/EmptyMethod:
   EnforcedStyle: expanded
+
+Style/HashSyntax:
+  EnforcedShorthandSyntax: never
 
 Style/InfiniteLoop:
   Enabled: false
 
 Style/StringLiterals:
   EnforcedStyle: double_quotes
+
+Style/TrailingCommaInArguments:
+  EnforcedStyleForMultiline: comma
 
 Style/FrozenStringLiteralComment:
   Enabled: false
@@ -70,11 +75,11 @@ Style/TrailingCommaInArrayLiteral:
 Style/TrailingCommaInHashLiteral:
   EnforcedStyleForMultiline: consistent_comma
 
-Rails/HasManyOrHasOneDependent:
+Rails/BulkChangeTable:
   Enabled: false
 
-Rails/InverseOf:
+Rails/NotNullColumn:
   Enabled: false
 
-Bundler/OrderedGems:
+Rails/ReversibleMigration:
   Enabled: false
