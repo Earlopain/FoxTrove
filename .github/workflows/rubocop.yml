@@ -30,4 +30,3 @@ jobs:
 
     - name: Run RuboCop
       run: bundle exec rubocop --parallel --format progress --format RubocopGithubAnnotationFormatter::AnnotationFormatter
-      id: rubocop
