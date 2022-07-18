@@ -32,13 +32,9 @@ group :development do
 end
 
 group :rubocop, :local do
+  gem "rubocop", require: false
   gem "rubocop-github-annotations-formatter", require: false
   gem "rubocop-rails", require: false
-  gem "rubocop", require: false
-
-  test = ["a", "b", "a", "b", "a", "b"]
-
-  test.size
 end
 
 group :local do
