@@ -1,6 +1,6 @@
 require:
   - rubocop-rails
-  - rubocop-github-annotation-formatter
+  - rubocop-github-annotations-formatter
 
 AllCops:
   NewCops: enable

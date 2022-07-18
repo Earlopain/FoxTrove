@@ -33,8 +33,8 @@ end
 
 group :rubocop, :local do
   gem "rubocop", require: false
-  gem "rubocop-github-annotations-formatter", require: false
   gem "rubocop-rails", require: false
+  gem "rubocop-github-annotations-formatter", require: false
 end
 
 group :local do
