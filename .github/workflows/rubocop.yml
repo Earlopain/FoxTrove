@@ -29,7 +29,7 @@ jobs:
         bundler-cache: true
 
     - name: Run RuboCop
-      run: bundle exec rubocop --parallel --format progress --format json --out rubocop.json
+      run: bundle exec rubocop --parallel --format progress --format RubocopGithubAnnotationFormatter::AnnotationFormatter
       id: rubocop
     - uses: duderman/rubocop-annotate-action@v0.1.0
       with:
