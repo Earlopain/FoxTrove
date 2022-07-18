@@ -32,10 +32,11 @@ group :development do
 end
 
 group :rubocop, :local do
-  gem "rubocop"
-  gem "rubocop-rails"
+  gem "rubocop", require: false
+  gem "rubocop-github-annotations-formatter", require: false
+  gem "rubocop-rails", require: false
 end
 
 group :local do
-  gem "solargraph"
+  gem "solargraph", require: false
 end
