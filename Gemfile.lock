@@ -242,8 +242,6 @@ GEM
       unicode-display_width (>= 1.4.0, < 3.0)
     rubocop-ast (1.19.1)
       parser (>= 3.1.1.0)
-    rubocop-github-annotations-formatter (0.1.0)
-      rubocop
     rubocop-rails (2.15.2)
       activesupport (>= 4.2.0)
       rack (>= 1.1)
@@ -333,7 +331,6 @@ DEPENDENCIES
   rspec-parameterized
   rspec-rails (~> 5.0.0)
   rubocop
-  rubocop-github-annotations-formatter
   rubocop-rails
   ruby-vips
   selenium-webdriver
