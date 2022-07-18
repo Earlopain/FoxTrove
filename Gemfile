@@ -30,3 +30,12 @@ end
 group :development do
   gem "web-console"
 end
+
+group :rubocop, :local do
+  gem "rubocop"
+  gem "rubocop-rails"
+end
+
+group :local do
+  gem "solargraph"
+end

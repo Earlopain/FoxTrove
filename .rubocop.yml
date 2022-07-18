@@ -6,6 +6,7 @@ AllCops:
   Exclude:
     - "bin/*"
     - "node_modules/**/*"
+    - "vendor/**/*"
   TargetRubyVersion: 3.1
 
 Layout/FirstArrayElementIndentation:
