@@ -22,7 +22,7 @@ module Scraper
     end
 
     def self.enabled?
-      Config.pixiv_user.present? && Config.pixiv_pass.present?
+      Config.pixiv_user.present? && Config.pixiv_pass.present? && Config.selenium_url.present?
     end
 
     def fetch_next_batch

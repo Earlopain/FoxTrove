@@ -15,7 +15,7 @@ module Scraper
     end
 
     def self.enabled?
-      Config.twitter_user.present? && Config.twitter_pass.present?
+      Config.twitter_user.present? && Config.twitter_pass.present? && Config.selenium_url.present?
     end
 
     def fetch_next_batch

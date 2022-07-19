@@ -10,7 +10,7 @@ module Scraper
     end
 
     def self.enabled?
-      Config.furrynetwork_user.present? && Config.furrynetwork_pass.present?
+      Config.furrynetwork_user.present? && Config.furrynetwork_pass.present? && Config.selenium_url.present?
     end
 
     def fetch_next_batch
