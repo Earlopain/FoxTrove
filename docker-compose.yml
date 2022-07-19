@@ -3,6 +3,7 @@ version: "3"
 services:
   reverser:
     build: ./
+    image: reverser
     environment:
       DATABASE_URL: postgresql://reverser@postgres
       # Don't make bootsnap part of the tmpfs
@@ -62,6 +63,16 @@ services:
     shm_size: 2gb
     ports:
       - 7900:7900
+
+  # Profiles for standalone things
+
+  rubocop:
+    image: reverser
+    volumes:
+      - .:/app
+    entrypoint: rubocop .
+    profiles: 
+      - "rubocop"
 
 volumes:
   db_data:

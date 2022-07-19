@@ -31,7 +31,7 @@ group :development do
   gem "web-console"
 end
 
-group :rubocop, :local do
+group :rubocop do
   gem "rubocop", require: false
   gem "rubocop-github-annotations-formatter", require: false
   gem "rubocop-rails", require: false

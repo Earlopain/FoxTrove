@@ -34,19 +34,20 @@ E6 is limiting iqdb to one call per two seconds, which means that you will need 
 * Twitter
 * Weasyl
 
+A few scraper require credentials to work. Create a file named `custom_config.yml` and overwrite the values specified in `data.yml`. The location of `custom_config.yml` can be set with the `REVERSER_CUSTOM_CONFIG_PATH` environment variable.
+
 ## Development Setup
 The following software is required to get started:
  * Latest version of Docker ([download](https://docs.docker.com/get-docker))
  * Latest version of Docker Compose ([download](https://docs.docker.com/compose/install))
  * Git ([download](https://git-scm.com/downloads))
- + (Optional) A ruby version capable of running the local development tools. ([download](https://www.ruby-lang.org/en/documentation/installation/))
 
 1. Clone the repo with `git clone https://github.com/earlopain/reverser.git`.
 1. `cd` into the repo.
-1. (Optional) Install the local development tools with `bundle config set without default:development:test` followed by `bundle install`. You will only need to run `bundle install` to update the gems.  
-Depending on your ruby installation you will also need to set `BUNDLE_PATH` and add the bin folder to your `$PATH` environment variable.
 1. Run `docker-compose up`. The container is now available at `http://localhost:9000`.
 1. Get inside the container with `docker-compose run reverser sh`.
 1. Run `bin/rails assets:generate_spritemap` to stich the favicons in one image.
 
-A few scraper require credentials to work. Create a file named `custom_config.yml` and overwrite the values specified in `data.yml`. The location of `custom_config.yml` can be set with the `REVERSER_CUSTOM_CONFIG_PATH` environment variable.
+### Linters
+
+The compose file specifies a service to easily run rubocop, `docker-compose run --rm rubocop`. You can pass addition parameters like `-a` simply by appending it to the command. I suggest you make an alias for this.
