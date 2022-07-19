@@ -1,6 +1,7 @@
 require:
-  - rubocop-rails
   - rubocop-github-annotation-formatter
+  - rubocop-rails
+  - rubocop-rspec
 
 AllCops:
   NewCops: enable
@@ -40,9 +41,6 @@ Metrics/MethodLength:
 
 Metrics/ModuleLength:
   Enabled: false
-
-Rails/HttpStatus:
-  EnforcedStyle: numeric
 
 Style/Documentation:
   Enabled: false

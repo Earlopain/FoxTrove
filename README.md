@@ -51,6 +51,7 @@ The following software is required to get started:
 1. Run `docker-compose up`. The container is now available at `http://localhost:9000`.
 1. Get inside the container with `docker-compose run reverser sh`.
 1. Run `bin/rails assets:generate_spritemap` to stich the favicons in one image.
+1. Run `RAILS_ENV=test bin/rails db:prepare` to setup the test database for later use.
 
 ### Linters
 

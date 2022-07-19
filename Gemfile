@@ -22,9 +22,7 @@ gem "selenium-webdriver"
 gem "simple_form"
 
 group :development, :test do
-  gem "rspec-parameterized"
-  gem "rspec-rails", "~> 5.0.0"
-  gem "simplecov", require: false
+  gem "rspec-rails", "6.0.0.rc1", require: false
 end
 
 group :development do
@@ -35,6 +33,7 @@ group :rubocop do
   gem "rubocop", require: false
   gem "rubocop-github-annotations-formatter", require: false
   gem "rubocop-rails", require: false
+  gem "rubocop-rspec", require: false
 end
 
 group :local do

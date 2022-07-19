@@ -70,9 +70,21 @@ services:
     image: reverser
     volumes:
       - .:/app
-    entrypoint: rubocop .
+    entrypoint: bundle exec rubocop .
     profiles: 
       - "rubocop"
+
+  rspec:
+    image: reverser
+    volumes:
+      - .:/app
+    entrypoint: bundle exec rspec --require spec_helper --order random
+    depends_on:
+      - postgres
+      - redis
+      - memcached
+      - iqdb
+      - selenium
 
 volumes:
   db_data:

@@ -17,6 +17,7 @@
 /node_modules
 /yarn-error.log
 
-# Custom
 /coverage
 config/reverser_custom_config.yml
+
+spec/examples.txt
