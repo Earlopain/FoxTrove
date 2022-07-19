@@ -36,9 +36,10 @@ E6 is limiting iqdb to one call per two seconds, which means that you will need 
 
 ## Configuration
 
-A few scraper require credentials to work. Create a file named `config/reverser_custom_config.yml` and overwrite the required values in `config/reverser.yml`. The location of the file can be overwritten with the `REVERSER_CUSTOM_CONFIG_PATH` environment variable.
-
-There are also a few other settings you can tweak, like disabling individual scrapers.
+A few scraper require credentials to work, this is how you can configure them. Higher entries in this list overwrite the lower ones.
+1. Environment variables prefixed with `REVERSER_`. Values are loaded with `Psych.safe_load`, which means you are able to provide complex types like arrays and hashes. If a config ends with `?`, omit it from the environment variable name.
+1. Entries in the file at `REVERSER_CUSTOM_CONFIG_PATH`, or `config/reverser_custom_config.yml` if the environment variable is not set.
+1. Entries in the file at `config/reverser.yml`. Look here to see what you can/need to configure for more scraper to work. There are also a few other settings you can tweak, like disabling individual scrapers.
 
 ## Development Setup
 The following software is required to get started:

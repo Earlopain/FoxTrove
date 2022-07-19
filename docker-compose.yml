@@ -7,7 +7,6 @@ services:
     environment:
       # Don't make bootsnap part of the tmpfs
       BOOTSNAP_CACHE_DIR: /
-      REVERSER_CUSTOM_CONFIG_PATH: "config/reverser_custom_config.yml"
     volumes:
       - .:/app
       - build_assets:/app/public/build
