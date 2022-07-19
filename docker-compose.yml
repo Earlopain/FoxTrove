@@ -5,7 +5,6 @@ services:
     build: ./
     image: reverser
     environment:
-      DATABASE_URL: postgresql://reverser@postgres
       # Don't make bootsnap part of the tmpfs
       BOOTSNAP_CACHE_DIR: /
       REVERSER_CUSTOM_CONFIG_PATH: "config/reverser_custom_config.yml"
