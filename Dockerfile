@@ -18,7 +18,7 @@ COPY package.json yarn.lock .yarnrc.yml ./
 RUN yarn install
 
 COPY Gemfile Gemfile.lock ./
-RUN gem i bundler:2.3.15 foreman && BUNDLE_WITHOUT=local bundle install
+RUN gem i bundler:2.3.15 foreman && BUNDLE_IGNORE_CONFIG=true bundle install
 
 RUN echo "IRB.conf[:USE_AUTOCOMPLETE] = false" > ~/.irbrc
 
