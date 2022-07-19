@@ -17,24 +17,24 @@ export default class TimeAgo {
   });
   private static relativeTimeFormatter = new Intl.RelativeTimeFormat("en", { numeric: "auto" })
 
-  public formatAll(): void {
+  public static init(): void {
     const now = new Date();
     for (const element of document.getElementsByClassName("time-ago")) {
       this.format(element, now);
     }
   }
 
-  private format(element: Element, now: Date) {
+  private static format(element: Element, now: Date) {
     const datetime = Date.parse(element.getAttribute("datetime") as string);
-    var elapsed = datetime - now.getTime();
+    const elapsed = datetime - now.getTime();
 
     const [unit, value] = this.getUnit(elapsed);
-    element.innerHTML = TimeAgo.relativeTimeFormatter.format(Math.round(elapsed / value), unit);
-    element.setAttribute("title", TimeAgo.dateTimeFormatter.format(datetime));
+    element.innerHTML = this.relativeTimeFormatter.format(Math.round(elapsed / value), unit);
+    element.setAttribute("title", this.dateTimeFormatter.format(datetime));
   }
 
-  private getUnit(elapsed: number): [Intl.RelativeTimeFormatUnit, number] {
-    for (const [key, value] of TimeAgo.units.entries()) {
+  private static getUnit(elapsed: number): [Intl.RelativeTimeFormatUnit, number] {
+    for (const [key, value] of this.units.entries()) {
       if (Math.abs(elapsed) > value) {
         return [key, value]
       }

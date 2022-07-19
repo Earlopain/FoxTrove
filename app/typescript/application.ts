@@ -8,7 +8,7 @@ import Rails from "@rails/ujs"
 Rails.start()
 
 document.addEventListener("DOMContentLoaded", () => {
-  new TimeAgo().formatAll();
+  Samples.init();
   Search.init();
-  new Samples();
+  TimeAgo.init();
 });

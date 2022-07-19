@@ -13,7 +13,7 @@
   <tbody>
     <% @counts.keys.sort.each do |key| %>
       <tr>
-        <td><%= Sites.from_enum(key).display_name %></abbr></td>
+        <td><%= Sites.from_enum(key).display_name %></td>
         <td><%= Sites.from_enum(key).scraper_enabled? ? "Enabled" : "Disabled" %></td>
         <td><%= @counts[key]["artist_count"] %></td>
         <td><%= @counts[key]["url_count"] %></td>

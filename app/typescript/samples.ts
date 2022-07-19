@@ -1,10 +1,10 @@
 export default class Samples {
-  private currentActive: Element | undefined;
+  private static currentActive: Element | undefined;
 
-  public constructor() {
+  public static init() {
     for (const thumbnail of document.querySelectorAll(".submission-file")) {
       thumbnail.addEventListener("click", () => {
-        if (thumbnail.isSameNode(this.currentActive)) {
+        if (this.currentActive && thumbnail.isSameNode(this.currentActive)) {
           this.removeCurrentActive();
         } else {
           this.hideLarge(this.currentActive);
@@ -18,17 +18,17 @@ export default class Samples {
     }
   }
 
-  private showLarge(thumbnail: Element) {
+  private static showLarge(thumbnail: Element) {
     thumbnail.classList.add("active-thumbnail");
     thumbnail.nextElementSibling?.classList.remove("hidden");
   }
 
-  private hideLarge(thumbnail?: Element) {
+  private static hideLarge(thumbnail?: Element) {
     thumbnail?.classList.remove("active-thumbnail");
     thumbnail?.nextElementSibling?.classList.add("hidden");
   }
 
-  private removeCurrentActive() {
+  private static removeCurrentActive() {
     this.hideLarge(this.currentActive);
     this.currentActive = undefined;
   }

@@ -11,6 +11,7 @@ module Scraper
     # Anything the scraper needs to initialize itself, like
     # fetching a session token
     def init
+      # Overwrite this in the scraper
     end
 
     def site_enum
