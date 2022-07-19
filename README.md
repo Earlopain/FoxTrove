@@ -34,7 +34,11 @@ E6 is limiting iqdb to one call per two seconds, which means that you will need 
 * Twitter
 * Weasyl
 
-A few scraper require credentials to work. Create a file named `custom_config.yml` and overwrite the values specified in `data.yml`. The location of `custom_config.yml` can be set with the `REVERSER_CUSTOM_CONFIG_PATH` environment variable.
+## Configuration
+
+A few scraper require credentials to work. Create a file named `config/reverser_custom_config.yml` and overwrite the required values in `config/reverser.yml`. The location of the file can be overwritten with the `REVERSER_CUSTOM_CONFIG_PATH` environment variable.
+
+There are also a few other settings you can tweak, like disabling individual scrapers.
 
 ## Development Setup
 The following software is required to get started:

@@ -8,7 +8,7 @@ services:
       DATABASE_URL: postgresql://reverser@postgres
       # Don't make bootsnap part of the tmpfs
       BOOTSNAP_CACHE_DIR: /
-      REVERSER_CUSTOM_CONFIG_PATH: "/app/custom_config.yml"
+      REVERSER_CUSTOM_CONFIG_PATH: "config/reverser_custom_config.yml"
     volumes:
       - .:/app
       - build_assets:/app/public/build

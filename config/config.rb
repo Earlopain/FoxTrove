@@ -4,7 +4,7 @@ module Config
   CUSTOM_CONFIG_ENV_KEY = "REVERSER_CUSTOM_CONFIG_PATH"
 
   def self.default_config
-    @default_config ||= YAML.load_file "config.yml"
+    @default_config ||= YAML.load_file "config/reverser.yml"
   end
 
   def self.custom_config

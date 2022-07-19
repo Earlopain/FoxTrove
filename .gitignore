@@ -19,4 +19,4 @@
 
 # Custom
 /coverage
-custom_config.yml
+config/reverser_custom_config.yml
