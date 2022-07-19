@@ -11,37 +11,12 @@
 /log/*
 /tmp/*
 
-
-/public/assets
-/public/storage
-.byebug_history
-
 # Ignore master key for decrypting credentials and more.
 /config/master.key
 
-/public/packs
-/public/packs-test
 /node_modules
 /yarn-error.log
-yarn-debug.log*
-.yarn-integrity
-
-# Yarn
-
-.yarn/*
-!.yarn/patches
-!.yarn/releases
-!.yarn/plugins
-!.yarn/sdks
-!.yarn/versions
-.pnp.*
-
-# yardoc
-.yardoc
-doc
 
 # Custom
-.vagrant
-.idea
 /coverage
 custom_config.yml
