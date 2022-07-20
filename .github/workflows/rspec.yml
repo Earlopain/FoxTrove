@@ -92,4 +92,4 @@ jobs:
       run: RAILS_ENV=test bin/rails db:prepare
 
     - name: Run RSpec
-      run: bundle exec rspec --require spec_helper --order random --format RubocopGithubAnnotationFormatter::AnnotationFormatter
+      run: bundle exec rspec --require spec_helper --order random --format RSpec::Github::Formatter
