@@ -33,6 +33,8 @@ jobs:
 
     needs: build
     steps:
+      - uses: actions/checkout@v3
+
       - name: Create DB
         run: docker-compose run --rm reverser bin/rails db:prepare
 
