@@ -16,6 +16,10 @@ RSpec.describe Config do
     stub_const("ENV", { **ENV, **values })
   end
 
+  it "fails" do
+    expect(false).to be(true)
+  end
+
   it "works when the custom config file doesn't exist" do
     # This is the default stub
     expect(described_class.app_name).to eq("DefaultName")
