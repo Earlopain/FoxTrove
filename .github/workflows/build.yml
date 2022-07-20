@@ -35,6 +35,8 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - uses: satackey/action-docker-layer-caching@v0.0.11
+
       - name: Create DB
         run: docker-compose run --rm reverser bin/rails db:prepare
 
