@@ -13,6 +13,9 @@ log_ignore:
   - "/rails/active_storage"
   - "/sidekiq"
 
+# Only overwriteable through env
+custom_config_path: config/reverser_custom_config.yml
+
 # Disable individual scrapers
 artstation_disabled?: false
 deviantart_disabled?: false
