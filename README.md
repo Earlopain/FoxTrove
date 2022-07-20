@@ -54,6 +54,9 @@ The following software is required to get started:
 1. Run `bin/rails assets:generate_spritemap` to stich the favicons in one image.
 1. Run `RAILS_ENV=test bin/rails db:prepare` to setup the test database for later use.
 
-### Linters
+### Tests/Linters
 
-The compose file specifies a service to easily run rubocop, `docker-compose run --rm rubocop`. You can pass addition parameters like `-a` simply by appending it to the command. I suggest you make an alias for this.
+The compose file contains services to easily run some developments tools:
+* `docker-compose run --rm rspec`
+* `docker-compose run --rm rubocop`
+You can pass addition parameters like individual test files for rspec or `-a` for rubocop simply by appending it to the command. I suggest you make an alias for these.
