@@ -25,7 +25,8 @@ jobs:
 
       - uses: satackey/action-docker-layer-caching@v0.0.11
 
-      - run: docker-compose up --build
+      - run: docker-compose build
+
   rspec:
     runs-on: ubuntu-latest
 
