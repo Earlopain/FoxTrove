@@ -38,4 +38,4 @@ jobs:
         run: docker-compose run -e RAILS_ENV=test --rm reverser bin/rails db:prepare
 
       - name: RSpec
-        run: docker-compose run --rm rspec
+        run: docker-compose run --rm rspec --format RSpec::Github::Formatter
