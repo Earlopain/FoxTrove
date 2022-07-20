@@ -1,4 +1,4 @@
-name: Docker Build/Lint/Tests
+name: Build
 
 on:
   push:
@@ -63,7 +63,5 @@ jobs:
           tags: ${{ steps.metadata.outputs.tags }}
           labels: ${{ steps.metadata.outputs.labels }}
 
-          # cache-from: type=registry,ref=ghcr.io/${{ github.repository }}:buildcache
-          # cache-to: type=registry,ref=ghcr.io/${{ github.repository }}:buildcache,mode=max
           cache-from: type=gha
           cache-to: type=gha,mode=max

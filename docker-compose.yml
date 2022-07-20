@@ -3,7 +3,7 @@ version: "3"
 services:
   reverser:
     build: ./
-    image: earlopain/reverser
+    image: ghcr.io/earlopain/reverser
     environment:
       # Don't make bootsnap part of the tmpfs
       BOOTSNAP_CACHE_DIR: /
@@ -65,7 +65,7 @@ services:
   # Profiles for standalone things
 
   rubocop:
-    image: earlopain/reverser
+    image: ghcr.io/earlopain/reverser
     volumes:
       - .:/app
     entrypoint: bundle exec rubocop .
@@ -73,7 +73,7 @@ services:
       - "rubocop"
 
   rspec:
-    image: earlopain/reverser
+    image: ghcr.io/earlopain/reverser
     volumes:
       - .:/app
     entrypoint: bundle exec rspec --require spec_helper --order random
