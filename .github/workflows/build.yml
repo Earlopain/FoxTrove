@@ -28,9 +28,6 @@ jobs:
   rspec:
     runs-on: ubuntu-latest
 
-    env:
-      RAILS_ENV: test
-
     needs: build
     steps:
       - uses: actions/checkout@v3
@@ -38,7 +35,7 @@ jobs:
       - uses: satackey/action-docker-layer-caching@v0.0.11
 
       - name: Create DB
-        run: docker-compose run --rm reverser bin/rails db:prepare
+        run: docker-compose run --rm reverser RAILS_ENV=test bin/rails db:prepare
 
       - name: RSpec
         run: docker-compose run --rm rspec
