@@ -1,0 +1,95 @@
+name: RSpec
+
+on:
+  push:
+    branches:
+    - master
+  pull_request:
+    branches:
+    - master
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  docker-build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Login to Github Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ github.token }}
+
+      - name: Generate Docker tags
+        uses: docker/metadata-action@v4
+        id: metadata
+        with:
+          images: ghcr.io/earlopain/reverser
+          tags: |
+            type=sha,format=long,prefix=
+            type=ref,event=branch
+            type=ref,event=tag
+            type=ref,event=pr
+          flavor: |
+            latest=${{ github.ref == 'refs/heads/master' }}
+
+      - name: Build and push
+        uses: docker/build-push-action@v3
+        with:
+          push: true
+          tags: ${{ steps.metadata.outputs.tags }}
+          labels: ${{ steps.metadata.outputs.labels }}
+
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  rspec:
+    runs-on: ubuntu-latest
+
+    needs: docker-build
+
+    container:
+      image: ghcr.io/earlopain/reverser:${{ github.sha }}
+
+    services:
+      postgres:
+        image: postgres:14-alpine
+        env:
+          POSTGRES_USER: reverser
+          POSTGRES_HOST_AUTH_METHOD: trust
+        options: >-
+          --mount type=tmpfs,destination=/var/lib/postgresql/data
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+      redis:
+        image: redis:alpine
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+      memcached:
+        image: memcached:alpine
+        options: >-
+          --health-cmd "nc -z localhost 11211"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Create DB
+      run: RAILS_ENV=test bin/rails db:prepare
+
+    - name: Run RSpec
+      run: bundle exec rspec --require spec_helper --order random --format RSpec::Github::Formatter
