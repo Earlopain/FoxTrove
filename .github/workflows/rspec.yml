@@ -50,7 +50,7 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-  test:
+  rspec:
     runs-on: ubuntu-latest
 
     needs: docker-build
