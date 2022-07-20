@@ -13,7 +13,12 @@ RSpec.describe Config do
   end
 
   def stub_add_to_env(**values)
-    stub_const("ENV", { **ENV, **values })
+    stub_const("ENV", {**ENV, **values })
+  end
+
+  it "fails" do
+    a = false
+    expect(a).to be(true)
   end
 
   it "works when the custom config file doesn't exist" do
