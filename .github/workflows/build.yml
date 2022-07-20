@@ -15,9 +15,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    env:
-      RAILS_ENV: test
-
     steps:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
@@ -32,7 +29,13 @@ jobs:
   rspec:
     runs-on: ubuntu-latest
 
+    env:
+      RAILS_ENV: test
+
     needs: build
     steps:
+      - name: Create DB
+        run: docker-compose run --rm reverser bin/rails db:prepare
+
       - name: RSpec
-      - run: docker-compose run --rm rspec
+        run: docker-compose run --rm rspec
