@@ -13,35 +13,8 @@ permissions:
 
 jobs:
   test:
+    needs: docker-build
     runs-on: ubuntu-latest
-
-    services:
-      postgres:
-        image: postgres:14-alpine
-        env:
-          POSTGRES_USER: reverser
-          POSTGRES_DB: reverser_test
-          POSTGRES_HOST_AUTH_METHOD: trust
-        options: >-
-          --mount type=tmpfs,destination=/var/lib/postgresql/data
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-      redis:
-        image: redis:alpine
-        options: >-
-          --health-cmd "redis-cli ping"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-      memcached:
-        image: memcached:alpine
-        options: >-
-          --health-cmd "nc -z localhost 11211"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
 
     env:
       RAILS_ENV: test
@@ -49,14 +22,8 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    - name: Set up Ruby 3.1
-      uses: ruby/setup-ruby@v1
-      with:
-        ruby-version: 3.1
-        bundler-cache: true
-
     - name: Create DB
-      run: bin/rails db:prepare
+      run: docker-compose run --rm reverser bin/rails db:prepare
 
     - name: Run RSpec
-      run: bundle exec rspec --require spec_helper --order random
+      run: docker-compose run --rm rspec
