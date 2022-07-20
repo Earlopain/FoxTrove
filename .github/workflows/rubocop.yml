@@ -1,0 +1,32 @@
+# https://github.com/rails/rails/blob/a16c7c722e499d5174a305f9632d7b4bd86dcbb5/.github/workflows/rubocop.yml
+
+name: RuboCop
+
+on:
+  push:
+    branches:
+    - master
+  pull_request:
+    branches:
+    - master
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      BUNDLE_WITHOUT: default development test local
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Ruby 3.1
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: 3.1
+        bundler-cache: true
+
+    - name: Run RuboCop
+      run: bundle exec rubocop --format RubocopGithubAnnotationFormatter::AnnotationFormatter

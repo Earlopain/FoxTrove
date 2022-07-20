@@ -22,7 +22,7 @@ gem "selenium-webdriver"
 gem "simple_form"
 
 group :development, :test do
-  gem 'rspec-github', require: false
+  gem "rspec-github", require: false
   gem "rspec-rails", "6.0.0.rc1", require: false
 end
 
