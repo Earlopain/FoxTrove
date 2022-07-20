@@ -21,7 +21,7 @@ jobs:
         env:
           POSTGRES_USER: reverser
           POSTGRES_DB: reverser_test
-          # POSTGRES_HOST_AUTH_METHOD=trust
+          POSTGRES_HOST_AUTH_METHOD: trust
         options: >-
           --mount type=tmpfs,destination=/var/lib/postgresql/data
           --health-cmd pg_isready
