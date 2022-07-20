@@ -1,4 +1,4 @@
-name: Docker Build
+name: Docker Build/Lint/Tests
 
 on:
   push:
@@ -12,6 +12,23 @@ permissions:
   packages: write
 
 jobs:
+  rspec:
+    needs: docker-build
+
+    runs-on: ubuntu-latest
+
+    env:
+      RAILS_ENV: test
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Create DB
+      run: docker-compose run --rm reverser bin/rails db:prepare
+
+    - name: Run RSpec
+      run: docker-compose run --rm rspec
+
   docker-build:
     runs-on: ubuntu-latest
 
