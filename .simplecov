@@ -3,6 +3,11 @@
 SimpleCov.start "rails" do
   enable_coverage :branch
 
+  if ENV["CI"]
+    require "simplecov_json_formatter"
+    SimpleCov.formatter = SimpleCov::Formatter::JSONFormatter
+  end
+
   groups.delete "Channels"
   groups.delete "Mailers"
   groups.delete "Libraries"

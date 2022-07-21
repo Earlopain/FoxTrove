@@ -97,4 +97,4 @@ jobs:
     - uses: codecov/codecov-action@v3
       with:
         name: "CodeCov"
-        file: ./coverage/.resultset.json
+        file: ./coverage/coverage.json
