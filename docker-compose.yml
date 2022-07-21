@@ -83,6 +83,8 @@ services:
       - memcached
       - iqdb
       - selenium
+    profiles: 
+     - "rspec"
 
 volumes:
   db_data:
