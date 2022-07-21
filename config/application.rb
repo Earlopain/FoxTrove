@@ -18,7 +18,7 @@ require "rails/test_unit/railtie"
 
 require "open3"
 
-require_relative "config"
+require_relative "../app/logical/config"
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.

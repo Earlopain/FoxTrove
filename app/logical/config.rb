@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Does NOT autoload, restart rails for changes
 module Config
   module_function
 
