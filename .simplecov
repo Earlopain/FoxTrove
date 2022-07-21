@@ -1,5 +1,16 @@
 # frozen_string_literal: true
 
 SimpleCov.start "rails" do
-  # any custom configs like groups and filters can be here at a central place
+  enable_coverage :branch
+
+  groups.delete "Channels"
+  groups.delete "Mailers"
+  groups.delete "Libraries"
+
+  add_group "Sites", "app/logical/sites"
+  add_group "Scraper", "app/logical/scraper"
+  add_group "Logical files" do |src_file|
+    not_filtered_further = ["logical/sites", "logical/scraper"].none? { |e| src_file.filename.include? e }
+    not_filtered_further && src_file.filename.include?("app/logical")
+  end
 end
