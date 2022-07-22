@@ -94,7 +94,8 @@ jobs:
     - name: Run RSpec
       run: bundle exec rspec --require spec_helper --order random --format RSpec::Github::Formatter
 
+    # dummy change
     - uses: codecov/codecov-action@v3
       with:
         name: "CodeCov"
-        file: ./coverage/coverage.json
+        file: ./coverage/coverage.json 
