@@ -261,6 +261,9 @@ GEM
       docile (~> 1.1)
       simplecov-html (~> 0.11)
       simplecov_json_formatter (~> 0.1)
+    simplecov-cobertura (2.1.0)
+      rexml
+      simplecov (~> 0.19)
     simplecov-html (0.12.3)
     simplecov_json_formatter (0.1.4)
     solargraph (0.45.0)
@@ -327,6 +330,7 @@ DEPENDENCIES
   sidekiq-unique-jobs
   simple_form
   simplecov
+  simplecov-cobertura
   solargraph
   web-console
 

@@ -4,8 +4,8 @@ SimpleCov.start "rails" do
   enable_coverage :branch
 
   if ENV["CI"]
-    require "simplecov_json_formatter"
-    SimpleCov.formatter = SimpleCov::Formatter::JSONFormatter
+    require "simplecov-cobertura"
+    SimpleCov.formatter = SimpleCov::Formatter::CoberturaFormatter
   end
 
   groups.delete "Channels"
