@@ -14,18 +14,17 @@ class CreateSubmissionFileWorker
     submission_file = SubmissionFile.find_by artist_submission_id: artist_submission_id, file_identifier: file["identifier"]
     return if submission_file
 
-    definition = Sites.from_enum(site_enum)
     # Deviantarts download links expire, they need to be fetched when you actually use them
     url = if file["url"].present?
             file["url"]
           else
             # FIXME: This is kind of stupid
             artist_url = ArtistSubmission.find(artist_submission_id).artist_url
-            scraper = definition.new_scraper artist_url
+            scraper = Sites.from_enum(site_enum).new_scraper artist_url
             scraper.get_download_link file["url_data"]
           end
     bin_file = Tempfile.new(binmode: true)
-    response = Sites.download_file bin_file, url, definition
+    response = Sites.download_file bin_file, url
 
     raise StandardError, "Failed to download #{url}: #{response.code}" if response.code != 200
 

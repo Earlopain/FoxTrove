@@ -83,7 +83,7 @@ class ArtistsController < ApplicationController
   end
 
   def add_artist_url(artist, url)
-    result = Sites.from_url url
+    result = Sites.from_gallery_url url
 
     if !result
       artist.errors.add(:url, " #{url} is not a supported url") unless result

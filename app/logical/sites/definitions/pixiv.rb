@@ -31,7 +31,7 @@ module Sites
       end
 
       def image_domains
-        "pximg.net"
+        ["pximg.net"]
       end
 
       def download_headers

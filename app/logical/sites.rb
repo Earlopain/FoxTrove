@@ -7,7 +7,7 @@ module Sites
     ENUM_MAP[value]
   end
 
-  def from_url(url)
+  def from_gallery_url(url)
     begin
       uri = Addressable::URI.parse url
     rescue Addressable::URI::InvalidURIError
@@ -15,20 +15,20 @@ module Sites
     end
 
     ALL.lazy.filter_map do |definition|
-      definition.match_for uri
+      definition.match_for_gallery uri
     end.first
   end
 
-  def for_domain(domain)
-    ALL.find do |definition|
-      definition.handles_domain? domain
+  def download_headers_for_image_uri(uri)
+    definition = ALL.find do |d|
+      d.handles_image_domain? uri.domain
     end
+    definition&.download_headers || {}
   end
 
-  def download_file(outfile, url, definition = nil)
+  def download_file(outfile, url)
     fixed_uri = fix_url(url)
-    definition ||= for_domain(uri.domain)
-    headers = definition&.download_headers || {}
+    headers = download_headers_for_image_uri(fixed_uri)
     response = HTTParty.get(fixed_uri, { headers: headers }) do |chunk|
       outfile.write(chunk)
     end

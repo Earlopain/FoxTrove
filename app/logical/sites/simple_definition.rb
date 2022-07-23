@@ -2,17 +2,13 @@
 
 module Sites
   class SimpleDefinition
-    attr_accessor :image_domains, :download_headers
-
     def initialize
-      @image_domains = respond_to?(:image_domains) ? Array.wrap(image_domains) : []
-      @download_headers = respond_to?(:download_headers) ? download_headers : {}
       @gallery_templates = Array.wrap(gallery_templates).map { |t| Addressable::Template.new("{prefix}#{t}{/remaining}{?remaining}{#remaining}") }
       @can_match_if_contains = Array.wrap(gallery_templates).map { |t| t.gsub(/{[^)]*}/, "") }
       @username_identifier_regex = Regexp.new("^#{username_identifier_regex}$")
     end
 
-    def match_for(uri)
+    def match_for_gallery(uri)
       extracted = @gallery_templates.lazy.filter_map do |template|
         next if @can_match_if_contains.filter { |a| uri.to_s.include? a }.none?
 
@@ -28,8 +24,16 @@ module Sites
     end
 
     # Returns true when the site needs special headers to download from
-    def handles_domain?(domain)
-      @image_domains.include? domain
+    def handles_image_domain?(domain)
+      image_domains.include? domain
+    end
+
+    def image_domains
+      []
+    end
+
+    def download_headers
+      {}
     end
 
     def icon_class
