@@ -20,7 +20,7 @@
       outline-offset: -5px;
     }
   
-    .submission-file-hover {
+    .submission-file-full {
       max-width: 75vw;
       max-height: 75vh;
       z-index: 2;
@@ -29,6 +29,7 @@
       top: 50%;
       transform: translate(-50%, -50%);
       border: 10px solid $color-table-section;
+      background:  $color-table-section;
     }
   }
 
