@@ -70,7 +70,8 @@ module Scraper
         headers: headers,
         body: {
           "page": page,
-          "q": "@lower #{url_identifier}",
+          # Searches can't start with a dash
+          "q": "@lower #{url_identifier.delete_prefix('-')}",
           "order-by": "date",
           "order-direction": "desc",
           "range": "all",
