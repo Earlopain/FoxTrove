@@ -17,8 +17,8 @@ module Sites
 
       def gallery_templates
         [
-          "https://piczel.tv/gallery/{site_artist_identifier}",
-          "https://piczel.tv/watch/{site_artist_identifier}",
+          "piczel.tv/gallery/{site_artist_identifier}",
+          "piczel.tv/watch/{site_artist_identifier}",
         ]
       end
 

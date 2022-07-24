@@ -4,14 +4,11 @@ module Sites
   class SimpleDefinition
     def initialize
       @gallery_templates = Array.wrap(gallery_templates).map { |t| Addressable::Template.new("{prefix}#{t}{/remaining}{?remaining}{#remaining}") }
-      @can_match_if_contains = Array.wrap(gallery_templates).map { |t| t.gsub(/{[^)]*}/, "") }
       @username_identifier_regex = Regexp.new("^#{username_identifier_regex}$")
     end
 
     def match_for_gallery(uri)
       extracted = @gallery_templates.lazy.filter_map do |template|
-        next if @can_match_if_contains.filter { |a| uri.to_s.include? a }.none?
-
         template.extract(uri, IdentifierProcessor)
       end.first
       return unless extracted
