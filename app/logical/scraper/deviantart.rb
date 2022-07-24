@@ -36,7 +36,7 @@ module Scraper
       s.created_at = DateTime.strptime(submission["published_time"], "%s")
       s.add_file({}.tap do |hash|
         hash[:url_data] = [submission["deviationid"]] if submission["is_downloadable"]
-        hash[:url] = submission["content"]["src"].sub("q_80,strp", "q_100") unless submission["is_downloadable"]
+        hash[:url] = submission["content"]["src"].gsub(/q_\d+(,strp)?/, "q_100") unless submission["is_downloadable"]
         hash[:created_at] = s.created_at
         hash[:identifier] = ""
       end)
