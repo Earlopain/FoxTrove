@@ -22,6 +22,39 @@ class SubmissionFile < ApplicationRecord
 
   delegate :artist_url, :artist, to: :artist_submission
 
+  def self.from_bin_file(bin_file, artist_submission_id:, url:, created_at:, file_identifier:)
+    # Deviantart doesn't have to return only images.
+    # No way to find this out through the api response as far as I'm aware.
+    # https://www.deviantart.com/fr95/art/779625010/
+    mime_type = Marcel::MimeType.for bin_file
+    return if mime_type.in? Scraper::Submission::MIME_IGNORE
+
+    submission_file = SubmissionFile.new(
+      artist_submission_id: artist_submission_id,
+      direct_url: url,
+      created_at_on_site: created_at,
+      file_identifier: file_identifier,
+    )
+
+    blob = ActiveStorage::Blob.create_and_upload!(io: bin_file, filename: File.basename(url))
+    begin
+      blob.analyze
+      raise StandardError, "Failed to analyze" if blob.content_type == "application/octet-stream"
+
+      submission_file.original.attach(blob)
+      submission_file.attributes = {
+        width: blob.metadata[:width],
+        height: blob.metadata[:height],
+        content_type: blob.content_type,
+        size: blob.byte_size,
+      }
+      submission_file.save
+    rescue StandardError => e
+      blob.purge
+      raise e
+    end
+  end
+
   def original_present
     errors.add(:original_file, "not attached") unless original.attached?
   end
