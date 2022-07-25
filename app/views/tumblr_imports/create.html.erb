@@ -1,0 +1,8 @@
+<h1>Tumblr Archive Import</h1>
+
+<% if @archive.error %>
+  <h2>Something went wrong</h2>
+  <%= "#{@archive.error.class}: #{@archive.error}" %>
+<% else %>
+  Successfully imported <%= @archive.imported_files_count %> tumblr posts!
+<% end %>

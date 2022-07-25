@@ -2,7 +2,7 @@
 
 module Sites
   module Definitions
-    class Tumblr < SimpleDefinition
+    class Tumblr < ScraperDefinition
       def enum_value
         "tumblr"
       end

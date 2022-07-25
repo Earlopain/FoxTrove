@@ -1,0 +1,10 @@
+<h1>Tumblr Archive Import</h1>
+
+<%= simple_form_for :import, url: tumblr_imports_path, method: :post do |f| %>
+  <%= f.input :file, as: :file, label: "Archive", input_html: { accept: "application/zip,.zip" }  %>
+
+  <%= f.submit "Upload and Import" %>
+<% end %>
+
+
+<% page_title "Tumblr Archive Import" %>

@@ -24,8 +24,6 @@ module Scraper
     end
 
     def save(artist_url)
-      return if files.empty?
-
       artist_submission = ArtistSubmission.find_by(
         artist_url: artist_url,
         identifier_on_site: identifier,

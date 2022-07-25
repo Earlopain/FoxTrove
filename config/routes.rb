@@ -36,6 +36,7 @@ Rails.application.routes.draw do
       get :backlog
     end
   end
+  resources :tumblr_imports, only: %i[new create]
   resources :stats, only: :index
   root to: "static#home"
 end

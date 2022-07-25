@@ -15,38 +15,52 @@
 # -----| style.css
 # -----| posts_index.html
 class TumblrArchive
-  URL_ID_REGEX = %r{tumblr\.com/post/(?<id>\d*)/}
+  attr_accessor :imported_files_count, :error
 
-  def initialize(path)
-    @path = path
+  URL_ID_REGEX = %r{tumblr\.com/post/(?<id>\d*)}
+
+  def initialize(file)
+    @file = file
+    @imported_files_count = 0
+    @error = nil
   end
 
   def import_submission_files
-    Zip::File.open(@path) do |zip_file|
+    Zip::File.open(@file) do |zip_file|
       posts_zip_entry = zip_file.glob("posts.zip").first
 
       Zip::File.open_buffer(posts_zip_entry.get_input_stream.read) do |posts_zip|
         # For each reblogged post
         posts_zip.glob("html/*").each do |reblog_entry|
-          html = Nokogiri::HTML(reblog_entry.get_input_stream)
-          original_post_url = html.at(".tumblr_blog")["href"]
-          original_post_id = URL_ID_REGEX.match(original_post_url)[:id]
-          submission = ArtistSubmission.joins(:artist_url).find_by(identifier_on_site: original_post_id, artist_url: { site_type: "tumblr" })
-          next if submission.submission_files.any?
-
-          reblog_post_id = File.basename(reblog_entry.name, ".html")
-          media_files = zip_file.glob("media/#{reblog_post_id}*.*")
-          media_files.each.with_index do |file, index|
-            bin_file = Tempfile.new(binmode: true)
-            bin_file.write(file.get_input_stream.read)
-            bin_file.rewind
-            SubmissionFile.from_bin_file(bin_file, artist_submission_id: submission.id,
-                                                   url: "file:///#{file.name}",
-                                                   created_at: submission.created_at_on_site,
-                                                   file_identifier: index)
-          end
+          import_reblog_entry(reblog_entry, zip_file)
         end
       end
+    end
+  rescue Zip::Error => e
+    @error = e
+  end
+
+  private
+
+  def import_reblog_entry(reblog_entry, zip_file)
+    html = Nokogiri::HTML(reblog_entry.get_input_stream)
+    original_post_url = html.at(".tumblr_blog")["href"]
+    original_post_id = URL_ID_REGEX.match(original_post_url)[:id]
+    submission = ArtistSubmission.for_site_with_identifier(site: "tumblr", identifier: original_post_id)
+    return if submission.nil? || submission.submission_files.any?
+
+    reblog_post_id = File.basename(reblog_entry.name, ".html")
+    media_files = zip_file.glob("media/#{reblog_post_id}*.*")
+    media_files.each.with_index do |file, index|
+      bin_file = Tempfile.new(binmode: true)
+      bin_file.write(file.get_input_stream.read)
+      bin_file.rewind
+      SubmissionFile.from_bin_file(bin_file, artist_submission_id: submission.id,
+                                             url: "file:///#{file.name}",
+                                             created_at: submission.created_at_on_site,
+                                             file_identifier: index)
+
+      @imported_files_count += 1
     end
   end
 end

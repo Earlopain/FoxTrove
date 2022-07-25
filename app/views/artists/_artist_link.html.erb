@@ -7,7 +7,8 @@
     [Scraping queued]
   <% end %>
   <% if SidekiqStats.submission_download_queued[artist_url.id] %>
-    [<%= SidekiqStats.submission_download_queued[artist_url.id] %> pending file downloads]
+    [<%= SidekiqStats.submission_download_queued[artist_url.id] %> pending
+      <%= artist_url.site_type == "tumblr" ? "reblogs" : "file downloads" %>]
   <% end %>
   <% if SidekiqStats.e6_iqdb_queued[artist_url.id] %>
     [<%= SidekiqStats.e6_iqdb_queued[artist_url.id] %> pending e6 iqdb calls]

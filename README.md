@@ -31,8 +31,20 @@ E6 is limiting iqdb to one call per two seconds, which means that you will need 
 * Pixiv
 * Reddit
 * Sofurry
+* Tumblr (kind of)
 * Twitter
 * Weasyl
+
+### Tumblr
+
+Tumblr doesn't expose the full resolution image through normal means. Getting full resolution on tumblr is a bit more compicated. Here's what you need to do, and what is done for you. Manual steps are marked with (*)
+1. Reblog every post of the blog
+1. (*) Download an archive of your blog
+1. (*) Upload the archive through the tumblr uploader
+1. (*) Remove drafts from your blog with the [Mega-Editor](https://www.tumblr.com/mega-editor/draft/)
+1. Import full resolution files from the uploaded archive
+
+The first step starts when you add a tumblr url to an artist. Instead of downloading the image like all other scrapers, it reblogs them.
 
 ## Configuration
 
@@ -59,4 +71,5 @@ The following software is required to get started:
 The compose file contains services to easily run some developments tools:
 * `docker-compose run --rm rspec`
 * `docker-compose run --rm rubocop`
-You can pass addition parameters like individual test files for rspec or `-a` for rubocop simply by appending it to the command. I suggest you make an alias for these.
+
+You can pass addition parameters like individual test files for rspec or `-a` for rubocop simply by appending it to the command. I suggest you make an alias for these. You may also run these commands locally, since docker does add a fair bit of startup overhead.

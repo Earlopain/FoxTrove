@@ -29,6 +29,7 @@ twitter_disabled?: false
 weasyl_disabled?: false
 pixiv_disabled?: false
 piczel_disabled?: false
+tumblr_disabled?: false
 
 # Credentials, overwrite in custom file
 inkbunny_user:
@@ -55,6 +56,11 @@ pixiv_user:
 pixiv_pass:
 newgrounds_user:
 newgrounds_pass:
+tumblr_consumer_key:
+tumblr_consumer_secret:
+tumblr_oauth_token:
+tumblr_oauth_secret:
+tumblr_reblog_blog_uuid:
 
 # These settings require a server restart
 # Controls wether or not the logging should be intercepted
