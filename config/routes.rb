@@ -15,7 +15,6 @@ Rails.application.routes.draw do
       post :update_all_iqdb
     end
   end
-  resource :session, only: %i[create destroy new]
   resource :static, controller: "static", only: [] do
     get :about
     get :contact
@@ -25,7 +24,6 @@ Rails.application.routes.draw do
     get :index
     post :reload_config
     post :generate_spritemap
-    post :seed_db
     post :iqdb_readd
   end
   resources :submission_files, only: %i[show] do
