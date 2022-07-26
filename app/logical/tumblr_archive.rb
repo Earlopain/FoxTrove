@@ -15,13 +15,15 @@
 # -----| style.css
 # -----| posts_index.html
 class TumblrArchive
-  attr_accessor :imported_files_count, :error
+  attr_accessor :imported_files_count, :skipped_count, :failed_imports, :error
 
   URL_ID_REGEX = %r{tumblr\.com/post/(?<id>\d*)}
 
   def initialize(file)
     @file = file
     @imported_files_count = 0
+    @skipped_count = 0
+    @failed_imports = []
     @error = nil
   end
 
@@ -44,13 +46,25 @@ class TumblrArchive
 
   def import_reblog_entry(reblog_entry, zip_file)
     html = Nokogiri::HTML(reblog_entry.get_input_stream)
-    original_post_url = html.at(".tumblr_blog")["href"]
-    original_post_id = URL_ID_REGEX.match(original_post_url)[:id]
-    submission = ArtistSubmission.for_site_with_identifier(site: "tumblr", identifier: original_post_id)
-    return if submission.nil? || submission.submission_files.any?
-
+    original_post_url = html.at(".tumblr_blog")
     reblog_post_id = File.basename(reblog_entry.name, ".html")
     media_files = zip_file.glob("media/#{reblog_post_id}*.*")
+
+    if original_post_url.nil?
+      @failed_imports.push("#{reblog_entry.name} No .tumblr_blog, #{media_files.count} files")
+      return
+    end
+
+    original_post_id = URL_ID_REGEX.match(original_post_url["href"])[:id]
+    submission = ArtistSubmission.for_site_with_identifier(site: "tumblr", identifier: original_post_id)
+    if submission.nil?
+      @failed_imports.push("#{reblog_entry.name} Submission #{original_post_id} not found")
+      return
+    elsif submission.submission_files.any?
+      @skipped_count += media_files.count
+      return
+    end
+
     media_files.each.with_index do |file, index|
       bin_file = Tempfile.new(binmode: true)
       bin_file.write(file.get_input_stream.read)
