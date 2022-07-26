@@ -36,13 +36,17 @@ class ApplicationRecord < ActiveRecord::Base
         values = value.is_a?(Array) ? value : value.to_s.split(",")
         return if values.empty?
 
-        case column.sql_type_metadata.type
-        when :text
-          text_column_matches(qualified_column, values)
-        when :integer
-          where("#{qualified_column} IN(?)", values)
+        if model_class.defined_enums.key? column_name.to_s
+          where("#{qualified_column} IN(?)", values.map { |v| model_class.defined_enums[column_name.to_s][v] })
         else
-          raise ArgumentError, "unhandled attribute type: #{column.sql_type_metadata.type}"
+          case column.sql_type_metadata.type
+          when :text
+            text_column_matches(qualified_column, values)
+          when :integer
+            where("#{qualified_column} IN(?)", values)
+          else
+            raise ArgumentError, "unhandled attribute type: #{column.sql_type_metadata.type}"
+          end
         end
       end
 

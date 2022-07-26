@@ -64,7 +64,7 @@ class ArtistsController < ApplicationController
   end
 
   def index_search_params
-    params.fetch(:search, {}).permit(:name, :url_identifier)
+    params.fetch(:search, {}).permit(:name, :url_identifier, :site_type)
   end
 
   def instance_search_params

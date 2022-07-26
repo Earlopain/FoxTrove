@@ -8,7 +8,7 @@ module Sites
       end
 
       def display_name
-        "linktree"
+        "Linktree"
       end
 
       def homepage

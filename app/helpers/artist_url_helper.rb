@@ -12,4 +12,8 @@ module ArtistUrlHelper
   def display_name(artist_url)
     artist_url.site.display_name
   end
+
+  def site_types_collection
+    Sites::ALL.map { |site| [site.display_name, site.enum_value] }.sort
+  end
 end
