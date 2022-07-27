@@ -37,7 +37,7 @@ module Scraper
       # Prevent double reblogs, or when the scrape failed midway through
       if ArtistSubmission.for_site_with_identifier(identifier: api_post["id_string"], site: "tumblr").blank?
         response = reblog(api_post)
-        raise StandardError, "Failed to reblog #{api_post['id_string']}: #{response.code}" if response.code != 200
+        raise StandardError, "Failed to reblog #{api_post['id_string']}: #{response.code}" if response.code != 201
       end
       s
     end
