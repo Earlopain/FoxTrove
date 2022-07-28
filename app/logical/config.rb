@@ -5,7 +5,7 @@ module Config
   module_function
 
   def default_config
-    @default_config ||= YAML.load_file "config/reverser.yml"
+    @default_config ||= YAML.load_file(Rails.root.join("config/reverser.yml"))
   end
 
   def custom_config
@@ -20,7 +20,7 @@ module Config
   end
 
   def custom_config_path
-    env_config["custom_config_path"] || default_config["custom_config_path"]
+    env_config["custom_config_path"] || Rails.root.join(default_config["custom_config_path"])
   end
 
   def force_reload
