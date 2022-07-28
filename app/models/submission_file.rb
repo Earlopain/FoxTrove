@@ -13,8 +13,15 @@ class SubmissionFile < ApplicationRecord
 
   scope :with_attached, -> { with_attached_sample.with_attached_original }
   scope :with_everything, -> { with_attached.includes(:e6_iqdb_entries, artist_submission: :artist_url) }
-  scope :larger_only_filesize, ->(treshold) { where("exists (select from e6_iqdb_data where submission_files.id = e6_iqdb_data.submission_file_id and size > post_size) and not exists (select from e6_iqdb_data where submission_files.id = e6_iqdb_data.submission_file_id and size - ? <= post_size)", treshold) }
-  scope :larger_only_dimensions, -> { where("exists (select from e6_iqdb_data where submission_files.id = e6_iqdb_data.submission_file_id and width > post_width and height > post_height) and not exists (select from e6_iqdb_data where submission_files.id = e6_iqdb_data.submission_file_id and width <= post_width and height <= post_height)") }
+
+  scope :larger_iqdb_filesize_exists, -> { where("exists (select from e6_iqdb_data where submission_files.id = e6_iqdb_data.submission_file_id and size > post_size)") }
+  scope :smaller_iqdb_filesize_doesnt_exist, ->(treshhold) { where("not exists (select from e6_iqdb_data where submission_files.id = e6_iqdb_data.submission_file_id and size - ? <= post_size)", treshhold) }
+  scope :larger_only_filesize, ->(treshold) { larger_iqdb_filesize_exists.smaller_iqdb_filesize_doesnt_exist(treshold) }
+
+  scope :larger_iqdb_dimensions_exist, -> { where("exists (select from e6_iqdb_data where submission_files.id = e6_iqdb_data.submission_file_id and width > post_width and height > post_height)") }
+  scope :smaller_iqdb_dimensions_dont_exist, -> { where("not exists (select from e6_iqdb_data where submission_files.id = e6_iqdb_data.submission_file_id and width <= post_width and height <= post_height)") }
+  scope :larger_only_dimensions, -> { larger_iqdb_dimensions_exist.smaller_iqdb_dimensions_dont_exist }
+
   scope :already_uploaded, -> { where("exists (select from e6_iqdb_data where submission_files.id = e6_iqdb_data.submission_file_id)") }
   scope :not_uploaded, -> { where("not exists (select from e6_iqdb_data where submission_files.id = e6_iqdb_data.submission_file_id)") }
   scope :exact_match, -> { joins(:e6_iqdb_entries).where("size = post_size") }
