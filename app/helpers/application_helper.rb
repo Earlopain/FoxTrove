@@ -16,15 +16,6 @@ module ApplicationHelper
     tag.span value.to_fs(:long), datetime: value.to_fs(:iso8601), class: "time-ago"
   end
 
-  def site_icon(artist_url, text: nil, link_target: nil, **options)
-    icon = tag.span(class: artist_url.site.icon_class)
-    icon.concat tag.span(text, class: "site-icon-text") if text
-
-    return tag.span(icon, **options) unless link_target
-
-    link_to tag.span(icon), link_target, options
-  end
-
   def link_to_external(text, url, **options)
     link_to text, url, **options, rel: "nofollow noopener noreferrer"
   end

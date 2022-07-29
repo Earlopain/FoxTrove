@@ -1,5 +1,6 @@
 <div class="artist-link">
-  <%= site_icon artist_url, text: artist_url.url_identifier, link_target: gallery_url(artist_url), title: display_name(artist_url) %>
+  <%= site_icon artist_url %>
+  <%= link_to artist_url.url_identifier, gallery_url(artist_url), class: "site-icon-text" %>
   <% if artist_url.id.in? SidekiqStats.scraping_now %>
     [Scraping now!]
   <% end %>

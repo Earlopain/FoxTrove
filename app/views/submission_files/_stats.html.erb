@@ -7,7 +7,7 @@
     </span>
   <% end %>
   <span class="submission-file-stats">
-    <%= site_icon artist_url, link_target: gallery_url(artist_url), title: artist_url.url_identifier %>
+    <%= site_icon artist_url %>
     <%= "#{submission_file.width}x#{submission_file.height}" %>, 
     <%= number_to_human_size submission_file.size %>
   </span>
