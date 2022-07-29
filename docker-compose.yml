@@ -50,7 +50,7 @@ services:
     image: memcached:alpine
 
   iqdb:
-    build: ./docker/iqdb
+    image: ghcr.io/earlopain/iqdb:de8f10e2ddd862c37dc39348d6cb1c30112be146 
     volumes:
       - iqdb_data:/iqdb
 
