@@ -20,12 +20,23 @@ module IqdbProxy
   # This can both insert and update an submission
   def update_submission(submission_file)
     sample = submission_file.sample
-    make_request "/images/#{submission_file.id}", :post, get_channels_data(sample.service.path_for(sample.key))
+    response = make_request "/images/#{submission_file.id}", :post, get_channels_data(sample.service.path_for(sample.key))
+    raise StandardError, "iqdb request failed" if response.code != 200
+
+    hash = JSON.parse(response.body)["hash"]
+    submission_file.iqdb_hash = [hash].pack("H*")
+    submission_file.save
   end
 
   # Removes the passed submission_file from iqdb
   def remove_submission(submission_file)
     make_request "/images/#{submission_file.id}", :delete
+  end
+
+  def get_submission_hash(id)
+    response = make_request "/images/#{id}", :get
+    hash = JSON.parse(response.body)["hash"]
+    [hash].pack("H*") if response.code == 200
   end
 
   def query_submission_file(submission_file)

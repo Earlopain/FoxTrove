@@ -81,6 +81,10 @@ Rails/NotNullColumn:
 Rails/ReversibleMigration:
   Enabled: false
 
+Rails/Output:
+  Exclude:
+    - db/*.rb
+
 RSpec/ExampleLength:
   Max: 20
 
