@@ -70,7 +70,7 @@ class SubmissionFile < ApplicationRecord
   end
 
   def can_iqdb?
-    IqdbProxy::VALID_CONTENT_TYPES.include? original.content_type
+    IqdbProxy.can_iqdb?(content_type)
   end
 
   def update_variants_and_iqdb

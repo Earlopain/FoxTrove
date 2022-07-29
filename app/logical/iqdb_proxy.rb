@@ -64,7 +64,7 @@ module IqdbProxy
   # The file is thumbnailed first before being sent to iqdb
   def query_file(input)
     mime_type = Marcel::MimeType.for input
-    raise Error, "Unsupported file of type #{mime_type}" if VALID_CONTENT_TYPES.exclude? mime_type
+    raise Error, "Unsupported file of type #{mime_type}" unless can_iqdb?(mime_type)
 
     response = make_request "/query", :post, get_channels_data(input.path)
     process_iqbd_result(response.parsed_response)
@@ -106,5 +106,9 @@ module IqdbProxy
         submission: submissions[entry["post_id"]],
       }
     end
+  end
+
+  def can_iqdb?(mime_type)
+    VALID_CONTENT_TYPES.include?(mime_type)
   end
 end
