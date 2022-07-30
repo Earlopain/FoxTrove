@@ -95,7 +95,7 @@ class SubmissionFile < ApplicationRecord
           post_height: post["image_height"],
           post_size: post["file_size"],
           similarity_score: entry["score"],
-          is_exact_match: md5 == post["md5"],
+          is_exact_match: md5 == post["md5"] || existing_exact_matches?(post["id"]),
         )
       end
     end
@@ -104,6 +104,12 @@ class SubmissionFile < ApplicationRecord
     IqdbProxy.query_submission_file(self).pluck(:submission).each do |similar|
       E6IqdbQueryWorker.perform_async similar.id, false
     end
+  end
+
+  def existing_exact_matches?(post_id)
+    E6IqdbData.joins(:submission_file)
+              .where(post_id: post_id, submission_file: { iqdb_hash: iqdb_hash }, is_exact_match: true)
+              .any?
   end
 
   def remove_from_iqdb
