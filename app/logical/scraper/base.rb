@@ -4,7 +4,7 @@ module Scraper
   class Base
     delegate :url_identifier, :api_identifier, to: :@artist_url
     def initialize(artist_url)
-      @artist_url = artist_url
+      @artist_url = artist_url.is_a?(Integer) ? ArtistUrl.find(artist_url) : artist_url
       @has_more = true
     end
 
