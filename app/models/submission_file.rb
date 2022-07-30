@@ -138,11 +138,12 @@ class SubmissionFile < ApplicationRecord
         q = q.attribute_matches(params[:content_type], :content_type)
         q = q.join_attribute_matches(params[:artist_url_id], artist_submission: { artist_url: :id })
         q = q.join_attribute_matches(params[:artist_id], artist_submission: { artist_url: { artist: :id } })
+        q = q.join_attribute_matches(params[:site_type], artist_submission: { artist_url: :site_type })
         q.order(created_at_on_site: :desc)
       end
 
       def search_params
-        [:upload_status, :larger_only_filesize_treshold, :content_type, { artist_url_id: [] }]
+        [:site_type, :upload_status, :larger_only_filesize_treshold, :content_type, { artist_url_id: [] }]
       end
     end
   end

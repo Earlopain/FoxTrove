@@ -16,6 +16,10 @@ class SubmissionFilesController < ApplicationController
     @similar = IqdbProxy.query_submission_file(@submission_file) if @submission_file.can_iqdb?
   end
 
+  def index
+    @submission_files = SubmissionFile.search(search_params).with_everything.page(params[:page])
+  end
+
   def add_to_backlog
     submission_file = SubmissionFile.find(params[:id])
     submission_file.in_backlog = true

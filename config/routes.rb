@@ -26,7 +26,7 @@ Rails.application.routes.draw do
     post :generate_spritemap
     post :iqdb_readd
   end
-  resources :submission_files, only: %i[show] do
+  resources :submission_files, only: %i[index show] do
     member do
       post :update_e6_iqdb
       post :add_to_backlog
