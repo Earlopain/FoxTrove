@@ -49,6 +49,8 @@ module Scraper
       response.dig("blog", "uuid")
     end
 
+    private
+
     def get(url, query_params = {})
       HTTParty.get(url, {
         query: query_params,

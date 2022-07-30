@@ -22,7 +22,7 @@ module Scraper
       s.identifier = submission["hash_id"]
       s.title = submission["title"]
       s.description = Rails::Html::FullSanitizer.new.sanitize submission["description"]
-      s.created_at = DateTime.pars(submission["created_at"])
+      s.created_at = DateTime.parse(submission["created_at"])
 
       submission["assets"].each do |asset|
         s.add_file({
@@ -35,22 +35,20 @@ module Scraper
     end
 
     def fetch_api_identifier
-      response = HTTParty.get("https://www.artstation.com/users/#{url_identifier}/quick.json")
-      return nil if response.code == 404
-
+      response = make_request("/users/#{url_identifier}/quick.json")
       JSON.parse(response.body)["id"]
+    rescue JSON::ParserError
+      nil
     end
 
-    private
-
     def get_ids_from_page(page)
-      response = HTTParty.get("https://www.artstation.com/users/#{url_identifier}/projects.json?page=#{page}")
-      JSON.parse(response.body)["data"].map { |entry| entry["hash_id"] }
+      response = make_request("/users/#{url_identifier}/projects.json?page=#{page}")
+      JSON.parse(response)["data"].map { |entry| entry["hash_id"] }
     end
 
     def get_details(ids)
       details = ids.map do |id|
-        HTTParty.get("https://www.artstation.com/projects/#{id}.json")
+        JSON.parse(make_request("/projects/#{id}.json"))
       end
       # Remove any non-image assets
       details.map do |entry|
@@ -59,6 +57,20 @@ module Scraper
       # Remove ids where there are no image assets
       details.reject do |entry|
         entry["assets"].count == 0
+      end
+    end
+
+    # Provide an option driver instance when possible,
+    # to reduce selenium startup time
+    def make_request(path)
+      # FIXME: Figure out a way to do this without selenium
+      SeleniumWrapper.driver do |d|
+        d.navigate.to "https://www.artstation.com#{path}"
+        begin
+          d.find_element(css: "pre").text
+        rescue Selenium::WebDriver::Error::NoSuchElementError
+          ""
+        end
       end
     end
   end
