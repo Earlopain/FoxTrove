@@ -12,9 +12,15 @@ class SeleniumWrapper
     cps = Selenium::WebDriver::Remote::Capabilities.chrome "goog:loggingPrefs": prefs
 
     driver = Selenium::WebDriver.for :remote, capabilities: [options, cps], url: Config.selenium_url
-    yield driver
-  ensure
-    driver&.quit
+    if block_given?
+      begin
+        yield driver
+      ensure
+        driver&.quit
+      end
+    else
+      driver
+    end
   end
 end
 
