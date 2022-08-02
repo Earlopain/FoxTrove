@@ -13,7 +13,7 @@
   </span>
   <span class="submission-time-ago">
     <%= time_ago submission_file.created_at_on_site %>
-    <% if E6ApiClient.iqdb_enabled? %>
+    <% if E6ApiClient.enabled? %>
       <%= link_to "UREV", update_e6_iqdb_submission_file_path(submission_file), method: :post %>
     <% end %>
     <% if submission_file.in_backlog? %>

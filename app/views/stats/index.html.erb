@@ -33,7 +33,7 @@ Samples: <%= number_to_human_size(@sample_size) %>
 
 Pending Scraping: <%= SidekiqStats.scraping_queued.values.sum %><br>
 Pending Submission File Downloads: <%= SidekiqStats.submission_download_queued.values.sum %><br>
-<% if E6ApiClient.iqdb_enabled? %>
+<% if E6ApiClient.enabled? %>
   Pending E6 IQDB Calls: <%= SidekiqStats.e6_iqdb_queued.values.sum %><br>
 <% end %>
 <br>

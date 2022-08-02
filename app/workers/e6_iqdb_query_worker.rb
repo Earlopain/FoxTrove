@@ -10,7 +10,7 @@ class E6IqdbQueryWorker
   end
 
   def perform(submission_file_id, remove_similar)
-    return unless E6ApiClient.iqdb_enabled?
+    return unless E6ApiClient.enabled?
 
     submission_file = SubmissionFile.find_by id: submission_file_id
     return unless submission_file
