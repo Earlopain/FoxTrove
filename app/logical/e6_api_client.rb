@@ -1,23 +1,32 @@
 # frozen_string_literal: true
 
-class E6ApiClient
-  API_BASE = "https://e621.net"
+module E6ApiClient
+  module_function
 
-  def self.enabled?
+  def enabled?
     Config.e6_user.present? && Config.e6_apikey.present?
   end
 
-  def self.iqdb_query(file)
+  def iqdb_query(file)
     # FIXME: Proper rate limiting
     sleep 2
-    HTTParty.post(
-      "#{API_BASE}/iqdb_queries.json",
-      body: { file: file },
-      headers: headers,
-    )
+    make_request(:post, "/iqdb_queries.json", body: { file: file })
   end
 
-  def self.headers
+  def get_posts_by_id(id_list)
+    id_list = Array.wrap(id_list)
+    raise StandardError, "You can only pass 100 ids at once" if id_list.size > 100
+
+    make_request(:get, "/posts.json?tags=status:any id:#{id_list.join(',')}")["posts"]
+  end
+
+  def make_request(method, path, **params)
+    params[:headers] ||= {}
+    params[:headers].merge!(headers)
+    HTTParty.send(method, "https://e621.net#{path}", params)
+  end
+
+  def headers
     raise StandardError, "E6 login credentials are not set" unless enabled?
 
     {
@@ -26,7 +35,7 @@ class E6ApiClient
     }
   end
 
-  def self.credentials(username, api_key)
+  def credentials(username, api_key)
     Base64.encode64("#{username}:#{api_key}")
   end
 end

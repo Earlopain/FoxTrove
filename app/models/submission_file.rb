@@ -95,6 +95,7 @@ class SubmissionFile < ApplicationRecord
           post_width: post["image_width"],
           post_height: post["image_height"],
           post_size: post["file_size"],
+          post_json: post,
           similarity_score: entry["score"],
           is_exact_match: md5 == post["md5"] || existing_exact_matches?(post["id"]),
         )
