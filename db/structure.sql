@@ -243,7 +243,7 @@ CREATE TABLE public.e6_iqdb_data (
     is_exact_match boolean NOT NULL,
     created_at timestamp(6) with time zone NOT NULL,
     updated_at timestamp(6) with time zone NOT NULL,
-    post_json jsonb
+    post_json jsonb NOT NULL
 );
 
 
@@ -718,6 +718,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220716151643'),
 ('20220716195525'),
 ('20220729131350'),
-('20220802142122');
+('20220802142122'),
+('20220802183207');
 
 
