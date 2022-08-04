@@ -82,6 +82,14 @@ class SubmissionFile < ApplicationRecord
 
   def update_e6_iqdb_data(remove_similar:)
     e6_iqdb_entries.destroy_all
+
+    if remove_similar
+      IqdbProxy.query_submission_file(self).pluck(:submission).each do |similar|
+        similar.e6_iqdb_entries.destroy_all
+        E6IqdbQueryWorker.perform_async similar.id, false
+      end
+    end
+
     sample.open do |file|
       # FIXME: Error handling
       response = E6ApiClient.iqdb_query file
@@ -100,11 +108,6 @@ class SubmissionFile < ApplicationRecord
           is_exact_match: md5 == post["md5"] || existing_exact_matches?(post["id"]),
         )
       end
-    end
-    return unless remove_similar
-
-    IqdbProxy.query_submission_file(self).pluck(:submission).each do |similar|
-      E6IqdbQueryWorker.perform_async similar.id, false
     end
   end
 
