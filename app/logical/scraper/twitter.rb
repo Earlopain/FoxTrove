@@ -90,7 +90,7 @@ module Scraper
     def extract_tweets_and_cursor_entry(response)
       instructions = response.dig("data", "user", "result", "timeline_v2", "timeline", "instructions")
       timeline_add_entries = instructions.find { |instruction| instruction["type"] == "TimelineAddEntries" }["entries"].map { |entry| entry["content"] }
-      tweets = entries_by_type(timeline_add_entries, "TimelineTimelineItem").map { |content| content.dig("itemContent", "tweet_results", "result") }
+      tweets = entries_by_type(timeline_add_entries, "TimelineTimelineItem").map { |content| content.dig("itemContent", "tweet_results", "result") }.compact
       # Tweets deleted by the author
       tweets = tweets.reject { |tweet| tweet["__typename"] == "TweetTombstone" }
       # Tweets without downloadable content, like embeded youtube videos
