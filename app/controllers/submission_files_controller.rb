@@ -35,7 +35,11 @@ class SubmissionFilesController < ApplicationController
   end
 
   def update_e6_iqdb
-    E6IqdbQueryWorker.perform_async params[:id], true
+    submission_file = SubmissionFile.find(params[:id])
+    E6IqdbQueryWorker.perform_async submission_file.id
+    similar = IqdbProxy.query_submission_file(submission_file).pluck(:submission)
+    similar.each { |s| s.e6_iqdb_entries.destroy_all }
+    similar.each { |s| E6IqdbQueryWorker.perform_async s.id } # rubocop:disable Style/CombinableLoops
   end
 
   def search_params

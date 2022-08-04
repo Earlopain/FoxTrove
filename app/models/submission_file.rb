@@ -80,15 +80,8 @@ class SubmissionFile < ApplicationRecord
     SubmissionFileUpdateWorker.perform_async id
   end
 
-  def update_e6_iqdb_data(remove_similar:)
+  def update_e6_iqdb_data
     e6_iqdb_entries.destroy_all
-
-    if remove_similar
-      IqdbProxy.query_submission_file(self).pluck(:submission).each do |similar|
-        similar.e6_iqdb_entries.destroy_all
-        E6IqdbQueryWorker.perform_async similar.id, false
-      end
-    end
 
     sample.open do |file|
       # FIXME: Error handling
