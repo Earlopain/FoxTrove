@@ -92,23 +92,30 @@ class SubmissionFile < ApplicationRecord
 
       json.each do |entry|
         post = entry["post"]["posts"]
-        e6_iqdb_entries.create(
+        iqdb_entry = e6_iqdb_entries.create(
           post_id: post["id"],
           post_width: post["image_width"],
           post_height: post["image_height"],
           post_size: post["file_size"],
           post_json: post,
           similarity_score: entry["score"],
-          is_exact_match: md5 == post["md5"] || existing_exact_matches?(post["id"]),
+          is_exact_match: md5 == post["md5"] || existing_matches(post["id"], is_exact_match: true).any?,
         )
+
+        # Check if there are entries which were previously added
+        # that are an exact visual match to this newly added exact match
+        if iqdb_entry.is_exact_match
+          existing_matches(post["id"], is_exact_match: false).find_each do |existing_match|
+            existing_match.update(is_exact_match: true)
+          end
+        end
       end
     end
   end
 
-  def existing_exact_matches?(post_id)
+  def existing_matches(post_id, is_exact_match:)
     E6IqdbData.joins(:submission_file)
-              .where(post_id: post_id, submission_file: { iqdb_hash: iqdb_hash }, is_exact_match: true)
-              .any?
+              .where(post_id: post_id, submission_file: { iqdb_hash: iqdb_hash }, is_exact_match: is_exact_match)
   end
 
   def remove_from_iqdb
