@@ -43,7 +43,8 @@ class SubmissionFile < ApplicationRecord
       file_identifier: file_identifier,
     )
 
-    blob = ActiveStorage::Blob.create_and_upload!(io: bin_file, filename: File.basename(URI.parse(url).path))
+    filename = File.basename(Addressable::URI.parse(url).path)
+    blob = ActiveStorage::Blob.create_and_upload!(io: bin_file, filename: filename)
     begin
       blob.analyze
       raise StandardError, "Failed to analyze" if blob.content_type == "application/octet-stream"
