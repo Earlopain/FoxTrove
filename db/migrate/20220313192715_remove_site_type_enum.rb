@@ -4,10 +4,7 @@ class RemoveSiteTypeEnum < ActiveRecord::Migration[7.0]
   def change
     rename_column :artist_urls, :site_type, :site_type_enum
     add_column :artist_urls, :site_type, :integer
-    ArtistUrl.find_each do |user|
-      user.site_type = user.site_type_enum
-      user.save
-    end
+
     change_column_null :artist_urls, :site_type, false
     remove_column :artist_urls, :site_type_enum
     execute "DROP TYPE artist_url_sites;"
