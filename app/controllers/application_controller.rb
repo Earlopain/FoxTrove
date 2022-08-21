@@ -43,7 +43,7 @@ class ApplicationController < ActionController::Base
     }
 
     console
-    render "static/error", status: EXCEPTION_TYPES[exception.class] || 500
+    render "application/error", status: EXCEPTION_TYPES[exception.class] || 500
   end
 
   private

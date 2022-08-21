@@ -20,11 +20,6 @@ Rails.application.routes.draw do
       post :enqueue
     end
   end
-  resource :static, controller: "static", only: [] do
-    get :about
-    get :contact
-    get :home
-  end
   resource :debug, controller: "debug", only: [] do
     get :index
     post :reload_config
