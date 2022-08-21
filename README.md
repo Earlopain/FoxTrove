@@ -24,6 +24,7 @@ E6 is limiting iqdb to one call per two seconds, which means that you will need 
 
 ## Currently supported sites
 * Artstation
+* Baraag
 * Deviantart
 * Furaffinity
 * FurryNetwork

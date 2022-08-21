@@ -2,7 +2,7 @@
 
 module Sites
   module Definitions
-    class Baraag < SimpleDefinition
+    class Baraag < ScraperDefinition
       def enum_value
         "baraag"
       end
@@ -21,6 +21,10 @@ module Sites
 
       def username_identifier_regex
         /[a-zA-Z0-9_]{1,30}/
+      end
+
+      def submission_template
+        "https://baraag.net/@{site_artist_identifier}/{site_submission_identifier}"
       end
     end
   end
