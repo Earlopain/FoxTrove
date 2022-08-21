@@ -79,6 +79,7 @@ class ArtistsController < ApplicationController
     return if artist.errors.any?
 
     artist.artist_urls.each(&:save!)
+    artist.artist_urls.each(&:enqueue_scraping)
     artist.save
   end
 

@@ -19,7 +19,6 @@ class ArtistUrl < ApplicationRecord
     skeb pawoo baraag hentai_foundry
     pillowfort commishes furrynetwork facebook
   ].map.with_index { |v, index| [v, index] }.to_h
-  after_save :enqueue_scraping
 
   def set_api_identifier
     return unless scraper_enabled?
