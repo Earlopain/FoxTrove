@@ -31,6 +31,7 @@ pixiv_disabled?: false
 piczel_disabled?: false
 tumblr_disabled?: false
 baraag_disabled?: false
+pawoo_disabled?: false
 
 # Credentials, overwrite in custom file
 inkbunny_user:
@@ -63,6 +64,7 @@ tumblr_oauth_token:
 tumblr_oauth_secret:
 tumblr_reblog_blog_uuid:
 baraag_access_token:
+pawoo_access_token:
 
 # These settings require a server restart
 # Controls wether or not the logging should be intercepted

@@ -2,7 +2,7 @@
 
 module Sites
   module Definitions
-    class Pawoo < SimpleDefinition
+    class Pawoo < ScraperDefinition
       def enum_value
         "pawoo"
       end
@@ -21,6 +21,10 @@ module Sites
 
       def username_identifier_regex
         /[a-zA-Z0-9_]{1,30}/
+      end
+
+      def submission_template
+        "https://pawoo.net/@{site_artist_identifier}/{site_submission_identifier}"
       end
     end
   end

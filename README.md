@@ -30,6 +30,7 @@ E6 is limiting iqdb to one call per two seconds, which means that you will need 
 * FurryNetwork
 * Inkbunny
 * Newgrounds
+* Pawoo
 * Piczel
 * Pixiv
 * Reddit
