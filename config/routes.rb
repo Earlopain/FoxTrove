@@ -15,6 +15,11 @@ Rails.application.routes.draw do
       post :update_all_iqdb
     end
   end
+  resources :artist_urls, only: [] do
+    member do
+      post :enqueue
+    end
+  end
   resource :static, controller: "static", only: [] do
     get :about
     get :contact

@@ -1,6 +1,7 @@
 <div class="artist-link">
   <%= site_icon artist_url %>
   <%= link_to artist_url.url_identifier, artist_path(artist_url.artist, search: { artist_url_id: [artist_url.id] }), class: "site-icon-text" %>
+  <%= link_to "[U]", enqueue_artist_url_path(artist_url), method: :post %>
   <% if artist_url.id.in? SidekiqStats.scraping_now %>
     [Scraping now!]
   <% end %>
