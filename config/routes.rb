@@ -38,5 +38,5 @@ Rails.application.routes.draw do
   end
   resources :tumblr_imports, only: %i[new create]
   resources :stats, only: :index
-  root to: "static#home"
+  root to: "artists#index"
 end
