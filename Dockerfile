@@ -9,8 +9,9 @@ RUN apk --no-cache add \
   postgresql-client libpq-dev \
   vips \
   ffmpeg \
-  && npm install -g corepack \
-  && corepack prepare yarn@3.2.1 --activate
+  && npm install -g corepack
+
+RUN corepack prepare yarn@3.2.2 --activate
 
 RUN git config --global --add safe.directory /app
 
@@ -18,7 +19,7 @@ COPY package.json yarn.lock .yarnrc.yml ./
 RUN yarn install
 
 COPY Gemfile Gemfile.lock ./
-RUN gem i bundler:2.3.15 foreman && BUNDLE_IGNORE_CONFIG=true bundle install
+RUN gem i bundler:2.3.20 foreman && BUNDLE_IGNORE_CONFIG=true bundle install
 
 RUN echo "IRB.conf[:USE_AUTOCOMPLETE] = false" > ~/.irbrc
 

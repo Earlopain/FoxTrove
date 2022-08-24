@@ -27,7 +27,7 @@ Metrics/AbcSize:
   Enabled: false
 
 Metrics/BlockLength:
-  IgnoredMethods:
+  AllowedMethods:
     - "class_methods"
     - "concerning"
   Exclude:
