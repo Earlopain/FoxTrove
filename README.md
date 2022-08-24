@@ -82,10 +82,14 @@ Install a WSL distribution, enable WSL2, and clone the project inside there. Exe
 
 This project is only meant to run locally on your machine. You may host it somewhere and make it accessible to others, but be aware that there are no user accounts or fine grained permissions. Everyone can do anyhting.
 
-### Tests/Linters
+### Development tools
 
 The compose file contains services to easily run some developments tools:
 * `docker-compose run --rm rspec`
 * `docker-compose run --rm rubocop`
 
 You can pass addition parameters like individual test files for rspec or `-a` for rubocop simply by appending it to the command. I suggest you make an alias for these. You may also run these commands locally, since docker does add a fair bit of startup overhead.
+
+#### Solargraph
+
+The project works out of the box with the [VSCode solargraph extension](https://marketplace.visualstudio.com/items?itemName=castwide.solargraph). If it's not working execute the "Reload Window" command. The extension doesn't cope with the language server not being available on startup and refused to work altogether until a full reload is performed.

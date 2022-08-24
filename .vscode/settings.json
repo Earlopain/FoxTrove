@@ -1,9 +1,17 @@
 {
-    "files.exclude": {
-        ".yarn/": true,
-        "node_modules/": true,
-        "tmp/": true
-    },
-    "editor.tabSize": 2,
-    "editor.detectIndentation": false
+  "files.exclude": {
+    ".yarn/": true,
+    "node_modules/": true,
+    "tmp/": true
+  },
+  "editor.tabSize": 2,
+  "editor.detectIndentation": false,
+  "solargraph.checkGemVersion": false,
+  "solargraph.diagnostics": true,
+  "solargraph.externalServer": {
+    "host": "localhost",
+    "port": 7658
+  },
+  "solargraph.formatting": true,
+  "solargraph.transport": "external",
 }
