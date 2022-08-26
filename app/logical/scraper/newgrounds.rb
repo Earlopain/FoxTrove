@@ -84,11 +84,10 @@ module Scraper
       Cache.fetch("newgrounds-cookie", 2.weeks) do
         SeleniumWrapper.driver do |driver|
           driver.navigate.to "https://www.newgrounds.com/passport"
-          wait = Selenium::WebDriver::Wait.new(timeout: 10)
-          wait.until { driver.find_element(css: "input[name='username']") }.send_keys Config.newgrounds_user
+          driver.wait_for_element(css: "input[name='username']").send_keys Config.newgrounds_user
           driver.find_element(css: "input[name='password']").send_keys Config.newgrounds_pass
           driver.find_element(css: "button.PassportLoginBtn").click
-          wait.until { driver.cookie_value(COOKIE_NAME) }
+          driver.wait_for_cookie(COOKIE_NAME)
         end
       end
     end

@@ -104,13 +104,12 @@ module Scraper
     def fetch_cookies
       SeleniumWrapper.driver do |driver|
         driver.navigate.to "https://www.furaffinity.net/login"
-        wait = Selenium::WebDriver::Wait.new(timeout: 10)
 
-        wait.until { driver.find_element(css: "#login-form input[name='name']") }.send_keys Config.furaffinity_user
+        driver.wait_for_element(css: "#login-form input[name='name']").send_keys Config.furaffinity_user
         driver.find_element(css: "#login-form input[name='pass']").send_keys Config.furaffinity_pass
         driver.find_element(id: "login-button").click
 
-        cookie_a = wait.until { driver.cookie_value("a") }
+        cookie_a = driver.wait_for_cookie("a")
         cookie_b = driver.cookie_value("b")
         [cookie_a, cookie_b]
       end

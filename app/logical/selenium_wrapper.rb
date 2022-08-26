@@ -33,6 +33,16 @@ module Selenium
         rescue Selenium::WebDriver::Error::NoSuchCookieError
           nil
         end
+
+        def wait_for_cookie(cookie_name, timeout: 10)
+          wait = Selenium::WebDriver::Wait.new(timeout: timeout)
+          wait.until { cookie_value(cookie_name) }
+        end
+
+        def wait_for_element(timeout: 10, **selector_params)
+          wait = Selenium::WebDriver::Wait.new(timeout: timeout)
+          wait.until { find_element(**selector_params) }
+        end
       end
     end
   end

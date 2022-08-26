@@ -65,8 +65,7 @@ module Scraper
           driver.find_element(id: "email").send_keys Config.furrynetwork_user
           driver.find_element(id: "password").send_keys Config.furrynetwork_pass
           driver.find_element(css: ".page--login__form button[type='submit']").click
-          wait = Selenium::WebDriver::Wait.new(timeout: 10)
-          wait.until { driver.find_element(class: "profile-switcher-menu") }
+          driver.wait_for_element(class: "profile-switcher-menu")
           driver.execute_script "return JSON.parse(window.localStorage.getItem('token')).access_token"
         end
       end
