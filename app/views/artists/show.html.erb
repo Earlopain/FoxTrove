@@ -5,7 +5,7 @@ Name: <%= @artist.name %>
 
 Links:
 <div class="url-list">
-  <% @artist.artist_urls.each do |artist_url| %>
+  <% ordered_artist_urls(@artist).each do |artist_url| %>
     <%= render "artist_link", artist_url: artist_url %>
   <% end %>
 </div>
