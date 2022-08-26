@@ -44,7 +44,7 @@ module Scraper
 
     def fetch_api_identifier
       response = get("https://api.tumblr.com/v2/blog/#{url_identifier}/info")["response"]
-      return if response.is_a?(Array)
+      return if response.parsed_response.is_a?(Array)
 
       response.dig("blog", "uuid")
     end
@@ -52,7 +52,7 @@ module Scraper
     private
 
     def get(url, query_params = {})
-      HTTParty.get(url, {
+      fetch_json(url, **{
         query: query_params,
         headers: {
           Authorization: authorization_header(url, "get", query_params),
@@ -61,7 +61,7 @@ module Scraper
     end
 
     def post(url, params)
-      HTTParty.post(url, {
+      fetch_json(url, :post, **{
         body: URI.encode_www_form(params),
         headers: {
           "Authorization": authorization_header(url, "post", params),

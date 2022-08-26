@@ -65,8 +65,7 @@ module Scraper
     private
 
     def get_submission_ids(page)
-      url = "https://www.furaffinity.net/search"
-      response = HTTParty.post(url, {
+      response = fetch_html("https://www.furaffinity.net/search", :post, **{
         headers: headers,
         body: {
           "page": page,
@@ -94,8 +93,7 @@ module Scraper
     end
 
     def get_submission_html(id)
-      url = "https://www.furaffinity.net/view/#{id}"
-      response = HTTParty.get(url, { headers: headers })
+      response = fetch_html("https://www.furaffinity.net/view/#{id}", headers: headers)
       Nokogiri::HTML(response.body)
     end
 

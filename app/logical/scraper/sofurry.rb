@@ -62,26 +62,23 @@ module Scraper
       while true
         password_hash = Digest::MD5.hexdigest "#{Config.sofurry_pass}#{@otp_salt}"
         otp_hash = Digest::MD5.hexdigest "#{password_hash}#{@otp_pad}#{@otp_sequence}"
-        response = HTTParty.get(url, {
-          query: {
-            otpuser: Config.sofurry_user,
-            otphash: otp_hash,
-            otpsequence: @otp_sequence,
-            **query,
-          },
+        response = fetch_json(url, query: {
+          otpuser: Config.sofurry_user,
+          otphash: otp_hash,
+          otpsequence: @otp_sequence,
+          **query,
         })
-        json = JSON.parse(response.body)
-        if json["messageType"] != 6
+        if response["messageType"] != 6
           @request_retries = 0
           @otp_sequence += 1
-          return json
+          return response
         end
         @request_retries += 1
         raise StandartError, "failed to authenticate" if @request_retries > 5
 
-        @otp_sequence = json["newSequence"]
-        @otp_pad = json["newPadding"]
-        @otp_salt = json["salt"]
+        @otp_sequence = response["newSequence"]
+        @otp_pad = response["newPadding"]
+        @otp_salt = response["salt"]
       end
     end
   end

@@ -49,7 +49,7 @@ module Scraper
     end
 
     def fetch_api_identifier
-      response = HTTParty.get("https://#{url_identifier}.newgrounds.com/")
+      response = fetch_html("https://#{url_identifier}.newgrounds.com/")
       html = Nokogiri::HTML(response.body)
       html.at("#topsearch-elastic input[name='u']")&.attribute("value")&.value
     end
@@ -58,7 +58,7 @@ module Scraper
 
     def get_from_page(page)
       url = "https://#{url_identifier}.newgrounds.com/art/page/#{page}"
-      response = HTTParty.get(url, headers: {
+      response = fetch_json(url, headers: {
         "X-Requested-With": "XMLHttpRequest",
         "Cookie": "#{COOKIE_NAME}=#{fetch_cookie}",
       })
@@ -66,7 +66,7 @@ module Scraper
     end
 
     def get_submission_details(url)
-      response = HTTParty.get(url, headers: { Cookie: "#{COOKIE_NAME}=#{fetch_cookie}" })
+      response = fetch_html(url, headers: { Cookie: "#{COOKIE_NAME}=#{fetch_cookie}" })
       html = Nokogiri::HTML(response.body)
       media_object = html.at("[itemtype='https://schema.org/MediaObject']")
       main_image_url = media_object.at(".image img").attributes["src"].value

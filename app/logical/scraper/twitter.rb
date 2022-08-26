@@ -123,8 +123,7 @@ module Scraper
     end
 
     def make_request(url, params = {})
-      response = HTTParty.get("#{API_BASE_URL}/#{url}", query: { variables: params.to_json }, headers: api_headers)
-      JSON.parse response.body
+      fetch_json("#{API_BASE_URL}/#{url}", query: { variables: params.to_json }, headers: api_headers)
     end
 
     def tokens

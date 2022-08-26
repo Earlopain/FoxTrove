@@ -48,13 +48,12 @@ module Scraper
     private
 
     def make_request(endpoint, query = {})
-      response = HTTParty.get("#{API_PREFIX}/#{endpoint}", {
+      fetch_json("#{API_PREFIX}/#{endpoint}", **{
         query: query,
         headers: {
           Authorization: "Bearer #{bearer_token}",
         },
       })
-      JSON.parse(response.body)
     end
 
     # This whole thing is very brittle and may break at any moment

@@ -61,23 +61,20 @@ module Scraper
     private
 
     def make_request(url, query = {})
-      response = HTTParty.get(url, {
-        query: query,
-        headers: { "User-Agent": "reverser.0.1 by earlopain", "Authorization": "bearer #{access_token}" },
+      fetch_json(url, query: query, headers: {
+        "User-Agent": "reverser.0.1 by earlopain",
+        "Authorization": "bearer #{access_token}",
       })
-      JSON.parse(response.body)
     end
 
     def access_token
       Cache.fetch("reddit-token", 55.minutes) do
-        response = HTTParty.post(
-          "https://www.reddit.com/api/v1/access_token",
+        response = fetch_json("https://www.reddit.com/api/v1/access_token", :post, **{
           body: "grant_type=client_credentials",
           basic_auth: { username: Config.reddit_client_id, password: Config.reddit_client_secret },
           headers: { "Content-Type": "application/x-www-form-urlencoded", "User-Agent": "reverser.0.1 by earlopain" },
-        )
-        json = JSON.parse response.body
-        json["access_token"]
+        })
+        response["access_token"]
       end
     end
   end

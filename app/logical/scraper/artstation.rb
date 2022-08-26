@@ -36,19 +36,19 @@ module Scraper
 
     def fetch_api_identifier
       response = make_request("/users/#{url_identifier}/quick.json")
-      JSON.parse(response.body)["id"]
+      response["id"]
     rescue JSON::ParserError
       nil
     end
 
     def get_ids_from_page(page)
       response = make_request("/users/#{url_identifier}/projects.json?page=#{page}")
-      JSON.parse(response)["data"].map { |entry| entry["hash_id"] }
+      response["data"].map { |entry| entry["hash_id"] }
     end
 
     def get_details(ids)
       details = ids.map do |id|
-        JSON.parse(make_request("/projects/#{id}.json"))
+        make_request("/projects/#{id}.json")
       end
       # Remove any non-image assets
       details.map do |entry|
@@ -60,18 +60,9 @@ module Scraper
       end
     end
 
-    # Provide an option driver instance when possible,
-    # to reduce selenium startup time
+    # FIXME: Figure out a way to do this without selenium
     def make_request(path)
-      # FIXME: Figure out a way to do this without selenium
-      SeleniumWrapper.driver do |d|
-        d.navigate.to "https://www.artstation.com#{path}"
-        begin
-          d.find_element(css: "pre").text
-        rescue Selenium::WebDriver::Error::NoSuchElementError
-          ""
-        end
-      end
+      fetch_json_selenium("https://www.artstation.com#{path}")
     end
   end
 end

@@ -87,7 +87,7 @@ module Scraper
     end
 
     def make_request(url, query_params)
-      HTTParty.get(url, query: {
+      fetch_json(url, query: {
         **query_params,
         sid: @sid,
       })

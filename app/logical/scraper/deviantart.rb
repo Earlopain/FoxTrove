@@ -57,7 +57,7 @@ module Scraper
     private
 
     def make_api_call(endpoint, query = {})
-      response = HTTParty.get("#{API_PREFIX}/#{endpoint}", {
+      fetch_json("#{API_PREFIX}/#{endpoint}", **{
         query: {
           access_token: access_token,
           **query,
@@ -66,17 +66,16 @@ module Scraper
           "dA-minor-version": "20210526",
         },
       })
-      JSON.parse(response.body)
     end
 
     def access_token
       Cache.fetch("deviantart-token", 55.minutes) do
-        response = HTTParty.get("https://www.deviantart.com/oauth2/token", query: {
+        response = fetch_json("https://www.deviantart.com/oauth2/token", query: {
           grant_type: "client_credentials",
           client_id: Config.deviantart_client_id,
           client_secret: Config.deviantart_client_secret,
         })
-        JSON.parse(response.body)["access_token"]
+        response["access_token"]
       end
     end
   end

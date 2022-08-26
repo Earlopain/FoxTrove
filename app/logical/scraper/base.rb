@@ -53,5 +53,27 @@ module Scraper
     def fetch_api_identifier
       raise NotImplementedError
     end
+
+    def fetch_html(path, method = :get, **params)
+      HTTParty.send(method, path, **params)
+    end
+
+    def fetch_json(path, method = :get, **params)
+      response = HTTParty.send(method, path, **params)
+      # Validate that the response is indeed json
+      JSON.parse(response.body)
+      response
+    end
+
+    def fetch_json_selenium(path)
+      SeleniumWrapper.driver do |d|
+        d.navigate.to path
+        begin
+          JSON.parse(d.find_element(css: "pre").text)
+        rescue Selenium::WebDriver::Error::NoSuchElementError
+          raise JSON::ParserError, "#{path}: No response"
+        end
+      end
+    end
   end
 end

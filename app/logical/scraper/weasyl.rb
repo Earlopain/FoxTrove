@@ -13,15 +13,13 @@ module Scraper
 
     def fetch_next_batch
       url = "https://www.weasyl.com/api/users/#{url_identifier}/gallery"
-      response = HTTParty.get(
-        url,
+      response = fetch_json(url, **{
         headers: { "X-Weasyl-API-Key": Config.weasyl_apikey },
         query: {}.tap { |h| h[:nextid] = @nextid if @nextid },
-      )
-      json = JSON.parse(response.body)
-      @nextid = json["nextid"]
+      })
+      @nextid = response["nextid"]
       end_reached if @nextid.nil?
-      json["submissions"].select { |s| s["subtype"] == "visual" && s["media"]["submission"].present? }
+      response["submissions"].select { |s| s["subtype"] == "visual" && s["media"]["submission"].present? }
     end
 
     def to_submission(submission)
@@ -44,7 +42,7 @@ module Scraper
 
     # Unfortunately the api doesn't seem to return this information
     def fetch_api_identifier
-      response = HTTParty.get("https://www.weasyl.com/~#{url_identifier}", headers: { "X-Weasyl-API-Key": Config.weasyl_apikey })
+      response = fetch_html("https://www.weasyl.com/~#{url_identifier}", headers: { "X-Weasyl-API-Key": Config.weasyl_apikey })
       html = Nokogiri::HTML(response.body)
       html.at("#user-shouts .comment-form input[name='userid']")&.attribute("value")&.value
     end
