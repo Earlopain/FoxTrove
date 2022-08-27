@@ -14,7 +14,7 @@ module Scraper
     end
 
     def fetch_next_batch
-      json = make_request("search", {
+      json = make_request("/search", {
         size: PER_REQUEST,
         from: @offset,
         character: url_identifier,
@@ -42,13 +42,13 @@ module Scraper
     end
 
     def fetch_api_identifier
-      make_request("character/#{url_identifier}")["id"]
+      make_request("/character/#{url_identifier}")["id"]
     end
 
     private
 
     def make_request(endpoint, query = {})
-      fetch_json("#{API_PREFIX}/#{endpoint}", **{
+      fetch_json("#{API_PREFIX}#{endpoint}", **{
         query: query,
         headers: {
           Authorization: "Bearer #{bearer_token}",

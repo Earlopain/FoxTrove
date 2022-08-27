@@ -15,7 +15,7 @@ module Scraper
     end
 
     def fetch_next_batch
-      json = make_api_call("gallery/all", {
+      json = make_api_call("/gallery/all", {
         username: url_identifier,
         limit: 24,
         mature_content: true,
@@ -44,11 +44,11 @@ module Scraper
     end
 
     def get_download_link(data)
-      make_api_call("deviation/download/#{data[0]}")["src"]
+      make_api_call("/deviation/download/#{data[0]}")["src"]
     end
 
     def fetch_api_identifier
-      json = make_api_call("user/profile/#{url_identifier}")
+      json = make_api_call("/user/profile/#{url_identifier}")
       return nil if json["error_code"] == 2
 
       json.dig("user", "userid")
@@ -57,7 +57,7 @@ module Scraper
     private
 
     def make_api_call(endpoint, query = {})
-      fetch_json("#{API_PREFIX}/#{endpoint}", **{
+      fetch_json("#{API_PREFIX}#{endpoint}", **{
         query: {
           access_token: access_token,
           **query,
