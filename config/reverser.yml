@@ -4,13 +4,17 @@ app_name: "Reverser"
 # This is a bounding box
 thumbnail_size: 300
 # The server which handles similar images search
-  # Must respond like https://github.com/danbooru/iqdb
+# Must respond like https://github.com/danbooru/iqdb
 iqdb_server: "http://iqdb:5588"
 
 # Only overwriteable through env
 custom_config_path: config/reverser_custom_config.yml
 
 log_scraper_requests?: true
+# How quickly requests will be sent in seconds. Accepts floats.
+# A rate limt of 0.5 means that the next request will be sent at
+# least half a second after the previous request finished.
+scraper_request_rate_limit: 0
 
 # Disable individual scrapers
 artstation_disabled?: false

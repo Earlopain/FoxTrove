@@ -6,6 +6,7 @@ module Scraper
     def initialize(artist_url)
       @artist_url = artist_url.is_a?(Integer) ? ArtistUrl.find(artist_url) : artist_url
       @has_more = true
+      @previous_request = 0
     end
 
     # Anything the scraper needs to initialize itself, like
@@ -68,14 +69,30 @@ module Scraper
       })
     end
 
+    # This is pretty hacky and only works because there is only one worker executing at once
+    def enfore_rate_limit(&)
+      now = Process.clock_gettime(Process::CLOCK_MONOTONIC)
+      elapsed_time = now - @previous_request
+      if elapsed_time < Config.scraper_request_rate_limit
+        sleep Config.scraper_request_rate_limit - elapsed_time
+      end
+      result = yield
+      @previous_request = Process.clock_gettime(Process::CLOCK_MONOTONIC)
+      result
+    end
+
     def fetch_html(path, method = :get, **params)
-      response = HTTParty.send(method, path, params)
+      response = enfore_rate_limit do
+        HTTParty.send(method, path, params)
+      end
       log_response(path, method, params, response.code, response.body)
       response
     end
 
     def fetch_json(path, method = :get, **params)
-      response = HTTParty.send(method, path, params)
+      response = enfore_rate_limit do
+        HTTParty.send(method, path, params)
+      end
       log_response(path, method, params, response.code, response.body)
       # Validate that the response is indeed json
       JSON.parse(response.body)
@@ -84,7 +101,9 @@ module Scraper
 
     def fetch_json_selenium(path)
       SeleniumWrapper.driver do |d|
-        d.navigate.to path
+        enfore_rate_limit do
+          d.navigate.to path
+        end
         begin
           text = d.find_element(css: "pre").text
           log_response(path, :get, {}, -1, text)
