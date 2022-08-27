@@ -274,9 +274,9 @@ CREATE TABLE public.log_events (
     id bigint NOT NULL,
     loggable_type text NOT NULL,
     loggable_id integer NOT NULL,
-    action text NOT NULL,
     payload jsonb NOT NULL,
-    created_at timestamp(6) with time zone NOT NULL
+    created_at timestamp(6) with time zone NOT NULL,
+    action integer NOT NULL
 );
 
 
@@ -578,13 +578,6 @@ CREATE INDEX index_e6_iqdb_data_on_submission_file_id ON public.e6_iqdb_data USI
 
 
 --
--- Name: index_log_events_on_action; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_log_events_on_action ON public.log_events USING btree (action);
-
-
---
 -- Name: index_log_events_on_loggable_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -719,6 +712,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220716195525'),
 ('20220729131350'),
 ('20220802142122'),
-('20220802183207');
+('20220802183207'),
+('20220827125606');
 
 
