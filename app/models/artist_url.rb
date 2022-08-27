@@ -4,9 +4,9 @@ class ArtistUrl < ApplicationRecord
   belongs_to :artist
   has_many :submissions, class_name: "ArtistSubmission", dependent: :destroy
 
-  validate :set_api_identifier, on: :create
   validates :url_identifier, uniqueness: { scope: :site_type, case_sensitive: false }
   validates :api_identifier, uniqueness: { scope: :site_type, case_sensitive: false, allow_nil: true }
+  after_create :set_api_identifier
 
   enum site_type: %i[
     twitter furaffinity inkbunny sofurry
@@ -27,8 +27,8 @@ class ArtistUrl < ApplicationRecord
     self.api_identifier = scraper.fetch_api_identifier
     return if api_identifier
 
-    errors.add(:identifier, "failed api lookup")
-    throw :abort
+    # FIXME: This shouldn't be here. But the scraper logging requires a persisted model for its id
+    raise StandardError, "#{site_type} identifer #{url_identifier} failed api lookup"
   end
 
   def site
