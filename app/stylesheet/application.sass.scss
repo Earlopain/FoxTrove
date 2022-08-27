@@ -4,10 +4,11 @@
 @import "base/links.scss";
 @import "base/mixins.scss";
 @import "base/base.scss";
+@import "base/helpers.scss";
 @import "main_layout.scss";
 @import "navbar.scss";
 @import "table.scss";
 
-@import "specific/error.scss";
 @import "specific/artists.scss";
-@import "specific/submission_files.scss"
+@import "specific/error.scss";
+@import "specific/submission_files.scss";

@@ -12,6 +12,7 @@ gem "sidekiq"
 gem "sidekiq-unique-jobs"
 
 gem "addressable"
+gem "draper"
 gem "httparty"
 gem "kaminari"
 gem "nokogiri"
