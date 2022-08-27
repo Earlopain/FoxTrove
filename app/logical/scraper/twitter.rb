@@ -19,22 +19,34 @@ module Scraper
     end
 
     def fetch_next_batch
-      params = {
+      variables = {
         userId: api_identifier,
         count: 100,
         includePromotedContent: false,
-        withSuperFollowsUserFields: false,
+        withSuperFollowsUserFields: true,
         withDownvotePerspective: false,
         withReactionsMetadata: false,
         withReactionsPerspective: false,
-        withSuperFollowsTweetFields: false,
+        withSuperFollowsTweetFields: true,
         withClientEventToken: false,
         withBirdwatchNotes: false,
-        withVoice: false,
+        withVoice: true,
         withV2Timeline: true,
       }
-      params[:cursor] = @cursor if @cursor.present?
-      response = make_request("laAWxgrzEYIlGLcOucDFMw/UserMedia", params)
+      features = {
+        unified_cards_follow_card_query_enabled: false,
+        dont_mention_me_view_api_enabled: true,
+        responsive_web_uc_gql_enabled: true,
+        vibe_api_enabled: true,
+        responsive_web_edit_tweet_api_enabled: true,
+        standardized_nudges_misinfo: true,
+        tweet_with_visibility_results_prefer_gql_limited_actions_policy_enabled: false,
+        interactive_text_enabled: true,
+        responsive_web_text_conversations_enabled: false,
+        responsive_web_enhance_cards_enabled: true,
+      }
+      variables[:cursor] = @cursor if @cursor.present?
+      response = make_request("FRd70TyCHbtYOLTsbUNr4g/UserMedia", variables, features)
 
       if response.dig("data", "user", "result", "__typename") == "UserUnavailable"
         end_reached
@@ -78,9 +90,10 @@ module Scraper
     end
 
     def fetch_api_identifier
-      user_json = make_request("7mjxD3-C6BxitPMVQ6w0-Q/UserByScreenName", {
+      user_json = make_request("gr8Lk09afdgWo7NvzP89iQ/UserByScreenName", {
         screen_name: url_identifier,
         withSuperFollowsUserFields: true,
+        withSafetyModeUserFields: true,
       })
       user_json.dig("data", "user", "result", "rest_id")
     end
@@ -122,8 +135,8 @@ module Scraper
       end
     end
 
-    def make_request(url, params = {})
-      fetch_json("#{API_BASE_URL}/#{url}", query: { variables: params.to_json }, headers: api_headers)
+    def make_request(url, variables = {}, features = {})
+      fetch_json("#{API_BASE_URL}/#{url}", query: { variables: variables.to_json, features: features.to_json }, headers: api_headers)
     end
 
     def tokens
