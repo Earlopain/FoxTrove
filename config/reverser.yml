@@ -6,12 +6,6 @@ thumbnail_size: 300
 # The server which handles similar images search
   # Must respond like https://github.com/danbooru/iqdb
 iqdb_server: "http://iqdb:5588"
-# Matches either links or controller actions
-log_ignore:
-  - "ActiveStorage::DiskController#show"
-  - "ActiveStorage::Blobs::RedirectController#show"
-  - "/rails/active_storage"
-  - "/sidekiq"
 
 # Only overwriteable through env
 custom_config_path: config/reverser_custom_config.yml
@@ -70,7 +64,6 @@ pawoo_access_token:
 
 # These settings require a server restart
 # Controls wether or not the logging should be intercepted
-silence_log?: true
 redis_url: "redis://redis"
 selenium_url: "http://selenium:4444"
 memcached_servers:
