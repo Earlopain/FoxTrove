@@ -43,7 +43,7 @@ module Scraper
 
       tweets, cursor_entry = extract_tweets_and_cursor_entry(response)
       @cursor = cursor_entry["value"]
-      end_reached if tweets.empty? && cursor_entry["stopOnEmptyResponse"]
+      end_reached if tweets.empty?
       tweets
     end
 
