@@ -54,12 +54,29 @@ module Scraper
       raise NotImplementedError
     end
 
+    def log_response(path, method, request_params, status_code, body)
+      return unless Config.log_scraper_requests?
+
+      @artist_url.add_log_event(:scraper_request, {
+        path: path,
+        method: method,
+        request_params: {
+          **request_params,
+        },
+        response_code: status_code,
+        response_body: body,
+      })
+    end
+
     def fetch_html(path, method = :get, **params)
-      HTTParty.send(method, path, **params)
+      response = HTTParty.send(method, path, params)
+      log_response(path, method, params, response.code, response.body)
+      response
     end
 
     def fetch_json(path, method = :get, **params)
-      response = HTTParty.send(method, path, **params)
+      response = HTTParty.send(method, path, params)
+      log_response(path, method, params, response.code, response.body)
       # Validate that the response is indeed json
       JSON.parse(response.body)
       response
@@ -69,7 +86,9 @@ module Scraper
       SeleniumWrapper.driver do |d|
         d.navigate.to path
         begin
-          JSON.parse(d.find_element(css: "pre").text)
+          text = d.find_element(css: "pre").text
+          log_response(path, :get, {}, -1, text)
+          JSON.parse(text)
         rescue Selenium::WebDriver::Error::NoSuchElementError
           raise JSON::ParserError, "#{path}: No response"
         end

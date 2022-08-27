@@ -5,7 +5,7 @@ class ApplicationRecord < ActiveRecord::Base
 
   has_many :log_events, as: :loggable, dependent: nil
 
-  def add_log_event(action, **payload)
+  def add_log_event(action, payload = {})
     LogEvent.create!(
       loggable_id: id,
       loggable_type: self.class.name,

@@ -16,6 +16,8 @@ log_ignore:
 # Only overwriteable through env
 custom_config_path: config/reverser_custom_config.yml
 
+log_scraper_requests?: true
+
 # Disable individual scrapers
 artstation_disabled?: false
 deviantart_disabled?: false
