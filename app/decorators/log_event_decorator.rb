@@ -16,7 +16,7 @@ class LogEventDecorator < Draper::Decorator
         lines << "?#{CGI.unescape(query_params.to_query)}"
       end
       if (body_params = payload.dig("request_params", "body"))
-        lines << "body: #{CGI.unescape(body_params.to_query)}"
+        lines << "body: #{body_params.is_a?(Hash) ? body_params.to_query : body_params}"
       end
       h.safe_join(lines.map { |line| h.tag.div(line) })
     else
