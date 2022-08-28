@@ -44,7 +44,7 @@ module Scraper
 
     def fetch_api_identifier
       response = get("https://api.tumblr.com/v2/blog/#{url_identifier}/info")["response"]
-      return if response.parsed_response.is_a?(Array)
+      return if response.is_a?(Array)
 
       response.dig("blog", "uuid")
     end
