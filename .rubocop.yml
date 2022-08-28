@@ -48,10 +48,13 @@ Style/Documentation:
 Style/EmptyMethod:
   EnforcedStyle: expanded
 
+Style/GuardClause:
+  Enabled: false
+
 Style/HashSyntax:
   EnforcedShorthandSyntax: never
 
-IfUnlessModifier:
+Style/IfUnlessModifier:
   Enabled: false
 
 Style/InfiniteLoop:
