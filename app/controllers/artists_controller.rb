@@ -9,8 +9,14 @@ class ArtistsController < ApplicationController
   end
 
   def create
-    @artist = Artist.new(artist_params)
-    add_new_artist_urls_and_save(@artist)
+    Artist.transaction do
+      @artist = Artist.create(artist_params)
+      add_new_artist_urls_and_save(@artist) if @artist.valid?
+
+      if @artist.errors.any?
+        raise ActiveRecord::Rollback
+      end
+    end
     respond_with(@artist)
   end
 
@@ -72,37 +78,12 @@ class ArtistsController < ApplicationController
   end
 
   def add_new_artist_urls_and_save(artist)
-    artist.valid?
-    artist.url_string.lines.map(&:strip).compact_blank.each do |url|
-      add_artist_url(artist, url)
+    new_artist_urls = artist.url_string.lines.map(&:strip).compact_blank.map do |url|
+      artist.add_artist_url(url)
     end
     return if artist.errors.any?
 
-    artist.artist_urls.each(&:save!)
-    artist.artist_urls.each(&:enqueue_scraping)
+    new_artist_urls.each(&:enqueue_scraping)
     artist.save
-  end
-
-  def add_artist_url(artist, url)
-    result = Sites.from_gallery_url url
-
-    if !result
-      artist.errors.add(:url, " #{url} is not a supported url") unless result
-      return
-    elsif !result[:identifier_valid]
-      artist.errors.add(:identifier, "#{result[:identifier]} is not valid for #{result[:site].display_name}")
-      return
-    end
-
-    artist_url = artist.artist_urls.new(
-      site_type: result[:site].enum_value,
-      url_identifier: result[:identifier],
-      created_at_on_site: Time.current,
-      about_on_site: "",
-    )
-    artist_url.validate
-    artist_url.errors.full_messages.each do |msg|
-      artist.errors.add(:url, "#{url} is not valid: #{msg}")
-    end
   end
 end

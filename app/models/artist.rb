@@ -21,6 +21,37 @@ class Artist < ApplicationRecord
     end
   end
 
+  def add_artist_url(url)
+    Artist.transaction do
+      result = Sites.from_gallery_url url
+
+      if !result
+        errors.add(:url, " #{url} is not a supported url") unless result
+        next
+      elsif !result[:identifier_valid]
+        errors.add(:identifier, "#{result[:identifier]} is not valid for #{result[:site].display_name}")
+        next
+      end
+
+      artist_url = artist_urls.new(
+        site_type: result[:site].enum_value,
+        url_identifier: result[:identifier],
+        created_at_on_site: Time.current,
+        about_on_site: "",
+      )
+
+      artist_url.save
+
+      if artist_url.errors.any?
+        errors.add(:base, "#{url} is not valid: #{artist_url.errors.full_messages.join(',')}")
+        artist_urls.delete(artist_url)
+        raise ActiveRecord::Rollback
+      end
+
+      artist_url
+    end
+  end
+
   concerning :SearchMethods do
     class_methods do
       def search(params)

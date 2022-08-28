@@ -6,7 +6,7 @@ class ArtistUrl < ApplicationRecord
 
   validates :url_identifier, uniqueness: { scope: :site_type, case_sensitive: false }
   validates :api_identifier, uniqueness: { scope: :site_type, case_sensitive: false, allow_nil: true }
-  after_create :set_api_identifier
+  after_create :set_api_identifier!
 
   enum site_type: %i[
     twitter furaffinity inkbunny sofurry
@@ -20,15 +20,16 @@ class ArtistUrl < ApplicationRecord
     pillowfort commishes furrynetwork facebook
   ].map.with_index { |v, index| [v, index] }.to_h
 
-  def set_api_identifier
+  def set_api_identifier!
     return unless scraper_enabled?
 
     scraper = site.new_scraper self
     self.api_identifier = scraper.fetch_api_identifier
-    return if api_identifier
-
-    # FIXME: This shouldn't be here. But the scraper logging requires a persisted model for its id
-    raise StandardError, "#{site_type} identifer #{url_identifier} failed api lookup"
+    if api_identifier
+      save
+    else
+      errors.add(:base, "#{url_identifier} failed api lookup")
+    end
   end
 
   def site
