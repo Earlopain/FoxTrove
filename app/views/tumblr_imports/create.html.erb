@@ -9,9 +9,7 @@
     <span><%= @archive.skipped_count %> where skipped, because they are already imported.</span>
   <% end %>
 
-  <% @archive.imported_files.each_key do |artist_url_id| %>
-    <%= render "artists/artist_link", artist_url: ArtistUrl.find(artist_url_id) %>
-  <% end %>
+  <%= render "artist_urls/list", artist_urls: ArtistUrl.where(id: @archive.imported_files.keys) %>
 
   <% if @archive.failed_imports.any? %>
     <h3>The following reblogs failed to import:</h3>
