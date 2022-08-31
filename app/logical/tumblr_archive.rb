@@ -15,13 +15,13 @@
 # -----| style.css
 # -----| posts_index.html
 class TumblrArchive
-  attr_accessor :imported_files_count, :skipped_count, :failed_imports, :error
+  attr_accessor :imported_files, :skipped_count, :failed_imports, :error
 
   URL_ID_REGEX = %r{tumblr\.com/post/(?<id>\d*)}
 
   def initialize(file)
     @file = file
-    @imported_files_count = 0
+    @imported_files = {}
     @skipped_count = 0
     @failed_imports = []
     @error = nil
@@ -40,6 +40,10 @@ class TumblrArchive
     end
   rescue Zip::Error => e
     @error = e
+  end
+
+  def total_imported_files_count
+    @imported_files.values.sum
   end
 
   private
@@ -74,7 +78,8 @@ class TumblrArchive
                                              created_at: submission.created_at_on_site,
                                              file_identifier: index)
 
-      @imported_files_count += 1
+      @imported_files[submission.artist_url.id] ||= 0
+      @imported_files[submission.artist_url.id] += 1
     end
   end
 end
