@@ -14,8 +14,8 @@ class SubmissionFile < ApplicationRecord
   scope :with_attached, -> { with_attached_sample.with_attached_original }
   scope :with_everything, -> { with_attached.includes(:e6_iqdb_entries, artist_submission: :artist_url) }
 
-  scope :larger_iqdb_filesize_kb_exists, ->(treshold) { select_from_e6_iqdb_data_where_exists("size - ? > post_size", treshold) }
-  scope :larger_iqdb_filesize_percentage_exists, ->(treshold) { select_from_e6_iqdb_data_where_exists("size - (size / 100 * ?) > post_size", treshold) }
+  scope :larger_iqdb_filesize_kb_exists, ->(treshold) { select_from_e6_iqdb_data_where_exists("size - ? > post_size and not post_is_deleted", treshold) }
+  scope :larger_iqdb_filesize_percentage_exists, ->(treshold) { select_from_e6_iqdb_data_where_exists("size - (size / 100 * ?) > post_size and not post_is_deleted", treshold) }
   scope :smaller_iqdb_filesize_doesnt_exist, -> { select_from_e6_iqdb_data_where_not_exists("size <= post_size") }
   scope :larger_only_filesize_kb, ->(treshold) { larger_iqdb_filesize_kb_exists(treshold).smaller_iqdb_filesize_doesnt_exist.exact_match_doesnt_exist }
   scope :larger_only_filesize_percentage, ->(treshold) { larger_iqdb_filesize_percentage_exists(treshold).smaller_iqdb_filesize_doesnt_exist.exact_match_doesnt_exist }
