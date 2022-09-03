@@ -1,7 +1,7 @@
 <% submission_file.e6_iqdb_entries.sort_by(&:similarity_score).reverse.each do |e6_iqdb| %>
   <div>
   <%= link_to_external "##{e6_iqdb.post_id}", "https://e621.net/posts/#{e6_iqdb.post_id}", title: "Score: #{e6_iqdb.score}" %>
-  <% if e6_iqdb.deleted? %>
+  <% if e6_iqdb.post_is_deleted? %>
     <span title="Deleted">!</span>
   <% else %>
     <%= link_to_external "E6D", e6_iqdb.direct_url, title: "E6 Direct Link" %>

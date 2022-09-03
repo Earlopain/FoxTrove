@@ -10,8 +10,4 @@ class E6IqdbData < ApplicationRecord
   def score
     post_json["score"].is_a?(Integer) ? post_json["score"] : post_json["score"]["total"]
   end
-
-  def deleted?
-    post_json["is_deleted"] || post_json.dig("flags", "deleted")
-  end
 end
