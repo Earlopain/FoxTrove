@@ -1,13 +1,14 @@
 <%= hideable_search(path) do |f| %>
   <%= f.input :artist_url_id, label: "URLs", collection: artist_urls, input_html: { multiple: true } if artist_urls.any? %>
   <%= f.input :upload_status, label: "Status", collection: [
-    ["Larger Only (Filesize)", "larger_only_filesize"],
+    ["Larger Only (Filesize kB)", "larger_only_filesize_kb"],
+    ["Larger Only (Filesize %)", "larger_only_filesize_percentage"],
     ["Larger Only (Dimensions)", "larger_only_dimensions"],
     ["Already Uploaded", "already_uploaded"],
     ["Exact Match", "exact_match"],
     ["Not Uploaded", "not_uploaded"]
   ], include_blank: true %>
-  <%= f.input :larger_only_filesize_treshold, label: "Larger Only Treshold (kB)" %>
+  <%= f.input :larger_only_filesize_treshold, label: "Larger Only Treshold" %>
   <%= f.input :content_type, collection: [
     ["Animation Only", "video/mp4,image/gif"],
     ["Pictures Only", "image/png,image/jpeg,"],

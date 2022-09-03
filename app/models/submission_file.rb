@@ -14,9 +14,11 @@ class SubmissionFile < ApplicationRecord
   scope :with_attached, -> { with_attached_sample.with_attached_original }
   scope :with_everything, -> { with_attached.includes(:e6_iqdb_entries, artist_submission: :artist_url) }
 
-  scope :larger_iqdb_filesize_exists, ->(treshold) { where("exists (select from e6_iqdb_data where submission_files.id = e6_iqdb_data.submission_file_id and size - ? > post_size)", treshold) }
+  scope :larger_iqdb_filesize_kb_exists, ->(treshold) { where("exists (select from e6_iqdb_data where submission_files.id = e6_iqdb_data.submission_file_id and size - ? > post_size)", treshold) }
+  scope :larger_iqdb_filesize_percentage_exists, ->(treshold) { where("exists (select from e6_iqdb_data where submission_files.id = e6_iqdb_data.submission_file_id and size - (size / 100 * ?) > post_size)", treshold) }
   scope :smaller_iqdb_filesize_doesnt_exist, -> { where("not exists (select from e6_iqdb_data where submission_files.id = e6_iqdb_data.submission_file_id and size <= post_size)") }
-  scope :larger_only_filesize, ->(treshold) { larger_iqdb_filesize_exists.smaller_iqdb_filesize_doesnt_exist(treshold).not_exact_match }
+  scope :larger_only_filesize_kb, ->(treshold) { larger_iqdb_filesize_kb_exists(treshold).smaller_iqdb_filesize_doesnt_exist.not_exact_match }
+  scope :larger_only_filesize_percentage, ->(treshold) { larger_iqdb_filesize_percentage_exists(treshold).smaller_iqdb_filesize_doesnt_exist.not_exact_match }
 
   scope :larger_iqdb_dimensions_exist, -> { where("exists (select from e6_iqdb_data where submission_files.id = e6_iqdb_data.submission_file_id and width > post_width and height > post_height)") }
   scope :smaller_iqdb_dimensions_dont_exist, -> { where("not exists (select from e6_iqdb_data where submission_files.id = e6_iqdb_data.submission_file_id and width <= post_width and height <= post_height)") }
@@ -132,8 +134,11 @@ class SubmissionFile < ApplicationRecord
         q = all
         if params[:upload_status].present?
           q = case params[:upload_status]
-              when "larger_only_filesize"
-                size = (params[:larger_only_filesize_treshold] || 10).to_i.kilobytes
+              when "larger_only_filesize_kb"
+                size = (params[:larger_only_filesize_treshold] || 50).to_i.kilobytes
+                q.send(params[:upload_status], size)
+              when "larger_only_filesize_percentage"
+                size = (params[:larger_only_filesize_treshold] || 10).to_i
                 q.send(params[:upload_status], size)
               when "larger_only_dimensions", "exact_match", "already_uploaded", "not_uploaded"
                 q.send(params[:upload_status])
