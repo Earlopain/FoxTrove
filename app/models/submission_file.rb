@@ -17,8 +17,8 @@ class SubmissionFile < ApplicationRecord
   scope :larger_iqdb_filesize_kb_exists, ->(treshold) { where("exists (select from e6_iqdb_data where submission_files.id = e6_iqdb_data.submission_file_id and size - ? > post_size)", treshold) }
   scope :larger_iqdb_filesize_percentage_exists, ->(treshold) { where("exists (select from e6_iqdb_data where submission_files.id = e6_iqdb_data.submission_file_id and size - (size / 100 * ?) > post_size)", treshold) }
   scope :smaller_iqdb_filesize_doesnt_exist, -> { where("not exists (select from e6_iqdb_data where submission_files.id = e6_iqdb_data.submission_file_id and size <= post_size)") }
-  scope :larger_only_filesize_kb, ->(treshold) { larger_iqdb_filesize_kb_exists(treshold).smaller_iqdb_filesize_doesnt_exist.not_exact_match }
-  scope :larger_only_filesize_percentage, ->(treshold) { larger_iqdb_filesize_percentage_exists(treshold).smaller_iqdb_filesize_doesnt_exist.not_exact_match }
+  scope :larger_only_filesize_kb, ->(treshold) { larger_iqdb_filesize_kb_exists(treshold).smaller_iqdb_filesize_doesnt_exist.exact_match_doesnt_exist }
+  scope :larger_only_filesize_percentage, ->(treshold) { larger_iqdb_filesize_percentage_exists(treshold).smaller_iqdb_filesize_doesnt_exist.exact_match_doesnt_exist }
 
   scope :larger_iqdb_dimensions_exist, -> { where("exists (select from e6_iqdb_data where submission_files.id = e6_iqdb_data.submission_file_id and width > post_width and height > post_height)") }
   scope :smaller_iqdb_dimensions_dont_exist, -> { where("not exists (select from e6_iqdb_data where submission_files.id = e6_iqdb_data.submission_file_id and width <= post_width and height <= post_height)") }
@@ -26,8 +26,8 @@ class SubmissionFile < ApplicationRecord
 
   scope :already_uploaded, -> { where("exists (select from e6_iqdb_data where submission_files.id = e6_iqdb_data.submission_file_id)") }
   scope :not_uploaded, -> { where("not exists (select from e6_iqdb_data where submission_files.id = e6_iqdb_data.submission_file_id)") }
-  scope :exact_match, -> { joins(:e6_iqdb_entries).where(e6_iqdb_entries: { is_exact_match: true }) }
-  scope :not_exact_match, -> { joins(:e6_iqdb_entries).where(e6_iqdb_entries: { is_exact_match: false }) }
+  scope :exact_match_exists, -> { where("exists (select from e6_iqdb_data where submission_files.id = e6_iqdb_data.submission_file_id and is_exact_match)") }
+  scope :exact_match_doesnt_exist, -> { where("not exists (select from e6_iqdb_data where submission_files.id = e6_iqdb_data.submission_file_id and is_exact_match)") }
 
   delegate :artist_url, :artist, to: :artist_submission
 
@@ -140,7 +140,7 @@ class SubmissionFile < ApplicationRecord
               when "larger_only_filesize_percentage"
                 size = (params[:larger_only_filesize_treshold] || 10).to_i
                 q.send(params[:upload_status], size)
-              when "larger_only_dimensions", "exact_match", "already_uploaded", "not_uploaded"
+              when "larger_only_dimensions", "exact_match_exists", "already_uploaded", "not_uploaded"
                 q.send(params[:upload_status])
               else
                 q.none
