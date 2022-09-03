@@ -14,22 +14,34 @@ class SubmissionFile < ApplicationRecord
   scope :with_attached, -> { with_attached_sample.with_attached_original }
   scope :with_everything, -> { with_attached.includes(:e6_iqdb_entries, artist_submission: :artist_url) }
 
-  scope :larger_iqdb_filesize_kb_exists, ->(treshold) { where("exists (select from e6_iqdb_data where submission_files.id = e6_iqdb_data.submission_file_id and size - ? > post_size)", treshold) }
-  scope :larger_iqdb_filesize_percentage_exists, ->(treshold) { where("exists (select from e6_iqdb_data where submission_files.id = e6_iqdb_data.submission_file_id and size - (size / 100 * ?) > post_size)", treshold) }
-  scope :smaller_iqdb_filesize_doesnt_exist, -> { where("not exists (select from e6_iqdb_data where submission_files.id = e6_iqdb_data.submission_file_id and size <= post_size)") }
+  scope :larger_iqdb_filesize_kb_exists, ->(treshold) { select_from_e6_iqdb_data_where_exists("size - ? > post_size", treshold) }
+  scope :larger_iqdb_filesize_percentage_exists, ->(treshold) { select_from_e6_iqdb_data_where_exists("size - (size / 100 * ?) > post_size", treshold) }
+  scope :smaller_iqdb_filesize_doesnt_exist, -> { select_from_e6_iqdb_data_where_not_exists("size <= post_size") }
   scope :larger_only_filesize_kb, ->(treshold) { larger_iqdb_filesize_kb_exists(treshold).smaller_iqdb_filesize_doesnt_exist.exact_match_doesnt_exist }
   scope :larger_only_filesize_percentage, ->(treshold) { larger_iqdb_filesize_percentage_exists(treshold).smaller_iqdb_filesize_doesnt_exist.exact_match_doesnt_exist }
 
-  scope :larger_iqdb_dimensions_exist, -> { where("exists (select from e6_iqdb_data where submission_files.id = e6_iqdb_data.submission_file_id and width > post_width and height > post_height)") }
-  scope :smaller_iqdb_dimensions_dont_exist, -> { where("not exists (select from e6_iqdb_data where submission_files.id = e6_iqdb_data.submission_file_id and width <= post_width and height <= post_height)") }
+  scope :larger_iqdb_dimensions_exist, -> { select_from_e6_iqdb_data_where_exists("width > post_width and height > post_height") }
+  scope :smaller_iqdb_dimensions_dont_exist, -> { select_from_e6_iqdb_data_where_not_exists("width <= post_width and height <= post_height") }
   scope :larger_only_dimensions, -> { larger_iqdb_dimensions_exist.smaller_iqdb_dimensions_dont_exist }
 
-  scope :already_uploaded, -> { where("exists (select from e6_iqdb_data where submission_files.id = e6_iqdb_data.submission_file_id)") }
-  scope :not_uploaded, -> { where("not exists (select from e6_iqdb_data where submission_files.id = e6_iqdb_data.submission_file_id)") }
-  scope :exact_match_exists, -> { where("exists (select from e6_iqdb_data where submission_files.id = e6_iqdb_data.submission_file_id and is_exact_match)") }
-  scope :exact_match_doesnt_exist, -> { where("not exists (select from e6_iqdb_data where submission_files.id = e6_iqdb_data.submission_file_id and is_exact_match)") }
+  scope :already_uploaded, -> { select_from_e6_iqdb_data_where_exists }
+  scope :not_uploaded, -> { select_from_e6_iqdb_data_where_not_exists }
+  scope :exact_match_exists, -> { select_from_e6_iqdb_data_where_exists("is_exact_match") }
+  scope :exact_match_doesnt_exist, -> { select_from_e6_iqdb_data_where_not_exists("is_exact_match") }
 
   delegate :artist_url, :artist, to: :artist_submission
+
+  def self.select_from_e6_iqdb_data_where_exists(condition = nil, *args)
+    where("exists (#{select_from_e6_iqdb_data(condition)})", args)
+  end
+
+  def self.select_from_e6_iqdb_data_where_not_exists(condition = nil, *args)
+    where("not exists (#{select_from_e6_iqdb_data(condition)})", args)
+  end
+
+  def self.select_from_e6_iqdb_data(condition)
+    "select from e6_iqdb_data where submission_files.id = e6_iqdb_data.submission_file_id #{"and #{condition}" if condition}"
+  end
 
   def self.from_bin_file(bin_file, artist_submission_id:, url:, created_at:, file_identifier:)
     # Deviantart doesn't have to return only images.
