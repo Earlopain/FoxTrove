@@ -20,7 +20,7 @@ class SubmissionFile < ApplicationRecord
   scope :larger_only_filesize_kb, ->(treshold) { larger_iqdb_filesize_kb_exists(treshold).smaller_iqdb_filesize_doesnt_exist.exact_match_doesnt_exist }
   scope :larger_only_filesize_percentage, ->(treshold) { larger_iqdb_filesize_percentage_exists(treshold).smaller_iqdb_filesize_doesnt_exist.exact_match_doesnt_exist }
 
-  scope :larger_iqdb_dimensions_exist, -> { select_from_e6_iqdb_data_where_exists("width > post_width and height > post_height") }
+  scope :larger_iqdb_dimensions_exist, -> { select_from_e6_iqdb_data_where_exists("width > post_width and height > post_height and not post_is_deleted") }
   scope :smaller_iqdb_dimensions_dont_exist, -> { select_from_e6_iqdb_data_where_not_exists("width <= post_width and height <= post_height") }
   scope :larger_only_dimensions, -> { larger_iqdb_dimensions_exist.smaller_iqdb_dimensions_dont_exist }
 
