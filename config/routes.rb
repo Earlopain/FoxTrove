@@ -29,8 +29,7 @@ Rails.application.routes.draw do
   resources :submission_files, only: %i[index show] do
     member do
       post :update_e6_iqdb
-      post :add_to_backlog
-      delete :remove_from_backlog
+      put :modify_backlog
     end
     collection do
       get :backlog

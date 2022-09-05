@@ -17,9 +17,9 @@
       <%= link_to "UREV", update_e6_iqdb_submission_file_path(submission_file), method: :post %>
     <% end %>
     <% if submission_file.in_backlog? %>
-      <%= link_to "-", remove_from_backlog_submission_file_path(submission_file), method: :delete %>
+      <%= link_to "-", modify_backlog_submission_file_path(submission_file, type: "remove"), method: :put %>
     <% else %>
-      <%= link_to "+", add_to_backlog_submission_file_path(submission_file), method: :post %>
+      <%= link_to "+", modify_backlog_submission_file_path(submission_file, type: "add"), method: :put %>
     <% end %>
   </span>
   <span class="submission-links">

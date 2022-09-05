@@ -20,18 +20,10 @@ class SubmissionFilesController < ApplicationController
     @submission_files = SubmissionFile.search(search_params).with_everything.page(params[:page])
   end
 
-  def add_to_backlog
+  def modify_backlog
     submission_file = SubmissionFile.find(params[:id])
-    submission_file.in_backlog = true
-    submission_file.added_to_backlog_at = Time.current
-    submission_file.save!
-  end
-
-  def remove_from_backlog
-    submission_file = SubmissionFile.find(params[:id])
-    submission_file.in_backlog = false
-    submission_file.added_to_backlog_at = nil
-    submission_file.save!
+    in_backlog = params[:type] == "add"
+    submission_file.update(in_backlog: in_backlog, added_to_backlog_at: in_backlog ? Time.current : nil)
   end
 
   def update_e6_iqdb
@@ -41,6 +33,8 @@ class SubmissionFilesController < ApplicationController
     similar.each { |s| s.e6_iqdb_entries.destroy_all }
     similar.each { |s| E6IqdbQueryWorker.perform_async s.id } # rubocop:disable Style/CombinableLoops
   end
+
+  private
 
   def search_params
     params.fetch(:search, {}).permit(SubmissionFile.search_params)
