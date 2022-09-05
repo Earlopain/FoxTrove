@@ -10,10 +10,10 @@
       <%= nav_link_to "Stats", stats_path %>
       <%= nav_link_to "Debug", debug_path %>
     </menu>
-    <% if lookup_context.template_exists?("secondary_links", controller_name, true) %>
-      <menu class="secondary-navbar">
-        <%= render "#{controller_name}/secondary_links" %>
-      </menu>
-    <% end %>
+    <menu class="secondary-navbar">
+      <% if lookup_context.template_exists?("secondary_links", controller_name, true) %>
+          <%= render "#{controller_name}/secondary_links" %>
+      <% end %>
+    </menu>
   </nav>
 </header>
