@@ -10,9 +10,9 @@
       <%= nav_link_to "Stats", stats_path %>
       <%= nav_link_to "Debug", debug_path %>
     </menu>
-    <% if content_for? :secondary_links %>
+    <% if lookup_context.template_exists?("secondary_links", controller_name, true) %>
       <menu class="secondary-navbar">
-        <%= yield :secondary_links %>
+        <%= render "#{controller_name}/secondary_links" %>
       </menu>
     <% end %>
   </nav>
