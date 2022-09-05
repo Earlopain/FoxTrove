@@ -4,13 +4,6 @@ Name: <%= @artist.name %>
 Links:
 <%= render "artist_urls/list", artist_urls: ordered_artist_urls(@artist) %>
 
-<div class="search">
-  <%= render "submission_files/search", path: artist_url(@artist), artist_urls: active_artist_urls_collection(@artist) %>
-</div>
-
-<% @submission_files.each do |file| %>
-  <%= render "submission_files/sample", submission_file: file %>
-<% end %>
-<%= paginated @submission_files %>
+<%= render "submission_files/list_with_search", path: artist_url(@artist), artist_urls: active_artist_urls_collection(@artist), submission_files: @submission_files %>
 
 <% page_title "#{@artist.name}" %>

@@ -1,0 +1,7 @@
+<%# TODO: Figure out how remove the folder prefix %>
+<%= render "submission_files/search", path: path, artist_urls: artist_urls %>
+
+<% submission_files.each do |file| %>
+  <%= render "submission_files/sample", submission_file: file %>
+<% end %>
+<%= paginated submission_files %>

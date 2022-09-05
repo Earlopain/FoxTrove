@@ -1,8 +1,3 @@
 <h3>Backlog</h3>
 
-<%= render "search", path: backlog_submission_files_path, artist_urls: backlog_artist_urls_collection %>
-
-<% @submission_files.each do |file| %>
-  <%= render "sample", submission_file: file %>
-<% end %>
-<%= paginated @submission_files %>
+<%= render "list_with_search", path: backlog_submission_files_path, artist_urls: backlog_artist_urls_collection, submission_files: @submission_files %>

@@ -30,9 +30,11 @@ Rails.application.routes.draw do
     member do
       post :update_e6_iqdb
       put :modify_backlog
+      put :modify_hidden
     end
     collection do
       get :backlog
+      get :hidden
     end
   end
   resources :log_events, only: %i[index show]

@@ -1,14 +1,6 @@
 # frozen_string_literal: true
 
 class SubmissionFilesController < ApplicationController
-  def backlog
-    @submission_files = SubmissionFile.search(search_params)
-                                      .with_everything
-                                      .reorder(added_to_backlog_at: :desc)
-                                      .where(in_backlog: true)
-                                      .page params[:page]
-  end
-
   def show
     @submission_file = SubmissionFile.find(params[:id])
     @artist_submission = @submission_file.artist_submission
@@ -17,7 +9,7 @@ class SubmissionFilesController < ApplicationController
   end
 
   def index
-    @submission_files = SubmissionFile.search(search_params).with_everything.page(params[:page])
+    @submission_files = SubmissionFile.search(search_params).where(hide_from_search: false).with_everything.page(params[:page])
   end
 
   def modify_backlog
@@ -26,12 +18,34 @@ class SubmissionFilesController < ApplicationController
     submission_file.update(in_backlog: in_backlog, added_to_backlog_at: in_backlog ? Time.current : nil)
   end
 
+  def modify_hidden
+    submission_file = SubmissionFile.find(params[:id])
+    hide_from_search = params[:type] == "add"
+    submission_file.update(hide_from_search: hide_from_search, hidden_from_search_at: hide_from_search ? Time.current : nil)
+  end
+
   def update_e6_iqdb
     submission_file = SubmissionFile.find(params[:id])
     E6IqdbQueryWorker.perform_async submission_file.id
     similar = IqdbProxy.query_submission_file(submission_file).pluck(:submission)
     similar.each { |s| s.e6_iqdb_entries.destroy_all }
     similar.each { |s| E6IqdbQueryWorker.perform_async s.id } # rubocop:disable Style/CombinableLoops
+  end
+
+  def backlog
+    @submission_files = SubmissionFile.search(search_params)
+                                      .with_everything
+                                      .reorder(added_to_backlog_at: :desc)
+                                      .where(in_backlog: true)
+                                      .page params[:page]
+  end
+
+  def hidden
+    @submission_files = SubmissionFile.search(search_params)
+                                      .with_everything
+                                      .reorder(hidden_from_search_at: :desc)
+                                      .where(hide_from_search: true)
+                                      .page params[:page]
   end
 
   private

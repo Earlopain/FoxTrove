@@ -16,6 +16,11 @@
     <% if E6ApiClient.enabled? %>
       <%= link_to "UREV", update_e6_iqdb_submission_file_path(submission_file), title: "Update E6 IQDB data", method: :post %>
     <% end %>
+    <% if submission_file.hide_from_search? %>
+      <%= link_to "UH", modify_hidden_submission_file_path(submission_file, type: "remove"), title: "Add back into search", method: :put %>
+    <% else %>
+      <%= link_to "H", modify_hidden_submission_file_path(submission_file, type: "add"), title: "Remove from search", method: :put %>
+    <% end %>
     <% if submission_file.in_backlog? %>
       <%= link_to "-", modify_backlog_submission_file_path(submission_file, type: "remove"), title: "Remove from backlog", method: :put %>
     <% else %>
