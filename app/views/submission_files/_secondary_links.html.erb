@@ -1,2 +1,10 @@
 <%= subnav_link_to "Backlog", backlog_submission_files_path %>
 <%= subnav_link_to "Hidden", hidden_submission_files_path %>
+<% if @submission_file&.artist %>
+  |
+  <%= subnav_link_to "All From Artist", artist_path(@submission_file.artist) %>
+  <%= subnav_link_to "All From URL", artist_path(@submission_file.artist, search: { artist_url_id: [@submission_file.artist_url.id] }) %>
+  <% if E6ApiClient.enabled? %>
+    <%= subnav_link_to "Update E6 IQDB", update_e6_iqdb_submission_file_path(@submission_file), method: :post %>
+  <% end %>
+<% end %>
