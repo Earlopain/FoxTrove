@@ -14,25 +14,25 @@ class ApplicationRecord < ActiveRecord::Base
       def attribute_matches(value, attribute)
         return all if value.nil?
 
-        column_matches(self, attribute, value)
+        _, column = get_column_and_model_class(attribute)
+        column_matches(self, column, value)
       end
 
       def join_attribute_matches(value, attribute)
         return all if value.nil?
 
-        column, model_class = get_column_and_model_class(attribute)
         q = distinct.joins(join_hash(attribute))
+        model_class, column = get_column_and_model_class(attribute)
         q.column_matches(model_class, column, value)
       end
 
-      def column_matches(model_class, column_name, value)
-        column = model_class.column_for_attribute(column_name)
+      def column_matches(model_class, column, value)
         qualified_column = "#{model_class.table_name}.#{column.name}"
         values = value.is_a?(Array) ? value : value.to_s.split(",")
         return if values.empty?
 
-        if model_class.defined_enums.key? column_name.to_s
-          where("#{qualified_column} IN(?)", values.map { |v| model_class.defined_enums[column_name.to_s][v] })
+        if model_class.defined_enums.key? column.name.to_s
+          where("#{qualified_column} IN(?)", values.map { |v| model_class.defined_enums[column.name.to_s][v] })
         else
           case column.sql_type_metadata.type
           when :text
@@ -59,7 +59,7 @@ class ApplicationRecord < ActiveRecord::Base
         path = hash_path(attribute)
         model_name  = path.second_to_last || table_name
         model_class = model_name.to_s.classify.constantize
-        [path.last, model_class]
+        [model_class, model_class.column_for_attribute(path.last)]
       end
 
       # Input:  :id
