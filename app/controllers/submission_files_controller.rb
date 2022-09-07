@@ -9,19 +9,19 @@ class SubmissionFilesController < ApplicationController
   end
 
   def index
-    @submission_files = SubmissionFile.search(search_params).where(hide_from_search: false).with_everything.page(params[:page])
+    @submission_files = SubmissionFile.search(search_params).where(hidden_from_search_at: nil).with_everything.page(params[:page])
   end
 
   def modify_backlog
     submission_file = SubmissionFile.find(params[:id])
     in_backlog = params[:type] == "add"
-    submission_file.update(in_backlog: in_backlog, added_to_backlog_at: in_backlog ? Time.current : nil)
+    submission_file.update(added_to_backlog_at: in_backlog ? Time.current : nil)
   end
 
   def modify_hidden
     submission_file = SubmissionFile.find(params[:id])
     hide_from_search = params[:type] == "add"
-    submission_file.update(hide_from_search: hide_from_search, hidden_from_search_at: hide_from_search ? Time.current : nil)
+    submission_file.update(hidden_from_search_at: hide_from_search ? Time.current : nil)
   end
 
   def update_e6_iqdb
@@ -36,7 +36,7 @@ class SubmissionFilesController < ApplicationController
     @submission_files = SubmissionFile.search(search_params)
                                       .with_everything
                                       .reorder(added_to_backlog_at: :desc)
-                                      .where(in_backlog: true)
+                                      .where.not(added_to_backlog_at: nil)
                                       .page params[:page]
   end
 
@@ -44,7 +44,7 @@ class SubmissionFilesController < ApplicationController
     @submission_files = SubmissionFile.search(search_params)
                                       .with_everything
                                       .reorder(hidden_from_search_at: :desc)
-                                      .where(hide_from_search: true)
+                                      .where.not(hidden_from_search_at: nil)
                                       .page params[:page]
   end
 

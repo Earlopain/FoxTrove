@@ -325,10 +325,8 @@ CREATE TABLE public.submission_files (
     height integer NOT NULL,
     size integer NOT NULL,
     content_type text NOT NULL,
-    in_backlog boolean DEFAULT false NOT NULL,
     added_to_backlog_at timestamp without time zone,
     iqdb_hash bytea,
-    hide_from_search boolean DEFAULT false NOT NULL,
     hidden_from_search_at timestamp without time zone
 );
 
@@ -718,6 +716,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220802183207'),
 ('20220827125606'),
 ('20220903194120'),
-('20220905134536');
+('20220905134536'),
+('20220907184811');
 
 
