@@ -14,7 +14,7 @@ class ApplicationRecord < ActiveRecord::Base
       def attribute_matches(value, attribute)
         return all if value.nil?
 
-        _, column = get_column_and_model_class(attribute)
+        _, column = get_model_class_and_column(attribute)
         column_matches(self, column, value)
       end
 
@@ -22,7 +22,7 @@ class ApplicationRecord < ActiveRecord::Base
         return all if value.nil?
 
         q = distinct.joins(join_hash(attribute))
-        model_class, column = get_column_and_model_class(attribute)
+        model_class, column = get_model_class_and_column(attribute)
         q.column_matches(model_class, column, value)
       end
 
@@ -35,7 +35,7 @@ class ApplicationRecord < ActiveRecord::Base
       def join_attribute_nil_check(value, attribute)
         return all unless value.in? [true, false]
 
-        model_class, column = get_column_and_model_class(attribute)
+        model_class, column = get_model_class_and_column(attribute)
         qualified_column = "#{model_class.table_name}.#{column.name}"
         q = distinct.joins(join_hash(attribute))
         q.nil_check(value, qualified_column)
@@ -78,7 +78,7 @@ class ApplicationRecord < ActiveRecord::Base
         q
       end
 
-      def get_column_and_model_class(attribute)
+      def get_model_class_and_column(attribute)
         path = hash_path(attribute)
         model_name  = path.second_to_last || table_name
         model_class = model_name.to_s.classify.constantize
