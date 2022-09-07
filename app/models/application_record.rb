@@ -26,6 +26,29 @@ class ApplicationRecord < ActiveRecord::Base
         q.column_matches(model_class, column, value)
       end
 
+      def attribute_nil_check(value, attribute)
+        return all unless value.in? [true, false]
+
+        nil_check(value, attribute)
+      end
+
+      def join_attribute_nil_check(value, attribute)
+        return all unless value.in? [true, false]
+
+        model_class, column = get_column_and_model_class(attribute)
+        qualified_column = "#{model_class.table_name}.#{column.name}"
+        q = distinct.joins(join_hash(attribute))
+        q.nil_check(value, qualified_column)
+      end
+
+      def nil_check(value, attribute)
+        if value == true
+          where.not(attribute => nil)
+        else
+          where(attribute => nil)
+        end
+      end
+
       def column_matches(model_class, column, value)
         qualified_column = "#{model_class.table_name}.#{column.name}"
         values = value.is_a?(Array) ? value : value.to_s.split(",")

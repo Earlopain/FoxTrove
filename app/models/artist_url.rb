@@ -20,6 +20,10 @@ class ArtistUrl < ApplicationRecord
     pillowfort commishes furrynetwork facebook
   ].map.with_index { |v, index| [v, index] }.to_h
 
+  def self.search(params)
+    join_attribute_nil_check(params[:in_backlog], submissions: { submission_files: :added_to_backlog_at })
+  end
+
   def set_api_identifier!
     return unless scraper_enabled?
 

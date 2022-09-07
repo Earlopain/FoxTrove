@@ -160,6 +160,8 @@ class SubmissionFile < ApplicationRecord
               end
         end
         q = q.attribute_matches(params[:content_type], :content_type)
+        q = q.attribute_nil_check(params[:in_backlog], :added_to_backlog_at)
+        q = q.attribute_nil_check(params[:hidden_from_search], :hidden_from_search_at)
         q = q.join_attribute_matches(params[:artist_url_id], artist_submission: { artist_url: :id })
         q = q.join_attribute_matches(params[:artist_id], artist_submission: { artist_url: { artist: :id } })
         q = q.join_attribute_matches(params[:site_type], artist_submission: { artist_url: :site_type })

@@ -9,7 +9,7 @@ class SubmissionFilesController < ApplicationController
   end
 
   def index
-    @submission_files = SubmissionFile.search(search_params).where(hidden_from_search_at: nil).with_everything.page(params[:page])
+    @submission_files = SubmissionFile.search({ **search_params, hidden_from_search: false }).with_everything.page(params[:page])
   end
 
   def modify_backlog
@@ -33,18 +33,16 @@ class SubmissionFilesController < ApplicationController
   end
 
   def backlog
-    @submission_files = SubmissionFile.search(search_params)
+    @submission_files = SubmissionFile.search({ **search_params, in_backlog: true })
                                       .with_everything
                                       .reorder(added_to_backlog_at: :desc)
-                                      .where.not(added_to_backlog_at: nil)
                                       .page params[:page]
   end
 
   def hidden
-    @submission_files = SubmissionFile.search(search_params)
+    @submission_files = SubmissionFile.search({ **search_params, hidden_from_search: true })
                                       .with_everything
                                       .reorder(hidden_from_search_at: :desc)
-                                      .where.not(hidden_from_search_at: nil)
                                       .page params[:page]
   end
 
