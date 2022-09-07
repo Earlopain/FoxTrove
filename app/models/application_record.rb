@@ -79,10 +79,16 @@ class ApplicationRecord < ActiveRecord::Base
       end
 
       def get_model_class_and_column(attribute)
-        path = hash_path(attribute)
-        model_name  = path.second_to_last || table_name
-        model_class = model_name.to_s.classify.constantize
-        [model_class, model_class.column_for_attribute(path.last)]
+        remaining_path = hash_path(attribute)
+        current_model = self
+        current_path = remaining_path.shift || table_name
+
+        while remaining_path.any?
+          path_class_name = current_model.reflect_on_association(current_path)&.class_name || current_path.to_s.classify
+          current_model = path_class_name.constantize
+          current_path = remaining_path.shift
+        end
+        [current_model, current_model.column_for_attribute(current_path)]
       end
 
       # Input:  :id
