@@ -27,7 +27,7 @@ class ArtistsController < ApplicationController
   def show
     @artist = Artist.includes(:artist_urls).find(params[:id])
     @submission_files = SubmissionFile
-                        .search(instance_search_params.merge({ artist_id: @artist.id }))
+                        .search(instance_search_params.merge({ artist_id: @artist.id, hidden_from_search: false }))
                         .with_everything
                         .page params[:page]
     respond_with(@artist)
