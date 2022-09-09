@@ -21,7 +21,8 @@ class ArtistUrl < ApplicationRecord
   ].map.with_index { |v, index| [v, index] }.to_h
 
   def self.search(params)
-    join_attribute_nil_check(params[:in_backlog], submissions: { submission_files: :added_to_backlog_at })
+    q = join_attribute_nil_check(params[:in_backlog], submissions: { submission_files: :added_to_backlog_at })
+    q.join_attribute_nil_check(params[:hidden_from_search], submissions: { submission_files: :hidden_from_search_at })
   end
 
   def set_api_identifier!
