@@ -14,7 +14,7 @@ module ArtistHelper
     artist_url_collection(ArtistUrl.search(hidden_from_search: true))
   end
 
-  private 
+  private
 
   def artist_url_collection(artist_url_collection)
     artist_urls = ArtistUrl.where(id: artist_url_collection.group(:id).count.keys).order(:artist_id)
