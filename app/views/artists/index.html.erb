@@ -11,8 +11,12 @@
       <th>ID</th>
       <th>Name</th>
       <th>URLs</th>
+      <th>Last scraped</th>
       <th>Submissions</th>
       <th>Files</th>
+      <th>Not Uploaded</th>
+      <th>Larger Size</th>
+      <th>Larger Dimensions</th>
     </tr>
   </thead>
   <tbody>
@@ -22,7 +26,11 @@
         <td><%= artist.name %></td>
         <td><%= artist.artist_urls.count %></td>
         <td><%= artist.submissions.count %></td>
+        <td><%= time_ago artist.last_scraped %></td>
         <td><%= artist.submission_files.count %></td>
+        <td><%= link_to artist.not_uploaded.count, artist_path(artist, search: { upload_status: "not_uploaded" }) %></td>
+        <td><%= link_to artist.larger_submissions_size.count, artist_path(artist, search: { upload_status: "larger_only_filesize_percentage" }) %></td>
+        <td><%= link_to artist.larger_submissions_dimensions.count, artist_path(artist, search: { upload_status: "larger_only_dimensions" }) %></td>
       </tr>
     <% end %>
   </tbody>

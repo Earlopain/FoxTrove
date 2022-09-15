@@ -21,7 +21,7 @@ class ArtistsController < ApplicationController
   end
 
   def index
-    @artists = Artist.search(index_search_params).page params[:page]
+    @artists = Artist.includes(:artist_urls).search(index_search_params).page params[:page]
   end
 
   def show
