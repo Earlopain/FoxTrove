@@ -144,21 +144,8 @@ class SubmissionFile < ApplicationRecord
   concerning :SearchMethods do
     class_methods do
       def search(params)
-        q = all
-        if params[:upload_status].present?
-          q = case params[:upload_status]
-              when "larger_only_filesize_kb"
-                size = (params[:larger_only_filesize_treshold] || 50).to_i.kilobytes
-                q.send(params[:upload_status], size)
-              when "larger_only_filesize_percentage"
-                size = (params[:larger_only_filesize_treshold] || 10).to_i
-                q.send(params[:upload_status], size)
-              when "larger_only_dimensions", "exact_match_exists", "already_uploaded", "not_uploaded"
-                q.send(params[:upload_status])
-              else
-                q.none
-              end
-        end
+        params[:hidden_from_search] ||= false
+        q = status_search(params)
         q = q.attribute_matches(params[:content_type], :content_type)
         q = q.attribute_nil_check(params[:in_backlog], :added_to_backlog_at)
         q = q.attribute_nil_check(params[:hidden_from_search], :hidden_from_search_at)
@@ -168,6 +155,25 @@ class SubmissionFile < ApplicationRecord
         q = q.join_attribute_matches(params[:artist_id], artist_submission: { artist_url: { artist: :id } })
         q = q.join_attribute_matches(params[:site_type], artist_submission: { artist_url: :site_type })
         q.order(created_at_on_site: :desc)
+      end
+
+      def status_search(params)
+        if params[:upload_status].present?
+          case params[:upload_status]
+          when "larger_only_filesize_kb"
+            size = (params[:larger_only_filesize_treshold] || 50).to_i.kilobytes
+            send(params[:upload_status], size)
+          when "larger_only_filesize_percentage"
+            size = (params[:larger_only_filesize_treshold] || 10).to_i
+            send(params[:upload_status], size)
+          when "larger_only_dimensions", "exact_match_exists", "already_uploaded", "not_uploaded"
+            send(params[:upload_status])
+          else
+            none
+          end
+        else
+          all
+        end
       end
 
       def search_params

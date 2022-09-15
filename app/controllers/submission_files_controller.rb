@@ -9,7 +9,7 @@ class SubmissionFilesController < ApplicationController
   end
 
   def index
-    @submission_files = SubmissionFile.search(search_params.merge(hidden_from_search: false)).with_everything.page(params[:page])
+    @submission_files = SubmissionFile.search(search_params).with_everything.page(params[:page])
   end
 
   def modify_backlog
