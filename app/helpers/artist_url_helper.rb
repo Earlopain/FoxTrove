@@ -25,4 +25,9 @@ module ArtistUrlHelper
       numeric_site_type + scraper_modifier
     end
   end
+
+  def last_scraped_at_text(artist_url)
+    return "never" unless artist_url.last_scraped_at
+    artist_url.last_scraped_at
+  end
 end
