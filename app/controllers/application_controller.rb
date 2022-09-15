@@ -1,10 +1,15 @@
 # frozen_string_literal: true
 
 class ApplicationController < ActionController::Base
+  before_action :set_start_time
   before_action :normalize_params
   around_action :with_time_zone
 
   rescue_from Exception, with: :rescue_exception
+
+  def set_start_time
+    @start_time = Time.current.to_f
+  end
 
   def normalize_params
     return unless request.get? || request.head?

@@ -1,5 +1,6 @@
 <footer>
   <%= "#{Config.app_name}" %>
+  – Rendered in <%= (Time.current.to_f - @start_time).round(3) %> seconds
   <% if GitHelper.enabled? %>
     – <%= link_to "Github", GitHelper.url %> (<%= link_to GitHelper.hash, "#{GitHelper.url}/tree/#{GitHelper.hash}" %>)
   <% end %>
