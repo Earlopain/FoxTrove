@@ -28,6 +28,7 @@ module ArtistUrlHelper
 
   def last_scraped_at_text(artist_url)
     return "never" unless artist_url.last_scraped_at
+
     artist_url.last_scraped_at
   end
 end
