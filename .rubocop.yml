@@ -97,5 +97,8 @@ Rails/Output:
 RSpec/ExampleLength:
   Max: 20
 
+RSpec/NoExpectationExample:
+  Enabled: false
+
 RSpec/MultipleExpectations:
   Max: 5

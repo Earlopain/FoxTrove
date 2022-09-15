@@ -11,7 +11,7 @@ RUN apk --no-cache add \
   ffmpeg \
   && npm install -g corepack
 
-RUN corepack prepare yarn@3.2.2 --activate
+RUN corepack prepare yarn@3.2.3 --activate
 
 RUN git config --global --add safe.directory /app
 
@@ -19,7 +19,7 @@ COPY package.json yarn.lock .yarnrc.yml ./
 RUN yarn install
 
 COPY Gemfile Gemfile.lock ./
-RUN gem i bundler:2.3.20 foreman && BUNDLE_IGNORE_CONFIG=true bundle install
+RUN gem i bundler:2.3.22 foreman && BUNDLE_IGNORE_CONFIG=true bundle install
 
 RUN solargraph download-core \
   && bundle exec yard gems \
