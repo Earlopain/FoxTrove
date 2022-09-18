@@ -53,7 +53,7 @@ class Artist < ApplicationRecord
   end
 
   def last_scraped
-    artist_urls.map(&:last_scraped_at).compact.min
+    artist_urls.filter_map(&:last_scraped_at).min
   end
 
   def not_uploaded

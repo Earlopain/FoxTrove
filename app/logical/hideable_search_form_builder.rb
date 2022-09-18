@@ -5,11 +5,11 @@ class HideableSearchFormBuilder < SimpleForm::FormBuilder
     value = @options[:search_params][attribute_name]
     options[:input_html] ||= {}
     if options[:collection]
-      options.merge! selected: value
+      options[:selected] = value
     elsif options[:as]&.to_sym == :boolean
-      options[:input_html].merge! checked: true if value == "1"
+      options[:input_html][:checked] = true if value == "1"
     else
-      options[:input_html].merge! value: value
+      options[:input_html][:value] = value
     end
     super(attribute_name, options, &)
   end

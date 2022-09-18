@@ -1,5 +1,6 @@
 require:
   - rubocop-github-annotation-formatter
+  - rubocop-performance
   - rubocop-rails
   - rubocop-rspec
 

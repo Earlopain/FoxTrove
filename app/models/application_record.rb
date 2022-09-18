@@ -72,7 +72,7 @@ class ApplicationRecord < ActiveRecord::Base
         wildcard_text, non_wildcard_text = values.partition { |e| e.include?("*") }
         q = where("LOWER(#{qualified_column}) IN(?)", non_wildcard_text.map(&:downcase))
         wildcard_text.each do |text|
-          condition = where("#{qualified_column} ILIKE ?", text.gsub("_", "\\_").gsub("%", "\\%").gsub("*", "%").gsub("\\", "\\\\\\\\"))
+          condition = where("#{qualified_column} ILIKE ?", text.gsub("_", "\\_").gsub("%", "\\%").tr("*", "%").gsub("\\", "\\\\\\\\"))
           q = q.or(condition)
         end
         q
