@@ -75,6 +75,7 @@ Install a WSL distribution, enable WSL2, and clone the project inside there. Exe
 
 1. Clone the repo with `git clone https://github.com/earlopain/reverser.git`.
 1. `cd` into the repo.
+1. `cp .env.sample .env` and fill out the necessary environment variables.
 1. Run `docker-compose up`. The container is now available at `http://localhost:9000`.
 1. Get inside the container with `docker-compose run reverser sh`.
 1. Run `bin/rails assets:generate_spritemap` to stich the favicons in one image.

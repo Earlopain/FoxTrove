@@ -10,7 +10,7 @@ services:
     volumes:
       - .:/app
       - build_assets:/app/public/build
-      - active_storage:/app/public/storage
+      - ${REVERSER_DATA_PATH}/active_storage:/app/public/storage
       - node_modules:/app/node_modules
       - yarn:/app/.yarn
       - bootsnap:/bootsnap
@@ -46,7 +46,7 @@ services:
       - POSTGRES_DB=reverser_development
       - POSTGRES_HOST_AUTH_METHOD=trust
     volumes:
-      - db_data:/var/lib/postgresql/data
+      - ${REVERSER_DATA_PATH}/db_data:/var/lib/postgresql/data
     ports:
       - 5432:5432
 
@@ -62,7 +62,7 @@ services:
   iqdb:
     image: ghcr.io/earlopain/iqdb:de8f10e2ddd862c37dc39348d6cb1c30112be146 
     volumes:
-      - iqdb_data:/iqdb
+      - ${REVERSER_DATA_PATH}/iqdb_data:/iqdb
 
   selenium:
     image: selenium/standalone-chrome:4.4.0-20220812
@@ -97,11 +97,8 @@ services:
      - "rspec"
 
 volumes:
-  db_data:
   redis_data:
-  iqdb_data:
   build_assets:
-  active_storage:
   node_modules:
   yarn:
   bootsnap:
