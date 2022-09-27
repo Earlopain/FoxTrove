@@ -76,6 +76,7 @@ Install a WSL distribution, enable WSL2, and clone the project inside there. Exe
 1. Clone the repo with `git clone https://github.com/earlopain/reverser.git`.
 1. `cd` into the repo.
 1. `cp .env.sample .env` and fill out the necessary environment variables.
+1. Run `docker-compose build`.
 1. Run `docker-compose up`. The container is now available at `http://localhost:9000`.
 1. Get inside the container with `docker-compose run reverser sh`.
 1. Run `bin/rails assets:generate_spritemap` to stich the favicons in one image.
@@ -94,3 +95,5 @@ You can pass addition parameters like individual test files for rspec or `-a` fo
 #### Solargraph
 
 The project works out of the box with the [VSCode solargraph extension](https://marketplace.visualstudio.com/items?itemName=castwide.solargraph). If it's not working execute the "Reload Window" command. The extension doesn't cope with the language server not being available on startup and refused to work altogether until a full reload is performed.
+
+Note: Does not work on Windows. Windows folders can't be mounted with the same absolute path inside the container, since drive prefixes like C: don't exist in Linux. The same absolute path is required by solargraph for correctly reporting diagnostics. Use WSL if you want this.

@@ -25,7 +25,6 @@ services:
       - memcached
       - iqdb
       - selenium
-      - solargraph
     ports:
       - 9000:9000
     tty: true
@@ -38,6 +37,8 @@ services:
       - .:$PWD
     ports:
       - 7658:7658
+    profiles:
+      - solargraph
 
   postgres:
     image:  postgres:14-alpine
