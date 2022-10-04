@@ -14,6 +14,12 @@ module ArtistHelper
     artist_url_collection(ArtistUrl.search(hidden_from_search: true))
   end
 
+  def oldest_last_scraped_at_text(artist)
+    return "Never" unless artist.oldest_last_scraped_at
+
+    time_ago artist.oldest_last_scraped_at
+  end
+
   private
 
   def artist_url_collection(artist_url_collection)

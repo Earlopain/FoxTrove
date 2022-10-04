@@ -52,8 +52,11 @@ class Artist < ApplicationRecord
     end
   end
 
-  def last_scraped
-    artist_urls.filter_map(&:last_scraped_at).min
+  def oldest_last_scraped_at
+    scraper_urls = artist_urls.select(&:scraper_enabled?)
+    if scraper_urls.none? { |artist_url| artist_url.last_scraped_at.nil? }
+      scraper_urls.map(&:last_scraped_at).min
+    end
   end
 
   def not_uploaded
