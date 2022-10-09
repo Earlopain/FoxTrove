@@ -154,7 +154,7 @@ class SubmissionFile < ApplicationRecord
         q = q.join_attribute_matches(params[:artist_url_id], artist_submission: { artist_url: :id })
         q = q.join_attribute_matches(params[:artist_id], artist_submission: { artist_url: { artist: :id } })
         q = q.join_attribute_matches(params[:site_type], artist_submission: { artist_url: :site_type })
-        q.order(created_at_on_site: :desc)
+        q.order(created_at_on_site: :desc, file_identifier: :desc)
       end
 
       def status_search(params)
