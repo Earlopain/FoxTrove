@@ -11,6 +11,8 @@ module Scraper
       image/vnd.adobe.photoshop
       application/pdf
       application/zip
+      application/vnd.rar
+      audio/mpeg
     ].freeze
 
     def initialize
