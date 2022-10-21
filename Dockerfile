@@ -21,9 +21,10 @@ RUN yarn install
 COPY Gemfile Gemfile.lock ./
 RUN gem i bundler:2.3.22 foreman && BUNDLE_IGNORE_CONFIG=true bundle install
 
-RUN solargraph download-core \
-  && bundle exec yard gems \
-  && solargraph bundle
+ARG COMPOSE_PROFILES
+RUN if [[ $COMPOSE_PROFILES == *"solargraph"* ]]; then \
+  solargraph download-core && bundle exec yard gems && solargraph bundle; \
+fi
 
 RUN echo "IRB.conf[:USE_AUTOCOMPLETE] = false" > ~/.irbrc
 

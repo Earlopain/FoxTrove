@@ -2,7 +2,10 @@ version: "3"
 
 services:
   reverser:
-    build: ./
+    build:
+      context: ./
+      args:
+        COMPOSE_PROFILES: ${COMPOSE_PROFILES-}
     image: reverser
     environment:
       # Don't make bootsnap part of the tmpfs
