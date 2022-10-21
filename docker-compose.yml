@@ -69,7 +69,7 @@ services:
       - ${REVERSER_DATA_PATH}/iqdb_data:/iqdb
 
   selenium:
-    image: selenium/standalone-chrome:4.4.0-20220812
+    image: selenium/standalone-chrome:4.5.0-20221017
     environment:
       - VNC_NO_PASSWORD=1
     shm_size: 2gb
