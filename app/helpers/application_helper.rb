@@ -20,6 +20,10 @@ module ApplicationHelper
     link_to text, url, **options, rel: "nofollow noopener noreferrer"
   end
 
+  def fake_link(text, **params)
+    tag.a(text, href: "#", **params, onclick: "return false;")
+  end
+
   def page_title(title = nil)
     if title.present?
       content_for(:page_title) { title }
@@ -32,8 +36,8 @@ module ApplicationHelper
 
   def hideable_search(path, &)
     tag.div(class: "hideable-search-container") do
-      show = tag.div("Show Search Options", href: "#", class: "hideable-search-show link #{'hidden' if params[:search].present?}")
-      hide = tag.div("Hide Search Options", href: "#", class: "hideable-search-hide link #{'hidden' if params[:search].blank?}")
+      show = fake_link("Show Search Options", class: "hideable-search-show #{'hidden' if params[:search].present?}")
+      hide = fake_link("Hide Search Options", class: "hideable-search-hide #{'hidden' if params[:search].blank?}")
       form = simple_form_for(:search, method: :get, url: path, defaults: { required: false }, builder: HideableSearchFormBuilder, search_params: params[:search], &)
       show.concat(hide).concat(tag.span(form, class: "hideable-search-form #{'hidden' if params[:search].blank?}"))
     end

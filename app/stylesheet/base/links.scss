@@ -1,12 +1,11 @@
-a, a:link, a:visited, .link {
+a, a:link, a:visited {
   color: $color-link;
   text-decoration: none;
 }
 
-a:hover, .link:hover {
+a:hover {
   color: $color-link-hover;
   text-decoration: none;
-  cursor: pointer;
 }
 
 a:active {
