@@ -26,17 +26,17 @@ footer {
   margin-top: auto;
 }
 
-.hideable-search-container {
+.toggleable-container {
   width: max-content;
 
-  &[data-form-visible="true"] {
-    .hideable-search-show {
+  &[data-content-visible="true"] {
+    .link-show {
       display: none;
     }
   }
 
-  &[data-form-visible="false"] {
-    .hideable-search-hide, .hideable-search-form {
+  &[data-content-visible="false"] {
+    .link-hide, .toggleable-content {
       display: none;
     }
   }

@@ -34,14 +34,19 @@ module ApplicationHelper
     end
   end
 
+  def toggleable(show_text, hide_text, visible_on_load:, &)
+    tag.div(class: "toggleable-container", data: { content_visible: visible_on_load }) do
+      show = fake_link(show_text, class: "link-show")
+      hide = fake_link(hide_text, class: "link-hide")
+      show.concat(hide).concat(tag.span(yield, class: "toggleable-content"))
+    end
+  end
+
   def hideable_search(path, &)
-    tag.div(class: "hideable-search-container", data: { form_visible: params[:search].present? }) do
-      show = fake_link("Show Search Options", class: "hideable-search-show")
-      hide = fake_link("Hide Search Options", class: "hideable-search-hide")
-      form = simple_form_for(:search, method: :get, url: path, defaults: { required: false }, builder: HideableSearchFormBuilder, search_params: params[:search]) do |f|
+    toggleable("Show Search Options", "Hide Search Options", visible_on_load: params[:search].present?) do
+      simple_form_for(:search, method: :get, url: path, defaults: { required: false }, builder: HideableSearchFormBuilder, search_params: params[:search]) do |f|
         capture { yield(f) } + f.submit("Search")
       end
-      show.concat(hide).concat(tag.span(form, class: "hideable-search-form"))
     end
   end
 
