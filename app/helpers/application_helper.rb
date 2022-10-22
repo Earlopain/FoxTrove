@@ -38,7 +38,9 @@ module ApplicationHelper
     tag.div(class: "hideable-search-container", data: { form_visible: params[:search].present? }) do
       show = fake_link("Show Search Options", class: "hideable-search-show")
       hide = fake_link("Hide Search Options", class: "hideable-search-hide")
-      form = simple_form_for(:search, method: :get, url: path, defaults: { required: false }, builder: HideableSearchFormBuilder, search_params: params[:search], &)
+      form = simple_form_for(:search, method: :get, url: path, defaults: { required: false }, builder: HideableSearchFormBuilder, search_params: params[:search]) do |f|
+        capture { yield(f) } + f.submit("Search")
+      end
       show.concat(hide).concat(tag.span(form, class: "hideable-search-form"))
     end
   end
