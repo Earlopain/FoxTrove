@@ -44,7 +44,7 @@ services:
       - solargraph
 
   postgres:
-    image:  postgres:14-alpine
+    image:  postgres:15-alpine
     environment:
       - POSTGRES_USER=reverser
       - POSTGRES_DB=reverser_development
