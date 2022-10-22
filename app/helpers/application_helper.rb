@@ -35,11 +35,11 @@ module ApplicationHelper
   end
 
   def hideable_search(path, &)
-    tag.div(class: "hideable-search-container") do
-      show = fake_link("Show Search Options", class: "hideable-search-show #{'hidden' if params[:search].present?}")
-      hide = fake_link("Hide Search Options", class: "hideable-search-hide #{'hidden' if params[:search].blank?}")
+    tag.div(class: "hideable-search-container", data: { form_visible: params[:search].present? }) do
+      show = fake_link("Show Search Options", class: "hideable-search-show")
+      hide = fake_link("Hide Search Options", class: "hideable-search-hide")
       form = simple_form_for(:search, method: :get, url: path, defaults: { required: false }, builder: HideableSearchFormBuilder, search_params: params[:search], &)
-      show.concat(hide).concat(tag.span(form, class: "hideable-search-form #{'hidden' if params[:search].blank?}"))
+      show.concat(hide).concat(tag.span(form, class: "hideable-search-form"))
     end
   end
 

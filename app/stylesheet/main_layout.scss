@@ -28,4 +28,16 @@ footer {
 
 .hideable-search-container {
   width: max-content;
+
+  &[data-form-visible="true"] {
+    .hideable-search-show {
+      display: none;
+    }
+  }
+
+  &[data-form-visible="false"] {
+    .hideable-search-hide, .hideable-search-form {
+      display: none;
+    }
+  }
 }
