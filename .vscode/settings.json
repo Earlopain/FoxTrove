@@ -10,7 +10,7 @@
   "solargraph.diagnostics": true,
   "solargraph.externalServer": {
     "host": "localhost",
-    "port": 7658
+    "port": 7659
   },
   "solargraph.formatting": true,
   "solargraph.transport": "external",

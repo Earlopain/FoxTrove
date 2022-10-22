@@ -34,12 +34,12 @@ services:
 
   solargraph:
     image: reverser
-    entrypoint: solargraph socket -h 0.0.0.0
+    entrypoint: solargraph socket -h 0.0.0.0 -p 7659
     working_dir: $PWD
     volumes:
       - .:$PWD
     ports:
-      - 7658:7658
+      - 7659:7659
     profiles:
       - solargraph
 
