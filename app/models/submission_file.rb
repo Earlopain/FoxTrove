@@ -137,6 +137,13 @@ class SubmissionFile < ApplicationRecord
     IqdbProxy.remove_submission self if can_iqdb?
   end
 
+  def update_e6_iqdb
+    E6IqdbQueryWorker.perform_async id
+    similar = IqdbProxy.query_submission_file(self).pluck(:submission)
+    similar.each { |s| s.e6_iqdb_entries.destroy_all }
+    similar.each { |s| E6IqdbQueryWorker.perform_async s.id } # rubocop:disable Style/CombinableLoops
+  end
+
   def generate_variants
     sample.attach(io: VariantGenerator.sample(original), filename: "sample")
   end

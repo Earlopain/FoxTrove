@@ -7,4 +7,5 @@
   <%= subnav_link_to "Scraper Logs", log_events_path(search: { loggable_type: "ArtistUrl", loggable_id: @artist.artist_urls.map(&:id).join(",") }) %>
   <%= subnav_link_to "Edit", edit_artist_path(@artist) %>
   <%= subnav_link_to "Delete", artist_path(@artist), method: :delete, data: { confirm: "Are you sure?" } %>
+  | <%= render "submission_files/multiselect" %>
 <% end %>

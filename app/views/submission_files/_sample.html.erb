@@ -1,5 +1,5 @@
 <% similarity ||= nil %>
-<div class="submission-sample">
+<%= tag.div class: "submission-sample", data: { id: submission_file.id } do %>
   <% if submission_file.original.analyzed? && submission_file.sample&.attached? %>
     <div class="file-container">
       <% if submission_file.sample.content_type.in? %w[image/jpeg image/gif] %>
@@ -15,4 +15,4 @@
     Sample not generated
   <% end %>
   <%= render "submission_files/stats", submission_file: submission_file, similarity: similarity %>
-</div>
+<% end %>

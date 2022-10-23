@@ -1,17 +1,23 @@
+import ClickMode from "./click_mode";
+
 export default class Samples {
   private static currentActive: Element | undefined;
 
   public static init() {
-    for (const thumbnail of document.querySelectorAll(".submission-file")) {
+    for (const thumbnail of ClickMode.getAllElements()) {
       thumbnail.addEventListener("click", () => {
+        if(ClickMode.isDisabled(this)) {
+          return;
+        }
+
         if (this.currentActive && thumbnail.isSameNode(this.currentActive)) {
-          this.removeCurrentActive();
+          this.reset();
         } else {
           this.hideLarge(this.currentActive);
           this.currentActive = thumbnail;
           this.showLarge(thumbnail);
           thumbnail.nextElementSibling?.addEventListener("click", () => {
-            this.removeCurrentActive();
+            this.reset();
           }, { once: true });
         }
       });
@@ -19,16 +25,16 @@ export default class Samples {
   }
 
   private static showLarge(thumbnail: Element) {
-    thumbnail.classList.add("active-thumbnail");
+    thumbnail.classList.add("selected");
     thumbnail.nextElementSibling?.classList.remove("hidden");
   }
 
   private static hideLarge(thumbnail?: Element) {
-    thumbnail?.classList.remove("active-thumbnail");
+    thumbnail?.classList.remove("selected");
     thumbnail?.nextElementSibling?.classList.add("hidden");
   }
 
-  private static removeCurrentActive() {
+  public static reset() {
     this.hideLarge(this.currentActive);
     this.currentActive = undefined;
   }

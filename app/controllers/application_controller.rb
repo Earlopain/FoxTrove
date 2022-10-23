@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class ApplicationController < ActionController::Base
+  skip_forgery_protection
   before_action :set_start_time
   before_action :normalize_params
   around_action :with_time_zone

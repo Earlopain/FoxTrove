@@ -35,6 +35,9 @@ Rails.application.routes.draw do
     collection do
       get :backlog
       get :hidden
+      put :hide_many
+      put :backlog_many
+      put :enqueue_many
     end
   end
   resources :log_events, only: %i[index show]

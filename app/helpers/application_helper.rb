@@ -34,20 +34,21 @@ module ApplicationHelper
     end
   end
 
-  def toggleable(show_text, hide_text, visible_on_load:, &)
-    tag.div(class: "toggleable-container", data: { content_visible: visible_on_load }) do
-      show = fake_link(show_text, class: "link-show")
-      hide = fake_link(hide_text, class: "link-hide")
-      show.concat(hide).concat(tag.span(yield, class: "toggleable-content"))
+  def toggleable(show_text, hide_text, visible_on_load:, show_id: nil, hide_id: nil, &block)
+    tag.span(class: "toggleable-container", data: { content_visible: visible_on_load }) do
+      show = fake_link(show_text, class: "link-show", id: show_id)
+      hide = fake_link(hide_text, class: "link-hide", id: hide_id)
+      show.concat(hide).concat(tag.span(capture(&block), class: "toggleable-content"))
     end
   end
 
   def hideable_search(path, &)
-    toggleable("Show Search Options", "Hide Search Options", visible_on_load: params[:search].present?) do
+    search = toggleable("Show Search Options", "Hide Search Options", visible_on_load: params[:search].present?) do
       simple_form_for(:search, method: :get, url: path, defaults: { required: false }, builder: HideableSearchFormBuilder, search_params: params[:search]) do |f|
-        capture { yield(f) } + f.submit("Search")
+        yield(f) + f.submit("Search")
       end
     end
+    tag.div(search)
   end
 
   def paginated(values)

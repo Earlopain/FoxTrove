@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class SubmissionFilesController < ApplicationController
+  respond_to :json, only: %i[hide_many backlog_many enqueue_many]
+
   def show
     @submission_file = SubmissionFile.find(params[:id])
     @artist_submission = @submission_file.artist_submission
@@ -26,10 +28,7 @@ class SubmissionFilesController < ApplicationController
 
   def update_e6_iqdb
     submission_file = SubmissionFile.find(params[:id])
-    E6IqdbQueryWorker.perform_async submission_file.id
-    similar = IqdbProxy.query_submission_file(submission_file).pluck(:submission)
-    similar.each { |s| s.e6_iqdb_entries.destroy_all }
-    similar.each { |s| E6IqdbQueryWorker.perform_async s.id } # rubocop:disable Style/CombinableLoops
+    submission_file.update_e6_iqdb
   end
 
   def backlog
@@ -44,6 +43,22 @@ class SubmissionFilesController < ApplicationController
                                       .with_everything
                                       .reorder(hidden_from_search_at: :desc)
                                       .page params[:page]
+  end
+
+  def hide_many
+    SubmissionFile.where(id: params[:ids], hidden_from_search_at: nil).find_each do |submission_file|
+      submission_file.update(hidden_from_search_at: Time.current)
+    end
+  end
+
+  def backlog_many
+    SubmissionFile.where(id: params[:ids], added_to_backlog_at: nil).find_each do |submission_file|
+      submission_file.update(added_to_backlog_at: Time.current)
+    end
+  end
+
+  def enqueue_many
+    SubmissionFile.where(id: params[:ids]).find_each(&:update_e6_iqdb)
   end
 
   private
