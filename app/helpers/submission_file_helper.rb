@@ -10,7 +10,7 @@ module SubmissionFileHelper
   def original_file_tag(submission_file)
     url = url_for(submission_file.original)
     if submission_file.original.content_type == "video/mp4"
-      video_tag url, controls: true, class: "submission-file-full hidden"
+      video_tag url, controls: false, class: "submission-file-full hidden"
     else
       image_tag url, loading: "lazy", class: "submission-file-full hidden"
     end

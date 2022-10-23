@@ -27,11 +27,18 @@ export default class Samples {
   private static showLarge(thumbnail: Element) {
     thumbnail.classList.add("selected");
     thumbnail.nextElementSibling?.classList.remove("hidden");
+    if (thumbnail.nextElementSibling instanceof HTMLVideoElement) {
+      thumbnail.nextElementSibling.currentTime = 0;
+      thumbnail.nextElementSibling.play();
+    }
   }
 
   private static hideLarge(thumbnail?: Element) {
     thumbnail?.classList.remove("selected");
     thumbnail?.nextElementSibling?.classList.add("hidden");
+    if (thumbnail?.nextElementSibling instanceof HTMLVideoElement) {
+      thumbnail.nextElementSibling.pause();
+    }
   }
 
   public static reset() {
