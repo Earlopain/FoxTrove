@@ -2,8 +2,10 @@ import ClickMode from "./click_mode";
 
 export default class SubmissionMultiselect {
   private static submitting = false;
+  private static counters: NodeListOf<HTMLElement>;
 
   public static init() {
+    this.counters = document.querySelectorAll(".selected-count");
     document.getElementById("enter-select-mode")?.addEventListener("click", () => {
       ClickMode.activate(this);
     });
@@ -19,6 +21,7 @@ export default class SubmissionMultiselect {
         }
 
         element.classList.toggle("selected");
+        this.setCount();
       })
     }
 
@@ -34,11 +37,12 @@ export default class SubmissionMultiselect {
     }
     document.getElementById("select-all")?.addEventListener("click", () => {
       ClickMode.selectAll();
+      this.setCount();
     })
   }
 
   private static async submit(endpoint: string) {
-    if(this.submitting) {
+    if(this.submitting || ClickMode.getSelectedIds().length == 0) {
       return;
     }
     this.submitting = true;
@@ -49,6 +53,18 @@ export default class SubmissionMultiselect {
       },
       body: JSON.stringify({ ids: ClickMode.getSelectedIds() })
     });
+    this.submitting = false;
     ClickMode.deselectAll();
+  }
+
+  private static setCount(count?: number) {
+    count = count || ClickMode.getSelectedIds().length;
+    for (const counter  of this.counters) {
+      counter.innerText = count.toString();
+    }
+  }
+
+  public static reset() {
+    this.setCount(0);
   }
 }

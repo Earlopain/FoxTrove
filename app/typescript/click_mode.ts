@@ -1,4 +1,5 @@
 import Samples from "./samples";
+import SubmissionMultiselect from "./submission_multiselect";
 
 export default class ClickMode {
   public static state: Object = Samples;
@@ -42,6 +43,7 @@ export default class ClickMode {
 
   private static resetAll() {
     Samples.reset();
+    SubmissionMultiselect.reset();
     this.deselectAll();
   }
 }
