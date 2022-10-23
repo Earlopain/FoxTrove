@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 class ArtistsController < ApplicationController
-  respond_to :html
-
   def new
     @artist = Artist.new
     respond_with(@artist)
@@ -17,7 +15,6 @@ class ArtistsController < ApplicationController
         raise ActiveRecord::Rollback
       end
     end
-    respond_with(@artist)
   end
 
   def index
@@ -30,19 +27,16 @@ class ArtistsController < ApplicationController
                         .search(instance_search_params.merge(artist_id: @artist.id))
                         .with_everything
                         .page params[:page]
-    respond_with(@artist)
   end
 
   def edit
     @artist = Artist.includes(:artist_urls).find(params[:id])
-    respond_with(@artist)
   end
 
   def update
     @artist = Artist.find(params[:id])
     @artist.update(artist_params)
     add_new_artist_urls_and_save(@artist)
-    respond_with(@artist)
   end
 
   def destroy
