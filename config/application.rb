@@ -37,6 +37,10 @@ module Reverser
     config.cache_store = :mem_cache_store, Config.memcached_servers, { namespace: Rails.env }
     config.action_controller.cache_store = config.cache_store
 
+    config.logger = ActiveSupport::Logger.new($stdout)
+    if GoodJob::CLI.within_exe?
+      config.log_level = :info
+    end
     # Configuration for the application, engines, and railties goes here.
     #
     # These settings can be overridden in specific environments using the files

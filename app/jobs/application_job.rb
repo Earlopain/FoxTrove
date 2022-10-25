@@ -7,7 +7,9 @@ class ApplicationJob < ActiveJob::Base
   end
 
   around_perform do |_job, block|
-    block.call
+    logger.log_at(:debug) do
+      block.call
+    end
   rescue StandardError => e
     log_exception(e)
     raise
