@@ -24,7 +24,6 @@ services:
       - /app/tmp/sockets
     depends_on:
       - postgres
-      - redis
       - memcached
       - iqdb
       - selenium
@@ -53,12 +52,6 @@ services:
       - ${REVERSER_DATA_PATH}/db_data:/var/lib/postgresql/data
     ports:
       - 5432:5432
-
-  redis:
-    image: redis:alpine
-    command: redis-server --save 10 1 --loglevel warning
-    volumes:
-      - redis_data:/data
 
   memcached:
     image: memcached:alpine
@@ -93,7 +86,6 @@ services:
     entrypoint: bundle exec rspec --require spec_helper --order random
     depends_on:
       - postgres
-      - redis
       - memcached
       - iqdb
       - selenium
@@ -101,7 +93,6 @@ services:
      - "rspec"
 
 volumes:
-  redis_data:
   build_assets:
   node_modules:
   yarn:

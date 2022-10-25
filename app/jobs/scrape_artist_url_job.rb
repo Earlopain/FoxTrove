@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-class ScrapeArtistUrlWorker
-  include Sidekiq::Worker
-
-  sidekiq_options queue: :scraping, lock: :until_executed, lock_ttl: 1.hour, on_conflict: :log
+class ScrapeArtistUrlJob < ApplicationJob
+  include GoodJob::ActiveJobExtensions::Concurrency
+  queue_as :scraping
+  good_job_control_concurrency_with(total_limit: 1, key: -> { arguments.first })
 
   def perform(artist_url_id)
     artist_url = ArtistUrl.find_by id: artist_url_id

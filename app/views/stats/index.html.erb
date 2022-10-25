@@ -29,12 +29,12 @@ DB: <%= number_to_human_size(@db_size) %><br>
 Original: <%= number_to_human_size(@original_size) %><br>
 Samples: <%= number_to_human_size(@sample_size) %>
 
-<h1>Sidekiq Stats</h1>
+<h1>Job Stats</h1>
 
-Pending Scraping: <%= SidekiqStats.scraping_queued.values.sum %><br>
-Pending Submission File Downloads: <%= SidekiqStats.submission_download_queued.values.sum %><br>
+Pending Scraping: <%= JobStats.scraping_queued.values.sum %><br>
+Pending Submission File Downloads: <%= JobStats.submission_download_queued.values.sum %><br>
 <% if E6ApiClient.enabled? %>
-  Pending E6 IQDB Calls: <%= SidekiqStats.e6_iqdb_queued.values.sum %><br>
+  Pending E6 IQDB Calls: <%= JobStats.e6_iqdb_queued.values.sum %><br>
 <% end %>
 <br>
 <%= render "artist_urls/list", artist_urls: @artist_urls %>

@@ -1,9 +1,7 @@
 # frozen_string_literal: true
 
-require "sidekiq_unique_jobs/web"
-
 Rails.application.routes.draw do
-  mount Sidekiq::Web, at: "/sidekiq"
+  mount GoodJob::Engine, at: "/good_job"
 
   resource :iqdb, controller: "iqdb", only: [] do
     get :index

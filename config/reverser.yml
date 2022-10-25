@@ -67,8 +67,6 @@ baraag_access_token:
 pawoo_access_token:
 
 # These settings require a server restart
-# Controls wether or not the logging should be intercepted
-redis_url: "redis://redis"
 selenium_url: "http://selenium:4444"
 memcached_servers:
   - "memcached:11211"

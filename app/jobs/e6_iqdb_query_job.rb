@@ -1,13 +1,9 @@
 # frozen_string_literal: true
 
-class E6IqdbQueryWorker
-  include Sidekiq::Worker
-
-  sidekiq_options queue: :e6_iqdb, lock: :until_executed, lock_ttl: 1.hour, on_conflict: :log, lock_args_method: :lock_args
-
-  def self.lock_args(args)
-    [args[0]]
-  end
+class E6IqdbQueryJob < ApplicationJob
+  include GoodJob::ActiveJobExtensions::Concurrency
+  queue_as :e6_iqdb
+  good_job_control_concurrency_with(total_limit: 1, key: -> { arguments.first })
 
   def perform(submission_file_id)
     return unless E6ApiClient.enabled?

@@ -15,7 +15,7 @@ class Artist < ApplicationRecord
     artist_urls.each do |artist_url|
       artist_url.submissions.each do |submission|
         submission.submission_files.each do |file|
-          E6IqdbQueryWorker.perform_async(file.id)
+          E6IqdbQueryJob.perform_later(file.id)
         end
       end
     end

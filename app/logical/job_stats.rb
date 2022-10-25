@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module SidekiqStats
+module JobStats
   def self.active_urls
     e6_iqdb_queued.keys + submission_download_queued.keys + scraping_queued.keys + scraping_now
   end
@@ -21,24 +21,22 @@ module SidekiqStats
   end
 
   def self.scraping_now
-    Sidekiq::Workers.new.filter_map do |_process_id, _thread_id, work|
-      work["payload"]["args"][0] if work["queue"] == "scraping" && work["payload"]["class"] == "ScrapeArtistUrlWorker"
+    GoodJob::JobsFilter.new(state: "running", queue_name: "scraping").records.map do |job|
+      job.serialized_params["arguments"][0]
     end
   end
 
-  def self.stats_queued(queue, count_proc)
-    Cache.fetch("#{queue}_stats", 1.minute) do
-      queue = Sidekiq::Queue.new(queue)
-      result = Hash.new(0)
-      queue.each_slice(1000) do |batch|
-        ids = batch.map { |job| job.args[0] }
-        count_db = count_proc.call(ids)
-        count_db.each do |artist_url_id, count|
-          result[artist_url_id] += count
-        end
+  def self.stats_queued(queue_name, count_proc)
+    result = Hash.new(0)
+    queue = GoodJob::JobsFilter.new(state: "queued", queue_name: queue_name).filtered_query
+    queue.each_slice(1000) do |batch|
+      ids = batch.map { |job| job.serialized_params["arguments"][0] }
+      count_db = count_proc.call(ids)
+      count_db.each do |artist_url_id, count|
+        result[artist_url_id] += count
       end
-      result.default = nil
-      result
     end
+    result.default = nil
+    result
   end
 end

@@ -50,6 +50,6 @@ class ArtistUrl < ApplicationRecord
   end
 
   def enqueue_scraping
-    ScrapeArtistUrlWorker.perform_async id if scraper_enabled?
+    ScrapeArtistUrlJob.perform_later id if scraper_enabled?
   end
 end

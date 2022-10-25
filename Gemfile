@@ -7,9 +7,8 @@ gem "puma", "~> 5.5"
 gem "rails", "~> 7.0"
 
 gem "dalli"
+gem "good_job"
 gem "pg", "~> 1.1"
-gem "sidekiq"
-gem "sidekiq-unique-jobs"
 
 gem "addressable"
 gem "draper"

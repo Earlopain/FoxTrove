@@ -69,7 +69,7 @@ module Scraper
       })
     end
 
-    # This is pretty hacky and only works because there is only one worker executing at once
+    # This is pretty hacky and only works because there is only one job executing at once
     def enfore_rate_limit(&)
       now = Process.clock_gettime(Process::CLOCK_MONOTONIC)
       elapsed_time = now - @previous_request

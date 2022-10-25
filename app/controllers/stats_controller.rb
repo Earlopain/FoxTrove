@@ -2,7 +2,7 @@
 
 class StatsController < ApplicationController
   def index
-    @artist_urls = ArtistUrl.where id: SidekiqStats.active_urls
+    @artist_urls = ArtistUrl.where id: JobStats.active_urls
     @original_size = sum_for("original", "SubmissionFile")
     @sample_size = sum_for("sample", "SubmissionFile")
     db_name = Rails.configuration.database_configuration[Rails.env]["database"]

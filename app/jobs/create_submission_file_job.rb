@@ -1,14 +1,9 @@
 # frozen_string_literal: true
 
-class CreateSubmissionFileWorker
-  include Sidekiq::Worker
-
-  sidekiq_options queue: :submission_download, lock: :until_executed, lock_ttl: 1.hour,
-                  lock_args_method: :lock_args, on_conflict: :log
-
-  def self.lock_args(args)
-    [args[0], args[1]["identifier"]]
-  end
+class CreateSubmissionFileJob < ApplicationJob
+  include GoodJob::ActiveJobExtensions::Concurrency
+  queue_as :submission_download
+  good_job_control_concurrency_with(total_limit: 1, key: -> { "#{arguments.first}-#{arguments.second['identifier']}" })
 
   def perform(artist_submission_id, file, site_enum)
     submission_file = SubmissionFile.find_by artist_submission_id: artist_submission_id, file_identifier: file["identifier"]

@@ -41,10 +41,9 @@ module Scraper
       )
 
       files.each do |file|
-        # Make arguments sidekiq safe
         file[:created_at] = file[:created_at].to_s
         file = file.stringify_keys
-        CreateSubmissionFileWorker.perform_async artist_submission.id, file, artist_url.site.enum_value
+        CreateSubmissionFileJob.perform_later artist_submission.id, file, artist_url.site.enum_value
       end
     end
 

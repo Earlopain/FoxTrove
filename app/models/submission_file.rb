@@ -92,7 +92,7 @@ class SubmissionFile < ApplicationRecord
   def update_variants_and_iqdb
     return if attachment_changes["original"].blank?
 
-    SubmissionFileUpdateWorker.perform_async id
+    SubmissionFileUpdateJob.perform_later id
   end
 
   def update_e6_iqdb_data
@@ -138,10 +138,10 @@ class SubmissionFile < ApplicationRecord
   end
 
   def update_e6_iqdb
-    E6IqdbQueryWorker.perform_async id
+    E6IqdbQueryJob.perform_later id
     similar = IqdbProxy.query_submission_file(self).pluck(:submission)
     similar.each { |s| s.e6_iqdb_entries.destroy_all }
-    similar.each { |s| E6IqdbQueryWorker.perform_async s.id } # rubocop:disable Style/CombinableLoops
+    similar.each { |s| E6IqdbQueryJob.perform_later s.id } # rubocop:disable Style/CombinableLoops
   end
 
   def generate_variants
