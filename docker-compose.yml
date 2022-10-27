@@ -20,7 +20,6 @@ services:
       - /app/tmp/sockets
     depends_on:
       - postgres
-      - memcached
       - iqdb
       - selenium
     ports:
@@ -49,9 +48,6 @@ services:
     ports:
       - 5432:5432
 
-  memcached:
-    image: memcached:alpine
-
   iqdb:
     image: ghcr.io/earlopain/iqdb:de8f10e2ddd862c37dc39348d6cb1c30112be146 
     volumes:
@@ -73,7 +69,7 @@ services:
       - .:/app
     entrypoint: bundle exec rubocop .
     profiles: 
-      - "rubocop"
+      - rubocop
 
   rspec:
     image: reverser
@@ -82,11 +78,10 @@ services:
     entrypoint: bundle exec rspec --require spec_helper --order random
     depends_on:
       - postgres
-      - memcached
       - iqdb
       - selenium
     profiles: 
-     - "rspec"
+     - rspec
 
 volumes:
   build_assets:

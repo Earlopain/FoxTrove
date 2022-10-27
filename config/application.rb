@@ -34,7 +34,7 @@ module Reverser
 
     config.action_controller.action_on_unpermitted_parameters = :raise
 
-    config.cache_store = :mem_cache_store, Config.memcached_servers, { namespace: Rails.env }
+    config.cache_store = :file_store, Rails.root.join("tmp/file_store")
     config.action_controller.cache_store = config.cache_store
 
     config.logger = ActiveSupport::Logger.new($stdout)
