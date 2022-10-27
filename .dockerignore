@@ -4,4 +4,3 @@ log/
 .yarn/
 !.yarn/releases
 node_modules
-coverage

@@ -22,8 +22,6 @@ gem "simple_form"
 group :development, :test do
   gem "rspec-github", require: false
   gem "rspec-rails", require: false
-  gem "simplecov", require: false
-  gem "simplecov-cobertura", require: false
 end
 
 group :development do
