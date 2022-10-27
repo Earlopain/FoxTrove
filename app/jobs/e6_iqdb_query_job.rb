@@ -6,8 +6,6 @@ class E6IqdbQueryJob < ApplicationJob
   good_job_control_concurrency_with(total_limit: 1, key: -> { arguments.first })
 
   def perform(submission_file_id)
-    return unless E6ApiClient.enabled?
-
     submission_file = SubmissionFile.find_by id: submission_file_id
     return unless submission_file
 

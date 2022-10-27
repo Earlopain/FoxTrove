@@ -33,9 +33,7 @@ Samples: <%= number_to_human_size(@sample_size) %>
 
 Pending Scraping: <%= JobStats.scraping_queued.values.sum %><br>
 Pending Submission File Downloads: <%= JobStats.submission_download_queued.values.sum %><br>
-<% if E6ApiClient.enabled? %>
-  Pending E6 IQDB Calls: <%= JobStats.e6_iqdb_queued.values.sum %><br>
-<% end %>
+Pending E6 IQDB Calls: <%= JobStats.e6_iqdb_queued.values.sum %><br>
 <br>
 <%= render "artist_urls/list", artist_urls: @artist_urls %>
 

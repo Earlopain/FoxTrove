@@ -1,8 +1,6 @@
 <%= toggleable("Enter select mode", "Leave select mode", show_id: "enter-select-mode", hide_id: "leave-select-mode", visible_on_load: false) do %>
   <li><%= fake_link("Hide selected", id: "hide-selected") %> (<span class="selected-count">0</span>)</li>
   <li><%= fake_link("Backlog selected", id: "backlock-selected") %> (<span class="selected-count">0</span>)</li>
-  <% if E6ApiClient.enabled? %>
-    <li><%= fake_link("Enqueue selected", id: "enqueue-selected") %> (<span class="selected-count">0</span>)</li>
-  <% end %>
+  <li><%= fake_link("Enqueue selected", id: "enqueue-selected") %> (<span class="selected-count">0</span>)</li>
   <li><%= fake_link("Select All", id: "select-all") %></li>
 <% end %>

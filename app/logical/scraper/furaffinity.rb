@@ -10,7 +10,7 @@ module Scraper
     end
 
     def self.enabled?
-      Config.furaffinity_user.present? && Config.furaffinity_pass.present? && Config.selenium_url.present?
+      Config.furaffinity_user.present? && Config.furaffinity_pass.present?
     end
 
     def fetch_next_batch

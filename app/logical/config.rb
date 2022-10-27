@@ -9,7 +9,7 @@ module Config
   end
 
   def custom_config
-    @custom_config ||= File.exist?(Config.custom_config_path) ? YAML.load_file(Config.custom_config_path, fallback: {}) : {}
+    @custom_config ||= File.exist?(custom_config_path) ? YAML.load_file(custom_config_path, fallback: {}) : {}
   end
 
   def env_config
@@ -27,6 +27,10 @@ module Config
     @default_config = nil
     @custom_config = nil
     @env_config = nil
+  end
+
+  def missing_values
+    %i[e6_user e6_apikey].select { |key| send(key).blank? }
   end
 
   def method_missing(method)

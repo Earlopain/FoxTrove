@@ -3,10 +3,6 @@
 module E6ApiClient
   module_function
 
-  def enabled?
-    Config.e6_user.present? && Config.e6_apikey.present?
-  end
-
   def iqdb_query(file)
     # FIXME: Proper rate limiting
     sleep 2
@@ -27,8 +23,6 @@ module E6ApiClient
   end
 
   def headers
-    raise StandardError, "E6 login credentials are not set" unless enabled?
-
     {
       "Authorization": "Basic #{credentials(Config.e6_user, Config.e6_apikey)}",
       "User-Agent": "reverser/0.1 (by earlopain)",

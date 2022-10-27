@@ -11,7 +11,7 @@ module Scraper
     end
 
     def self.enabled?
-      Config.newgrounds_user.present? && Config.newgrounds_pass.present? && Config.selenium_url.present?
+      Config.newgrounds_user.present? && Config.newgrounds_pass.present?
     end
 
     def fetch_next_batch
