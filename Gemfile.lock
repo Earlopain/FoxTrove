@@ -76,8 +76,6 @@ GEM
     backport (1.2.0)
     benchmark (0.2.0)
     bindex (0.8.1)
-    bootsnap (1.13.0)
-      msgpack (~> 1.2)
     builder (3.2.4)
     childprocess (4.1.0)
     concurrent-ruby (1.1.10)
@@ -145,7 +143,6 @@ GEM
     mime-types-data (3.2022.0105)
     mini_mime (1.1.2)
     minitest (5.16.3)
-    msgpack (1.6.0)
     multi_xml (0.6.0)
     net-imap (0.3.1)
       net-protocol
@@ -313,7 +310,6 @@ PLATFORMS
 
 DEPENDENCIES
   addressable
-  bootsnap (>= 1.4.4)
   dalli
   draper
   good_job

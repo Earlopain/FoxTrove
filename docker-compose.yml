@@ -7,16 +7,12 @@ services:
       args:
         COMPOSE_PROFILES: ${COMPOSE_PROFILES-}
     image: reverser
-    environment:
-      # Don't make bootsnap part of the tmpfs
-      BOOTSNAP_CACHE_DIR: /
     volumes:
       - .:/app
       - build_assets:/app/public/build
       - ${REVERSER_DATA_PATH}/active_storage:/app/public/storage
       - node_modules:/app/node_modules
       - yarn:/app/.yarn
-      - bootsnap:/bootsnap
       - temp:/app/tmp
     tmpfs:
       - /app/tmp/cache
@@ -96,5 +92,4 @@ volumes:
   build_assets:
   node_modules:
   yarn:
-  bootsnap:
   temp:
