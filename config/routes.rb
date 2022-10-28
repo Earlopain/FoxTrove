@@ -18,12 +18,6 @@ Rails.application.routes.draw do
       post :enqueue
     end
   end
-  resource :debug, controller: "debug", only: [] do
-    get :index
-    post :reload_config
-    post :generate_spritemap
-    post :iqdb_readd
-  end
   resources :submission_files, only: %i[index show] do
     member do
       post :update_e6_iqdb
