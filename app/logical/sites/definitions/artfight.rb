@@ -18,7 +18,7 @@ module Sites
       def gallery_templates
         [
           "artfight.net/~{site_artist_identifier}",
-          "artfight.net/~{site_artist_identifier}/attacks"
+          "artfight.net/~{site_artist_identifier}/attacks",
         ]
       end
 

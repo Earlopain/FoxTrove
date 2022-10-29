@@ -20,7 +20,7 @@ module Sites
       end
 
       def username_identifier_regex
-        /[a-zA-Z0-9_@\-\.]{1,20}/
+        /[a-zA-Z0-9_@.\-]{1,20}/
       end
 
       def submission_template

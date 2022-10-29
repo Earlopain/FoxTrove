@@ -18,7 +18,7 @@ module Sites
       def gallery_templates
         [
           "toyhou.se/{site_artist_identifier}",
-          "toyhou.se/{site_artist_identifier}/art"
+          "toyhou.se/{site_artist_identifier}/art",
         ]
       end
 

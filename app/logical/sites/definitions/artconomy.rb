@@ -20,12 +20,12 @@ module Sites
           "artconomy.com/profile/{site_artist_identifier}/gallery/art",
           "artconomy.com/profile/{site_artist_identifier}/gallery",
           "artconomy.com/profile/{site_artist_identifier}/about",
-          "artconomy.com/profile/{site_artist_identifier}"
+          "artconomy.com/profile/{site_artist_identifier}",
         ]
       end
 
       def username_identifier_regex
-        /[a-zA-Z0-9_@\.\+\-]{1,40}/
+        /[a-zA-Z0-9_@.+\-]{1,40}/
       end
 
       def submission_template

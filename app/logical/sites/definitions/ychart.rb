@@ -19,7 +19,7 @@ module Sites
         [
           "ych.art/user/{site_artist_identifier}",
           "ych.art/user/{site_artist_identifier}/portfolio",
-          "ych.art/user/{site_artist_identifier}/about"
+          "ych.art/user/{site_artist_identifier}/about",
         ]
       end
 
