@@ -41,7 +41,7 @@ jobs:
         cache-from: type=gha
         cache-to: type=gha,mode=max
         load: true
-        tags: ${{ env.DOCKER_TAG }} 
+        tags: ${{ env.DOCKER_TAG }}
 
     - name: Create DB
       run: docker run --rm ${{ env.DOCKER_TAG }} RAILS_ENV=test bin/rails db:prepare
