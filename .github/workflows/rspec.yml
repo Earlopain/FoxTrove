@@ -38,7 +38,7 @@ jobs:
         cache-from: type=gha
         cache-to: type=gha,mode=max
         load: true
-        tags: reverser:${{ env.GITHUB_SHA }}
+        tags: reverser:${GITHUB_SHA}
 
     - name: Create DB
       run: docker run --rm reverser:${GITHUB_SHA} RAILS_ENV=test bin/rails db:prepare
