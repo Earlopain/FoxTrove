@@ -18,6 +18,8 @@ class ArtistUrl < ApplicationRecord
     youtube_legacy gumroad discord telegram
     skeb pawoo baraag hentai_foundry
     pillowfort commishes furrynetwork facebook
+    afterdark artconomy artfight boosty
+    buzzly furrystation toyhouse ychart
   ].map.with_index { |v, index| [v, index] }.to_h
 
   def self.search(params)
