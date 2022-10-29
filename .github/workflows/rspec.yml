@@ -11,9 +11,6 @@ on:
 permissions:
   contents: read
 
-env:
-  DOCKER_TAG: reverser:${{ env.GITHUB_SHA }}
-
 jobs:
   rspec:
     runs-on: ubuntu-latest
@@ -40,11 +37,12 @@ jobs:
       with:
         cache-from: type=gha
         cache-to: type=gha,mode=max
+        context: .
         load: true
-        tags: ${{ env.DOCKER_TAG }}
+        tags: ${{ env.GITHUB_SHA }}
 
     - name: Create DB
-      run: docker run --rm ${{ env.DOCKER_TAG }} RAILS_ENV=test bin/rails db:prepare
+      run: docker run --rm ${GITHUB_SHA} RAILS_ENV=test bin/rails db:prepare
 
     - name: Run RSpec
-      run: docker run --rm ${{ env.DOCKER_TAG }} bundle exec rspec --require spec_helper --order random --format RSpec::Github::Formatter
+      run: docker run --rm ${GITHUB_SHA} bundle exec rspec --require spec_helper --order random --format RSpec::Github::Formatter
