@@ -11,9 +11,6 @@ on:
 permissions:
   contents: read
 
-env:
-  POSTGRES_HOST: localhost
-
 jobs:
   rspec:
     runs-on: ubuntu-latest
