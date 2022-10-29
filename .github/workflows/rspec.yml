@@ -46,7 +46,7 @@ jobs:
     - uses: actions/checkout@v3
 
     - name: Create DB
-      run: docker run --rm -e POSTGRES_HOST=localhost -e RAILS_ENV=test -v "$(pwd)":/app reverser:test /app/bin/rails db:schema:load
+      run: docker run --rm --network host -e POSTGRES_HOST=localhost -e RAILS_ENV=test -v "$(pwd)":/app reverser:test /app/bin/rails db:schema:load
 
     - name: Run RSpec
-      run: docker run --rm -e POSTGRES_HOST=localhost -v "$(pwd)":/app reverser:test bundle exec rspec --require spec_helper --order random --format RSpec::Github::Formatter
+      run: docker run --rm --network host -e POSTGRES_HOST=localhost -v "$(pwd)":/app reverser:test bundle exec rspec --require spec_helper --order random --format RSpec::Github::Formatter
