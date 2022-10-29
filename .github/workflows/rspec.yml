@@ -32,7 +32,7 @@ jobs:
           --health-retries 5
     
     env:
-      DOCKER_RUN: docker run --rm --network host -e POSTGRES_HOST=localhost -e RAILS_ENV=test -v "$(pwd)":/app reverser:test
+      DOCKER_RUN: docker run --rm --network host -e POSTGRES_HOST=localhost -e RAILS_ENV=test -v $PWD:/app reverser:test
 
     steps:
     - name: Set up Docker Buildx
