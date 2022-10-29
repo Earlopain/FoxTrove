@@ -20,6 +20,7 @@ jobs:
         image: postgres:15-alpine
         env:
           POSTGRES_USER: reverser
+          POSTGRES_DB: reverser_test
           POSTGRES_HOST_AUTH_METHOD: trust
         ports:
           - 5432:5432
@@ -45,7 +46,7 @@ jobs:
     - uses: actions/checkout@v3
 
     - name: Create DB
-      run: docker run --rm -e RAILS_ENV=test -v "$(pwd)":/app reverser:test bin/rails db:prepare
+      run: docker run --rm -e RAILS_ENV=test -v "$(pwd)":/app reverser:test bin/rails db:schema:load
 
     - name: Run RSpec
       run: docker run --rm -v "$(pwd)":/app reverser:test bundle exec rspec --require spec_helper --order random --format RSpec::Github::Formatter
