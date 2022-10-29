@@ -30,9 +30,6 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
-    
-    env:
-      DOCKER_RUN: docker run --rm --network host -e POSTGRES_HOST=localhost -e RAILS_ENV=test -v ${PWD}:/app reverser:test
 
     steps:
     - name: Set up Docker Buildx
@@ -48,10 +45,11 @@ jobs:
 
     - uses: actions/checkout@v3
 
+    - name: Set docker run command
+      run: echo "DOCKER_RUN=docker run --rm --network host -e POSTGRES_HOST=localhost -e RAILS_ENV=test -v $PWD:/app reverser:test" >> "$GITHUB_ENV"
+
     - name: Create DB
-      run: >-
-        $DOCKER_RUN bin/rails db:schema:load
+      run: $DOCKER_RUN bin/rails db:schema:load
 
     - name: Run RSpec
-      run: >-
-        $DOCKER_RUN bundle exec rspec --require spec_helper --order random --format RSpec::Github::Formatter
+      run: $DOCKER_RUN bundle exec rspec --require spec_helper --order random --format RSpec::Github::Formatter
