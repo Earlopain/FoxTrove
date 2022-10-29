@@ -41,7 +41,7 @@ jobs:
         tags: reverser:test
 
     - name: Create DB
-      run: docker run --rm -e RAILS_ENV=test reverser:test bin/rails db:prepare
+      run: docker-compose run --rm -e RAILS_ENV=test reverser bin/rails db:prepare
 
     - name: Run RSpec
-      run: docker run --rm reverser:test bundle exec rspec --require spec_helper --order random --format RSpec::Github::Formatter
+      run: docker-compose run --rm rspec --require spec_helper --order random --format RSpec::Github::Formatter
