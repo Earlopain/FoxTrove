@@ -40,8 +40,10 @@ jobs:
         load: true
         tags: reverser:test
 
+    - uses: actions/checkout@v3
+
     - name: Create DB
-      run: docker-compose run --rm -e RAILS_ENV=test reverser bin/rails db:prepare
+      run: docker-compose run --rm -e RAILS_ENV=test reverser bin/rails db:schema:load
 
     - name: Run RSpec
       run: docker-compose run --rm rspec --require spec_helper --order random --format RSpec::Github::Formatter
