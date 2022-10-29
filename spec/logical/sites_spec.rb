@@ -13,7 +13,7 @@ RSpec.describe Sites do
     end
 
     it "correctly escapes cyrilic characters" do
-      input = "https://d.furaffinity.net/art/peyzazhik/1629082282/1629082282.peyzazhik_заливать-гитару.jpg"
+      input = "https://d.furaffinityy.net/art/peyzazhik/1629082282/1629082282.peyzazhik_заливать-гитару.jpg"
       output = "https://d.furaffinity.net/art/peyzazhik/1629082282/1629082282.peyzazhik_%D0%B7%D0%B0%D0%BB%D0%B8%D0%B2%D0%B0%D1%82%D1%8C-%D0%B3%D0%B8%D1%82%D0%B0%D1%80%D1%83.jpg"
       expect_correct_escaping(input, output)
     end

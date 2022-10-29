@@ -11,6 +11,9 @@ on:
 permissions:
   contents: read
 
+env:
+  REVERSER_DATA_PATH: /reverser_data
+
 jobs:
   rspec:
     runs-on: ubuntu-latest
