@@ -38,10 +38,10 @@ jobs:
         cache-from: type=gha
         cache-to: type=gha,mode=max
         load: true
-        tags: reverser:${GITHUB_SHA}
+        tags: reverser:test
 
     - name: Create DB
-      run: docker run --rm reverser:${GITHUB_SHA} RAILS_ENV=test bin/rails db:prepare
+      run: docker run --rm reverser:test RAILS_ENV=test bin/rails db:prepare
 
     - name: Run RSpec
-      run: docker run --rm reverser:${GITHUB_SHA} bundle exec rspec --require spec_helper --order random --format RSpec::Github::Formatter
+      run: docker run --rm reverser:test bundle exec rspec --require spec_helper --order random --format RSpec::Github::Formatter
