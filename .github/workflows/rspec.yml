@@ -14,6 +14,7 @@ permissions:
 jobs:
   rspec:
     runs-on: ubuntu-latest
+    container: ubuntu
 
     services:
       postgres:
