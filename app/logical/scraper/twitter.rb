@@ -142,9 +142,7 @@ module Scraper
     def tokens
       Cache.fetch("twitter-tokens", 55.minutes) do
         SeleniumWrapper.driver do |driver|
-          driver.navigate.to "https://twitter.com/"
-          # There are two different layouts for the homepage, the loginflow is always the same though
-          driver.wait_for_element(xpath: "//*[text()='Sign in'] | //*[text()='Log in']").click
+          driver.navigate.to "https://twitter.com/i/flow/login"
 
           driver.wait_for_element(css: "input[autocomplete='username']").send_keys Config.twitter_user
           driver.find_element(xpath: "//*[text()='Next']").click
