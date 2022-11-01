@@ -2,7 +2,7 @@
 
 module Sites
   module Definitions
-    class Artconomy < SimpleDefinition
+    class Artconomy < ScraperDefinition
       def enum_value
         "artconomy"
       end

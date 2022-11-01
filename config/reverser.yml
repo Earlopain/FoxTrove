@@ -18,6 +18,7 @@ log_scraper_requests?: true
 scraper_request_rate_limit: 0
 
 # Disable individual scrapers
+artconomy_disabled?: false
 artstation_disabled?: false
 deviantart_disabled?: false
 furaffinity_disabled?: false
@@ -66,3 +67,5 @@ tumblr_oauth_secret:
 tumblr_reblog_blog_uuid:
 baraag_access_token:
 pawoo_access_token:
+artconomy_user:
+artconomy_pass:

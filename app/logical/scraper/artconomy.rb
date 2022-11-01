@@ -1,0 +1,57 @@
+# frozen_string_literal: true
+
+module Scraper
+  class Artconomy < Base
+    def init
+      @page = 1
+      @sessionid = fetch_cookie
+    end
+
+    def self.enabled?
+      Config.artconomy_user.present? && Config.artconomy_pass.present?
+    end
+
+    def fetch_next_batch
+      response = fetch_json("https://artconomy.com/api/profiles/v1/account/#{url_identifier}/submissions/art/?page=#{@page}", headers: headers)
+      @page += 1
+      end_reached if response["results"].size != 50
+      response["results"]
+    end
+
+    def to_submission(submission)
+      s = Submission.new
+      s.identifier = submission["id"]
+      s.title = submission["title"]
+      s.description = submission["caption"]
+      s.created_at = DateTime.parse submission["created_on"]
+
+      s.add_file({
+        url: submission["file"]["full"],
+        created_at: s.created_at,
+        identifier: submission["id"],
+      })
+      s
+    end
+
+    def fetch_api_identifier
+      response = fetch_json("https://artconomy.com/api/profiles/v1/account/#{url_identifier}/")
+      response["id"]
+    end
+
+    def headers
+      { Cookie: "sessionid=#{fetch_cookie}" }
+    end
+
+    def fetch_cookie
+      Cache.fetch("artconomy-cookie", 2.weeks) do
+        SeleniumWrapper.driver do |driver|
+          driver.navigate.to "https://artconomy.com/auth/login"
+          driver.wait_for_element(id: "field-login__email").send_keys Config.artconomy_user
+          driver.find_element(id: "field-login__password").send_keys Config.artconomy_pass
+          driver.find_element(id: "loginSubmit").click
+          driver.wait_for_cookie("sessionid")
+        end
+      end
+    end
+  end
+end
