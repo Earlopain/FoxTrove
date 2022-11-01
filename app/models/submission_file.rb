@@ -183,7 +183,7 @@ class SubmissionFile < ApplicationRecord
       end
 
       def search_params
-        [:site_type, :upload_status, :larger_only_filesize_treshold, :content_type, :title, :description, { artist_url_id: [] }]
+        [:artist_id, :site_type, :upload_status, :larger_only_filesize_treshold, :content_type, :title, :description, { artist_url_id: [] }]
       end
     end
   end

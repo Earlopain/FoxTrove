@@ -11,16 +11,6 @@ class Artist < ApplicationRecord
 
   attr_accessor :url_string
 
-  def update_all_iqdb
-    artist_urls.each do |artist_url|
-      artist_url.submissions.each do |submission|
-        submission.submission_files.each do |file|
-          E6IqdbQueryJob.perform_later(file.id)
-        end
-      end
-    end
-  end
-
   def add_artist_url(url)
     Artist.transaction do
       result = Sites.from_gallery_url url

@@ -10,7 +10,6 @@ Rails.application.routes.draw do
   resources :artists, only: %i[index new create show destroy edit update] do
     member do
       post :enqueue_all_urls
-      post :update_all_iqdb
     end
   end
   resources :artist_urls, only: [] do
@@ -30,6 +29,7 @@ Rails.application.routes.draw do
       put :hide_many
       put :backlog_many
       put :enqueue_many
+      post :update_e6_iqdb_matching
     end
   end
   resources :log_events, only: %i[index show]

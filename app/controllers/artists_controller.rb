@@ -26,10 +26,8 @@ class ArtistsController < ApplicationController
 
   def show
     @artist = Artist.includes(:artist_urls).find(params[:id])
-    @submission_files = SubmissionFile
-                        .search(instance_search_params.merge(artist_id: @artist.id))
-                        .with_everything
-                        .page params[:page]
+    @search_params = instance_search_params.merge(artist_id: @artist.id)
+    @submission_files = SubmissionFile.search(@search_params).with_everything.page params[:page]
     respond_with(@artist)
   end
 
@@ -54,11 +52,6 @@ class ArtistsController < ApplicationController
   def enqueue_all_urls
     @artist = Artist.find(params[:id])
     @artist.artist_urls.each(&:enqueue_scraping)
-  end
-
-  def update_all_iqdb
-    @artist = Artist.find(params[:id])
-    @artist.update_all_iqdb
   end
 
   private
