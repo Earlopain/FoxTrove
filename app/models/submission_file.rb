@@ -151,11 +151,10 @@ class SubmissionFile < ApplicationRecord
   concerning :SearchMethods do
     class_methods do
       def search(params)
-        params[:hidden_from_search] ||= false
         q = status_search(params)
         q = q.attribute_matches(params[:content_type], :content_type)
         q = q.attribute_nil_check(params[:in_backlog], :added_to_backlog_at)
-        q = q.attribute_nil_check(params[:hidden_from_search], :hidden_from_search_at)
+        q = q.attribute_nil_check(params[:hidden_from_search] || false, :hidden_from_search_at)
         q = q.join_attribute_matches(params[:title], artist_submission: :title_on_site)
         q = q.join_attribute_matches(params[:description], artist_submission: :description_on_site)
         q = q.join_attribute_matches(params[:artist_url_id], artist_submission: { artist_url: :id })
