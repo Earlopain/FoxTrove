@@ -23,6 +23,7 @@ You can also search for non-uploaded submission for artists. How well this works
 E6 is limiting iqdb to one call per two seconds, which means that you will need to potentially wait for hours just to process a single artist. That means that large artists can take hours to update their iqdb information. There is nothing that can be done about it.
 
 ## Currently supported sites
+* Artconomy
 * Artstation
 * Baraag
 * Deviantart
