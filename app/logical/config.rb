@@ -3,11 +3,6 @@
 module Config
   module_function
 
-  # Will accumulate multiple listeners on reload, but that's fine
-  Listen.to(Rails.root.join("config"), only: /reverser.*\.yml/) do
-    force_reload
-  end.start
-
   def default_config
     @default_config ||= YAML.load_file(Rails.root.join("config/reverser.yml"))
   end
