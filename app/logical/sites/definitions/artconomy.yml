@@ -1,0 +1,11 @@
+type: ScraperDefinition
+enum_value: artconomy
+display_name: Artconomy
+homepage: https://artconomy.com
+gallery_templates:
+  - artconomy.com/profile/{site_artist_identifier}/gallery/art
+  - artconomy.com/profile/{site_artist_identifier}/gallery
+  - artconomy.com/profile/{site_artist_identifier}/about
+  - artconomy.com/profile/{site_artist_identifier}
+username_identifier_regex: "[a-zA-Z0-9_@.+-]{1,40}"
+submission_template: https://artconomy.com/submissions/{site_submission_identifier}

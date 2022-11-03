@@ -1,0 +1,8 @@
+type: SimpleDefinition
+enum_value: furrystation
+display_name: FurryStation
+homepage: https://furrystation.com
+gallery_templates:
+  - furrystation.com/{site_artist_identifier}
+username_identifier_regex: "[a-zA-Z0-9_-]{3,50}"
+submission_template: https://furrystation.com/s/{site_submission_identifier}

@@ -1,0 +1,9 @@
+type: SimpleDefinition
+enum_value: toyhouse
+display_name: Toyhouse
+homepage: https://toyhou.se
+gallery_templates:
+  - toyhou.se/{site_artist_identifier}
+  - toyhou.se/{site_artist_identifier}/art
+username_identifier_regex: "[a-zA-Z0-9_-]{1,50}"
+submission_template: https://toyhou.se/~images/{site_submission_identifier}

@@ -1,0 +1,9 @@
+type: ScraperDefinition
+enum_value: deviantart
+display_name: DeviantArt
+homepage: https://www.deviantart.com
+gallery_templates:
+  - deviantart.com/{site_artist_identifier}
+  - "{site_artist_identifier}.deviantart.com"
+username_identifier_regex: "[a-zA-Z0-9-]{1,20}"
+submission_template: https://www.deviantart.com/{site_artist_identifier}/art/{site_submission_identifier}

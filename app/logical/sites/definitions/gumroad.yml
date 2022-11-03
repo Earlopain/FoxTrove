@@ -1,0 +1,8 @@
+type: SimpleDefinition
+enum_value: gumroad
+display_name: Gumroad
+homepage: https://gumroad.com
+gallery_templates:
+  - "{site_artist_identifier}.gumroad.com"
+  - gumroad.com/{site_artist_identifier}
+username_identifier_regex: "[a-zA-Z0-9_-]{3,20}"

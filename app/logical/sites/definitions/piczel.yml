@@ -1,0 +1,9 @@
+type: ScraperDefinition
+enum_value: piczel
+display_name: Piczel
+homepage: https://piczel.tv
+gallery_templates:
+  - piczel.tv/gallery/{site_artist_identifier}
+  - piczel.tv/watch/{site_artist_identifier}
+username_identifier_regex: "[a-zA-Z0-9_]{1,24}"
+submission_template: https://piczel.tv/gallery/image/{site_submission_identifier}

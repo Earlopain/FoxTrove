@@ -4,7 +4,7 @@ module Sites
   module_function
 
   def from_enum(value)
-    ENUM_MAP[value]
+    all.find { |definition| definition.enum_value == value }
   end
 
   def from_gallery_url(url)
@@ -14,13 +14,13 @@ module Sites
       return nil
     end
 
-    ALL.lazy.filter_map do |definition|
+    all.lazy.filter_map do |definition|
       definition.match_for_gallery uri
     end.first
   end
 
   def download_headers_for_image_uri(uri)
-    definition = ALL.find do |d|
+    definition = all.find do |d|
       d.handles_image_domain? uri.domain
     end
     definition&.download_headers || {}
@@ -47,7 +47,14 @@ module Sites
     uri
   end
 
-  ALL = Definitions.constants.map { |name| Definitions.const_get(name).new }
+  def all
+    @all ||= Rails.root.glob("app/logical/sites/definitions/*.yml").map do |file_path|
+      data = Psych.safe_load_file(file_path)
+      Sites.const_get(data["type"]).new(data.except("type"))
+    end
+  end
 
-  ENUM_MAP = ALL.index_by(&:enum_value).freeze
+  def reset_cache
+    @all = nil
+  end
 end

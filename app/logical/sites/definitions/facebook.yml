@@ -1,0 +1,7 @@
+type: SimpleDefinition
+enum_value: facebook
+display_name: Facebook
+homepage: https://www.facebook.com
+gallery_templates:
+  - facebook.com/{site_artist_identifier}
+username_identifier_regex: "[a-zA-Z0-9.-]{1,35}"

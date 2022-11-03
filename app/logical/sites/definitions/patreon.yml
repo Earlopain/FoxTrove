@@ -1,0 +1,8 @@
+type: SimpleDefinition
+enum_value: patreon
+display_name: Patreon
+homepage: https://www.patreon.com
+gallery_templates:
+  - patreon.com/{site_artist_identifier}
+username_identifier_regex: "[a-zA-Z0-9_]{1,64}"
+submission_template: https://www.patreon.com/posts/{site_submission_identifier}

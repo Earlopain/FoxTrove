@@ -1,0 +1,7 @@
+type: SimpleDefinition
+enum_value: carrd
+display_name: Carrd
+homepage: https://carrd.co
+gallery_templates:
+  - "{site_artist_identifier}.carrd.co"
+username_identifier_regex: "[a-z0-9-]{3,32}"

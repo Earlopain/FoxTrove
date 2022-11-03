@@ -1,0 +1,9 @@
+type: SimpleDefinition
+enum_value: artfight
+display_name: Art Fight
+homepage: https://artfight.net
+gallery_templates:
+  - artfight.net/~{site_artist_identifier}
+  - artfight.net/~{site_artist_identifier}/attacks
+username_identifier_regex: "[a-zA-Z0-9_-]{1,20}"
+submission_template: https://artfight.net/attack/{site_submission_identifier}

@@ -1,0 +1,8 @@
+type: SimpleDefinition
+enum_value: subscribestar
+display_name: SubscribeStar
+homepage: https://www.subscribestar.com
+gallery_templates:
+  - subscribestar.com/{site_artist_identifier}
+  - subscribestar.adult/{site_artist_identifier}
+username_identifier_regex: "[a-zA-Z0-9_-]{3,512}"

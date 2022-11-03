@@ -2,15 +2,21 @@
 
 module Sites
   class ScraperDefinition < SimpleDefinition
-    def initialize
+    attr_reader :submission_template
+
+    def initialize(definition_data)
       super
-      @submission_template = Addressable::Template.new(submission_template)
+      @submission_template = Addressable::Template.new(definition_data["submission_template"])
+      @image_domains = definition_data["image_domains"] || []
+      @download_headers = definition_data["download_headers"] || {}
       @scraper = "Scraper::#{enum_value.camelize}".constantize
     end
 
     def submission_url(submission)
-      @submission_template.expand(site_artist_identifier: submission.artist_url.url_identifier,
-                                  site_submission_identifier: submission.identifier_on_site).to_s
+      submission_template.expand(
+        site_artist_identifier: submission.artist_url.url_identifier,
+        site_submission_identifier: submission.identifier_on_site,
+      ).to_s
     end
 
     def scraper_enabled?

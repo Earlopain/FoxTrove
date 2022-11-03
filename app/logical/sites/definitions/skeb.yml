@@ -1,0 +1,7 @@
+type: SimpleDefinition
+enum_value: skeb
+display_name: Skeb
+homepage: https://skeb.jp
+gallery_templates:
+  - skeb.jp/@{site_artist_identifier}
+username_identifier_regex: "[a-zA-Z0-9_]{1,15}"

@@ -1,0 +1,8 @@
+type: SimpleDefinition
+enum_value: boosty
+display_name: Boosty
+homepage: https://boosty.to
+gallery_templates:
+  - boosty.to/{site_artist_identifier}
+username_identifier_regex: "[a-zA-Z0-9_.-]{3,50}"
+submission_template: https://boosty.to/{site_artist_identifier}/posts/{site_submission_identifier}

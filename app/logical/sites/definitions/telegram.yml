@@ -1,0 +1,8 @@
+type: SimpleDefinition
+enum_value: telegram
+display_name: Telegram
+homepage: https://telegram.org
+gallery_templates:
+  - t.me/{site_artist_identifier}
+  - telegram.me/{site_artist_identifier}
+username_identifier_regex: "[a-zA-Z0-9_]{5,64}"

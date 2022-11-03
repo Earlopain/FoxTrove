@@ -1,0 +1,8 @@
+type: ScraperDefinition
+enum_value: tumblr
+display_name: Tumblr
+homepage: https://www.tumblr.com
+gallery_templates:
+  - "{site_artist_identifier}.tumblr.com"
+username_identifier_regex: "[a-zA-Z0-9-]{1,32}"
+submission_template: https://{site_artist_identifier}.tumblr.com/post/{site_submission_identifier}

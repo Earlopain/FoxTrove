@@ -1,0 +1,13 @@
+type: ScraperDefinition
+enum_value: pixiv
+display_name: Pixiv
+homepage: https://www.pixiv.net
+gallery_templates:
+  - pixiv.net/{pixiv_lang}users/{site_artist_identifier}
+  - pixiv.net/member.php?id={site_artist_identifier}
+username_identifier_regex: "[0-9]{1,8}"
+submission_template: https://www.pixiv.net/artworks/{site_submission_identifier}
+image_domains:
+  - pximg.net
+download_headers:
+  Referer: https://www.pixiv.net

@@ -1,0 +1,8 @@
+type: SimpleDefinition
+enum_value: youtube_vanity
+display_name: Youtube
+homepage: https://youtube.com
+gallery_templates:
+  - youtube.com/c/{site_artist_identifier}
+  - youtube.com/{site_artist_identifier}
+username_identifier_regex: "[a-zA-Z0-9]{1,30}"

@@ -1,0 +1,8 @@
+type: ScraperDefinition
+enum_value: baraag
+display_name: Baraag
+homepage: https://baraag.net
+gallery_templates:
+  - baraag.net/@{site_artist_identifier}
+username_identifier_regex: "[a-zA-Z0-9_]{1,30}"
+submission_template: https://baraag.net/@{site_artist_identifier}/{site_submission_identifier}

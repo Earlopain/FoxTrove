@@ -1,0 +1,10 @@
+type: ScraperDefinition
+enum_value: artstation
+display_name: ArtStation
+homepage: https://www.artstation.com
+gallery_templates:
+  - artstation.com/artist/{site_artist_identifier}
+  - artstation.com/{site_artist_identifier}
+  - "{site_artist_identifier}.artstation.com/"
+username_identifier_regex: "[a-zA-Z0-9_-]{3,63}"
+submission_template: https://www.artstation.com/artwork/{site_submission_identifier}

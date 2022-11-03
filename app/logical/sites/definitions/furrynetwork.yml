@@ -1,0 +1,9 @@
+type: ScraperDefinition
+enum_value: furrynetwork
+display_name: FurryNetwork
+homepage: https://furrynetwork.com
+gallery_templates:
+  - furrynetwork.com/{site_artist_identifier}
+  - beta.furrynetwork.com/{site_artist_identifier}
+username_identifier_regex: "[a-zA-Z0-9_-]{3,15}"
+submission_template: https://furrynetwork.com/artwork/{site_submission_identifier}

@@ -1,0 +1,8 @@
+type: SimpleDefinition
+enum_value: instagram
+display_name: Instagram
+homepage: https://www.instagram.com
+gallery_templates:
+  - instagram.com/{site_artist_identifier}
+username_identifier_regex: "[a-zA-Z0-9_.]{1,30}"
+submission_template: https://www.instagram.com/p/{site_submission_identifier}

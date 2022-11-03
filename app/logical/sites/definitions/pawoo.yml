@@ -1,0 +1,8 @@
+type: ScraperDefinition
+enum_value: pawoo
+display_name: Pawoo
+homepage: https://pawoo.net
+gallery_templates:
+  - pawoo.net/@{site_artist_identifier}
+username_identifier_regex: "[a-zA-Z0-9_]{1,30}"
+submission_template: https://pawoo.net/@{site_artist_identifier}/{site_submission_identifier}

@@ -1,0 +1,8 @@
+type: SimpleDefinition
+enum_value: afterdark
+display_name: AfterDark
+homepage: https://afterdark.art
+gallery_templates:
+  - afterdark.art/user/{site_artist_identifier}
+username_identifier_regex: "[^\/]{1,100}"
+submission_template: https://afterdark.art/image/{site_submission_identifier}

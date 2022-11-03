@@ -1,0 +1,9 @@
+type: ScraperDefinition
+enum_value: furaffinity
+display_name: FurAffinity
+homepage: https://www.furaffinity.net
+gallery_templates:
+  - "{furaffinity_sfw}furaffinity.net/user/{site_artist_identifier}"
+  - "{furaffinity_sfw}furaffinity.net/gallery/{site_artist_identifier}"
+username_identifier_regex: "[a-zA-Z0-9_~.-]{1,30}"
+submission_template: https://www.furaffinity.net/view/{site_submission_identifier}

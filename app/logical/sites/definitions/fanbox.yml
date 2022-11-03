@@ -1,0 +1,7 @@
+type: SimpleDefinition
+enum_value: fanbox
+display_name: Fanbox
+homepage: https://www.fanbox.cc
+gallery_templates:
+  - "{site_artist_identifier}.fanbox.cc"
+username_identifier_regex: "[a-z0-9-]{3,16}"

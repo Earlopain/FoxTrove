@@ -1,0 +1,8 @@
+type: SimpleDefinition
+enum_value: vkontakte
+display_name: VK
+homepage: https://vk.com
+gallery_templates:
+  - vk.com/{site_artist_identifier}
+username_identifier_regex: "[a-zA-Z0-9_.]{1,26}"
+submission_template: https://vk.com/{site_artist_identifier}?z=photo-{site_submission_identifier}

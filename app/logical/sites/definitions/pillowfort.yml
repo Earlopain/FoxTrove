@@ -1,0 +1,7 @@
+type: SimpleDefinition
+enum_value: pillowfort
+display_name: Pillowfort
+homepage: https://www.pillowfort.social
+gallery_templates:
+  - pillowfort.social/{site_artist_identifier}
+username_identifier_regex: "[a-zA-Z0-9_-]{1,20}"

@@ -1,0 +1,7 @@
+type: SimpleDefinition
+enum_value: twitch
+display_name: Twitch
+homepage: https://www.twitch.tv
+gallery_templates:
+  - twitch.tv/{site_artist_identifier}
+username_identifier_regex: "[a-zA-Z0-9_]{4,25}"

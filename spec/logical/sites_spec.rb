@@ -2,8 +2,12 @@
 
 RSpec.describe Sites do
   it "returns the correct definition for enum lookups" do
-    expect(described_class.from_enum("twitter")).to be_a Sites::Definitions::Twitter
-    expect(described_class.from_enum("twitch")).to be_a Sites::Definitions::Twitch
+    twitter = described_class.from_enum("twitter")
+    twitch = described_class.from_enum("twitch")
+    expect(twitter).to be_a Sites::ScraperDefinition
+    expect(twitter.display_name).to eq("Twitter")
+    expect(twitch).to be_a Sites::SimpleDefinition
+    expect(twitch.display_name).to eq("Twitch")
   end
 
   describe "fix_url" do

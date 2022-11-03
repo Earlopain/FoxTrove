@@ -1,0 +1,8 @@
+type: SimpleDefinition
+enum_value: buzzly
+display_name: Buzzly
+homepage: https://buzzly.art
+gallery_templates:
+  - buzzly.art/~{site_artist_identifier}
+username_identifier_regex: "[a-zA-Z0-9_@.-]{1,20}"
+submission_template: https://buzzly.art/~{site_artist_identifier}/art/{site_submission_identifier}

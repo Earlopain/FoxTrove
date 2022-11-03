@@ -1,0 +1,8 @@
+type: SimpleDefinition
+enum_value: discord
+display_name: Discord
+homepage: https://discord.com
+gallery_templates:
+  - discord.com/invite/{site_artist_identifier}
+  - discord.gg/{site_artist_identifier}
+username_identifier_regex: "[a-zA-Z0-9_-]{3,25}"

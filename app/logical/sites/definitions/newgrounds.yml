@@ -1,0 +1,8 @@
+type: ScraperDefinition
+enum_value: newgrounds
+display_name: Newgrounds
+homepage: https://www.newgrounds.com
+gallery_templates:
+  - "{site_artist_identifier}.newgrounds.com"
+username_identifier_regex: "[a-zA-Z0-9~-]{1,20}"
+submission_template: https://www.newgrounds.com/art/view/{site_artist_identifier}/{site_submission_identifier}

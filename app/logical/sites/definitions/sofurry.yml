@@ -1,0 +1,8 @@
+type: ScraperDefinition
+enum_value: sofurry
+display_name: Sofurry
+homepage: https://www.sofurry.com
+gallery_templates:
+  - "{site_artist_identifier}.sofurry.com"
+username_identifier_regex: "[a-zA-Z0-9_-]{1,25}"
+submission_template: https://www.sofurry.com/view/{site_submission_identifier}
