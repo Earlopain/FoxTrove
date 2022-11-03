@@ -3,10 +3,10 @@ name: RuboCop
 on:
   push:
     branches:
-    - master
+      - master
   pull_request:
     branches:
-    - master
+      - master
 
 permissions:
   contents: read
@@ -18,13 +18,13 @@ jobs:
       BUNDLE_WITHOUT: default development test local
 
     steps:
-    - uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-    - name: Set up Ruby 3.1
-      uses: ruby/setup-ruby@v1
-      with:
-        ruby-version: 3.1
-        bundler-cache: true
+      - name: Set up Ruby 3.1
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.1
+          bundler-cache: true
 
-    - name: Run RuboCop
-      run: bundle exec rubocop --format RubocopGithubAnnotationFormatter::AnnotationFormatter
+      - name: Run RuboCop
+        run: bundle exec rubocop --format RubocopGithubAnnotationFormatter::AnnotationFormatter

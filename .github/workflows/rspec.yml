@@ -3,10 +3,10 @@ name: RSpec
 on:
   push:
     branches:
-    - master
+      - master
   pull_request:
     branches:
-    - master
+      - master
 
 permissions:
   contents: read
@@ -32,24 +32,24 @@ jobs:
           --health-retries 5
 
     steps:
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v2
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
 
-    - name: Build
-      uses: docker/build-push-action@v3
-      with:
-        cache-from: type=gha
-        cache-to: type=gha,mode=max
-        load: true
-        tags: reverser:test
+      - name: Build
+        uses: docker/build-push-action@v3
+        with:
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          load: true
+          tags: reverser:test
 
-    - uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-    - name: Set docker run command
-      run: echo "DOCKER_RUN=docker run --rm --network host -e POSTGRES_HOST=localhost -e RAILS_ENV=test -v $PWD:/app reverser:test" >> "$GITHUB_ENV"
+      - name: Set docker run command
+        run: echo "DOCKER_RUN=docker run --rm --network host -e POSTGRES_HOST=localhost -e RAILS_ENV=test -v $PWD:/app reverser:test" >> "$GITHUB_ENV"
 
-    - name: Create DB
-      run: $DOCKER_RUN bin/rails db:schema:load
+      - name: Create DB
+        run: $DOCKER_RUN bin/rails db:schema:load
 
-    - name: Run RSpec
-      run: $DOCKER_RUN bundle exec rspec --require spec_helper --order random --format RSpec::Github::Formatter
+      - name: Run RSpec
+        run: $DOCKER_RUN bundle exec rspec --require spec_helper --order random --format RSpec::Github::Formatter
