@@ -5,7 +5,6 @@ class SeleniumWrapper
     options = Selenium::WebDriver::Chrome::Options.new
     options.add_argument("--disable-blink-features=AutomationControlled")
     options.add_option("excludeSwitches", ["enable-automation"])
-    options.add_option("useAutomationExtension", false)
 
     prefs = {}
     prefs[:performance] = "ALL" if with_performance
