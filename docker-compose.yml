@@ -67,7 +67,7 @@ services:
     image: reverser
     volumes:
       - .:/app
-    entrypoint: bundle exec rubocop .
+    entrypoint: bundle exec rubocop
     profiles:
       - rubocop
 
