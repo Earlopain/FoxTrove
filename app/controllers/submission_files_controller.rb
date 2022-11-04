@@ -32,9 +32,7 @@ class SubmissionFilesController < ApplicationController
   end
 
   def update_e6_iqdb_matching
-    SubmissionFile.search(search_params).find_each do |submission_file|
-      E6IqdbQueryJob.perform_later submission_file.id
-    end
+    SubmissionFile.search(search_params).find_each(&:update_e6_iqdb)
   end
 
   def backlog
