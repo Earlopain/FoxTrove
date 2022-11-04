@@ -27,4 +27,4 @@ jobs:
           bundler-cache: true
 
       - name: Run RuboCop
-        run: bundle exec rubocop --format RubocopGithubAnnotationFormatter::AnnotationFormatter
+        run: bundle exec rubocop --format github

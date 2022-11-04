@@ -241,8 +241,6 @@ GEM
       unicode-display_width (>= 1.4.0, < 3.0)
     rubocop-ast (1.22.0)
       parser (>= 3.1.1.0)
-    rubocop-github-annotations-formatter (0.1.0)
-      rubocop
     rubocop-performance (1.15.0)
       rubocop (>= 1.7.0, < 2.0)
       rubocop-ast (>= 0.4.0)
@@ -321,7 +319,6 @@ DEPENDENCIES
   rspec-github
   rspec-rails
   rubocop
-  rubocop-github-annotations-formatter
   rubocop-performance
   rubocop-rails
   rubocop-rspec
