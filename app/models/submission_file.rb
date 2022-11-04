@@ -138,10 +138,12 @@ class SubmissionFile < ApplicationRecord
   end
 
   def update_e6_iqdb
-    E6IqdbQueryJob.set(priority: 10).perform_later id
+    e6_iqdb_entries.destroy_all
     similar = IqdbProxy.query_submission_file(self).pluck(:submission)
     similar.each { |s| s.e6_iqdb_entries.destroy_all }
-    similar.each do |s| # rubocop:disable Style/CombinableLoops
+
+    E6IqdbQueryJob.set(priority: 10).perform_later id
+    similar.each do |s|
       # Process matches from other artists after everything else.
       # Chances are that they're just wrong iqdb matches.
       priority = s.artist_submission.artist == artist_submission.artist ? 10 : -10
