@@ -66,11 +66,14 @@ class SubmissionFile < ApplicationRecord
       blob.analyze
       raise StandardError, "Failed to analyze" if blob.content_type == "application/octet-stream"
 
-      original.attach(blob)
       self.width = blob.metadata[:width]
       self.height = blob.metadata[:height]
       self.content_type = blob.content_type
       self.size = blob.byte_size
+
+      Vips::Image.new_from_file(bin_file.path, fail: true).stats if can_iqdb?
+
+      original.attach(blob)
       save!
     rescue StandardError => e
       blob.purge
