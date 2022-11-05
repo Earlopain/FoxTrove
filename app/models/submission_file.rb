@@ -56,21 +56,22 @@ class SubmissionFile < ApplicationRecord
       created_at_on_site: created_at,
       file_identifier: file_identifier,
     )
+    submission_file.set_original!(bin_file, url)
+  end
 
+  def set_original!(bin_file, url)
     filename = File.basename(Addressable::URI.parse(url).path)
     blob = ActiveStorage::Blob.create_and_upload!(io: bin_file, filename: filename)
     begin
       blob.analyze
       raise StandardError, "Failed to analyze" if blob.content_type == "application/octet-stream"
 
-      submission_file.original.attach(blob)
-      submission_file.attributes = {
-        width: blob.metadata[:width],
-        height: blob.metadata[:height],
-        content_type: blob.content_type,
-        size: blob.byte_size,
-      }
-      submission_file.save
+      original.attach(blob)
+      self.width = blob.metadata[:width]
+      self.height = blob.metadata[:height]
+      self.content_type = blob.content_type
+      self.size = blob.byte_size
+      save!
     rescue StandardError => e
       blob.purge
       raise e
