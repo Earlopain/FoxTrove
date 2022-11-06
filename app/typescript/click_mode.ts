@@ -3,7 +3,7 @@ import Samples from "./samples";
 import SubmissionFile from "./submission_file";
 
 export default class ClickMode {
-  public static state: Object = Samples;
+  private static state: Object = Samples;
   private static submissionFiles: SubmissionFile[];
 
   public static init() {
