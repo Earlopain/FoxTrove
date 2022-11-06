@@ -42,7 +42,7 @@ module IqdbProxy
   def query_submission_file(submission_file)
     File.open(submission_file.sample.service.path_for(submission_file.sample.key)) do |f|
       # Remove the input submission file, we probably don't want it in the result
-      query_file(f).reject { |entry| entry[:submission].id == submission_file.id }
+      query_file(f).reject { |entry| entry[:submission_file].id == submission_file.id }
     end
   end
 
@@ -103,7 +103,7 @@ module IqdbProxy
 
       {
         score: entry["score"],
-        submission: submissions[entry["post_id"]],
+        submission_file: submissions[entry["post_id"]],
       }
     end
   end

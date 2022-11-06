@@ -3,7 +3,7 @@
 <br>
 <div>
   <% @result.each do |entry| %>
-    <%= render "submission_files/sample", submission_file: entry[:submission], similarity: entry[:score] %>
+    <%= render "submission_files/sample", submission_file: entry[:submission_file], similarity: entry[:score] %>
   <% end %>
 </div>
 
