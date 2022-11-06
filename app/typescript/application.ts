@@ -1,8 +1,8 @@
 // Entry point for the build script in your package.json
 
 import ClickMode from "./click_mode";
+import MultiselectMode from "./multiselect_mode";
 import Samples from "./samples";
-import SubmissionMultiselect from "./submission_multiselect";
 import TimeAgo from "./time_ago";
 import Toggleable from "./toggleable";
 
@@ -11,8 +11,8 @@ Rails.start()
 
 document.addEventListener("DOMContentLoaded", () => {
   ClickMode.init();
+  MultiselectMode.init();
   Samples.init();
-  SubmissionMultiselect.init();
   TimeAgo.init();
   Toggleable.init();
 });

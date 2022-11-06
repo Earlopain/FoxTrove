@@ -1,6 +1,6 @@
 import ClickMode from "./click_mode";
 
-export default class SubmissionMultiselect {
+export default class MultiselectMode {
   private static submitting = false;
   private static counters: NodeListOf<HTMLElement>;
 
