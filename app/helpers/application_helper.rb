@@ -38,7 +38,8 @@ module ApplicationHelper
     tag.span(class: "toggleable-container", data: { content_visible: visible_on_load }) do
       show = fake_link(show_text, class: "link-show", id: show_id)
       hide = fake_link(hide_text, class: "link-hide", id: hide_id)
-      show.concat(hide).concat(tag.span(capture(&block), class: "toggleable-content"))
+      toggleable_content = block ? capture(&block) : ""
+      show.concat(hide).concat(tag.span(toggleable_content, class: "toggleable-content"))
     end
   end
 
