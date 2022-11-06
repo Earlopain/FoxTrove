@@ -1,30 +1,29 @@
 import MultiselectMode from "./compare_mode";
 import Samples from "./samples";
+import SubmissionFile from "./submission_file";
 
 export default class ClickMode {
   public static state: Object = Samples;
-  private static elements: NodeListOf<Element>;
+  private static submissionFiles: SubmissionFile[];
 
   public static init() {
-    this.elements = document.querySelectorAll(".submission-file");
+    this.submissionFiles = [...document.querySelectorAll(".submission-file")].map(e => new SubmissionFile(e as HTMLElement));
   }
 
   public static selectAll() {
-    this.elements.forEach(e => { e.classList.add("selected") });
+    this.submissionFiles.forEach(s => { s.select() });
   }
 
   public static deselectAll() {
-    this.elements.forEach(e => { e.classList.remove("selected") });
+    this.submissionFiles.forEach(s => { s.unselect() });
   }
 
   public static getSelectedIds() {
-    return [...document.querySelectorAll(".submission-file.selected")].map(e => {
-      return parseInt(e.closest(".submission-sample")?.getAttribute("data-id") || "0");
-    })
+    return this.submissionFiles.filter(s => s.isSelected()).map(s => s.getId());
   }
 
-  public static getAllElements() {
-    return this.elements;
+  public static getAllSubmissionFiles() {
+    return this.submissionFiles;
   }
 
   public static isDisabled(type: Object) {

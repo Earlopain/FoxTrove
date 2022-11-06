@@ -1,22 +1,23 @@
 import ClickMode from "./click_mode";
+import SubmissionFile from "./submission_file";
 
 export default class Samples {
-  private static currentActive: Element | undefined;
+  private static currentActive: SubmissionFile | undefined;
 
   public static init() {
-    for (const thumbnail of ClickMode.getAllElements()) {
-      thumbnail.addEventListener("click", () => {
+    for (const submissionFile of ClickMode.getAllSubmissionFiles()) {
+      submissionFile.addClickListener(() => {
         if(ClickMode.isDisabled(this)) {
           return;
         }
 
-        if (this.currentActive && thumbnail.isSameNode(this.currentActive)) {
+        if (this.currentActive && submissionFile.sameAs(this.currentActive)) {
           this.reset();
         } else {
           this.hideLarge(this.currentActive);
-          this.currentActive = thumbnail;
-          this.showLarge(thumbnail);
-          thumbnail.nextElementSibling?.addEventListener("click", () => {
+          this.currentActive = submissionFile;
+          this.showLarge(submissionFile);
+          submissionFile.getFull().addEventListener("click", () => {
             this.reset();
           }, { once: true });
         }
@@ -24,21 +25,14 @@ export default class Samples {
     }
   }
 
-  private static showLarge(thumbnail: Element) {
-    thumbnail.classList.add("selected");
-    thumbnail.nextElementSibling?.classList.remove("hidden");
-    if (thumbnail.nextElementSibling instanceof HTMLVideoElement) {
-      thumbnail.nextElementSibling.currentTime = 0;
-      thumbnail.nextElementSibling.play();
-    }
+  private static showLarge(submissionFile: SubmissionFile) {
+    submissionFile.select()
+    submissionFile.showFullFile();
   }
 
-  private static hideLarge(thumbnail?: Element) {
-    thumbnail?.classList.remove("selected");
-    thumbnail?.nextElementSibling?.classList.add("hidden");
-    if (thumbnail?.nextElementSibling instanceof HTMLVideoElement) {
-      thumbnail.nextElementSibling.pause();
-    }
+  private static hideLarge(submissionFile?: SubmissionFile) {
+    submissionFile?.unselect();
+    submissionFile?.hideFullFile()
   }
 
   public static reset() {

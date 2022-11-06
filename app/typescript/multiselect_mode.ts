@@ -14,13 +14,13 @@ export default class MultiselectMode {
       ClickMode.activateDefault();
     });
 
-    for (const element of [...ClickMode.getAllElements()]) {
-      element.addEventListener("click", () => {
+    for (const submissionFile of [...ClickMode.getAllSubmissionFiles()]) {
+      submissionFile.addClickListener(() => {
         if(ClickMode.isDisabled(this)) {
           return;
         }
 
-        element.classList.toggle("selected");
+        submissionFile.toggleSelect();
         this.setCount();
       })
     }
