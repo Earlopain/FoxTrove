@@ -1,4 +1,5 @@
 import ClickMode from "./click_mode";
+import Toggleable from "./toggleable";
 
 export default class MultiselectMode {
   private static submitting = false;
@@ -6,11 +7,13 @@ export default class MultiselectMode {
 
   public static init() {
     this.counters = document.querySelectorAll(".selected-count");
-    document.getElementById("enter-select-mode")?.addEventListener("click", () => {
+    
+    const toggleable = Toggleable.get("multiselect");
+    toggleable?.setShowAction(() => {
       ClickMode.activate(this);
     });
 
-    document.getElementById("leave-select-mode")?.addEventListener("click", () => {
+    toggleable?.setHideAction(() => {
       ClickMode.activateDefault();
     });
 

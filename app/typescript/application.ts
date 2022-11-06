@@ -11,8 +11,8 @@ Rails.start()
 
 document.addEventListener("DOMContentLoaded", () => {
   ClickMode.init();
+  Toggleable.init();
   MultiselectMode.init();
   Samples.init();
   TimeAgo.init();
-  Toggleable.init();
 });
