@@ -2,16 +2,16 @@
 <% artist_url = submission_file.artist_url %>
 <div class="submission-stats">
   <% if similarity %>
-    <span>
+    <div>
       Similarity: <%= similarity.round(2) %>
-    </span>
+    </div>
   <% end %>
-  <span class="submission-file-stats">
+  <div class="submission-file-stats">
     <%= site_icon artist_url %>
     <%= "#{submission_file.width}x#{submission_file.height}" %>, 
     <%= number_to_human_size submission_file.size %>
-  </span>
-  <span class="submission-time-ago">
+  </div>
+  <div class="submission-time-ago">
     <%= time_ago submission_file.created_at_on_site %>
     <%= link_to "UREV", update_e6_iqdb_submission_file_path(submission_file), title: "Update E6 IQDB data", method: :post %>
     <% if submission_file.hidden_from_search_at %>
@@ -24,14 +24,14 @@
     <% else %>
       <%= link_to "+", modify_backlog_submission_file_path(submission_file, type: "add"), title: "Add to backlog", method: :put %>
     <% end %>
-  </span>
-  <span class="submission-links">
+  </div>
+  <div class="submission-links">
     <%= link_to_external "SRC", submission_url(artist_submission), title: "Original Source" %>
     | <%= link_to_external "DLE", submission_file.direct_url, title: "Direct Link External" %>
     | <%= link_to "DLO", rails_blob_url(submission_file.original, disposition: :inline), title: "Direct Link Onsite" %>
     | <%= link_to "REV", submission_file_path(submission_file) , title: "Similar Indexed" %>
-  </span>
-  <span class="e6-links">
+  </div>
+  <div class="e6-links">
     <%= render "submission_files/e6_iqdb_stats", submission_file: submission_file %>
-  </span>
+  </div>
 </div>
