@@ -9,13 +9,6 @@ module E6ApiClient
     make_request(:post, "/iqdb_queries.json", body: { file: file })
   end
 
-  def get_posts_by_id(id_list)
-    id_list = Array.wrap(id_list)
-    raise StandardError, "You can only pass 100 ids at once" if id_list.size > 100
-
-    make_request(:get, "/posts.json?tags=status:any id:#{id_list.join(',')}")["posts"]
-  end
-
   def make_request(method, path, **params)
     params[:headers] ||= {}
     params[:headers].merge!(headers)

@@ -33,12 +33,6 @@ module IqdbProxy
     make_request "/images/#{submission_file.id}", :delete
   end
 
-  def get_submission_hash(id)
-    response = make_request "/images/#{id}", :get
-    hash = JSON.parse(response.body)["hash"]
-    [hash].pack("H*") if response.code == 200
-  end
-
   def query_submission_file(submission_file)
     File.open(submission_file.sample.service.path_for(submission_file.sample.key)) do |f|
       # Remove the input submission file, we probably don't want it in the result

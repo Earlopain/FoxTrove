@@ -78,10 +78,11 @@ Install a WSL distribution, enable WSL2, and clone the project inside there. Exe
 1. `cd` into the repo.
 1. `cp .env.sample .env` and fill out the necessary environment variables.
 1. Run `docker-compose build`.
+1. Run `docker-compose run --rm -e RAILS_ENV=test reverser bin/rails db:create` to create the test database.
+1. Run `docker-compose run --rm reverser bin/rails db:schema:load` to complete the database setup.
 1. Run `docker-compose up`. The container is now available at `http://localhost:9000`.
 1. Get inside the container with `docker-compose run reverser sh`.
 1. Run `bin/rails assets:generate_spritemap` to stich the favicons in one image.
-1. Run `RAILS_ENV=test bin/rails db:prepare` to setup the test database for later use.
 
 This project is only meant to run locally on your machine. You may host it somewhere and make it accessible to others, but be aware that there are no user accounts or fine grained permissions. Everyone can do anyhting.
 
