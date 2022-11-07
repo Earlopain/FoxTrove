@@ -1,4 +1,4 @@
-import MultiselectMode from "./compare_mode";
+import MultiselectMode from "./multiselect_mode";
 import Samples from "./samples";
 import SubmissionFile from "./submission_file";
 
