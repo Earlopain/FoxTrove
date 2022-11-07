@@ -143,7 +143,7 @@ class SubmissionFile < ApplicationRecord
 
   def update_e6_iqdb
     e6_iqdb_entries.destroy_all
-    similar = IqdbProxy.query_submission_file(self).pluck(:submission)
+    similar = IqdbProxy.query_submission_file(self).pluck(:submission_file)
     similar.each { |s| s.e6_iqdb_entries.destroy_all }
 
     E6IqdbQueryJob.set(priority: 10).perform_later id
