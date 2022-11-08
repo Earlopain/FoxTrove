@@ -1,4 +1,4 @@
-FROM ruby:3.1.2-alpine as ruby-builder
+FROM ruby:3.1.2-alpine3.16 as ruby-builder
 
 RUN apk --no-cache add tzdata build-base libpq-dev
 
@@ -13,13 +13,13 @@ RUN if [[ $COMPOSE_PROFILES == *"solargraph"* ]]; then \
   solargraph download-core && bundle exec yard gems && solargraph bundle; \
 fi
 
-FROM node:18-alpine as node-builder
+FROM node:18-alpine3.16 as node-builder
 
 WORKDIR /app
 COPY package.json yarn.lock .yarnrc.yml ./
 RUN corepack enable && corepack prepare --activate && yarn install
 
-FROM ruby:3.1.2-alpine
+FROM ruby:3.1.2-alpine3.16
 
 WORKDIR /app
 
