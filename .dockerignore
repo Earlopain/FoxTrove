@@ -1,6 +1,9 @@
-tmp/
-log/
-.git/
-.yarn/
-!.yarn/releases
-node_modules
+# Ignore everything
+**
+
+# Allow only the files that are actually needed
+!/package.json
+!/yarn.lock
+!/.yarnrc.yml
+!/Gemfile
+!/Gemfile.lock
