@@ -20,15 +20,8 @@ jobs:
         with:
           cache-from: type=gha
           cache-to: type=gha,mode=max
-          load: true
           tags: reverser:test
           outputs: type=docker,dest=/tmp/reverser-image.tar
-
-      - name: Upload artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: reverser-image
-          path: /tmp/reverser-image.tar
 
   rspec:
     runs-on: ubuntu-latest
