@@ -9,7 +9,7 @@ class LogEventDecorator < Draper::Decorator
 
   def preview
     case action
-    when 'scraper_request'
+    when "scraper_request"
       lines = []
       lines << "#{payload['method'].upcase}: #{payload['path']}"
       if (query_params = payload.dig("request_params", "query"))
