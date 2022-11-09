@@ -51,6 +51,7 @@ jobs:
           --health-retries 5
 
     steps:
+      - uses: actions/checkout@v3
       - uses: ./.github/prepare-docker-image
 
       - name: Create DB
@@ -64,6 +65,7 @@ jobs:
     needs: docker-build
 
     steps:
+      - uses: actions/checkout@v3
       - uses: ./.github/prepare-docker-image
 
       - name: Run Rubocop
