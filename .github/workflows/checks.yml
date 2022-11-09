@@ -21,7 +21,6 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
           tags: reverser:test
-          outputs: type=docker,dest=/tmp/reverser-image.tar
 
   rspec:
     runs-on: ubuntu-latest
