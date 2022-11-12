@@ -55,4 +55,8 @@ module ApplicationHelper
   def paginated(values)
     content_for(:paginator) { paginate values }
   end
+
+  def job_stats
+    @job_stats ||= JobStats.new
+  end
 end

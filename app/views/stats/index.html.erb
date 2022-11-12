@@ -31,10 +31,10 @@ Samples: <%= number_to_human_size(@sample_size) %>
 
 <h1>Job Stats</h1>
 
-Pending Scraping: <%= JobStats.scraping_queued.values.sum %><br>
-Pending Submission File Downloads: <%= JobStats.submission_download_queued.values.sum %><br>
-Pending E6 IQDB Calls: <%= JobStats.e6_iqdb_queued.values.sum %><br>
+Pending Scraping: <%= job_stats.scraping_queued.values.sum %><br>
+Pending Submission File Downloads: <%= job_stats.submission_download_queued.values.sum %><br>
+Pending E6 IQDB Calls: <%= job_stats.e6_iqdb_queued.values.sum %><br>
 <br>
-<%= render "artist_urls/list", artist_urls: @artist_urls %>
+<%= render "artist_urls/list", artist_urls: ArtistUrl.where(id: job_stats.active_urls) %>
 
 <% page_title "Stats" %>

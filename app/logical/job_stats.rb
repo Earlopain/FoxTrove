@@ -1,32 +1,34 @@
 # frozen_string_literal: true
 
-module JobStats
-  def self.active_urls
+class JobStats
+  def active_urls
     e6_iqdb_queued.keys + submission_download_queued.keys + scraping_queued.keys + scraping_now
   end
 
-  def self.e6_iqdb_queued
+  def e6_iqdb_queued
     proc = ->(ids) { ArtistUrl.joins(submissions: :submission_files).where(submissions: { submission_files: { id: ids } }).group(:id).count }
-    stats_queued("e6_iqdb", proc)
+    @e6_iqdb_queued ||= stats_queued("e6_iqdb", proc)
   end
 
-  def self.submission_download_queued
+  def submission_download_queued
     proc = ->(ids) { ArtistUrl.joins(:submissions).where(submissions: { id: ids }).group(:id).count }
-    stats_queued("submission_download", proc)
+    @submission_download_queued ||= stats_queued("submission_download", proc)
   end
 
-  def self.scraping_queued
+  def scraping_queued
     proc = ->(ids) { ArtistUrl.where(id: ids).group(:id).count }
-    stats_queued("scraping", proc)
+    @scraping_queued ||= stats_queued("scraping", proc)
   end
 
-  def self.scraping_now
-    GoodJob::JobsFilter.new(state: "running", queue_name: "scraping").records.map do |job|
+  def scraping_now
+    @scraping_now ||= GoodJob::JobsFilter.new(state: "running", queue_name: "scraping").records.map do |job|
       job.serialized_params["arguments"][0]
     end
   end
 
-  def self.stats_queued(queue_name, count_proc)
+  private
+
+  def stats_queued(queue_name, count_proc)
     result = Hash.new(0)
     queue = GoodJob::JobsFilter.new(state: "queued", queue_name: queue_name).filtered_query
     queue.each_slice(1000) do |batch|
