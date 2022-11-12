@@ -91,11 +91,9 @@ module Scraper
 
     def fetch_json(path, method = :get, **params)
       response = enfore_rate_limit do
-        HTTParty.send(method, path, params)
+        HTTParty.send(method, path, { format: :json, **params })
       end
       log_response(path, method, params, response.code, response.body)
-      # Validate that the response is indeed json
-      JSON.parse(response.body)
       response
     end
 
