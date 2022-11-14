@@ -54,7 +54,7 @@ jobs:
         run: $DOCKER_RUN bin/rails db:schema:load
 
       - name: Run RSpec
-        run: $DOCKER_RUN bundle exec rspec --require spec_helper --order random --format RSpec::Github::Formatter
+        run: $DOCKER_RUN bundle exec rspec --require spec_helper --format RSpec::Github::Formatter
 
   rubocop:
     runs-on: ubuntu-latest

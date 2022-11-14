@@ -75,7 +75,7 @@ services:
     image: reverser
     volumes:
       - .:/app
-    entrypoint: bundle exec rspec --require spec_helper --order random
+    entrypoint: bundle exec rspec --require spec_helper
     depends_on:
       - postgres
       - iqdb
