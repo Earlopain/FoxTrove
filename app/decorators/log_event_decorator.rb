@@ -1,12 +1,6 @@
 # frozen_string_literal: true
 
-class LogEventDecorator < Draper::Decorator
-  def self.collection_decorator_class
-    PaginatedDecorator
-  end
-
-  delegate_all
-
+class LogEventDecorator < ApplicationDecorator
   def preview
     case action
     when "scraper_request"

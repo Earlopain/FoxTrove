@@ -2,11 +2,11 @@
 
 class LogEventsController < ApplicationController
   def index
-    @log_events = LogEventDecorator.decorate_collection(LogEvent.search(search_params).page(params[:page]))
+    @log_events = LogEvent.search(search_params).page(params[:page]).decorate
   end
 
   def show
-    @log_event = LogEventDecorator.decorate(LogEvent.find(params[:id]))
+    @log_event = LogEvent.find(params[:id]).decorate
   end
 
   private
