@@ -48,7 +48,6 @@ class ApplicationController < ActionController::Base
       user_agent: request.user_agent,
     }
 
-    console
     render "application/error", formats: [:html], status: EXCEPTION_TYPES[exception.class] || 500
   end
 
