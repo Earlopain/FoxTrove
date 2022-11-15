@@ -51,7 +51,5 @@ Rails.application.configure do
 
   config.active_storage.service = :test
 
-  config.to_prepare do
-    ActiveRecord::Base.logger.level = :info
-  end
+  config.log_level = :warn
 end

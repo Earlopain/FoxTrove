@@ -22,8 +22,10 @@ gem "selenium-webdriver"
 gem "simple_form"
 
 group :development, :test do
+  gem "factory_bot_rails", require: false
   gem "rspec-github", require: false
   gem "rspec-rails", require: false
+  gem "webmock", require: false
 end
 
 group :rubocop do
