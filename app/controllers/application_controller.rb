@@ -22,8 +22,7 @@ class ApplicationController < ActionController::Base
   end
 
   def with_time_zone(&)
-    # TODO: timezone cookie
-    Time.use_zone("Berlin", &)
+    Time.use_zone(Config.time_zone, &)
   end
 
   EXCEPTION_TYPES = {

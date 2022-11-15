@@ -17,6 +17,9 @@ log_scraper_requests?: true
 # least half a second after the previous request finished.
 scraper_request_rate_limit: 0
 
+# https://github.com/rails/rails/blob/2d2fdc941e7497ca77f99ce5ad404b6e58f043ef/activesupport/lib/active_support/values/time_zone.rb#L31-L183
+time_zone: Berlin
+
 # Disable individual scrapers
 artconomy_disabled?: false
 artstation_disabled?: false
