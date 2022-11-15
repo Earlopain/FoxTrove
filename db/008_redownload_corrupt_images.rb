@@ -8,7 +8,7 @@ def redownload(submission_file)
   response = Sites.download_file(bin_file, submission_file.direct_url)
   if response.code == 200
     begin
-      submission_file.set_original!(bin_file, submission_file.direct_url)
+      submission_file.attach_original!(bin_file)
       true
     rescue Vips::Error
       false

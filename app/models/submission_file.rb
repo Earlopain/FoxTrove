@@ -56,11 +56,11 @@ class SubmissionFile < ApplicationRecord
       created_at_on_site: created_at,
       file_identifier: file_identifier,
     )
-    submission_file.set_original!(bin_file, url)
+    submission_file.attach_original!(bin_file)
   end
 
-  def set_original!(bin_file, url)
-    filename = File.basename(Addressable::URI.parse(url).path)
+  def attach_original!(bin_file)
+    filename = File.basename(Addressable::URI.parse(direct_url).path)
     blob = ActiveStorage::Blob.create_and_upload!(io: bin_file, filename: filename)
     begin
       blob.analyze
