@@ -26,7 +26,7 @@ jobs:
           cache-to: type=gha,mode=max
           tags: reverser:test
 
-  rspec:
+  tests:
     runs-on: ubuntu-latest
     needs: docker-build
 
@@ -53,8 +53,8 @@ jobs:
       - name: Create DB
         run: $DOCKER_RUN bin/rails db:schema:load
 
-      - name: Run RSpec
-        run: $DOCKER_RUN bundle exec rspec --require spec_helper --format RSpec::Github::Formatter
+      - name: Run Tests
+        run: $DOCKER_RUN bundle exec rails test
 
   rubocop:
     runs-on: ubuntu-latest

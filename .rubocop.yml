@@ -1,7 +1,7 @@
 require:
+  - rubocop-minitest
   - rubocop-performance
   - rubocop-rails
-  - rubocop-rspec
 
 AllCops:
   NewCops: enable
@@ -40,6 +40,12 @@ Metrics/MethodLength:
   Enabled: false
 
 Metrics/ModuleLength:
+  Enabled: false
+
+Minitest/EmptyLineBeforeAssertionMethods:
+  Enabled: false
+
+Minitest/RefutePredicate:
   Enabled: false
 
 Style/Documentation:
@@ -93,12 +99,3 @@ Rails/ReversibleMigration:
 Rails/Output:
   Exclude:
     - db/*.rb
-
-RSpec/ExampleLength:
-  Max: 20
-
-RSpec/NoExpectationExample:
-  Enabled: false
-
-RSpec/MultipleExpectations:
-  Max: 5

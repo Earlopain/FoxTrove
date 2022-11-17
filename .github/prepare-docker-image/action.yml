@@ -15,5 +15,5 @@ runs:
         tags: reverser:test
 
     - name: Set docker run command
-      run: echo "DOCKER_RUN=docker run --rm --network host -e POSTGRES_HOST=localhost -e RAILS_ENV=test -v $PWD:/app reverser:test" >> "$GITHUB_ENV"
+      run: echo "DOCKER_RUN=docker run --rm --network host -e POSTGRES_HOST=localhost -e RAILS_ENV=test -e CI=true -v $PWD:/app reverser:test" >> "$GITHUB_ENV"
       shell: bash
