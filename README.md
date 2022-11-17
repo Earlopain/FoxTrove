@@ -86,10 +86,10 @@ This project is only meant to run locally on your machine. You may host it somew
 ### Development tools
 
 The compose file contains services to easily run some developments tools:
-* `docker-compose run --rm rspec`
+* `docker-compose run --rm tests`
 * `docker-compose run --rm rubocop`
 
-You can pass addition parameters like individual test files for rspec or `-a` for rubocop simply by appending it to the command. I suggest you make an alias for these. You may also run these commands locally, since docker does add a fair bit of startup overhead.
+You can pass addition parameters like individual test files or `-a` for rubocop simply by appending it to the command. I suggest you make an alias for these. You may also run these commands locally, since docker does add a fair bit of startup overhead.
 
 #### Solargraph
 

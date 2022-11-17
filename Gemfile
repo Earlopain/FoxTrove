@@ -23,16 +23,17 @@ gem "simple_form"
 
 group :development, :test do
   gem "factory_bot_rails", require: false
-  gem "rspec-github", require: false
-  gem "rspec-rails", require: false
+  gem "minitest-rails", require: false
+  gem "minitest-reporters", require: false
+  gem "mocha", require: false
   gem "webmock", require: false
 end
 
 group :rubocop do
   gem "rubocop", require: false
+  gem "rubocop-minitest", require: false
   gem "rubocop-performance", require: false
   gem "rubocop-rails", require: false
-  gem "rubocop-rspec", require: false
 end
 
 group :local do

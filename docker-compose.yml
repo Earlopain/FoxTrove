@@ -71,17 +71,17 @@ services:
     profiles:
       - rubocop
 
-  rspec:
+  tests:
     image: reverser
     volumes:
       - .:/app
-    entrypoint: bundle exec rspec --require spec_helper
+    entrypoint: bundle exec rails test
     depends_on:
       - postgres
       - iqdb
       - selenium
     profiles:
-      - rspec
+      - tests
 
 volumes:
   build_assets:

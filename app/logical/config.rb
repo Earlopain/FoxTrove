@@ -13,7 +13,7 @@ module Config
 
   def env_config
     @env_config ||= begin
-      app_env = ENV.select { |k| k.downcase.start_with?("reverser_") }
+      app_env = env.select { |k| k.downcase.start_with?("reverser_") }
       app_env.to_h { |k, v| [k.downcase.delete_prefix("reverser_"), Psych.safe_load(v)] }
     end
   end
@@ -46,5 +46,12 @@ module Config
 
   def respond_to_missing?(method, *)
     default_config.key? method.to_s
+  end
+
+  private
+
+  # This is only here to stub in tests
+  def env
+    ENV
   end
 end

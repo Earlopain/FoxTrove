@@ -1,19 +1,21 @@
 # frozen_string_literal: true
 
-RSpec.describe Sites do
+require "test_helper"
+
+class SitesTest < ActiveSupport::TestCase
   it "returns the correct definition for enum lookups" do
-    twitter = described_class.from_enum("twitter")
-    twitch = described_class.from_enum("twitch")
-    expect(twitter).to be_a Sites::ScraperDefinition
-    expect(twitter.display_name).to eq("Twitter")
-    expect(twitch).to be_a Sites::SimpleDefinition
-    expect(twitch.display_name).to eq("Twitch")
+    twitter = Sites.from_enum("twitter")
+    twitch = Sites.from_enum("twitch")
+    assert_instance_of(Sites::ScraperDefinition, twitter)
+    assert_equal("Twitter", twitter.display_name)
+    assert_instance_of(Sites::SimpleDefinition, twitch)
+    assert_equal("Twitch", twitch.display_name)
   end
 
   describe "fix_url" do
     def expect_correct_escaping(input, output)
-      expect(described_class.fix_url(input).to_s).to eq(output)
-      expect(described_class.fix_url(output).to_s).to eq(output)
+      assert_equal(output, Sites.fix_url(input).to_s)
+      assert_equal(output, Sites.fix_url(output).to_s)
     end
 
     it "correctly escapes cyrilic characters" do

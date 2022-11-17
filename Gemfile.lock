@@ -72,6 +72,7 @@ GEM
       tzinfo (~> 2.0)
     addressable (2.8.1)
       public_suffix (>= 2.0.2, < 6.0)
+    ansi (1.5.0)
     ast (2.4.2)
     backport (1.2.0)
     benchmark (0.2.0)
@@ -151,6 +152,16 @@ GEM
     mime-types-data (3.2022.0105)
     mini_mime (1.1.2)
     minitest (5.16.3)
+    minitest-rails (7.0.0)
+      minitest (~> 5.10)
+      railties (~> 7.0.0)
+    minitest-reporters (1.5.0)
+      ansi
+      builder
+      minitest (>= 5.0)
+      ruby-progressbar
+    mocha (2.0.2)
+      ruby2_keywords (>= 0.0.5)
     multi_xml (0.6.0)
     net-imap (0.3.1)
       net-protocol
@@ -217,25 +228,6 @@ GEM
       nokogiri
     rexml (3.2.5)
     rotp (6.2.0)
-    rspec-core (3.11.0)
-      rspec-support (~> 3.11.0)
-    rspec-expectations (3.11.1)
-      diff-lcs (>= 1.2.0, < 2.0)
-      rspec-support (~> 3.11.0)
-    rspec-github (2.3.1)
-      rspec-core (~> 3.0)
-    rspec-mocks (3.11.1)
-      diff-lcs (>= 1.2.0, < 2.0)
-      rspec-support (~> 3.11.0)
-    rspec-rails (6.0.1)
-      actionpack (>= 6.1)
-      activesupport (>= 6.1)
-      railties (>= 6.1)
-      rspec-core (~> 3.11)
-      rspec-expectations (~> 3.11)
-      rspec-mocks (~> 3.11)
-      rspec-support (~> 3.11)
-    rspec-support (3.11.1)
     rubocop (1.37.0)
       json (~> 2.3)
       parallel (~> 1.10)
@@ -248,6 +240,8 @@ GEM
       unicode-display_width (>= 1.4.0, < 3.0)
     rubocop-ast (1.22.0)
       parser (>= 3.1.1.0)
+    rubocop-minitest (0.23.2)
+      rubocop (>= 0.90, < 2.0)
     rubocop-performance (1.15.0)
       rubocop (>= 1.7.0, < 2.0)
       rubocop-ast (>= 0.4.0)
@@ -255,8 +249,6 @@ GEM
       activesupport (>= 4.2.0)
       rack (>= 1.1)
       rubocop (>= 1.33.0, < 2.0)
-    rubocop-rspec (2.13.2)
-      rubocop (~> 1.33)
     ruby-progressbar (1.11.0)
     ruby-vips (2.1.4)
       ffi (~> 1.12)
@@ -316,6 +308,9 @@ DEPENDENCIES
   httparty
   kaminari
   listen
+  minitest-rails
+  minitest-reporters
+  mocha
   nokogiri
   open3
   pg (~> 1.1)
@@ -323,12 +318,10 @@ DEPENDENCIES
   rails (~> 7.0)
   responders
   rotp
-  rspec-github
-  rspec-rails
   rubocop
+  rubocop-minitest
   rubocop-performance
   rubocop-rails
-  rubocop-rspec
   ruby-vips
   selenium-webdriver
   simple_form
