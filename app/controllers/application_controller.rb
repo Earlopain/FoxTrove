@@ -40,6 +40,7 @@ class ApplicationController < ActionController::Base
 
   def rescue_exception(exception)
     @exception = exception
+    @exception = @exception.cause if @exception.is_a?(ActionView::Template::Error)
 
     @params = {
       params: request.filtered_parameters.except(:authenticity_token),
