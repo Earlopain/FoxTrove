@@ -15,7 +15,7 @@ class ConfigTest < ActiveSupport::TestCase
 
   it "works when the custom config file doesn't exist" do
     # This is the default stub
-    assert_equal("DefaultName", Config.app_name)
+    assert_equal("DeefaultName", Config.app_name)
     assert_empty(Config.custom_config)
   end
 
