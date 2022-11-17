@@ -45,9 +45,6 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
-    
-    env:
-      MINITEST_REPORTERS_REPORTS_DIR: /tmp/reports
 
     steps:
       - uses: actions/checkout@v3
@@ -64,7 +61,7 @@ jobs:
         uses: mikepenz/action-junit-report@v3
         if: always()
         with:
-          report_paths: "$MINITEST_REPORTERS_REPORTS_DIR/TEST-*.xml"
+          report_paths: "**/test/reports/TEST-*.xml"
 
   rubocop:
     runs-on: ubuntu-latest
