@@ -11,9 +11,13 @@ require "factory_bot_rails"
 require "mocha/minitest"
 require "webmock/minitest"
 
-if ENV["GITHUB_ACTION"]
+puts ENV.keys
+if ENV["CI"]
+  puts "HERE"
+  aisdnasda asda
   Minitest::Reporters.use! Minitest::Reporters::JUnitReporter.new
 else
+  puts "THERE"
   Minitest::Reporters.use! Minitest::Reporters::DefaultReporter.new
 end
 
