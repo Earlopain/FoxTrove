@@ -1,6 +1,18 @@
 # frozen_string_literal: true
 
 class ArtistUrl < ApplicationRecord
+  class MissingApiIdentifier < StandardError
+    def initialize(url_identifier, site_type)
+      msg = <<~MSG
+        Missing API identifier for #{url_identifier}:#{site_type}.
+        See fixer script No. 5 to backfill missing data.
+
+        docker-compose run --rm reverser ruby db/005_fill_api_identifiers.rb #{site_type}
+      MSG
+      super(msg)
+    end
+  end
+
   belongs_to :artist
   has_many :submissions, class_name: "ArtistSubmission", dependent: :destroy
 
@@ -52,6 +64,8 @@ class ArtistUrl < ApplicationRecord
   end
 
   def enqueue_scraping
+    raise MissingApiIdentifier.new(url_identifier, site_type) unless api_identifier
+
     ScrapeArtistUrlJob.perform_later id if scraper_enabled?
   end
 end
