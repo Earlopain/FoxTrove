@@ -5,7 +5,10 @@ require "test_helper"
 class ConfigTest < ActiveSupport::TestCase
   before do
     Config.stubs(:default_config).returns({ "app_name" => "DefaultName" })
-    stub_env("REVERSER_CUSTOM_CONFIG_PATH" => "/empty/file")
+    Config.force_reload
+  end
+
+  after do
     Config.force_reload
   end
 
@@ -40,6 +43,7 @@ class ConfigTest < ActiveSupport::TestCase
       stub_env("REVERSER_CUSTOM_CONFIG_PATH" => f.path)
       f << "app_name: OverwrittenName"
       f.flush
+      Config.unstub(:custom_config)
       assert_equal("OverwrittenName", Config.app_name)
     end
   end

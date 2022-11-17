@@ -28,6 +28,11 @@ module ActiveSupport
   class TestCase
     include FactoryBot::Syntax::Methods
 
+    before do
+      Config.stubs(:custom_config).returns({})
+      Config.stubs(:env).returns({})
+    end
+
     # https://github.com/minitest/minitest/issues/666
     def assert_equal(expected, actual, **)
       if expected.nil?

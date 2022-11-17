@@ -48,8 +48,6 @@ module Config
     default_config.key? method.to_s
   end
 
-  private
-
   # This is only here to stub in tests
   def env
     ENV
