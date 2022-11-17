@@ -28,7 +28,6 @@ module ActiveSupport
   class TestCase
     include FactoryBot::Syntax::Methods
 
-    # What a stupid hill to die on. Supresses a deprecation warning
     # https://github.com/minitest/minitest/issues/666
     def assert_equal(expected, actual, **)
       if expected.nil?
