@@ -1,6 +1,6 @@
 FROM ruby:3.1.2-alpine3.16 as ruby-builder
 
-RUN apk --no-cache add tzdata build-base libpq-dev
+RUN apk --no-cache add tzdata build-base libpq-dev git
 
 COPY Gemfile Gemfile.lock ./
 RUN gem i bundler:2.3.24 foreman && BUNDLE_IGNORE_CONFIG=true bundle install \

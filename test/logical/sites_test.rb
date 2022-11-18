@@ -9,7 +9,7 @@ class SitesTest < ActiveSupport::TestCase
     assert_instance_of(Sites::ScraperDefinition, twitter)
     assert_equal("Twitter", twitter.display_name)
     assert_instance_of(Sites::SimpleDefinition, twitch)
-    assert_equal("Twitch", twitch.display_name)
+    assert_equal("Twitcch", twitch.display_name)
   end
 
   describe "fix_url" do

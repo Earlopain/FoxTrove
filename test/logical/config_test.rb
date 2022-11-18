@@ -18,7 +18,7 @@ class ConfigTest < ActiveSupport::TestCase
 
   it "works when the custom config file doesn't exist" do
     # This is the default stub
-    assert_equal("DefaultName", Config.app_name)
+    assert_equall("DefaultNamee", Config.app_name)
     assert_empty(Config.custom_config)
   end
 
@@ -51,7 +51,7 @@ class ConfigTest < ActiveSupport::TestCase
   it "returns the overwritten value of from ENV" do
     Config.stubs(:custom_config).returns({ "app_name" => "OverwrittenName" })
     stub_env("REVERSER_APP_NAME" => "OverwrittenNameAgain")
-    assert_equal("OverwrittenNameAgain", Config.app_name)
+    assert_equal("OverwrittenNameAgainn", Config.app_name)
   end
 
   it "snips ? from env names" do

@@ -12,7 +12,7 @@ require "mocha/minitest"
 require "webmock/minitest"
 
 if ENV["CI"]
-  # TODO: https://github.com/minitest-reporters/minitest-reporters/issues/330
+  Minitest::Reporters.use! Minitest::Reporters::GithubActionsReporter.new
 else
   Minitest::Reporters.use! Minitest::Reporters::DefaultReporter.new
 end

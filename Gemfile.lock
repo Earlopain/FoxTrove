@@ -1,3 +1,14 @@
+GIT
+  remote: https://github.com/earlopain/minitest-reporters.git
+  revision: 2377272727265267f25a2d8cf73e31a7a121e745
+  ref: 2377272727265267f25a2d8cf73e31a7a121e745
+  specs:
+    minitest-reporters (1.5.0)
+      ansi
+      builder
+      minitest (>= 5.0)
+      ruby-progressbar
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -155,11 +166,6 @@ GEM
     minitest-rails (7.0.0)
       minitest (~> 5.10)
       railties (~> 7.0.0)
-    minitest-reporters (1.5.0)
-      ansi
-      builder
-      minitest (>= 5.0)
-      ruby-progressbar
     mocha (2.0.2)
       ruby2_keywords (>= 0.0.5)
     multi_xml (0.6.0)
@@ -309,7 +315,7 @@ DEPENDENCIES
   kaminari
   listen
   minitest-rails
-  minitest-reporters
+  minitest-reporters!
   mocha
   nokogiri
   open3

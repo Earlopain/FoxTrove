@@ -24,7 +24,7 @@ gem "simple_form"
 group :development, :test do
   gem "factory_bot_rails", require: false
   gem "minitest-rails", require: false
-  gem "minitest-reporters", require: false
+  gem "minitest-reporters", git: "https://github.com/earlopain/minitest-reporters.git", ref: "2377272727265267f25a2d8cf73e31a7a121e745", require: false
   gem "mocha", require: false
   gem "webmock", require: false
 end
