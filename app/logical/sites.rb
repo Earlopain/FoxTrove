@@ -4,6 +4,7 @@ module Sites
   module_function
 
   def from_enum(value)
+    aooaooooo
     all.find { |definition| definition.enum_value == value }
   end
 
