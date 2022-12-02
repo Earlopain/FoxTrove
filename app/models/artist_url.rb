@@ -7,7 +7,7 @@ class ArtistUrl < ApplicationRecord
         Missing API identifier for #{url_identifier}:#{site_type}.
         See fixer script No. 5 to backfill missing data.
 
-        docker-compose run --rm reverser ruby db/005_fill_api_identifiers.rb #{site_type}
+        docker-compose run --rm reverser bin/rails reverser:backfill_api_identifiers SITE_TYPE=#{site_type}
       MSG
       super(msg)
     end

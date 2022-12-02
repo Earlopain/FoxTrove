@@ -77,7 +77,7 @@ Install a WSL distribution, enable WSL2, and clone the project inside there. Exe
 1. Get inside the container with `docker-compose run reverser sh`.
 1. Run `RAILS_ENV=test bin/rails db:create` to create the test database.
 1. Run `bin/rails db:schema:load` to finish setting up the database.
-1. Run `bin/rails assets:generate_spritemap` to stich the favicons in one image.
+1. Run `bin/rails reverser:generate_spritemap` to stich the favicons in one image.
 1. You can now exit the container with `exit`.
 1. Run `docker-compose up`. The container is now available at `http://localhost:9000`. A few config options are mandatory, you will be notified of them when accessing the site. See [Configuration](#configuration) on how to set them.
 

@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-gem "ruby-vips"
-
-namespace :assets do
+namespace :reverser do
   desc "Generate the icon spritemap"
   task generate_spritemap: :environment do
     icon_folder = Rails.public_path.join("icons")
@@ -21,5 +19,17 @@ namespace :assets do
     end
 
     result.pngsave(target_file.to_s)
+  end
+
+  desc "Backfill missing api identifiers after adding a new scraper"
+  task backfill_api_identifiers: :environment do
+    site_type = ENV.fetch("SITE_TYPE", nil)
+    raise StandardError, "Must provide a site type" if site_type.blank?
+
+    ArtistUrl.where(api_identifier: nil, site_type: site_type).find_each do |artist_url|
+      puts artist_url.url_identifier
+      scraper = Sites.from_enum(site_type).new_scraper(artist_url)
+      artist_url.update(api_identifier: scraper.fetch_api_identifier)
+    end
   end
 end
