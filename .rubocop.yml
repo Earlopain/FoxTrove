@@ -6,9 +6,10 @@ require:
 AllCops:
   NewCops: enable
   Exclude:
-    - "bin/*"
-    - "node_modules/**/*"
-    - "vendor/**/*"
+    - bin/*
+    - db/schema.rb
+    - node_modules/**/*
+    - vendor/**/*
   TargetRubyVersion: 3.1
 
 Layout/FirstArrayElementIndentation:
