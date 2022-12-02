@@ -88,15 +88,6 @@ Style/TrailingCommaInArrayLiteral:
 Style/TrailingCommaInHashLiteral:
   EnforcedStyleForMultiline: consistent_comma
 
-Rails/BulkChangeTable:
-  Enabled: false
-
-Rails/NotNullColumn:
-  Enabled: false
-
-Rails/ReversibleMigration:
-  Enabled: false
-
 Rails/Output:
   Exclude:
     - db/*.rb
