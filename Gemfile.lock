@@ -277,6 +277,9 @@ GEM
       thor (~> 1.0)
       tilt (~> 2.0)
       yard (~> 0.9, >= 0.9.24)
+    solargraph-rails (1.1.0)
+      activesupport
+      solargraph
     thor (1.2.1)
     tilt (2.0.11)
     timeout (0.3.0)
@@ -326,6 +329,7 @@ DEPENDENCIES
   selenium-webdriver
   simple_form
   solargraph
+  solargraph-rails
   webmock
 
 BUNDLED WITH

@@ -38,4 +38,5 @@ end
 
 group :local do
   gem "solargraph", require: false
+  gem "solargraph-rails", require: false
 end
