@@ -1,9 +1,9 @@
-FROM ruby:3.1.2-alpine3.16 as ruby-builder
+FROM ruby:3.1.3-alpine3.17 as ruby-builder
 
-RUN apk --no-cache add tzdata build-base libpq-dev
+RUN apk --no-cache add build-base postgresql15-dev
 
 COPY Gemfile Gemfile.lock ./
-RUN gem i bundler:2.3.24 foreman && BUNDLE_IGNORE_CONFIG=true bundle install \
+RUN gem i bundler:2.3.26 foreman && BUNDLE_IGNORE_CONFIG=true bundle install \
  && rm -rf /usr/local/bundle/cache/*.gem \
  && find /usr/local/bundle/gems/ -name "*.c" -delete \
  && find /usr/local/bundle/gems/ -name "*.o" -delete
@@ -13,19 +13,19 @@ RUN if [[ $COMPOSE_PROFILES == *"solargraph"* ]]; then \
   solargraph download-core && bundle exec yard gems && solargraph bundle; \
 fi
 
-FROM node:18-alpine3.16 as node-builder
+FROM node:18-alpine3.17 as node-builder
 
 WORKDIR /app
 COPY package.json yarn.lock .yarnrc.yml ./
 RUN corepack enable && corepack prepare --activate && yarn install
 
-FROM ruby:3.1.2-alpine3.16
+FROM ruby:3.1.3-alpine3.17
 
 WORKDIR /app
 
 RUN apk --no-cache add \
   tzdata git \
-  postgresql-client \
+  postgresql15-client \
   vips ffmpeg
 
 RUN git config --global --add safe.directory /app

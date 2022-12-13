@@ -3,8 +3,24 @@
 class ArtistsController < ApplicationController
   respond_to :html
 
+  def index
+    @artists = Artist.includes(:artist_urls).search(index_search_params).page params[:page]
+  end
+
+  def show
+    @artist = Artist.includes(:artist_urls).find(params[:id])
+    @search_params = instance_search_params.merge(artist_id: @artist.id)
+    @submission_files = SubmissionFile.search(@search_params).with_everything.page params[:page]
+    respond_with(@artist)
+  end
+
   def new
     @artist = Artist.new
+    respond_with(@artist)
+  end
+
+  def edit
+    @artist = Artist.includes(:artist_urls).find(params[:id])
     respond_with(@artist)
   end
 
@@ -17,22 +33,6 @@ class ArtistsController < ApplicationController
         raise ActiveRecord::Rollback
       end
     end
-    respond_with(@artist)
-  end
-
-  def index
-    @artists = Artist.includes(:artist_urls).search(index_search_params).page params[:page]
-  end
-
-  def show
-    @artist = Artist.includes(:artist_urls).find(params[:id])
-    @search_params = instance_search_params.merge(artist_id: @artist.id)
-    @submission_files = SubmissionFile.search(@search_params).with_everything.page params[:page]
-    respond_with(@artist)
-  end
-
-  def edit
-    @artist = Artist.includes(:artist_urls).find(params[:id])
     respond_with(@artist)
   end
 

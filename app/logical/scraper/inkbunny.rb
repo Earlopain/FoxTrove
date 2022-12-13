@@ -22,7 +22,7 @@ module Scraper
                search_mode1
              end
       end_reached if json["pages_count"] == json["page"]
-      submission_ids = json["submissions"].map { |entry| entry["submission_id"] }
+      submission_ids = json["submissions"].pluck("submission_id")
       submissions = submission_details(submission_ids).reject { |submission| submission["last_file_update_datetime"].nil? }
       @page += 1
       submissions

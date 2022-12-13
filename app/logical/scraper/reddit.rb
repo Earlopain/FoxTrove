@@ -24,7 +24,7 @@ module Scraper
       # Gifs are not videos
       # TODO: videos are not a single file, but a dash stream
       # TODO: figure out if stuff can still be searched for, but images are gone
-      entries.map { |e| e["data"] }.select { |e| e["domain"] == "i.redd.it" || (e["domain"] == "reddit.com" && e["media_metadata"].present?) }
+      entries.pluck("data").select { |e| e["domain"] == "i.redd.it" || (e["domain"] == "reddit.com" && e["media_metadata"].present?) }
     end
 
     def to_submission(submission)

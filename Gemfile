@@ -2,19 +2,17 @@
 
 source "https://rubygems.org"
 
-gem "puma", "~> 5.5"
-gem "rails", "~> 7.0"
-
-gem "good_job"
-gem "pg", "~> 1.1"
-
 gem "addressable"
 gem "draper"
+gem "good_job"
 gem "httparty"
 gem "kaminari"
 gem "listen"
 gem "nokogiri"
 gem "open3"
+gem "pg", "~> 1.1"
+gem "puma"
+gem "rails", "~> 7.0"
 gem "responders"
 gem "rotp"
 gem "ruby-vips"

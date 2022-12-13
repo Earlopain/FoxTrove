@@ -23,7 +23,7 @@ module Scraper
       })
       end_reached if @offset + PER_REQUEST >= json["total"]
       @offset += PER_REQUEST
-      json["hits"].map { |s| s["_source"] }
+      json["hits"].pluck("_source")
     end
 
     def to_submission(submission)

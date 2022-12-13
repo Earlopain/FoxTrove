@@ -12,7 +12,7 @@ module Scraper
 
     def fetch_next_batch
       response = fetch_json("https://piczel.tv/api/users/#{url_identifier}/gallery?from_id=#{@from_id}")
-      @from_id = response.map { |e| e["id"] }.min
+      @from_id = response.pluck("id").min
       end_reached if response.size != 32
       response
     end

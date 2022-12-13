@@ -43,7 +43,7 @@ module Scraper
 
     def get_ids_from_page(page)
       response = make_request("/users/#{url_identifier}/projects.json?page=#{page}")
-      response["data"].map { |entry| entry["hash_id"] }
+      response["data"].pluck("hash_id")
     end
 
     def get_details(ids)

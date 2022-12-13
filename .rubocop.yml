@@ -46,6 +46,9 @@ Metrics/ModuleLength:
 Minitest/EmptyLineBeforeAssertionMethods:
   Enabled: false
 
+Minitest/MultipleAssertions:
+  Enabled: false
+
 Minitest/RefutePredicate:
   Enabled: false
 

@@ -3,15 +3,15 @@
 class SubmissionFilesController < ApplicationController
   respond_to :json, only: %i[hide_many backlog_many enqueue_many]
 
+  def index
+    @submission_files = SubmissionFile.search(search_params).with_everything.page(params[:page])
+  end
+
   def show
     @submission_file = SubmissionFile.find(params[:id])
     @artist_submission = @submission_file.artist_submission
     @similar = []
     @similar = IqdbProxy.query_submission_file(@submission_file) if @submission_file.can_iqdb?
-  end
-
-  def index
-    @submission_files = SubmissionFile.search(search_params).with_everything.page(params[:page])
   end
 
   def modify_backlog
