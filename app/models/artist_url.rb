@@ -5,7 +5,7 @@ class ArtistUrl < ApplicationRecord
     def initialize(url_identifier, site_type)
       msg = <<~MSG
         Missing API identifier for #{url_identifier}:#{site_type}.
-        See fixer script No. 5 to backfill missing data.
+        You may be able to fix this by executing the following command:
 
         docker compose run --rm reverser bin/rails reverser:backfill_api_identifiers SITE_TYPE=#{site_type}
       MSG
