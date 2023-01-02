@@ -29,7 +29,7 @@ class SubmissionFile < ApplicationRecord
   scope :exact_match_exists, -> { select_from_e6_iqdb_data_where_exists("is_exact_match") }
   scope :exact_match_doesnt_exist, -> { select_from_e6_iqdb_data_where_not_exists("is_exact_match") }
 
-  delegate :artist_url, :artist, to: :artist_submission
+  delegate :artist_url, :artist, :site, to: :artist_submission
 
   def self.select_from_e6_iqdb_data_where_exists(condition = nil, *args)
     where("exists (#{select_from_e6_iqdb_data(condition)})", args)

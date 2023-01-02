@@ -15,4 +15,13 @@ module SubmissionFileHelper
       image_tag url, loading: "lazy", class: "submission-file-full hidden"
     end
   end
+
+  def submission_file_data_attributes(submission_file)
+    {
+      id: submission_file.id,
+      width: submission_file.width,
+      height: submission_file.height,
+      compare_label: "#{submission_file.site.display_name} #{submission_file.width}x#{submission_file.height} #{number_to_human_size(submission_file.size)}",
+    }
+  end
 end

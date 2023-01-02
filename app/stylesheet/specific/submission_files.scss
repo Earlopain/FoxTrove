@@ -32,4 +32,19 @@
   .submission-file-stats {
     @include site_icon(1rem)
   }
+
+  .cropper-modal {
+    background-color: $color-foreground;
+  }
+}
+
+#juxtaposition-container {
+  position: absolute;
+  right: 1em;
+  top: 5em;
+  width: 900px;
+}
+
+.jx-knightlab {
+  display: none !important;
 }

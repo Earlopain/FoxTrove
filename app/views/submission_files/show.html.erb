@@ -1,3 +1,8 @@
+<% content_for :html_head do %>
+  <%= stylesheet_link_tag "/vendor/juxtapose.min.css" %>
+  <%= javascript_include_tag "/vendor/juxtapose.min.js" %>
+<% end %>
+
 <h1>
   Submission from <%= @submission_file.artist_url.url_identifier %>
   <% if display_artist_name?(@submission_file) %>
@@ -29,6 +34,10 @@
   <% else  %>
     None
   <% end %>
+</div>
+
+<div id="juxtaposition-container">
+  <div id="image-juxtaposition"></div>
 </div>
 
 <% page_title "#{@submission_file.artist.name} on #{@submission_file.artist_url.site.enum_value}" %>

@@ -7,7 +7,7 @@ export default class ClickMode {
   private static submissionFiles: SubmissionFile[];
 
   public static init() {
-    this.submissionFiles = [...document.querySelectorAll(".submission-file")].map(e => new SubmissionFile(e as HTMLElement));
+    this.submissionFiles = [...document.querySelectorAll(".submission-file")].map(e => new SubmissionFile(e as HTMLImageElement));
   }
 
   public static selectAll() {
@@ -16,6 +16,10 @@ export default class ClickMode {
 
   public static deselectAll() {
     this.submissionFiles.forEach(s => { s.unselect() });
+  }
+
+  public static firstSelected() {
+    return this.submissionFiles.find(s => s.isSelected());
   }
 
   public static getSelectedIds() {

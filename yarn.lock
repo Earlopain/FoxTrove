@@ -402,6 +402,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"cropperjs@npm:^1.5.13":
+  version: 1.5.13
+  resolution: "cropperjs@npm:1.5.13"
+  checksum: 5a3d0f8b2aa41eb711371696ccbac040d7ef81a5fc9cc0304aaf5691f9aa5c243b539c3d8aec0f938e8fa11e73507ae082875b262ff7fd069892acfcd5d5b567
+  languageName: node
+  linkType: hard
+
 "debug@npm:4, debug@npm:^4.1.0, debug@npm:^4.3.3":
   version: 4.3.4
   resolution: "debug@npm:4.3.4"
@@ -1095,6 +1102,7 @@ __metadata:
   dependencies:
     "@rails/ujs": ^7.0.4
     "@types/rails__ujs": ^6.0.1
+    cropperjs: ^1.5.13
     esbuild: ^0.16.12
     sass: ^1.57.1
     typescript: ^4.9.4

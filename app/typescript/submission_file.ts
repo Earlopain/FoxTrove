@@ -1,10 +1,14 @@
 export default class SubmissionFile {
-  private element: HTMLElement;
-  private full: HTMLElement;
+  private element: HTMLImageElement;
+  private full: HTMLImageElement;
 
-  constructor(element: HTMLElement) {
+  constructor(element: HTMLImageElement) {
     this.element = element;
-    this.full = this.element.nextElementSibling as HTMLElement;
+    this.full = this.element.nextElementSibling as HTMLImageElement;
+  }
+
+  public getSample() {
+    return this.element;
   }
 
   public getFull() {
@@ -13,6 +17,10 @@ export default class SubmissionFile {
 
   public addClickListener(callback: () => void) {
     this.element.addEventListener("click", callback);
+  }
+
+  public isOriginal() {
+    return this.element.closest(".original") !== null;
   }
 
   public sameAs(other: SubmissionFile) {
@@ -36,7 +44,31 @@ export default class SubmissionFile {
   }
 
   public getId() {
-    return parseInt(this.element.closest(".submission-sample")?.getAttribute("data-id") as string);
+    return parseInt(this.getAttribute("data-id"));
+  }
+
+  public getWidth() {
+    return parseInt(this.getAttribute("data-width"));
+  }
+
+  public getHeight() {
+    return parseInt(this.getAttribute("data-height"));
+  }
+
+  public getCompareLabel() {
+    return this.getAttribute("data-compare-label")
+  }
+
+  public async preloadFull(): Promise<void> {
+    if(this.full.complete) {
+      return;
+    }
+    return new Promise(resolve => {
+      this.full.loading = "eager";
+      this.full.addEventListener("load", () => {
+        resolve();
+      });
+    });
   }
 
   public showFullFile() {
@@ -52,5 +84,9 @@ export default class SubmissionFile {
     if (this.full instanceof HTMLVideoElement) {
       this.full.pause();
     }
+  }
+
+  private getAttribute(data: string) {
+    return this.element.closest(".submission-sample")?.getAttribute(data) as string;
   }
 }
