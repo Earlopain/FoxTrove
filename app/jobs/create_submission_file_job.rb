@@ -5,7 +5,7 @@ class CreateSubmissionFileJob < ApplicationJob
   queue_as :submission_download
   good_job_control_concurrency_with(total_limit: 1, key: -> { "#{arguments.first}-#{arguments.second['identifier']}" })
 
-  def perform(artist_submission_id, file, site_enum)
+  def perform(artist_submission_id, file)
     submission_file = SubmissionFile.find_by artist_submission_id: artist_submission_id, file_identifier: file["identifier"]
     return if submission_file
 
@@ -15,8 +15,7 @@ class CreateSubmissionFileJob < ApplicationJob
           else
             # FIXME: This is kind of stupid
             artist_url = ArtistSubmission.find(artist_submission_id).artist_url
-            scraper = Sites.from_enum(site_enum).new_scraper artist_url
-            scraper.get_download_link file["url_data"]
+            artist_url.scraper.get_download_link file["url_data"]
           end
     bin_file = Tempfile.new(binmode: true)
     response = Sites.download_file bin_file, url

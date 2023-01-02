@@ -9,7 +9,7 @@ class ScrapeArtistUrlJob < ApplicationJob
     artist_url = ArtistUrl.find_by id: artist_url_id
     return unless artist_url&.scraper_enabled?
 
-    scraper = artist_url.site.new_scraper(artist_url)
+    scraper = artist_url.scraper
     while scraper.more?
       submissions = scraper.fetch_and_save_next_submissions
       stop_marker = artist_url.last_scraped_at

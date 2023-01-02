@@ -42,7 +42,6 @@ class ArtistUrl < ApplicationRecord
   def set_api_identifier!
     return unless scraper_enabled?
 
-    scraper = site.new_scraper self
     self.api_identifier = scraper.fetch_api_identifier
     if api_identifier
       save
@@ -61,6 +60,10 @@ class ArtistUrl < ApplicationRecord
 
   def scraper_enabled?
     scraper? && site.scraper_enabled?
+  end
+
+  def scraper
+    site.new_scraper(self)
   end
 
   def enqueue_scraping

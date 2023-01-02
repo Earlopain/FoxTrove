@@ -28,8 +28,7 @@ namespace :reverser do
 
     ArtistUrl.where(api_identifier: nil, site_type: site_type).find_each do |artist_url|
       puts artist_url.url_identifier
-      scraper = Sites.from_enum(site_type).new_scraper(artist_url)
-      artist_url.update(api_identifier: scraper.fetch_api_identifier)
+      artist_url.update(api_identifier: artist_url.scraper.fetch_api_identifier)
     end
   end
 end
