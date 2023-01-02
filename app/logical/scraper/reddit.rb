@@ -69,11 +69,12 @@ module Scraper
 
     def access_token
       Cache.fetch("reddit-token", 55.minutes) do
-        response = fetch_json("https://www.reddit.com/api/v1/access_token", :post, **{
+        response = fetch_json("https://www.reddit.com/api/v1/access_token",
+          method: :post,
           body: "grant_type=client_credentials",
           basic_auth: { username: Config.reddit_client_id, password: Config.reddit_client_secret },
           headers: { "Content-Type": "application/x-www-form-urlencoded", "User-Agent": "reverser.0.1 by earlopain" },
-        })
+        )
         response["access_token"]
       end
     end

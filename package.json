@@ -1,6 +1,6 @@
 {
   "name": "reverser",
-  "packageManager": "yarn@3.3.0",
+  "packageManager": "yarn@3.3.1",
   "private": true,
   "dependencies": {
     "@rails/ujs": "^7.0.4"
@@ -13,8 +13,8 @@
   "version": "0.1.0",
   "devDependencies": {
     "@types/rails__ujs": "^6.0.1",
-    "esbuild": "^0.16.4",
-    "sass": "^1.56.2",
+    "esbuild": "^0.16.12",
+    "sass": "^1.57.1",
     "typescript": "^4.9.4"
   }
 }

@@ -79,7 +79,7 @@ module Scraper
       Cache.fetch("pixiv-token", 55.minutes) do
         code_verifier = urlsafe_b64 SecureRandom.base64(32)
         code = fetch_code code_verifier
-        response = fetch_json(AUTH_TOKEN_URL, :post, headers: headers, body: {
+        response = fetch_json(AUTH_TOKEN_URL, method: :post, headers: headers, body: {
           client_id: CLIENT_ID,
           client_secret: CLIENT_SECRET,
           code: code,

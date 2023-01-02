@@ -57,7 +57,7 @@ module Scraper
     private
 
     def make_api_call(endpoint, query = {})
-      fetch_json("#{API_PREFIX}#{endpoint}", **{
+      fetch_json("#{API_PREFIX}#{endpoint}",
         query: {
           access_token: access_token,
           **query,
@@ -65,7 +65,7 @@ module Scraper
         headers: {
           "dA-minor-version": "20210526",
         },
-      })
+      )
     end
 
     def access_token
