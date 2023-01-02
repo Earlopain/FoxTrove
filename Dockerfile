@@ -1,9 +1,9 @@
-FROM ruby:3.1.3-alpine3.17 as ruby-builder
+FROM ruby:3.2.0-alpine3.17 as ruby-builder
 
 RUN apk --no-cache add build-base postgresql15-dev
 
 COPY Gemfile Gemfile.lock ./
-RUN gem i bundler:2.3.26 foreman && BUNDLE_IGNORE_CONFIG=true bundle install \
+RUN gem i bundler:2.4.1 foreman && BUNDLE_IGNORE_CONFIG=true bundle install \
  && rm -rf /usr/local/bundle/cache/*.gem \
  && find /usr/local/bundle/gems/ -name "*.c" -delete \
  && find /usr/local/bundle/gems/ -name "*.o" -delete
@@ -19,7 +19,7 @@ WORKDIR /app
 COPY package.json yarn.lock .yarnrc.yml ./
 RUN corepack enable && corepack prepare --activate && yarn install
 
-FROM ruby:3.1.3-alpine3.17
+FROM ruby:3.2.0-alpine3.17
 
 WORKDIR /app
 
@@ -43,7 +43,7 @@ COPY --from=node-builder /app/node_modules node_modules
 COPY --from=ruby-builder /usr/local/bundle /usr/local/bundle
 
 # Solargraph
-COPY --from=ruby-builder /usr/local/lib/ruby/gems/3.1.0/doc /usr/local/lib/ruby/gems/3.1.0/doc
+COPY --from=ruby-builder /usr/local/lib/ruby/gems/3.2.0/doc /usr/local/lib/ruby/gems/3.2.0/doc
 COPY --from=ruby-builder /root/.solargrap[h] /root/.solargraph
 
 RUN echo "IRB.conf[:USE_AUTOCOMPLETE] = false" > ~/.irbrc

@@ -48,12 +48,12 @@ module Scraper
     private
 
     def make_request(endpoint, query = {})
-      fetch_json("#{API_PREFIX}#{endpoint}", **{
+      fetch_json("#{API_PREFIX}#{endpoint}",
         query: query,
         headers: {
           Authorization: "Bearer #{bearer_token}",
         },
-      })
+      )
     end
 
     # This whole thing is very brittle and may break at any moment

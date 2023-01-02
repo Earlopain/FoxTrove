@@ -10,7 +10,10 @@ AllCops:
     - db/schema.rb
     - node_modules/**/*
     - vendor/**/*
-  TargetRubyVersion: 3.1
+  TargetRubyVersion: 3.2
+
+Layout/ArgumentAlignment:
+  EnforcedStyle: with_fixed_indentation
 
 Layout/FirstArrayElementIndentation:
   EnforcedStyle: consistent
@@ -19,6 +22,9 @@ Layout/FirstHashElementIndentation:
   EnforcedStyle: consistent
 
 Layout/LineLength:
+  Enabled: false
+
+Layout/MultilineMethodCallBraceLayout:
   Enabled: false
 
 Lint/SymbolConversion:

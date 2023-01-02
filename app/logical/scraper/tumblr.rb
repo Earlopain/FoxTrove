@@ -52,22 +52,23 @@ module Scraper
     private
 
     def get(url, query_params = {})
-      fetch_json(url, **{
+      fetch_json(url,
         query: query_params,
         headers: {
           Authorization: authorization_header(url, "get", query_params),
         },
-      })
+      )
     end
 
     def post(url, params)
-      fetch_json(url, :post, **{
+      fetch_json(url,
+        method: :post,
         body: URI.encode_www_form(params),
         headers: {
           "Authorization": authorization_header(url, "post", params),
           "Content-Type": "application/x-www-form-urlencoded",
         },
-      })
+      )
     end
 
     def reblog(api_post)

@@ -81,7 +81,7 @@ module Scraper
       result
     end
 
-    def fetch_html(path, method = :get, **params)
+    def fetch_html(path, method: :get, **params)
       response = enfore_rate_limit do
         HTTParty.send(method, path, params)
       end
@@ -89,7 +89,7 @@ module Scraper
       response
     end
 
-    def fetch_json(path, method = :get, **params)
+    def fetch_json(path, method: :get, **params)
       response = enfore_rate_limit do
         HTTParty.send(method, path, { format: :json, **params })
       end

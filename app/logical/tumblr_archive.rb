@@ -73,10 +73,13 @@ class TumblrArchive
       bin_file = Tempfile.new(binmode: true)
       bin_file.write(file.get_input_stream.read)
       bin_file.rewind
-      SubmissionFile.from_bin_file(bin_file, artist_submission_id: submission.id,
-                                             url: "file:///#{file.name}",
-                                             created_at: submission.created_at_on_site,
-                                             file_identifier: index)
+      SubmissionFile.from_file(
+        file: bin_file,
+        artist_submission_id: submission.id,
+        url: "file:///#{file.name}",
+        created_at: submission.created_at_on_site,
+        file_identifier: index,
+      )
 
       @imported_files[submission.artist_url.id] ||= 0
       @imported_files[submission.artist_url.id] += 1
