@@ -41,6 +41,8 @@ module Scraper
       nil
     end
 
+    private
+
     def get_ids_from_page(page)
       response = make_request("/users/#{url_identifier}/projects.json?page=#{page}")
       response["data"].pluck("hash_id")

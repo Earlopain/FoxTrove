@@ -38,6 +38,8 @@ module Scraper
       response["id"]
     end
 
+    private
+
     def headers
       { Cookie: "sessionid=#{fetch_cookie}" }
     end

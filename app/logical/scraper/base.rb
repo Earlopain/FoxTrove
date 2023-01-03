@@ -15,17 +15,9 @@ module Scraper
       # Overwrite this in the scraper
     end
 
-    def site_enum
-      self.class.name.demodulize.underscore
-    end
-
     # Will there possibly be more results when calling fetch_next_batch
     def more?
       @has_more
-    end
-
-    def end_reached
-      @has_more = false
     end
 
     # Make a network request to the service and get an array of entries.
@@ -43,11 +35,6 @@ module Scraper
       end
     end
 
-    # Convert the entries from fetch_next_batch into something generic
-    def to_submission
-      raise NotImplementedError
-    end
-
     # Converts the user-facing value into something that is more permanent.
     # Might be the same, but most sites use a permanent numeric identifier.
     # Used to prevent duplicate accounts in cases where they can be renamed.
@@ -55,30 +42,15 @@ module Scraper
       raise NotImplementedError
     end
 
-    def log_response(path, method, request_params, status_code, body)
-      return unless Config.log_scraper_requests?
+    protected
 
-      @artist_url.add_log_event(:scraper_request, {
-        path: path,
-        method: method,
-        request_params: {
-          **request_params,
-        },
-        response_code: status_code,
-        response_body: body,
-      })
+    def end_reached
+      @has_more = false
     end
 
-    # This is pretty hacky and only works because there is only one job executing at once
-    def enfore_rate_limit(&)
-      now = Process.clock_gettime(Process::CLOCK_MONOTONIC)
-      elapsed_time = now - @previous_request
-      if elapsed_time < Config.scraper_request_rate_limit
-        sleep Config.scraper_request_rate_limit - elapsed_time
-      end
-      result = yield
-      @previous_request = Process.clock_gettime(Process::CLOCK_MONOTONIC)
-      result
+    # Convert the entries from fetch_next_batch into something generic
+    def to_submission
+      raise NotImplementedError
     end
 
     def fetch_html(path, method: :get, **params)
@@ -110,6 +82,34 @@ module Scraper
           raise JSON::ParserError, "#{path}: No response"
         end
       end
+    end
+
+    private
+
+    def log_response(path, method, request_params, status_code, body)
+      return unless Config.log_scraper_requests?
+
+      @artist_url.add_log_event(:scraper_request, {
+        path: path,
+        method: method,
+        request_params: {
+          **request_params,
+        },
+        response_code: status_code,
+        response_body: body,
+      })
+    end
+
+    # This is pretty hacky and only works because there is only one job executing at once
+    def enfore_rate_limit(&)
+      now = Process.clock_gettime(Process::CLOCK_MONOTONIC)
+      elapsed_time = now - @previous_request
+      if elapsed_time < Config.scraper_request_rate_limit
+        sleep Config.scraper_request_rate_limit - elapsed_time
+      end
+      result = yield
+      @previous_request = Process.clock_gettime(Process::CLOCK_MONOTONIC)
+      result
     end
   end
 end

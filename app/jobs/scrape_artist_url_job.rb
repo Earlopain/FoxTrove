@@ -13,7 +13,7 @@ class ScrapeArtistUrlJob < ApplicationJob
     while scraper.more?
       submissions = scraper.fetch_and_save_next_submissions
       stop_marker = artist_url.last_scraped_at
-      scraper.end_reached if stop_marker.present? && submissions.any? { |submission| submission.created_at.before? stop_marker }
+      break if stop_marker.present? && submissions.any? { |submission| submission.created_at.before? stop_marker }
     end
     artist_url.last_scraped_at = Time.current
     artist_url.save
