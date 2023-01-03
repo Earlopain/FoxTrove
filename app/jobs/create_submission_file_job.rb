@@ -3,19 +3,19 @@
 class CreateSubmissionFileJob < ApplicationJob
   include GoodJob::ActiveJobExtensions::Concurrency
   queue_as :submission_download
-  good_job_control_concurrency_with(total_limit: 1, key: -> { "#{arguments.first}-#{arguments.second['identifier']}" })
+  good_job_control_concurrency_with(total_limit: 1, key: -> { "#{arguments.first}-#{arguments.second[:identifier]}" })
 
   def perform(artist_submission_id, file)
-    submission_file = SubmissionFile.find_by artist_submission_id: artist_submission_id, file_identifier: file["identifier"]
+    submission_file = SubmissionFile.find_by artist_submission_id: artist_submission_id, file_identifier: file[:identifier]
     return if submission_file
 
     # Deviantarts download links expire, they need to be fetched when you actually use them
-    url = if file["url"].present?
-            file["url"]
+    url = if file[:url].present?
+            file[:url]
           else
             # FIXME: This is kind of stupid
             artist_url = ArtistSubmission.find(artist_submission_id).artist_url
-            artist_url.scraper.get_download_link file["url_data"]
+            artist_url.scraper.get_download_link file[:url_data]
           end
     bin_file = Tempfile.new(binmode: true)
     response = Sites.download_file bin_file, url
@@ -26,8 +26,8 @@ class CreateSubmissionFileJob < ApplicationJob
       file: bin_file,
       artist_submission_id: artist_submission_id,
       url: url,
-      created_at: file["created_at"],
-      file_identifier: file["identifier"],
+      created_at: file[:created_at],
+      file_identifier: file[:identifier],
     )
   end
 end
