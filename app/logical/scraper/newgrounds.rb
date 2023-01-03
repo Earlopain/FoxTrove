@@ -82,15 +82,14 @@ module Scraper
     end
 
     def fetch_cookie
-      Cache.fetch("newgrounds-cookie", 2.weeks) do
-        SeleniumWrapper.driver do |driver|
-          driver.navigate.to "https://www.newgrounds.com/passport"
-          driver.wait_for_element(css: "input[name='username']").send_keys Config.newgrounds_user
-          driver.find_element(css: "input[name='password']").send_keys Config.newgrounds_pass
-          driver.find_element(css: "button.PassportLoginBtn").click
-          driver.wait_for_cookie(COOKIE_NAME)
-        end
+      SeleniumWrapper.driver do |driver|
+        driver.navigate.to "https://www.newgrounds.com/passport"
+        driver.wait_for_element(css: "input[name='username']").send_keys Config.newgrounds_user
+        driver.find_element(css: "input[name='password']").send_keys Config.newgrounds_pass
+        driver.find_element(css: "button.PassportLoginBtn").click
+        driver.wait_for_cookie(COOKIE_NAME)
       end
     end
+    cache(:fetch_cookie, 2.weeks)
   end
 end

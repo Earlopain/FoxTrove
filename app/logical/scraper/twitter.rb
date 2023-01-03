@@ -141,29 +141,28 @@ module Scraper
     end
 
     def tokens
-      Cache.fetch("twitter-tokens", 55.minutes) do
-        SeleniumWrapper.driver do |driver|
-          driver.navigate.to "https://twitter.com/i/flow/login"
+      SeleniumWrapper.driver do |driver|
+        driver.navigate.to "https://twitter.com/i/flow/login"
 
-          driver.wait_for_element(css: "input[autocomplete='username']").send_keys Config.twitter_user
+        driver.wait_for_element(css: "input[autocomplete='username']").send_keys Config.twitter_user
+        driver.find_element(xpath: "//*[text()='Next']").click
+
+        driver.wait_for_element(css: "input[type='password']").send_keys Config.twitter_pass
+        driver.find_element(xpath: "//*[text()='Log in']").click
+
+        if Config.twitter_otp_secret.present?
+          otp = ROTP::TOTP.new(Config.twitter_otp_secret).now
+          driver.wait_for_element(css: "input").send_keys otp
           driver.find_element(xpath: "//*[text()='Next']").click
-
-          driver.wait_for_element(css: "input[type='password']").send_keys Config.twitter_pass
-          driver.find_element(xpath: "//*[text()='Log in']").click
-
-          if Config.twitter_otp_secret.present?
-            otp = ROTP::TOTP.new(Config.twitter_otp_secret).now
-            driver.wait_for_element(css: "input").send_keys otp
-            driver.find_element(xpath: "//*[text()='Next']").click
-          end
-
-          # The auth_token cookie isn't available immediately, so wait a bit
-          auth_token = driver.wait_for_cookie("auth_token")
-          csrf_token = driver.cookie_value("ct0")
-          [auth_token, csrf_token]
         end
+
+        # The auth_token cookie isn't available immediately, so wait a bit
+        auth_token = driver.wait_for_cookie("auth_token")
+        csrf_token = driver.cookie_value("ct0")
+        [auth_token, csrf_token]
       end
     end
+    cache(:tokens, 55.minutes)
 
     def api_headers
       auth_token, csrf_token = tokens

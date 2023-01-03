@@ -45,15 +45,14 @@ module Scraper
     end
 
     def fetch_cookie
-      Cache.fetch("artconomy-cookie", 2.weeks) do
-        SeleniumWrapper.driver do |driver|
-          driver.navigate.to "https://artconomy.com/auth/login"
-          driver.wait_for_element(id: "field-login__email").send_keys Config.artconomy_user
-          driver.find_element(id: "field-login__password").send_keys Config.artconomy_pass
-          driver.find_element(id: "loginSubmit").click
-          driver.wait_for_cookie("sessionid")
-        end
+      SeleniumWrapper.driver do |driver|
+        driver.navigate.to "https://artconomy.com/auth/login"
+        driver.wait_for_element(id: "field-login__email").send_keys Config.artconomy_user
+        driver.find_element(id: "field-login__password").send_keys Config.artconomy_pass
+        driver.find_element(id: "loginSubmit").click
+        driver.wait_for_cookie("sessionid")
       end
     end
+    cache(:fetch_cookie, 2.weeks)
   end
 end

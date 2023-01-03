@@ -36,6 +36,16 @@ module Scraper
       raise NotImplementedError
     end
 
+    def self.cache(method_name, expires_in)
+      key = "#{name}.#{method_name}"
+      raise ArgumentError, "#{key} must have arity == 0" unless instance_method(method_name).arity == 0
+
+      alias_method "#{method_name}_old", method_name
+      define_method(method_name) do
+        Rails.cache.fetch(key, expires_in: expires_in) { send("#{method_name}_old") }
+      end
+    end
+
     protected
 
     def end_reached

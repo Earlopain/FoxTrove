@@ -70,14 +70,13 @@ module Scraper
     end
 
     def access_token
-      Cache.fetch("deviantart-token", 55.minutes) do
-        response = fetch_json("https://www.deviantart.com/oauth2/token", query: {
-          grant_type: "client_credentials",
-          client_id: Config.deviantart_client_id,
-          client_secret: Config.deviantart_client_secret,
-        })
-        response["access_token"]
-      end
+      response = fetch_json("https://www.deviantart.com/oauth2/token", query: {
+        grant_type: "client_credentials",
+        client_id: Config.deviantart_client_id,
+        client_secret: Config.deviantart_client_secret,
+      })
+      response["access_token"]
     end
+    cache(:access_token, 55.minutes)
   end
 end

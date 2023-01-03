@@ -59,17 +59,16 @@ module Scraper
 
     # This whole thing is very brittle and may break at any moment
     def bearer_token
-      Cache.fetch("furrynetwork-token", 55.minutes) do
-        SeleniumWrapper.driver do |driver|
-          driver.navigate.to "https://furrynetwork.com/login"
-          driver.manage.window.maximize
-          driver.find_element(id: "email").send_keys Config.furrynetwork_user
-          driver.find_element(id: "password").send_keys Config.furrynetwork_pass
-          driver.find_element(css: ".page--login__form button[type='submit']").click
-          driver.wait_for_element(class: "profile-switcher-menu")
-          driver.execute_script "return JSON.parse(window.localStorage.getItem('token')).access_token"
-        end
+      SeleniumWrapper.driver do |driver|
+        driver.navigate.to "https://furrynetwork.com/login"
+        driver.manage.window.maximize
+        driver.find_element(id: "email").send_keys Config.furrynetwork_user
+        driver.find_element(id: "password").send_keys Config.furrynetwork_pass
+        driver.find_element(css: ".page--login__form button[type='submit']").click
+        driver.wait_for_element(class: "profile-switcher-menu")
+        driver.execute_script "return JSON.parse(window.localStorage.getItem('token')).access_token"
       end
     end
+    cache(:bearer_token, 55.minutes)
   end
 end
