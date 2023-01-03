@@ -2,9 +2,9 @@
 
 module Scraper
   class Artconomy < Base
-    def init
+    def initialize(artist_url)
+      super
       @page = 1
-      @sessionid = fetch_cookie
     end
 
     def self.enabled?

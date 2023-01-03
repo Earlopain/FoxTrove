@@ -9,7 +9,8 @@ module Scraper
     DATETIME_FORMAT = "%a %b %d %H:%M:%S %z %Y"
     API_BASE_URL = "https://twitter.com/i/api/graphql"
 
-    def init
+    def initialize(artist_url)
+      super
       @user_agent = random_user_agent
       @cursor = ""
     end

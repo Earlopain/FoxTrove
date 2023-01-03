@@ -17,7 +17,8 @@ module Scraper
     CLIENT_SECRET = "lsACyCD94FhDUtGTXi3QzcFE2uU1hqtDaKeqrdwj"
     PER_PAGE = 30
 
-    def init
+    def initialize(artist_url)
+      super
       @offset = 0
     end
 

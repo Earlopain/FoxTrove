@@ -5,7 +5,8 @@ module Scraper
   class MastodonV1 < Base
     MAX_LIMIT = 40
 
-    def init
+    def initialize(artist_url)
+      super
       @max_id = nil
     end
 

@@ -2,7 +2,8 @@
 
 module Scraper
   class Artstation < Base
-    def init
+    def initialize(artist_url)
+      super
       @page = 1
     end
 

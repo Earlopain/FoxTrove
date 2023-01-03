@@ -3,7 +3,8 @@
 module Scraper
   # https://www.reddit.com/dev/api/
   class Reddit < Base
-    def init
+    def initialize(artist_url)
+      super
       @after = nil
     end
 

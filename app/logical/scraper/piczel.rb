@@ -2,7 +2,8 @@
 
 module Scraper
   class Piczel < Base
-    def init
+    def initialize(artist_url)
+      super
       @from_id = 999_999_999
     end
 

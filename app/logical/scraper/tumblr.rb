@@ -5,7 +5,8 @@ module Scraper
   # This doesn't download the images, they just get reblogged
   # You can then export your data and import the archive instead
   class Tumblr < Base
-    def init
+    def initialize(artist_url)
+      super
       @offset = 0
     end
 

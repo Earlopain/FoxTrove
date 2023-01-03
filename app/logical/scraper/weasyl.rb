@@ -3,7 +3,8 @@
 module Scraper
   # https://projects.weasyl.com/weasylapi/
   class Weasyl < Base
-    def init
+    def initialize(artist_url)
+      super
       @nextid = nil
     end
 

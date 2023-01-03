@@ -26,9 +26,7 @@ module Sites
     def new_scraper(artist_url)
       raise StandardError, "This scraper is not enabled!" unless scraper_enabled?
 
-      s = @scraper.new artist_url
-      s.init
-      s
+      @scraper.new artist_url
     end
   end
 end

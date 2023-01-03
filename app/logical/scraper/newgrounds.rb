@@ -4,7 +4,8 @@ module Scraper
   class Newgrounds < Base
     COOKIE_NAME = "vmkIdu5l8m"
 
-    def init
+    def initialize(artist_url)
+      super
       @page = 1
       @submission_cache = []
       @will_have_more = true

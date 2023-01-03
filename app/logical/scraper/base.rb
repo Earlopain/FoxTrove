@@ -9,12 +9,6 @@ module Scraper
       @previous_request = 0
     end
 
-    # Anything the scraper needs to initialize itself, like
-    # fetching a session token
-    def init
-      # Overwrite this in the scraper
-    end
-
     # Will there possibly be more results when calling fetch_next_batch
     def more?
       @has_more

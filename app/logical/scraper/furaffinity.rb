@@ -2,11 +2,11 @@
 
 module Scraper
   class Furaffinity < Base
-    def init
+    def initialize(artist_url)
+      super
       @page = 1
       @submission_cache = []
       @will_have_more = true
-      @cookie_a, @cookie_b = Cache.fetch("furaffinity-cookies", 2.weeks) { fetch_cookies }
     end
 
     def self.enabled?
@@ -100,20 +100,23 @@ module Scraper
     end
 
     def headers
-      { Cookie: "a=#{@cookie_a}; b=#{@cookie_b}" }
+      cookie_a, cookie_b = fetch_cookies
+      { Cookie: "a=#{cookie_a}; b=#{cookie_b}" }
     end
 
     def fetch_cookies
-      SeleniumWrapper.driver do |driver|
-        driver.navigate.to "https://www.furaffinity.net/login"
+      Cache.fetch("furaffinity-cookies", 2.weeks) do
+        SeleniumWrapper.driver do |driver|
+          driver.navigate.to "https://www.furaffinity.net/login"
 
-        driver.wait_for_element(css: "#login-form input[name='name']").send_keys Config.furaffinity_user
-        driver.find_element(css: "#login-form input[name='pass']").send_keys Config.furaffinity_pass
-        driver.find_element(id: "login-button").click
+          driver.wait_for_element(css: "#login-form input[name='name']").send_keys Config.furaffinity_user
+          driver.find_element(css: "#login-form input[name='pass']").send_keys Config.furaffinity_pass
+          driver.find_element(id: "login-button").click
 
-        cookie_a = driver.wait_for_cookie("a")
-        cookie_b = driver.cookie_value("b")
-        [cookie_a, cookie_b]
+          cookie_a = driver.wait_for_cookie("a")
+          cookie_b = driver.cookie_value("b")
+          [cookie_a, cookie_b]
+        end
       end
     end
   end

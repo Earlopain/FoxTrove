@@ -3,10 +3,8 @@
 module Scraper
   # https://wiki.inkbunny.net/wiki/API
   class Inkbunny < Base
-    def init
-      @sid = Cache.fetch("inkbunny-sid", 1.hour) do
-        fetch_sid
-      end
+    def initialize(artist_url)
+      super
       @rid = nil
       @page = 1
     end
@@ -89,16 +87,18 @@ module Scraper
     def make_request(url, query_params)
       fetch_json(url, query: {
         **query_params,
-        sid: @sid,
+        sid: fetch_sid,
       })
     end
 
     def fetch_sid
-      response = make_request("https://inkbunny.net/api_login.php", {
-        username: Config.inkbunny_user,
-        password: Config.inkbunny_pass,
-      })
-      JSON.parse(response.body)["sid"]
+      Cache.fetch("inkbunny-sid", 1.hour) do
+        response = make_request("https://inkbunny.net/api_login.php", {
+          username: Config.inkbunny_user,
+          password: Config.inkbunny_pass,
+        })
+        JSON.parse(response.body)["sid"]
+      end
     end
   end
 end

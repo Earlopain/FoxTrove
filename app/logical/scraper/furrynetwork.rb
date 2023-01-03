@@ -5,7 +5,8 @@ module Scraper
     PER_REQUEST = 72
     API_PREFIX = "https://furrynetwork.com/api"
 
-    def init
+    def initialize(artist_url)
+      super
       @offset = 0
     end
 

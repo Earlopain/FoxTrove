@@ -5,7 +5,8 @@ module Scraper
   # https://wiki.sofurry.com/wiki/SoFurry_2.0_API
   # https://wiki.sofurry.com/wiki/How_to_use_OTP_authentication
   class Sofurry < Base
-    def init
+    def initialize(artist_url)
+      super
       @page = 1
       @otp_sequence = 0
       @otp_pad = ""

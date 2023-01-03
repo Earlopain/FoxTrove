@@ -6,7 +6,8 @@ module Scraper
   class Deviantart < Base
     API_PREFIX = "https://www.deviantart.com/api/v1/oauth2"
 
-    def init
+    def initialize(artist_url)
+      super
       @next_offset = nil
     end
 
