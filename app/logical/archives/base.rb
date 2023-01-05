@@ -18,19 +18,19 @@ module Archives
       @error = e
     end
 
-    def import_file(artist_submission, file, index)
-      if artist_submission.submission_files.exists?(file_identifier: index)
+    def import_file(artist_submission, entry)
+      if artist_submission.submission_files.exists?(file_identifier: entry.name)
         @already_imported_count += 1
       else
         bin_file = Tempfile.new(binmode: true)
-        bin_file.write(file.get_input_stream.read)
+        bin_file.write(entry.get_input_stream.read)
         bin_file.rewind
         SubmissionFile.from_file(
           file: bin_file,
           artist_submission_id: artist_submission.id,
-          url: "file:///#{file.name}",
+          url: "file:///#{entry.name}",
           created_at: artist_submission.created_at_on_site,
-          file_identifier: index,
+          file_identifier: entry.name,
         )
         @imported_files[artist_submission.artist_url.id] ||= 0
         @imported_files[artist_submission.artist_url.id] += 1

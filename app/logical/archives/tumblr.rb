@@ -59,8 +59,8 @@ module Archives
         return
       end
 
-      media_files.each.with_index do |file, index|
-        import_file(submission, file, index)
+      media_files.each do |media_file_entry|
+        import_file(submission, media_file_entry)
       end
     end
   end
