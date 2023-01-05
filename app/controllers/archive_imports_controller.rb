@@ -6,6 +6,6 @@ class ArchiveImportsController < ApplicationController
 
   def create
     @archive = Archives.detect(params[:import][:file])
-    @archive.import
+    @archive.import(params[:import][:artist_id].to_i, params[:import][:source_url])
   end
 end

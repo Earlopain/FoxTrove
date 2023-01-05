@@ -26,7 +26,7 @@ module Archives
 
     protected
 
-    def import_submission_files
+    def import_submission_files(_artist_id, _source_url)
       Zip::File.open(@file) do |zip_file|
         posts_zip_entry = zip_file.glob("posts.zip").first
 

@@ -1,0 +1,5 @@
+type: ManualDefinition
+enum_value: manual
+display_name: Manual
+gallery_templates:
+  - "{site_artist_identifier}"

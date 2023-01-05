@@ -12,8 +12,8 @@ module Archives
       @error = nil
     end
 
-    def import
-      import_submission_files
+    def import(artist_id, source_url)
+      import_submission_files(artist_id, source_url)
     rescue Zip::Error => e
       @error = e
     end

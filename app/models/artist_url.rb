@@ -32,6 +32,7 @@ class ArtistUrl < ApplicationRecord
     pillowfort commishes furrynetwork facebook
     afterdark artconomy artfight boosty
     buzzly furrystation toyhouse ychart
+    manual
   ].map.with_index { |v, index| [v, index] }.to_h
 
   def self.search(params)
