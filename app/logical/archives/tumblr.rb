@@ -57,9 +57,6 @@ module Archives
       if submission.nil?
         @failed_imports.push("#{reblog_entry.name} Submission #{original_post_id} not found")
         return
-      elsif submission.submission_files.any?
-        @skipped_count += media_files.count
-        return
       end
 
       media_files.each.with_index do |file, index|

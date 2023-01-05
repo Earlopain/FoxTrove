@@ -5,8 +5,8 @@
   <%= "#{@archive.error.class}: #{@archive.error}" %>
 <% else %>
   <h2>Successfully imported <%= @archive.total_imported_files_count %> files!</h2>
-  <% if @archive.skipped_count != 0 %>
-    <span><%= @archive.skipped_count %> where skipped, because they are already imported.</span>
+  <% if @archive.already_imported_count != 0 %>
+    <span><%= @archive.already_imported_count %> where skipped, because they are already imported.</span>
   <% end %>
 
   <%= render "artist_urls/list", artist_urls: ArtistUrl.where(id: @archive.imported_files.keys) %>
