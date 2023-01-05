@@ -41,7 +41,7 @@ You can also search for non-uploaded submission for artists. How well this works
 Tumblr doesn't expose the full resolution image through normal means. Getting full resolution on tumblr is a bit more compicated. Here's what you need to do, and what is done for you. Manual steps are marked with (*)
 1. Reblog every post of the blog
 1. (*) Download an archive of your blog
-1. (*) Upload the archive through the tumblr uploader
+1. (*) Upload the archive through the "Archive Importer"
 1. (*) Remove drafts from your blog with the [Mega-Editor](https://www.tumblr.com/mega-editor/draft/)
 1. Import full resolution files from the uploaded archive
 

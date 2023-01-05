@@ -1,10 +1,10 @@
-<h1>Tumblr Archive Import</h1>
+<h1>Archive Import</h1>
 
 <% if @archive.error %>
   <h2>Something went wrong</h2>
   <%= "#{@archive.error.class}: #{@archive.error}" %>
 <% else %>
-  <h2>Successfully imported <%= @archive.total_imported_files_count %> tumblr files!</h2>
+  <h2>Successfully imported <%= @archive.total_imported_files_count %> files!</h2>
   <% if @archive.skipped_count != 0 %>
     <span><%= @archive.skipped_count %> where skipped, because they are already imported.</span>
   <% end %>
@@ -12,7 +12,7 @@
   <%= render "artist_urls/list", artist_urls: ArtistUrl.where(id: @archive.imported_files.keys) %>
 
   <% if @archive.failed_imports.any? %>
-    <h3>The following reblogs failed to import:</h3>
+    <h3>The following files failed to import:</h3>
     <ul>
     <% @archive.failed_imports.each do |file_name| %>
       <li><%= file_name %></li>

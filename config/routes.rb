@@ -33,7 +33,7 @@ Rails.application.routes.draw do
     end
   end
   resources :log_events, only: %i[index show]
-  resources :tumblr_imports, only: %i[new create]
+  resources :archive_imports, only: %i[new create]
   resources :stats, only: :index
   root to: "artists#index"
 end
