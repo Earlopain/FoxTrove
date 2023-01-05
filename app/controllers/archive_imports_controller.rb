@@ -5,7 +5,7 @@ class ArchiveImportsController < ApplicationController
   end
 
   def create
-    @archive = Archives::Tumblr.new(params[:import][:file])
-    @archive.import_submission_files
+    @archive = Archives.detect(params[:import][:file])
+    @archive.import
   end
 end

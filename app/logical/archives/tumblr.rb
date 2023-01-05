@@ -15,18 +15,16 @@ module Archives
   # ----------| reblog_post_id3.html
   # -----| style.css
   # -----| posts_index.html
-  class Tumblr
-    attr_accessor :imported_files, :skipped_count, :failed_imports, :error
-
+  class Tumblr < Base
     URL_ID_REGEX = %r{tumblr\.com/post/(?<id>\d*)}
 
-    def initialize(file)
-      @file = file
-      @imported_files = {}
-      @skipped_count = 0
-      @failed_imports = []
-      @error = nil
+    def self.handles_file(file)
+      Zip::File.open(file) do |zip_file|
+        zip_file.find_entry("posts.zip")
+      end
     end
+
+    protected
 
     def import_submission_files
       Zip::File.open(@file) do |zip_file|
@@ -39,12 +37,6 @@ module Archives
           end
         end
       end
-    rescue Zip::Error => e
-      @error = e
-    end
-
-    def total_imported_files_count
-      @imported_files.values.sum
     end
 
     private
@@ -71,19 +63,7 @@ module Archives
       end
 
       media_files.each.with_index do |file, index|
-        bin_file = Tempfile.new(binmode: true)
-        bin_file.write(file.get_input_stream.read)
-        bin_file.rewind
-        SubmissionFile.from_file(
-          file: bin_file,
-          artist_submission_id: submission.id,
-          url: "file:///#{file.name}",
-          created_at: submission.created_at_on_site,
-          file_identifier: index,
-        )
-
-        @imported_files[submission.artist_url.id] ||= 0
-        @imported_files[submission.artist_url.id] += 1
+        import_file(submission, file, index)
       end
     end
   end
