@@ -4,7 +4,7 @@
   <h2>Something went wrong</h2>
   <%= "#{@archive.error.class}: #{@archive.error}" %>
 <% else %>
-  <h2>Successfully imported <%= @archive.total_imported_files_count %> files!</h2>
+  <h2>Successfully queued <%= @archive.total_imported_files_count %> files for import!</h2>
   <% if @archive.already_imported_count != 0 %>
     <span><%= @archive.already_imported_count %> where skipped, because they are already imported.</span>
   <% end %>

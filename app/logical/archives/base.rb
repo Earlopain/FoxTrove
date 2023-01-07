@@ -25,13 +25,10 @@ module Archives
         bin_file = Tempfile.new(binmode: true)
         bin_file.write(entry.get_input_stream.read)
         bin_file.rewind
-        SubmissionFile.from_file(
-          file: bin_file,
-          artist_submission_id: artist_submission.id,
-          url: "file:///#{entry.name}",
-          created_at: artist_submission.created_at_on_site,
-          file_identifier: entry.name,
-        )
+
+        blob = ActiveStorage::Blob.create_and_upload!(io: bin_file, filename: File.basename(entry.name))
+        ArchiveBlobImportJob.perform_later(blob.id, artist_submission.id, entry.name)
+
         @imported_files[artist_submission.artist_url.id] ||= 0
         @imported_files[artist_submission.artist_url.id] += 1
       end
