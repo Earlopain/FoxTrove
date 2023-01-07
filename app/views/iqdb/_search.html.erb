@@ -1,12 +1,6 @@
-<%= form_with url: search_iqdb_path do |form| %>
-  <div>
-    <%= form.label :url, "URL" %>
-    <%= form.text_field :url %>
-  </div>
-  <div>
-    <%= form.label :file, "File" %>
-    <%= form.file_field :file %>
-  </div>
+<%= simple_form_for :search, url: search_iqdb_path do |f| %>
+  <%= f.input :url, label: "URL", placeholder: "Also supports e621 post links" %>
+  <%= f.input :file, as: :file, input_html: { accept: "image/*,video/*" } %>
 
-  <%= form.submit "Search" %>
+  <%= f.submit "Search" %>
 <% end %>

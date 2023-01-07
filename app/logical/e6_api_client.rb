@@ -9,6 +9,10 @@ module E6ApiClient
     make_request(:post, "/iqdb_queries.json", body: { file: file })
   end
 
+  def get_post(id)
+    make_request(:get, "/posts/#{id}.json")
+  end
+
   def make_request(method, path, **params)
     params[:headers] ||= {}
     params[:headers].merge!(headers)
