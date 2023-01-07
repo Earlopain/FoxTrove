@@ -45,6 +45,7 @@ services:
       - POSTGRES_HOST_AUTH_METHOD=trust
     volumes:
       - ${REVERSER_DATA_PATH}/db_data:/var/lib/postgresql/data
+    shm_size: 256mb
     ports:
       - 5432:5432
 
