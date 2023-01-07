@@ -6,7 +6,7 @@
     ["Larger Only (Dimensions)", "larger_only_dimensions"],
     ["Already Uploaded", "already_uploaded"],
     ["Exact Match", "exact_match_exists"],
-    ["Not Uploaded", "not_uploaded"]
+    ["Not Uploaded", "not_uploaded"],
   ], include_blank: true %>
   <%= f.input :larger_only_filesize_treshold, label: "Larger Only Treshold" %>
   <%= f.input :content_type, collection: [
@@ -16,4 +16,6 @@
   <%= f.input :site_type, label: "Site", collection: site_types_collection, include_blank: true %>
   <%= f.input :title %>
   <%= f.input :description %>
+  <%= f.input :zero_sources, as: :boolean, label: "Zero Sources?" %>
+  <%= f.input :zero_artists, as: :boolean, label: "Zero Artists?" %>
 <% end %>

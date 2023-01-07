@@ -29,6 +29,9 @@ class SubmissionFile < ApplicationRecord
   scope :exact_match_exists, -> { select_from_e6_iqdb_data_where_exists("is_exact_match") }
   scope :exact_match_doesnt_exist, -> { select_from_e6_iqdb_data_where_not_exists("is_exact_match") }
 
+  scope :zero_sources, -> { joins(:e6_iqdb_entries).where(e6_iqdb_entries: { post_is_deleted: false }).where("jsonb_array_length(post_json->'sources') = 0") }
+  scope :zero_artists, -> { joins(:e6_iqdb_entries).where(e6_iqdb_entries: { post_is_deleted: false }).where("jsonb_array_length(post_json->'tags'->'artist') = 0") }
+
   delegate :artist_url, :artist, to: :artist_submission
 
   def self.select_from_e6_iqdb_data_where_exists(condition = nil, *args)
@@ -180,6 +183,8 @@ class SubmissionFile < ApplicationRecord
     class_methods do
       def search(params)
         q = status_search(params)
+        q = q.zero_sources if params[:zero_sources] == "1"
+        q = q.zero_artists if params[:zero_artists] == "1"
         q = q.attribute_matches(params[:content_type], :content_type)
         q = q.attribute_nil_check(params[:in_backlog], :added_to_backlog_at)
         q = q.attribute_nil_check(params[:hidden_from_search] || false, :hidden_from_search_at)
@@ -211,7 +216,7 @@ class SubmissionFile < ApplicationRecord
       end
 
       def search_params
-        [:artist_id, :site_type, :upload_status, :larger_only_filesize_treshold, :content_type, :title, :description, { artist_url_id: [] }]
+        [:artist_id, :site_type, :upload_status, :zero_sources, :zero_artists, :larger_only_filesize_treshold, :content_type, :title, :description, { artist_url_id: [] }]
       end
     end
   end
