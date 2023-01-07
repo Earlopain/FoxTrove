@@ -156,7 +156,12 @@ class SubmissionFile < ApplicationRecord
   end
 
   def generate_variants
-    sample.attach(io: VariantGenerator.sample(original), filename: "sample")
+    io = VariantGenerator.sample(file_path_for(:original), content_type)
+    sample.attach(io: io, filename: "sample")
+  end
+
+  def file_path_for(variant)
+    send(variant).service.path_for(send(variant).key)
   end
 
   concerning :SearchMethods do
