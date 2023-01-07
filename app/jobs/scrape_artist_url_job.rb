@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class ScrapeArtistUrlJob < ApplicationJob
-  include GoodJob::ActiveJobExtensions::Concurrency
   queue_as :scraping
   good_job_control_concurrency_with(total_limit: 1, key: -> { arguments.first })
 
