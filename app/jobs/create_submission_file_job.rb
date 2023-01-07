@@ -22,8 +22,8 @@ class CreateSubmissionFileJob < ApplicationJob
 
     raise StandardError, "Failed to download #{url}: #{response.code}" if response.code != 200
 
-    SubmissionFile.from_file(
-      file: bin_file,
+    SubmissionFile.from_attachable(
+      attachable: bin_file,
       artist_submission_id: artist_submission_id,
       url: url,
       created_at: file[:created_at],

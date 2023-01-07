@@ -13,7 +13,7 @@ FactoryBot.define do
     size { 100.kilobytes }
 
     before(:create) do |submission_file|
-      submission_file.attach_original!(file_fixture("1.webp").open)
+      submission_file.attach_original_from_file!(file_fixture("1.webp").open)
     end
   end
 end

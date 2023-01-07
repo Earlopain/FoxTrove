@@ -43,42 +43,54 @@ class SubmissionFile < ApplicationRecord
     "select from e6_iqdb_data where submission_files.id = e6_iqdb_data.submission_file_id #{"and #{condition}" if condition}"
   end
 
-  def self.from_file(file:, artist_submission_id:, url:, created_at:, file_identifier:)
-    # Deviantart doesn't have to return only images.
-    # No way to find this out through the api response as far as I'm aware.
-    # https://www.deviantart.com/fr95/art/779625010/
-    mime_type = Marcel::MimeType.for file
-    return if mime_type.in? Scraper::Submission::MIME_IGNORE
-
+  def self.from_attachable(attachable:, artist_submission_id:, url:, created_at:, file_identifier:)
     submission_file = SubmissionFile.new(
       artist_submission_id: artist_submission_id,
       direct_url: url,
       created_at_on_site: created_at,
       file_identifier: file_identifier,
     )
-    submission_file.attach_original!(file)
+    case attachable
+    when Tempfile
+      submission_file.attach_original_from_file!(attachable)
+    when ActiveStorage::Blob
+      submission_file.attach_original_from_blob!(attachable)
+    else
+      raise ArgumentError, "'#{attachable.class}' is not supported"
+    end
   end
 
-  def attach_original!(file)
+  def attach_original_from_file!(file)
+    # Deviantart doesn't have to return only images.
+    # No way to find this out through the api response as far as I'm aware.
+    # https://www.deviantart.com/fr95/art/779625010/
+    mime_type = Marcel::MimeType.for file
+    return if mime_type.in? Scraper::Submission::MIME_IGNORE
+
     filename = File.basename(Addressable::URI.parse(direct_url).path)
     blob = ActiveStorage::Blob.create_and_upload!(io: file, filename: filename)
     begin
-      blob.analyze
-      raise StandardError, "Failed to analyze" if blob.content_type == "application/octet-stream"
-
-      self.width = blob.metadata[:width]
-      self.height = blob.metadata[:height]
-      self.content_type = blob.content_type
-      self.size = blob.byte_size
-
-      Vips::Image.new_from_file(file.path, fail: true).stats if can_iqdb?
-
-      original.attach(blob)
-      save!
+      attach_original_from_blob!(blob)
     rescue StandardError => e
       blob.purge
       raise e
     end
+  end
+
+  def attach_original_from_blob!(blob)
+    blob.analyze
+    raise StandardError, "Failed to analyze" if blob.content_type == "application/octet-stream"
+    raise StandardError, "'#{blob.content_type}' is not allowed" if blob.content_type.in? Scraper::Submission::MIME_IGNORE
+
+    self.width = blob.metadata[:width]
+    self.height = blob.metadata[:height]
+    self.content_type = blob.content_type
+    self.size = blob.byte_size
+
+    Vips::Image.new_from_file(blob.service.path_for(blob.key), fail: true).stats if can_iqdb?
+
+    original.attach(blob)
+    save!
   end
 
   def original_present
