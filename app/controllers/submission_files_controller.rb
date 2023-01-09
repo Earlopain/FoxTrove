@@ -4,7 +4,8 @@ class SubmissionFilesController < ApplicationController
   respond_to :json, only: %i[hide_many backlog_many enqueue_many]
 
   def index
-    @submission_files = SubmissionFile.search(search_params).with_everything.page(params[:page])
+    @search_params = search_params
+    @submission_files = SubmissionFile.search(@search_params).with_everything.page(params[:page])
   end
 
   def show
@@ -32,7 +33,7 @@ class SubmissionFilesController < ApplicationController
   end
 
   def update_matching_e6_posts
-    SubmissionFile.search(search_params).find_each(&:update_e6_posts)
+    UpdateMatchingE6PostsJob.perform_later(search_params)
   end
 
   def backlog

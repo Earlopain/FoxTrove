@@ -1,5 +1,6 @@
 <%= subnav_link_to "Backlog", backlog_submission_files_path %>
 <%= subnav_link_to "Hidden", hidden_submission_files_path %>
+<%= subnav_link_to "Update IQDB for matching", update_matching_e6_posts_submission_files_path(search: @search_params), method: :post, data: { confirm: "Are you sure?" } %>
 <% if @submission_file&.artist %>
   |
   <%= subnav_link_to "All From Artist", artist_path(@submission_file.artist) %>
