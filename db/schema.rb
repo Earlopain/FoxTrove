@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_10_24_193224) do
+ActiveRecord::Schema[7.0].define(version: 2023_01_08_111013) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -79,7 +79,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_10_24_193224) do
     t.index "lower(name)", name: "index_artists_on_lower_name", unique: true
   end
 
-  create_table "e6_iqdb_data", force: :cascade do |t|
+  create_table "e6_posts", force: :cascade do |t|
     t.bigint "submission_file_id", null: false
     t.integer "post_id", null: false
     t.integer "post_width", null: false
@@ -91,7 +91,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_10_24_193224) do
     t.datetime "updated_at", null: false
     t.jsonb "post_json", null: false
     t.boolean "post_is_deleted", null: false
-    t.index ["submission_file_id"], name: "index_e6_iqdb_data_on_submission_file_id"
+    t.index ["submission_file_id"], name: "index_e6_posts_on_submission_file_id"
   end
 
   create_table "good_job_processes", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -167,6 +167,6 @@ ActiveRecord::Schema[7.0].define(version: 2022_10_24_193224) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "artist_submissions", "artist_urls"
   add_foreign_key "artist_urls", "artists"
-  add_foreign_key "e6_iqdb_data", "submission_files"
+  add_foreign_key "e6_posts", "submission_files"
   add_foreign_key "submission_files", "artist_submissions"
 end

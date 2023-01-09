@@ -26,13 +26,13 @@ class SubmissionFilesController < ApplicationController
     submission_file.update(hidden_from_search_at: hide_from_search ? Time.current : nil)
   end
 
-  def update_e6_iqdb
+  def update_e6_posts
     submission_file = SubmissionFile.find(params[:id])
-    submission_file.update_e6_iqdb
+    submission_file.update_e6_posts
   end
 
-  def update_e6_iqdb_matching
-    SubmissionFile.search(search_params).find_each(&:update_e6_iqdb)
+  def update_matching_e6_posts
+    SubmissionFile.search(search_params).find_each(&:update_e6_posts)
   end
 
   def backlog
@@ -62,7 +62,7 @@ class SubmissionFilesController < ApplicationController
   end
 
   def enqueue_many
-    SubmissionFile.where(id: params[:ids]).find_each(&:update_e6_iqdb)
+    SubmissionFile.where(id: params[:ids]).find_each(&:update_e6_posts)
   end
 
   private

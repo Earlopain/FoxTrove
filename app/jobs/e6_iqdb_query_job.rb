@@ -8,6 +8,6 @@ class E6IqdbQueryJob < ApplicationJob
     submission_file = SubmissionFile.find_by id: submission_file_id
     return unless submission_file
 
-    submission_file.update_e6_iqdb_data
+    submission_file.update_e6_posts!
   end
 end

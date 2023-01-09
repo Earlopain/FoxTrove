@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class E6IqdbData < ApplicationRecord
+class E6Post < ApplicationRecord
   belongs_to :submission_file
 
   def direct_url

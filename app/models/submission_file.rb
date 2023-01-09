@@ -4,7 +4,7 @@ class SubmissionFile < ApplicationRecord
   belongs_to :artist_submission
   has_one_attached :original
   has_one_attached :sample
-  has_many :e6_iqdb_entries, class_name: "E6IqdbData", dependent: :destroy
+  has_many :e6_posts, dependent: :destroy
 
   validate :original_present
 
@@ -12,38 +12,38 @@ class SubmissionFile < ApplicationRecord
   after_save_commit :update_variants_and_iqdb
 
   scope :with_attached, -> { with_attached_sample.with_attached_original }
-  scope :with_everything, -> { with_attached.includes(:e6_iqdb_entries, artist_submission: :artist_url) }
+  scope :with_everything, -> { with_attached.includes(:e6_posts, artist_submission: :artist_url) }
 
-  scope :larger_iqdb_filesize_kb_exists, ->(treshold) { select_from_e6_iqdb_data_where_exists("size - ? > post_size and not post_is_deleted", treshold) }
-  scope :larger_iqdb_filesize_percentage_exists, ->(treshold) { select_from_e6_iqdb_data_where_exists("size - (size / 100 * ?) > post_size and not post_is_deleted", treshold) }
-  scope :smaller_iqdb_filesize_doesnt_exist, -> { select_from_e6_iqdb_data_where_not_exists("size <= post_size") }
+  scope :larger_iqdb_filesize_kb_exists, ->(treshold) { select_from_e6_posts_where_exists("size - ? > post_size and not post_is_deleted", treshold) }
+  scope :larger_iqdb_filesize_percentage_exists, ->(treshold) { select_from_e6_posts_where_exists("size - (size / 100 * ?) > post_size and not post_is_deleted", treshold) }
+  scope :smaller_iqdb_filesize_doesnt_exist, -> { select_from_e6_posts_where_not_exists("size <= post_size") }
   scope :larger_only_filesize_kb, ->(treshold) { larger_iqdb_filesize_kb_exists(treshold).smaller_iqdb_filesize_doesnt_exist.exact_match_doesnt_exist }
   scope :larger_only_filesize_percentage, ->(treshold) { larger_iqdb_filesize_percentage_exists(treshold).smaller_iqdb_filesize_doesnt_exist.exact_match_doesnt_exist }
 
-  scope :larger_iqdb_dimensions_exist, -> { select_from_e6_iqdb_data_where_exists("width > post_width and height > post_height and not post_is_deleted") }
-  scope :smaller_iqdb_dimensions_dont_exist, -> { select_from_e6_iqdb_data_where_not_exists("width <= post_width and height <= post_height") }
+  scope :larger_iqdb_dimensions_exist, -> { select_from_e6_posts_where_exists("width > post_width and height > post_height and not post_is_deleted") }
+  scope :smaller_iqdb_dimensions_dont_exist, -> { select_from_e6_posts_where_not_exists("width <= post_width and height <= post_height") }
   scope :larger_only_dimensions, -> { larger_iqdb_dimensions_exist.smaller_iqdb_dimensions_dont_exist }
 
-  scope :already_uploaded, -> { select_from_e6_iqdb_data_where_exists }
-  scope :not_uploaded, -> { select_from_e6_iqdb_data_where_not_exists }
-  scope :exact_match_exists, -> { select_from_e6_iqdb_data_where_exists("is_exact_match") }
-  scope :exact_match_doesnt_exist, -> { select_from_e6_iqdb_data_where_not_exists("is_exact_match") }
+  scope :already_uploaded, -> { select_from_e6_posts_where_exists }
+  scope :not_uploaded, -> { select_from_e6_posts_where_not_exists }
+  scope :exact_match_exists, -> { select_from_e6_posts_where_exists("is_exact_match") }
+  scope :exact_match_doesnt_exist, -> { select_from_e6_posts_where_not_exists("is_exact_match") }
 
-  scope :zero_sources, -> { joins(:e6_iqdb_entries).where(e6_iqdb_entries: { post_is_deleted: false }).where("jsonb_array_length(post_json->'sources') = 0") }
-  scope :zero_artists, -> { joins(:e6_iqdb_entries).where(e6_iqdb_entries: { post_is_deleted: false }).where("jsonb_array_length(post_json->'tags'->'artist') = 0") }
+  scope :zero_sources, -> { joins(:e6_posts).where(e6_posts: { post_is_deleted: false }).where("jsonb_array_length(post_json->'sources') = 0") }
+  scope :zero_artists, -> { joins(:e6_posts).where(e6_posts: { post_is_deleted: false }).where("jsonb_array_length(post_json->'tags'->'artist') = 0") }
 
   delegate :artist_url, :artist, to: :artist_submission
 
-  def self.select_from_e6_iqdb_data_where_exists(condition = nil, *args)
-    where("exists (#{select_from_e6_iqdb_data(condition)})", args)
+  def self.select_from_e6_posts_where_exists(condition = nil, *args)
+    where("exists (#{select_from_e6_posts(condition)})", args)
   end
 
-  def self.select_from_e6_iqdb_data_where_not_exists(condition = nil, *args)
-    where("not exists (#{select_from_e6_iqdb_data(condition)})", args)
+  def self.select_from_e6_posts_where_not_exists(condition = nil, *args)
+    where("not exists (#{select_from_e6_posts(condition)})", args)
   end
 
-  def self.select_from_e6_iqdb_data(condition)
-    "select from e6_iqdb_data where submission_files.id = e6_iqdb_data.submission_file_id #{"and #{condition}" if condition}"
+  def self.select_from_e6_posts(condition)
+    "select from e6_posts where submission_files.id = e6_posts.submission_file_id #{"and #{condition}" if condition}"
   end
 
   def self.from_attachable(attachable:, artist_submission_id:, url:, created_at:, file_identifier:)
@@ -114,8 +114,22 @@ class SubmissionFile < ApplicationRecord
     SubmissionFileUpdateJob.perform_later id
   end
 
-  def update_e6_iqdb_data
-    e6_iqdb_entries.destroy_all
+  def update_e6_posts
+    e6_posts.destroy_all
+    similar = IqdbProxy.query_submission_file(self).pluck(:submission_file)
+    similar.each { |s| s.e6_posts.destroy_all }
+
+    E6IqdbQueryJob.set(priority: 10).perform_later id
+    similar.each do |s|
+      # Process matches from other artists after everything else.
+      # Chances are that they're just wrong iqdb matches.
+      priority = s.artist_submission.artist == artist_submission.artist ? 10 : -10
+      E6IqdbQueryJob.set(priority: priority).perform_later s.id
+    end
+  end
+
+  def update_e6_posts!
+    e6_posts.destroy_all
 
     sample.open do |file|
       # FIXME: Error handling
@@ -125,7 +139,7 @@ class SubmissionFile < ApplicationRecord
 
       json.each do |entry|
         post = entry["post"]["posts"]
-        iqdb_entry = e6_iqdb_entries.create(
+        post_entry = e6_posts.create(
           post_id: post["id"],
           post_width: post["image_width"],
           post_height: post["image_height"],
@@ -138,7 +152,7 @@ class SubmissionFile < ApplicationRecord
 
         # Check if there are entries which were previously added
         # that are an exact visual match to this newly added exact match
-        if iqdb_entry.is_exact_match
+        if post_entry.is_exact_match
           existing_matches(post["id"], is_exact_match: false).find_each do |existing_match|
             existing_match.update(is_exact_match: true)
           end
@@ -148,26 +162,12 @@ class SubmissionFile < ApplicationRecord
   end
 
   def existing_matches(post_id, is_exact_match:)
-    E6IqdbData.joins(:submission_file)
-              .where(post_id: post_id, submission_file: { iqdb_hash: iqdb_hash }, is_exact_match: is_exact_match)
+    E6Post.joins(:submission_file)
+          .where(post_id: post_id, submission_file: { iqdb_hash: iqdb_hash }, is_exact_match: is_exact_match)
   end
 
   def remove_from_iqdb
     IqdbProxy.remove_submission self if can_iqdb?
-  end
-
-  def update_e6_iqdb
-    e6_iqdb_entries.destroy_all
-    similar = IqdbProxy.query_submission_file(self).pluck(:submission_file)
-    similar.each { |s| s.e6_iqdb_entries.destroy_all }
-
-    E6IqdbQueryJob.set(priority: 10).perform_later id
-    similar.each do |s|
-      # Process matches from other artists after everything else.
-      # Chances are that they're just wrong iqdb matches.
-      priority = s.artist_submission.artist == artist_submission.artist ? 10 : -10
-      E6IqdbQueryJob.set(priority: priority).perform_later s.id
-    end
   end
 
   def generate_variants

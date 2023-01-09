@@ -19,7 +19,7 @@ Rails.application.routes.draw do
   end
   resources :submission_files, only: %i[index show] do
     member do
-      post :update_e6_iqdb
+      post :update_e6_posts
       put :modify_backlog
       put :modify_hidden
     end
@@ -29,7 +29,7 @@ Rails.application.routes.draw do
       put :hide_many
       put :backlog_many
       put :enqueue_many
-      post :update_e6_iqdb_matching
+      post :update_matching_e6_posts
     end
   end
   resources :log_events, only: %i[index show]

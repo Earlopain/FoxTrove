@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 FactoryBot.define do
-  factory :e6_iqdb_data do
+  factory :e6_post do
     association :submission_file
 
     post_id { 123 }
