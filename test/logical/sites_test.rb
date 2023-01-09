@@ -42,4 +42,12 @@ class SitesTest < ActiveSupport::TestCase
       expect_correct_escaping(input, output)
     end
   end
+
+  describe "from_gallery_url" do
+    it "correctly extracts information froom twitter" do
+      result = Sites.from_gallery_url("https://twitter.com/username")
+      assert_equal("username", result[:identifier])
+      assert_equal("twitter", result[:site].enum_value)
+    end
+  end
 end

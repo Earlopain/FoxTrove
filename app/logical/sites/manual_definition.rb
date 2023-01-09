@@ -13,5 +13,9 @@ module Sites
     def scraper_enabled?
       false
     end
+
+    def match_for_gallery(_uri)
+      # Do nothing
+    end
   end
 end
