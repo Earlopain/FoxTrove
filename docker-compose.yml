@@ -11,10 +11,10 @@ services:
       - .:/app
       - build_assets:/app/public/build
       - ${REVERSER_DATA_PATH}/active_storage:/app/public/storage
-      - node_modules:/app/node_modules
-      - yarn:/app/.yarn
       - temp:/app/tmp
     tmpfs:
+      - /app/.pnpm-store
+      - /app/node_modules
       - /app/tmp/cache
       - /app/tmp/pids
       - /app/tmp/sockets
@@ -88,6 +88,4 @@ services:
 
 volumes:
   build_assets:
-  node_modules:
-  yarn:
   temp:

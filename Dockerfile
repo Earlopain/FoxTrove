@@ -16,8 +16,8 @@ fi
 FROM node:18-alpine3.17 as node-builder
 
 WORKDIR /app
-COPY package.json yarn.lock .yarnrc.yml ./
-RUN corepack enable && corepack prepare --activate && yarn install
+COPY package.json pnpm-lock.yaml ./
+RUN corepack enable && corepack prepare --activate && pnpm install
 
 FROM ruby:3.2.0-alpine3.17
 
@@ -30,7 +30,8 @@ RUN apk --no-cache add \
 
 RUN git config --global --add safe.directory /app
 
-# Setup node and yarn
+# Setup node and pnpm
+ENV PATH=/node_modules/.bin:$PATH
 COPY --from=node-builder /usr/lib /usr/lib
 COPY --from=node-builder /usr/local/share /usr/local/share
 COPY --from=node-builder /usr/local/lib /usr/local/lib
@@ -39,7 +40,7 @@ COPY --from=node-builder /usr/local/bin /usr/local/bin
 COPY --from=node-builder /root/.cache/node /root/.cache/node
 
 # Copy gems and js packages
-COPY --from=node-builder /app/node_modules node_modules
+COPY --from=node-builder /app/node_modules /node_modules
 COPY --from=ruby-builder /usr/local/bundle /usr/local/bundle
 
 # Solargraph

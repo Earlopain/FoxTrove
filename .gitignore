@@ -14,8 +14,8 @@
 # Ignore master key for decrypting credentials and more.
 /config/master.key
 
+/.pnpm-store
 /node_modules
-/yarn-error.log
 
 config/reverser_custom_config.yml
 

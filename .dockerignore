@@ -3,7 +3,6 @@
 
 # Allow only the files that are actually needed
 !/package.json
-!/yarn.lock
-!/.yarnrc.yml
+!/pnpm-lock.yaml
 !/Gemfile
 !/Gemfile.lock
