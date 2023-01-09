@@ -138,16 +138,17 @@ class SubmissionFile < ApplicationRecord
       break unless json.is_a? Array
 
       json.each do |entry|
-        post = entry["post"]["posts"]
+        post_id = entry["post"]["posts"]["id"]
+        post_json = E6ApiClient.get_post(post_id)
         post_entry = e6_posts.create(
-          post_id: post["id"],
-          post_width: post["image_width"],
-          post_height: post["image_height"],
-          post_size: post["file_size"],
-          post_is_deleted: post["is_deleted"],
-          post_json: post,
+          post_id: post_json["id"],
+          post_width: post_json["file"]["width"],
+          post_height: post_json["file"]["height"],
+          post_size: post_json["file"]["size"],
+          post_is_deleted: post_json["flags"]["deleted"],
+          post_json: post_json,
           similarity_score: entry["score"],
-          is_exact_match: md5 == post["md5"] || existing_matches(post["id"], is_exact_match: true).any?,
+          is_exact_match: md5 == post_json["file"]["md5"] || existing_matches(post_json["id"], is_exact_match: true).any?,
         )
 
         # Check if there are entries which were previously added
