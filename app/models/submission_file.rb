@@ -29,8 +29,15 @@ class SubmissionFile < ApplicationRecord
   scope :exact_match_exists, -> { select_from_e6_posts_where_exists("is_exact_match") }
   scope :exact_match_doesnt_exist, -> { select_from_e6_posts_where_not_exists("is_exact_match") }
 
+  # avoid_posting and conditional_dnp never appear alone
+  NON_ARTIST_TAGS = %w[unknown_artist unknown_artist_signature sound_warning epilepsy_warning].freeze
+
   scope :zero_sources, -> { joins(:e6_posts).where(e6_posts: { post_is_deleted: false }).where("jsonb_array_length(post_json->'sources') = 0") }
-  scope :zero_artists, -> { joins(:e6_posts).where(e6_posts: { post_is_deleted: false }).where("jsonb_array_length(post_json->'tags'->'artist') = 0") }
+  scope :zero_artists, -> {
+    artists_path = "post_json->'tags'->'artist'"
+    artists_count = "jsonb_array_length(#{artists_path})"
+    joins(:e6_posts).where(e6_posts: { post_is_deleted: false }).where("#{artists_count} = 0 or (#{artists_count} = 1 and #{artists_path}->>0 in (?))", NON_ARTIST_TAGS)
+  }
 
   delegate :artist_url, :artist, to: :artist_submission
 
