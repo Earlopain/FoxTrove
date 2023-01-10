@@ -38,16 +38,16 @@ class SubmissionFilesController < ApplicationController
 
   def backlog
     @submission_files = SubmissionFile.search(search_params.merge(in_backlog: true))
-                                      .with_everything
-                                      .reorder(added_to_backlog_at: :desc)
-                                      .page params[:page]
+      .with_everything
+      .reorder(added_to_backlog_at: :desc)
+      .page params[:page]
   end
 
   def hidden
     @submission_files = SubmissionFile.search(search_params.merge(hidden_from_search: true))
-                                      .with_everything
-                                      .reorder(hidden_from_search_at: :desc)
-                                      .page params[:page]
+      .with_everything
+      .reorder(hidden_from_search_at: :desc)
+      .page params[:page]
   end
 
   def hide_many

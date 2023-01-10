@@ -171,7 +171,7 @@ class SubmissionFile < ApplicationRecord
 
   def existing_matches(post_id, is_exact_match:)
     E6Post.joins(:submission_file)
-          .where(post_id: post_id, submission_file: { iqdb_hash: iqdb_hash }, is_exact_match: is_exact_match)
+      .where(post_id: post_id, submission_file: { iqdb_hash: iqdb_hash }, is_exact_match: is_exact_match)
   end
 
   def remove_from_iqdb
