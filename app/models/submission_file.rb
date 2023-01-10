@@ -161,7 +161,7 @@ class SubmissionFile < ApplicationRecord
         # Check if there are entries which were previously added
         # that are an exact visual match to this newly added exact match
         if post_entry.is_exact_match
-          existing_matches(post["id"], is_exact_match: false).find_each do |existing_match|
+          existing_matches(post_json["id"], is_exact_match: false).find_each do |existing_match|
             existing_match.update(is_exact_match: true)
           end
         end

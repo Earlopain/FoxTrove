@@ -41,5 +41,51 @@ module ActiveSupport
         super
       end
     end
+
+    def stub_e6(post_id:, iqdb_matches: [], md5: "abc", &)
+      iqdb_stub = stub_e6_iqdb_request([post_id] + iqdb_matches)
+      post_stub = stub_e6_post_request(post_id, md5)
+      yield
+    ensure
+      remove_request_stub(iqdb_stub)
+      remove_request_stub(post_stub)
+    end
+
+    private
+
+    def stub_e6_iqdb_request(response_post_ids)
+      response = response_post_ids.map do |iqdb_match_id|
+        {
+          score: 90,
+          post: {
+            posts: {
+              id: iqdb_match_id,
+            },
+          },
+        }
+      end
+      stub_request(:post, "https://e621.net/iqdb_queries.json")
+        .to_return(body: response.to_json, headers: { "Content-Type" => "application/json" })
+        .then.to_raise(ArgumentError.new("iqdb can only be stubbed once"))
+    end
+
+    def stub_e6_post_request(post_id, md5)
+      response = {
+        post: {
+          id: post_id,
+          file: {
+            width: 10,
+            height: 10,
+            size: 10.kilobytes,
+            md5: md5,
+          },
+          flags: {
+            deleted: false,
+          },
+        },
+      }
+      stub_request(:get, "https://e621.net/posts/#{post_id}.json")
+        .to_return(body: response.to_json, headers: { "Content-Type" => "application/json" })
+    end
   end
 end

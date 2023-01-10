@@ -5,7 +5,7 @@ module E6ApiClient
 
   def iqdb_query(file)
     # FIXME: Proper rate limiting
-    sleep 2
+    sleep 2 unless Rails.env.test?
     make_request(:post, "/iqdb_queries.json", body: { file: file })
   end
 
