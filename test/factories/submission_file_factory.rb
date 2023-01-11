@@ -11,14 +11,19 @@ FactoryBot.define do
     width { 1_000 }
     height { 1_000 }
     size { 100.kilobytes }
-    transient do
-      file_name { "1.webp" }
-      with_sample { false }
-    end
+    skip_original_validation { true }
 
-    before(:create) do |submission_file, evaluator|
-      submission_file.attach_original_from_file!(file_fixture(evaluator.file_name).open)
-      submission_file.sample.attach(io: file_fixture(evaluator.file_name).open, filename: "sample") if evaluator.with_sample
+    factory :submission_file_with_original do
+      skip_original_validation { false }
+      transient do
+        file_name { nil }
+        with_sample { false }
+      end
+
+      before(:create) do |submission_file, evaluator|
+        submission_file.attach_original_from_file!(file_fixture(evaluator.file_name).open)
+        submission_file.sample.attach(io: file_fixture(evaluator.file_name).open, filename: "sample") if evaluator.with_sample
+      end
     end
   end
 end

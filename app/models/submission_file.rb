@@ -6,7 +6,9 @@ class SubmissionFile < ApplicationRecord
   has_one_attached :sample
   has_many :e6_posts, dependent: :destroy
 
-  validate :original_present
+  attr_accessor :skip_original_validation
+
+  validate :original_present, if: -> { new_record? || (persisted? && !original.attached?) }, unless: :skip_original_validation
 
   after_destroy_commit :remove_from_iqdb
   after_save_commit :update_variants_and_iqdb
