@@ -46,7 +46,7 @@ module Scraper
 
     def fetch_api_identifier
       url = "https://inkbunny.net/api_username_autosuggest.php"
-      response = make_request(url, { username: url_identifier })
+      response = make_request(url, username: url_identifier)
       users = response["results"].select { |entry| entry["value"].casecmp? url_identifier }
       users[0]&.[]("id")
     end
@@ -55,7 +55,7 @@ module Scraper
 
     def submission_details(submission_ids)
       url = "https://inkbunny.net/api_submissions.php"
-      make_request(url, { submission_ids: submission_ids.join(","), show_description: "yes" })["submissions"]
+      make_request(url, submission_ids: submission_ids.join(","), show_description: "yes")["submissions"]
     end
 
     def search_mode1
@@ -68,7 +68,7 @@ module Scraper
         type: "1,2,3,4,5,8,9,13",
         orderby: "last_file_update_datetime",
       }
-      json = make_request(url, params)
+      json = make_request(url, **params)
       @rid = json["rid"]
       json
     end
@@ -81,21 +81,20 @@ module Scraper
         rid: @rid,
         page: @page,
       }
-      make_request(url, params)
+      make_request(url, **params)
     end
 
-    def make_request(url, query_params)
-      fetch_json(url, query: {
-        **query_params,
-        sid: fetch_sid,
-      })
+    def make_request(url, with_sid: true, **query_params)
+      query_params[:sid] = fetch_sid if with_sid
+      fetch_json(url, query: query_params)
     end
 
     def fetch_sid
-      response = make_request("https://inkbunny.net/api_login.php", {
+      response = make_request("https://inkbunny.net/api_login.php",
+        with_sid: false,
         username: Config.inkbunny_user,
         password: Config.inkbunny_pass,
-      })
+      )
       JSON.parse(response.body)["sid"]
     end
     cache(:fetch_sid, 1.hour)
