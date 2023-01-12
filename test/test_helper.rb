@@ -54,16 +54,16 @@ module ActiveSupport
     private
 
     def stub_e6_iqdb_request(response_post_ids)
-      response = create(:e6_iqdb_json_response, post_ids: response_post_ids)
+      response = json(:e6_iqdb_response, post_ids: response_post_ids)
       stub_request(:post, "https://e621.net/iqdb_queries.json")
         .to_return(body: response, headers: { "Content-Type" => "application/json" })
         .then.to_raise(ArgumentError.new("iqdb can only be stubbed once"))
     end
 
     def stub_e6_post_request(post_id, md5)
-      response = create(:e6_post_json_response, post_id: post_id, md5: md5)
+      response = json(:e6_post_response, post_id: post_id, md5: md5)
       stub_request(:get, "https://e621.net/posts/#{post_id}.json")
-        .to_return(body: response.to_json, headers: { "Content-Type" => "application/json" })
+        .to_return(body: response, headers: { "Content-Type" => "application/json" })
     end
   end
 end

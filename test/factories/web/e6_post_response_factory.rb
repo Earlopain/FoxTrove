@@ -1,12 +1,9 @@
 # frozen_string_literal: true
 
 FactoryBot.define do
-  factory :e6_post_json_response, class: OpenStruct do
-    skip_create
-    transient do
-      post_id {  }
-      md5 { }
-    end
+  factory :e6_post_response, parent: :json do
+    post_id { nil }
+    md5 { nil }
 
     initialize_with do
       {

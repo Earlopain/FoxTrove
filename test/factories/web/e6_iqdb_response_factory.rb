@@ -1,11 +1,8 @@
 # frozen_string_literal: true
 
 FactoryBot.define do
-  factory :e6_iqdb_json_response, class: OpenStruct do
-    skip_create
-    transient do
-      post_ids { [] }
-    end
+  factory :e6_iqdb_response, parent: :json do
+    post_ids { [] }
 
     initialize_with do
       post_ids.map do |iqdb_match_id|
@@ -17,7 +14,7 @@ FactoryBot.define do
             },
           },
         }
-      end.to_json
+      end
     end
   end
 end
