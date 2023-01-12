@@ -100,7 +100,7 @@ module Scraper
           **request_params,
         },
         response_code: status_code,
-        response_body: body,
+        response_body: body.encode(body.encoding, body.encoding, invalid: :replace),
       })
     end
 
