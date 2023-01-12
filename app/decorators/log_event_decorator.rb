@@ -25,7 +25,7 @@ class LogEventDecorator < ApplicationDecorator
       remaining_json = JSON.pretty_generate(remaining_params)
       h.safe_join([
         h.tag.pre(remaining_json),
-        h.tag.pre(pretty_response),
+        h.tag.pre(pretty_response.html_safe), # rubocop:disable Rails/OutputSafety
       ])
     else
       "Unknown action #{action}"
@@ -33,18 +33,18 @@ class LogEventDecorator < ApplicationDecorator
   end
 
   concerning :ScraperRequest do
-    def response_is_json?
+    def response_as_json
       JSON.parse(payload["response_body"])
-      true
     rescue JSON::ParserError
-      false
+      # Do nothing
     end
 
     def pretty_response
-      if response_is_json?
-        JSON.pretty_generate(JSON.parse(payload["response_body"]))
+      inline_formatter = Rouge::Formatters::HTMLInline.new("molokai")
+      if (json = response_as_json)
+        Rouge.highlight(JSON.pretty_generate(json), Rouge::Lexers::JSON, inline_formatter)
       else
-        Nokogiri::HTML(payload["response_body"]).to_xhtml(indent: 2)
+        Rouge.highlight(payload["response_body"], Rouge::Lexers::HTML, inline_formatter)
       end
     end
   end

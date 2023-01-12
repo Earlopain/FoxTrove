@@ -231,6 +231,7 @@ GEM
       nokogiri
     rexml (3.2.5)
     rotp (6.2.2)
+    rouge (4.0.1)
     rubocop (1.43.0)
       json (~> 2.3)
       parallel (~> 1.10)
@@ -323,6 +324,7 @@ DEPENDENCIES
   rails (~> 7.0)
   responders
   rotp
+  rouge
   rubocop
   rubocop-minitest
   rubocop-performance
