@@ -22,8 +22,7 @@ module Sites
 
       {
         identifier: extracted["site_artist_identifier"],
-        identifier_valid: username_identifier_regex.match?(extracted["site_artist_identifier"]),
-        site: self,
+        valid: username_identifier_regex.match?(extracted["site_artist_identifier"]),
       }
     end
 

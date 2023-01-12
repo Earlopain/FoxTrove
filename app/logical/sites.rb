@@ -14,9 +14,10 @@ module Sites
       return nil
     end
 
-    all.lazy.filter_map do |definition|
-      definition.match_for_gallery uri
-    end.first
+    all.each do |definition|
+      match = definition.match_for_gallery(uri)
+      return match.merge(site: definition) if match
+    end
   end
 
   def download_headers_for_image_uri(uri)

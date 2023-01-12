@@ -18,7 +18,7 @@ class Artist < ApplicationRecord
       if !result
         errors.add(:url, " #{url} is not a supported url") unless result
         next
-      elsif !result[:identifier_valid]
+      elsif !result[:valid]
         errors.add(:identifier, "#{result[:identifier]} is not valid for #{result[:site].display_name}")
         next
       end
