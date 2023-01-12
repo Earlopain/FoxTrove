@@ -15,15 +15,15 @@ module Sites
     end
 
     def match_for_gallery(uri)
-      extracted = gallery_templates.lazy.filter_map do |template|
-        template.extract(uri, IdentifierProcessor)
-      end.first
-      return unless extracted
+      extracted_identifiers = gallery_templates.filter_map do |template|
+        template.extract(uri, IdentifierProcessor)&.dig("site_artist_identifier")
+      end
+      return if extracted_identifiers.none?
 
-      {
-        identifier: extracted["site_artist_identifier"],
-        valid: username_identifier_regex.match?(extracted["site_artist_identifier"]),
-      }
+      first_valid_identifier = extracted_identifiers.find { |identifier| username_identifier_regex.match?(identifier) }
+      return { identifier: first_valid_identifier, valid: true } if first_valid_identifier
+
+      { identifier: extracted_identifiers.first, valid: false }
     end
 
     # Returns true when the site needs special headers to download from

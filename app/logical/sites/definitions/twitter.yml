@@ -3,8 +3,8 @@ enum_value: twitter
 display_name: Twitter
 homepage: https://twitter.com
 gallery_templates:
-  - twitter.com/@{site_artist_identifier}
   - twitter.com/{site_artist_identifier}
+  - twitter.com/@{site_artist_identifier}
   - mobile.twitter.com/{site_artist_identifier}
 username_identifier_regex: "[a-zA-Z0-9_]{1,15}"
 submission_template: https://twitter.com/{site_artist_identifier}/status/{site_submission_identifier}

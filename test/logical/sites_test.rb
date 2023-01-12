@@ -44,10 +44,33 @@ class SitesTest < ActiveSupport::TestCase
   end
 
   describe "from_gallery_url" do
-    it "correctly extracts information froom twitter" do
-      result = Sites.from_gallery_url("https://twitter.com/username")
-      assert_equal("username", result[:identifier])
-      assert_equal("twitter", result[:site].enum_value)
+    def assert_extracted(url:, site:, username:, valid: true)
+      result = Sites.from_gallery_url(url)
+      assert(result)
+      assert_equal(site, result[:site].enum_value)
+      assert_equal(username, result[:identifier])
+      assert_equal(valid, result[:valid])
+    end
+
+    it "correctly extracts information from twitter" do
+      assert_extracted(
+        url: "https://twitter.com/username",
+        site: "twitter",
+        username: "username",
+      )
+
+      assert_extracted(
+        url: "https://twitter.com/@username",
+        site: "twitter",
+        username: "username",
+      )
+
+      assert_extracted(
+        url: "https://twitter.com/!invalid!",
+        site: "twitter",
+        username: "!invalid!",
+        valid: false,
+      )
     end
   end
 end
