@@ -51,7 +51,11 @@ class ArtistsController < ApplicationController
 
   def enqueue_all_urls
     @artist = Artist.find(params[:id])
-    @artist.artist_urls.each(&:enqueue_scraping)
+    @artist.enqueue_all_urls
+  end
+
+  def enqueue_everything
+    Artist.find_each(&:enqueue_all_urls)
   end
 
   private

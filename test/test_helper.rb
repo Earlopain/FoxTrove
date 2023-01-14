@@ -34,9 +34,9 @@ module ActiveSupport
     end
 
     # https://github.com/minitest/minitest/issues/666
-    def assert_equal(expected, actual, **)
+    def assert_equal(expected, actual, message = nil, **)
       if expected.nil?
-        assert_nil(actual)
+        assert_nil(actual, message)
       else
         super
       end
@@ -49,6 +49,18 @@ module ActiveSupport
     ensure
       remove_request_stub(iqdb_stub) if iqdb_stub
       remove_request_stub(post_stub) if post_stub
+    end
+
+    def stub_scraper_enabled(*site_types, &)
+      sites = site_types.map { |site_type| Sites.from_enum(site_type.to_s) }
+      sites.each.with_index do |site, index|
+        raise ArgumentError, "#{site_types[index]} is not a valid scraper" unless site.is_a?(Sites::ScraperDefinition)
+
+        site.stubs(:scraper_enabled?).returns(true)
+      end
+      yield
+    ensure
+      sites.each { |site| site.unstub(:scraper_enabled?) }
     end
 
     private

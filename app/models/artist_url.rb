@@ -68,8 +68,9 @@ class ArtistUrl < ApplicationRecord
   end
 
   def enqueue_scraping
+    return unless scraper_enabled?
     raise MissingApiIdentifier.new(url_identifier, site_type) unless api_identifier
 
-    ScrapeArtistUrlJob.perform_later id if scraper_enabled?
+    ScrapeArtistUrlJob.perform_later id
   end
 end

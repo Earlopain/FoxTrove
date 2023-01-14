@@ -11,6 +11,9 @@ Rails.application.routes.draw do
     member do
       post :enqueue_all_urls
     end
+    collection do
+      post :enqueue_everything
+    end
   end
   resources :artist_urls, only: [] do
     member do

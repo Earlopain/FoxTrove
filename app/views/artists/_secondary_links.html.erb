@@ -1,5 +1,8 @@
 <%= subnav_link_to "Listing", artists_path %>
 <%= subnav_link_to "New", new_artist_path %>
+<% unless @artist&.id %>
+  <%= subnav_link_to "Enqueue Everything", enqueue_everything_artists_path, method: :post %>
+<% end %>
 <% if @artist&.id %>
   |
   <%= subnav_link_to "Enqueue All", enqueue_all_urls_artist_path(@artist), method: :post %>

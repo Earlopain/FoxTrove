@@ -42,6 +42,10 @@ class Artist < ApplicationRecord
     end
   end
 
+  def enqueue_all_urls
+    artist_urls.each(&:enqueue_scraping)
+  end
+
   def oldest_last_scraped_at
     scraper_urls = artist_urls.select(&:scraper_enabled?)
     if scraper_urls.none? { |artist_url| artist_url.last_scraped_at.nil? }
