@@ -5,7 +5,7 @@ FactoryBot.define do
     post_id { nil }
     md5 { nil }
 
-    initialize_with do
+    json do
       {
         post: {
           id: post_id,

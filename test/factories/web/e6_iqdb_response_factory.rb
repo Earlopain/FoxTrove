@@ -4,7 +4,7 @@ FactoryBot.define do
   factory :e6_iqdb_response, parent: :json do
     post_ids { [] }
 
-    initialize_with do
+    json do
       post_ids.map do |iqdb_match_id|
         {
           score: 90,
