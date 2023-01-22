@@ -12,6 +12,6 @@ class SubmissionFileUpdateJob < ApplicationJob
     return unless submission_file.can_iqdb?
 
     IqdbProxy.update_submission submission_file
-    E6IqdbQueryJob.perform_later submission_file.id
+    E6IqdbQueryJob.set(priority: E6IqdbQueryJob::PRIORITIES[:automatic_action]).perform_later submission_file.id
   end
 end

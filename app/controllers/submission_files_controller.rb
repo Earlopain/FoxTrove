@@ -29,7 +29,7 @@ class SubmissionFilesController < ApplicationController
 
   def update_e6_posts
     submission_file = SubmissionFile.find(params[:id])
-    submission_file.update_e6_posts
+    submission_file.update_e6_posts(priority: E6IqdbQueryJob::PRIORITIES[:immediate])
   end
 
   def update_matching_e6_posts
