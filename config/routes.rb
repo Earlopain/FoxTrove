@@ -15,7 +15,7 @@ Rails.application.routes.draw do
       post :enqueue_everything
     end
   end
-  resources :artist_urls, only: [] do
+  resources :artist_urls, only: %i[show] do
     member do
       post :enqueue
     end
