@@ -1,4 +1,4 @@
-type: SimpleDefinition
+type: ScraperDefinition
 enum_value: itaku
 display_name: Itaku
 homepage: https://itaku.ee
