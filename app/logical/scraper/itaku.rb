@@ -24,11 +24,11 @@ module Scraper
       s.description = submission["description"]
       s.created_at = DateTime.parse submission["date_added"]
 
-      if submission["video"].present?
-        file_url = submission["video"]["video"]
-      else
-        file_url = submission["image"]
-      end
+      file_url = if submission["video"].present?
+                   submission["video"]["video"]
+                 else
+                   submission["image"]
+                 end
 
       s.add_file({
         url: file_url,
@@ -43,6 +43,8 @@ module Scraper
       response["owner"]
     end
 
+    private
+
     def get_ids_from_page(page)
       response = fetch_json(page)
       @page = response["links"]["next"]
@@ -50,12 +52,9 @@ module Scraper
     end
 
     def get_details(ids)
-      details = ids.map do |id|
+      ids.map do |id|
         fetch_json("https://itaku.ee/api/galleries/images/#{id}/")
       end
     end
-
-    private
-
   end
 end
