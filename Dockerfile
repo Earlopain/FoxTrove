@@ -1,9 +1,9 @@
-FROM ruby:3.2.0-alpine3.17 as ruby-builder
+FROM ruby:3.2.1-alpine3.17 as ruby-builder
 
 RUN apk --no-cache add build-base postgresql15-dev
 
 COPY Gemfile Gemfile.lock ./
-RUN gem i bundler:2.4.3 foreman && bundle install \
+RUN gem i bundler:2.4.7 foreman && bundle install \
  && rm -rf /usr/local/bundle/cache/*.gem \
  && find /usr/local/bundle/gems/ -name "*.c" -delete \
  && find /usr/local/bundle/gems/ -name "*.o" -delete
@@ -19,7 +19,7 @@ WORKDIR /app
 COPY package.json pnpm-lock.yaml ./
 RUN corepack enable && corepack prepare --activate && pnpm install
 
-FROM ruby:3.2.0-alpine3.17
+FROM ruby:3.2.1-alpine3.17
 
 WORKDIR /app
 
