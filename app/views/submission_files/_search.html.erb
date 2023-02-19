@@ -10,7 +10,7 @@
   ], include_blank: true %>
   <%= f.input :larger_only_filesize_treshold, label: "Larger Only Treshold" %>
   <%= f.input :content_type, collection: [
-    ["Animation Only", "video/mp4,image/gif"],
+    ["Animation Only", "video/mp4,video/webm,image/gif"],
     ["Pictures Only", "image/png,image/jpeg,"],
   ], include_blank: true %>
   <%= f.input :site_type, label: "Site", collection: site_types_collection, include_blank: true %>
