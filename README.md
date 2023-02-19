@@ -26,6 +26,7 @@ You can also search for non-uploaded submission for artists. How well this works
 * Furaffinity
 * FurryNetwork
 * Inkbunny
+* Itaku
 * Newgrounds
 * Pawoo
 * Piczel

@@ -1,0 +1,9 @@
+type: ScraperDefinition
+enum_value: itaku
+display_name: Itaku
+homepage: https://itaku.ee
+gallery_templates:
+  - itaku.ee/profile/{site_artist_identifier}
+  - itaku.ee/profile/{site_artist_identifier}/gallery
+username_identifier_regex: "[a-zA-Z0-9_-]{3,25}"
+submission_template: https://itaku.ee/images/{site_submission_identifier}

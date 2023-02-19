@@ -1,0 +1,8 @@
+type: SimpleDefinition
+enum_value: artfol
+display_name: Artfol
+homepage: https://artfol.me/
+gallery_templates:
+  - www.artfol.me/{site_artist_identifier}
+username_identifier_regex: "[a-zA-Z0-9_]{3,40}"
+submission_template: https://www.artfol.me/a/{site_submission_identifier}

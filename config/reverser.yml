@@ -37,6 +37,7 @@ piczel_disabled?: false
 tumblr_disabled?: false
 baraag_disabled?: false
 pawoo_disabled?: false
+itaku_disabled?: false
 
 # Credentials, overwrite in custom file
 inkbunny_user:

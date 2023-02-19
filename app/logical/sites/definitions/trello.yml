@@ -1,0 +1,8 @@
+type: SimpleDefinition
+enum_value: trello
+display_name: Trello
+homepage: https://trello.com
+gallery_templates:
+  - trello.com/b/{site_artist_identifier}
+username_identifier_regex: "[a-zA-Z0-9]{8}"
+submission_template: https://trello.com/c/{site_submission_identifier}
