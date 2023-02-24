@@ -85,7 +85,7 @@ module Scraper
         description[indices[0]..indices[1]] = entry["expanded_url"]
       end
       s.description = description
-      s.created_at = DateTime.strptime(tweet_data["legacy"]["created_at"], DATETIME_FORMAT)
+      s.created_at = DateTime.strptime(tweet["created_at"], DATETIME_FORMAT)
 
       tweet["extended_entities"]["media"].each.with_index do |media, index|
         url = extract_url_from_media(media)
@@ -117,10 +117,11 @@ module Scraper
 
     private
 
-    def extract_tweets_and_cursor_entry(response)
+    def extract_tweets_and_cursor_entry(response) # rubocop:disable Metrics/CyclomaticComplexity
       instructions = response.dig("data", "user", "result", "timeline_v2", "timeline", "instructions")
       timeline_add_entries = instructions.find { |instruction| instruction["type"] == "TimelineAddEntries" }["entries"].pluck("content")
-      tweets = entries_by_type(timeline_add_entries, "TimelineTimelineItem").filter_map { |content| content.dig("itemContent", "tweet_results", "result") }
+      item_content = entries_by_type(timeline_add_entries, "TimelineTimelineItem").filter_map { |content| content["itemContent"] }
+      tweets = item_content.reject { |content| content["promotedMetadata"] }.filter_map { |content| content.dig("tweet_results", "result") }
       # Tweets deleted by the author
       tweets = tweets.reject { |tweet| tweet["__typename"] == "TweetTombstone" }
       # Tweets without downloadable content, like embeded youtube videos

@@ -43,6 +43,7 @@ Metrics/BlockLength:
     - "concerning"
   Exclude:
     - "config/routes.rb"
+    - "test/factories/web/**/*"
 
 Metrics/ClassLength:
   Enabled: false
