@@ -35,19 +35,27 @@ module Scraper
         withV2Timeline: true,
       }
       features = {
-        unified_cards_follow_card_query_enabled: false,
-        dont_mention_me_view_api_enabled: true,
-        responsive_web_uc_gql_enabled: true,
+        responsive_web_twitter_blue_verified_badge_is_enabled: true,
+        responsive_web_graphql_exclude_directive_enabled: false,
+        verified_phone_label_enabled: false,
+        responsive_web_graphql_timeline_navigation_enabled: true,
+        responsive_web_graphql_skip_user_profile_image_extensions_enabled: false,
+        tweetypie_unmention_optimization_enabled: true,
         vibe_api_enabled: true,
         responsive_web_edit_tweet_api_enabled: true,
+        graphql_is_translatable_rweb_tweet_is_translatable_enabled: true,
+        view_counts_everywhere_api_enabled: true,
+        longform_notetweets_consumption_enabled: true,
+        tweet_awards_web_tipping_enabled: false,
+        freedom_of_speech_not_reach_fetch_enabled: false,
         standardized_nudges_misinfo: true,
         tweet_with_visibility_results_prefer_gql_limited_actions_policy_enabled: false,
         interactive_text_enabled: true,
         responsive_web_text_conversations_enabled: false,
-        responsive_web_enhance_cards_enabled: true,
+        responsive_web_enhance_cards_enabled: false,
       }
       variables[:cursor] = @cursor if @cursor.present?
-      response = make_request("FRd70TyCHbtYOLTsbUNr4g/UserMedia", variables, features)
+      response = make_request("GDQgpalPZYZohObq6Hsj-w/UserMedia", variables, features)
 
       if response.dig("data", "user", "result", "__typename") == "UserUnavailable"
         end_reached
@@ -91,11 +99,19 @@ module Scraper
     end
 
     def fetch_api_identifier
-      user_json = make_request("gr8Lk09afdgWo7NvzP89iQ/UserByScreenName", {
+      variables = {
         screen_name: url_identifier,
-        withSuperFollowsUserFields: true,
         withSafetyModeUserFields: true,
-      })
+        withSuperFollowsUserFields: true,
+      }
+      features = {
+        responsive_web_twitter_blue_verified_badge_is_enabled: true,
+        responsive_web_graphql_exclude_directive_enabled: false,
+        verified_phone_label_enabled: false,
+        responsive_web_graphql_skip_user_profile_image_extensions_enabled: false,
+        responsive_web_graphql_timeline_navigation_enabled: true,
+      }
+      user_json = make_request("rePnxwe9LZ51nQ7Sn_xN_A/UserByScreenName", variables, features)
       user_json.dig("data", "user", "result", "rest_id")
     end
 
