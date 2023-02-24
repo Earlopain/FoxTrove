@@ -63,19 +63,22 @@ module ActiveSupport
       sites.each { |site| site.unstub(:scraper_enabled?) }
     end
 
+    def stub_request_once(method, url_matcher, body:, content_type: nil)
+      stub_request(method, url_matcher)
+        .to_return(body: body, headers: { "Content-Type" => content_type })
+        .then.to_raise(ArgumentError.new("can only be stubbed once"))
+    end
+
     private
 
     def stub_e6_iqdb_request(response_post_ids)
       response = json(:e6_iqdb_response, post_ids: response_post_ids)
-      stub_request(:post, "https://e621.net/iqdb_queries.json")
-        .to_return(body: response, headers: { "Content-Type" => "application/json" })
-        .then.to_raise(ArgumentError.new("iqdb can only be stubbed once"))
+      stub_request_once(:post, "https://e621.net/iqdb_queries.json", body: response, content_type: "application/json")
     end
 
     def stub_e6_post_request(post_id, md5)
       response = json(:e6_post_response, post_id: post_id, md5: md5)
-      stub_request(:get, "https://e621.net/posts/#{post_id}.json")
-        .to_return(body: response, headers: { "Content-Type" => "application/json" })
+      stub_request_once(:get, "https://e621.net/posts/#{post_id}.json", body: response, content_type: "application/json")
     end
   end
 end
