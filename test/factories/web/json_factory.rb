@@ -8,7 +8,7 @@ end
 
 class JsonStrategy < FactoryBot::Strategy::Create
   def result(evaluation)
-    super.json.to_json
+    super.json
   end
 
   def to_sym

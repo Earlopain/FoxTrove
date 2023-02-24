@@ -65,7 +65,7 @@ module ActiveSupport
 
     def stub_request_once(method, url_matcher, body:, content_type: nil)
       stub_request(method, url_matcher)
-        .to_return(body: body, headers: { "Content-Type" => content_type })
+        .to_return(body: body.to_json, headers: { "Content-Type" => content_type })
         .then.to_raise(ArgumentError.new("can only be stubbed once"))
     end
 
