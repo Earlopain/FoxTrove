@@ -24,7 +24,7 @@ services:
       - selenium
     ports:
       - 9000:9000
-    tty: true
+    command: foreman start --color
 
   solargraph:
     image: reverser

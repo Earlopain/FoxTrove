@@ -48,5 +48,3 @@ COPY --from=ruby-builder /usr/local/lib/ruby/gems/3.2.0/doc /usr/local/lib/ruby/
 COPY --from=ruby-builder /root/.solargrap[h] /root/.solargraph
 
 RUN echo "IRB.conf[:USE_AUTOCOMPLETE] = false" > ~/.irbrc
-
-CMD foreman start
