@@ -33,3 +33,17 @@
     @include site_icon(1rem)
   }
 }
+
+.original { 
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: 1em;
+
+  .title {
+    margin-top: 0;
+  }
+
+  .description {
+    white-space: pre-line;
+  }
+}
