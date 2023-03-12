@@ -73,18 +73,7 @@ module Scraper
       tweet = tweet_data["legacy"]
       s.identifier = tweet["id_str"]
       s.title = ""
-
-      range = tweet["display_text_range"]
-      description = if range[0] == range[1]
-                      ""
-                    else
-                      tweet["full_text"][range[0]..range[1]]
-                    end
-      tweet["entities"]["urls"].each do |entry|
-        indices = entry["indices"]
-        description[indices[0]..indices[1]] = entry["expanded_url"]
-      end
-      s.description = description
+      s.description = expand_description(tweet)
       s.created_at = DateTime.strptime(tweet["created_at"], DATETIME_FORMAT)
 
       tweet["extended_entities"]["media"].each.with_index do |media, index|
@@ -151,6 +140,28 @@ module Scraper
       else
         raise ApiError, "Unknown media type #{media['type']}"
       end
+    end
+
+    def expand_description(tweet)
+      range = tweet["display_text_range"]
+      description = if range[0] == range[1]
+                      ""
+                    else
+                      tweet["full_text"][range[0]..range[1]]
+                    end
+
+      # Ensure replacements get processed right to left
+      tweet["entities"]["urls"].sort { |a, b| b["indices"][0] - a["indices"][0] }.each do |entry|
+        indices = entry["indices"]
+        new_link_start = indices[0] - range[0]
+        new_link_end = indices[1] - range[0]
+        description[new_link_start..new_link_end] = entry["expanded_url"]
+      end
+      # Remove link to the tweet itself
+      if (media = tweet["extended_entities"]["media"].first)
+        description = description.remove(media["url"])
+      end
+      description.strip
     end
 
     def make_request(url, variables = {}, features = {})
