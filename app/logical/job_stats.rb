@@ -30,8 +30,9 @@ class JobStats
 
   def stats_queued(queue_name, count_proc)
     result = Hash.new(0)
-    queue = GoodJob::JobsFilter.new(state: "queued", queue_name: queue_name).filtered_query
-    queue.each_slice(1000) do |batch|
+    query = GoodJob::JobsFilter.new(queue_name: queue_name).filtered_query
+    query = query.merge(GoodJob::Job.queued.or(GoodJob::Job.retried))
+    query.each_slice(1000) do |batch|
       ids = batch.map { |job| job.serialized_params["arguments"][0] }
       count_db = count_proc.call(ids)
       count_db.each do |artist_url_id, count|
