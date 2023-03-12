@@ -6,10 +6,12 @@ module Scraper
   class TwitterTest < ActiveSupport::TestCase
     USER_MEDIA = %r{GDQgpalPZYZohObq6Hsj-w/UserMedia}
 
-    def stubbed_scraper
-      scraper = Scraper::Twitter.new(create(:artist_url))
-      scraper.stubs(:tokens).returns(%w[auth_token csrf_token])
-      scraper
+    def scraper
+      @scraper ||= begin
+        scraper = Scraper::Twitter.new(create(:artist_url))
+        scraper.stubs(:tokens).returns(%w[auth_token csrf_token])
+        scraper
+      end
     end
 
     it "filters out promoted tweets" do
@@ -18,7 +20,6 @@ module Scraper
         json(:twitter_tweet, description: "promoted tweet", is_promoted: true),
       ]
       stub_request_once(:get, USER_MEDIA, body: json(:twitter_user_media, tweets: tweets))
-      scraper = stubbed_scraper
       scraped_tweets = scraper.fetch_next_batch
       assert_equal(1, scraped_tweets.count)
       submission = scraper.to_submission(scraped_tweets[0])
@@ -40,7 +41,6 @@ module Scraper
         url_entities: [url],
       )
       stub_request_once(:get, USER_MEDIA, body: json(:twitter_user_media, tweets: [tweet]))
-      scraper = stubbed_scraper
       scraped_tweets = scraper.fetch_next_batch
       submission = scraper.to_submission(scraped_tweets[0])
       assert_equal("J'ai de la place pour le mois prochain si tu veux ♥ \nhttps://www.furaffinity.net/commissions/vorpale/", submission.description)
@@ -56,7 +56,6 @@ module Scraper
         media: [media],
       )
       stub_request_once(:get, USER_MEDIA, body: json(:twitter_user_media, tweets: [tweet]))
-      scraper = stubbed_scraper
       scraped_tweets = scraper.fetch_next_batch
       submission = scraper.to_submission(scraped_tweets[0])
       assert_equal("", submission.description)
@@ -72,7 +71,6 @@ module Scraper
         media: [media],
       )
       stub_request_once(:get, USER_MEDIA, body: json(:twitter_user_media, tweets: [tweet]))
-      scraper = stubbed_scraper
       scraped_tweets = scraper.fetch_next_batch
       submission = scraper.to_submission(scraped_tweets[0])
       assert_equal("Commission for @LaxyVRC 🦊", submission.description)
