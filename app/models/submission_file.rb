@@ -109,6 +109,10 @@ class SubmissionFile < ApplicationRecord
     errors.add(:original_file, "not attached") unless original.attached?
   end
 
+  def sample_generated?
+    original.analyzed? && sample&.attached?
+  end
+
   def md5
     Base64.decode64(original.checksum).unpack1("H*")
   end

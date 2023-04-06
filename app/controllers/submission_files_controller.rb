@@ -12,7 +12,7 @@ class SubmissionFilesController < ApplicationController
     @submission_file = SubmissionFile.find(params[:id])
     @artist_submission = @submission_file.artist_submission
     @similar = []
-    @similar = IqdbProxy.query_submission_file(@submission_file) if @submission_file.can_iqdb?
+    @similar = IqdbProxy.query_submission_file(@submission_file) if @submission_file.can_iqdb? && @submission_file.sample_generated?
   end
 
   def modify_backlog
