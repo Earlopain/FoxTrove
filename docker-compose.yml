@@ -50,12 +50,12 @@ services:
       - 5432:5432
 
   iqdb:
-    image: ghcr.io/earlopain/iqdb:de8f10e2ddd862c37dc39348d6cb1c30112be146
+    image: ghcr.io/e621ng/iqdb:d4fed9d9a51184e72d2f14d4ec461d7830bd177a 
     volumes:
       - ${REVERSER_DATA_PATH}/iqdb_data:/iqdb
 
   selenium:
-    image: selenium/standalone-chrome:4.8.0-20230210
+    image: selenium/standalone-chrome:4.8.3-20230404
     environment:
       - VNC_NO_PASSWORD=1
     shm_size: 2gb

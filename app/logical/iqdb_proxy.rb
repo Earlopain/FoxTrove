@@ -13,7 +13,7 @@ module IqdbProxy
   def make_request(path, request_type, params = {})
     url = URI.parse(Config.iqdb_server)
     url.path = path
-    HTTParty.send request_type, url, { body: params }
+    HTTParty.send request_type, url, { body: params, headers: { "Content-Type" => "application/json" } }
   end
 
   # Puts the passed submission_file into the iqdb server
