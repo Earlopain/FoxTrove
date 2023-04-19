@@ -46,6 +46,11 @@ module Scraper
       end
     end
 
+    def self.delete_cache(method_name)
+      key = "#{name}.#{method_name}"
+      Rails.cache.delete(key)
+    end
+
     protected
 
     def end_reached
