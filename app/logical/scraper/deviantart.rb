@@ -12,9 +12,10 @@ module Scraper
     end
 
     def self.required_config_keys
-      %i[deviantart_client_id deviantart_client_secret]
+      %i[deviantart_client_id deviantart_client_secret deviantart_user deviantart_pass]
     end
 
+    # https://www.deviantart.com/developers/http/v1/20210526/gallery_all/bdb19761e6debcc6609356d6b78f4a5d
     def fetch_next_batch
       json = make_api_call("/gallery/all", {
         username: url_identifier,
@@ -44,10 +45,12 @@ module Scraper
       s
     end
 
+    # https://www.deviantart.com/developers/http/v1/20210526/deviation_download/bed6982b88949bdb08b52cd6763fcafd
     def get_download_link(data)
       make_api_call("/deviation/download/#{data[0]}")["src"]
     end
 
+    # https://www.deviantart.com/developers/http/v1/20210526/user_profile/0b06f6d6c8aa25b33b52f836e53f4f65
     def fetch_api_identifier
       json = make_api_call("/user/profile/#{url_identifier}")
       return nil if json["error_code"] == 2
@@ -69,11 +72,42 @@ module Scraper
       )
     end
 
+    # https://www.deviantart.com/developers/authentication
     def access_token
+      redirect_uri = "http://localhost"
+      code = SeleniumWrapper.driver do |driver|
+        autorize_params = {
+          response_type: "code",
+          client_id: Config.deviantart_client_id,
+          redirect_uri: redirect_uri,
+          scope: "browse",
+        }
+        driver.navigate.to "https://www.deviantart.com/oauth2/authorize?#{autorize_params.to_query}"
+
+        # Move from signup to login
+        driver.wait_for_element(xpath: "//*[text()='Log In']").click
+
+        driver.wait_for_element(id: "username").send_keys Config.deviantart_user
+        driver.find_element(id: "password").send_keys Config.deviantart_pass
+        driver.find_element(id: "loginbutton").click
+
+        begin
+          break driver.wait_for { Addressable::URI.parse(driver.current_url).query_values&.dig("code") }
+        rescue Selenium::WebDriver::Error::TimeoutError
+          # Not on the redirect page, authorize the application instead
+        end
+
+        # Authorize application
+        driver.wait_for_element(css: "button[type='submit']").click
+
+        driver.wait_for { Addressable::URI.parse(driver.current_url).query_values&.dig("code") }
+      end
       response = fetch_json("https://www.deviantart.com/oauth2/token", query: {
-        grant_type: "client_credentials",
         client_id: Config.deviantart_client_id,
         client_secret: Config.deviantart_client_secret,
+        grant_type: "authorization_code",
+        code: code,
+        redirect_uri: redirect_uri,
       })
       response["access_token"]
     end

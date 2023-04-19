@@ -42,8 +42,11 @@ itaku_disabled?: false
 # Credentials, overwrite in custom file
 inkbunny_user:
 inkbunny_pass:
+# The applications redirect uri must be `http://localhost`
 deviantart_client_id:
 deviantart_client_secret:
+deviantart_user:
+deviantart_pass:
 e6_user:
 e6_apikey:
 # Set timezone to 00:00 without daylight saving correction. Modern Theme required. Full Date Format.
