@@ -11,8 +11,8 @@ module Scraper
       @will_have_more = true
     end
 
-    def self.enabled?
-      Config.newgrounds_user.present? && Config.newgrounds_pass.present?
+    def self.required_config_keys
+      %i[newgrounds_user newgrounds_pass]
     end
 
     def fetch_next_batch

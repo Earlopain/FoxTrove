@@ -22,8 +22,8 @@ module Scraper
       @offset = 0
     end
 
-    def self.enabled?
-      Config.pixiv_user.present? && Config.pixiv_pass.present?
+    def self.required_config_keys
+      %i[pixiv_user pixiv_pass]
     end
 
     def fetch_next_batch

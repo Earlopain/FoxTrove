@@ -9,8 +9,8 @@ module Scraper
       @will_have_more = true
     end
 
-    def self.enabled?
-      Config.furaffinity_user.present? && Config.furaffinity_pass.present?
+    def self.required_config_keys
+      %i[furaffinity_user furaffinity_pass]
     end
 
     def fetch_next_batch

@@ -11,8 +11,8 @@ module Scraper
       @next_offset = nil
     end
 
-    def self.enabled?
-      Config.deviantart_client_id.present? && Config.deviantart_client_secret.present?
+    def self.required_config_keys
+      %i[deviantart_client_id deviantart_client_secret]
     end
 
     def fetch_next_batch

@@ -2,8 +2,8 @@
 
 module Scraper
   class Pawoo < MastodonV1
-    def self.enabled?
-      Config.pawoo_access_token.present?
+    def self.required_config_keys
+      %i[pawoo_access_token]
     end
 
     def domain

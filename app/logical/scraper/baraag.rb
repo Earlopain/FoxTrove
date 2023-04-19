@@ -2,8 +2,8 @@
 
 module Scraper
   class Baraag < MastodonV1
-    def self.enabled?
-      Config.baraag_access_token.present?
+    def self.required_config_keys
+      %i[baraag_access_token]
     end
 
     def domain

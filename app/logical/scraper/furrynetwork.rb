@@ -10,8 +10,8 @@ module Scraper
       @offset = 0
     end
 
-    def self.enabled?
-      Config.furrynetwork_user.present? && Config.furrynetwork_pass.present?
+    def self.required_config_keys
+      %i[furrynetwork_user furrynetwork_pass]
     end
 
     def fetch_next_batch

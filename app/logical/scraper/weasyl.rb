@@ -8,8 +8,8 @@ module Scraper
       @nextid = nil
     end
 
-    def self.enabled?
-      Config.weasyl_apikey.present?
+    def self.required_config_keys
+      %i[weasyl_apikey]
     end
 
     def fetch_next_batch

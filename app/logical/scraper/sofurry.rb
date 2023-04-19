@@ -15,8 +15,8 @@ module Scraper
       @previous_ids = []
     end
 
-    def self.enabled?
-      Config.sofurry_user.present? && Config.sofurry_pass.present?
+    def self.required_config_keys
+      %i[sofurry_user sofurry_pass]
     end
 
     def fetch_next_batch

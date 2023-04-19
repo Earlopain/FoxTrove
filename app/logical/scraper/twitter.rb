@@ -15,8 +15,8 @@ module Scraper
       @cursor = ""
     end
 
-    def self.enabled?
-      Config.twitter_user.present? && Config.twitter_pass.present?
+    def self.required_config_keys
+      %i[twitter_user twitter_pass]
     end
 
     def fetch_next_batch

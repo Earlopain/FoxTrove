@@ -7,8 +7,8 @@ module Scraper
       @page = 1
     end
 
-    def self.enabled?
-      Config.artconomy_user.present? && Config.artconomy_pass.present?
+    def self.required_config_keys
+      %i[artconomy_user artconomy_pass]
     end
 
     def fetch_next_batch

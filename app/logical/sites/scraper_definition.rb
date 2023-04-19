@@ -19,8 +19,17 @@ module Sites
       ).to_s
     end
 
+    def missing_config_keys
+      keys = @scraper.try(:required_config_keys) || []
+      keys.select { |key| Config.send(key).blank? }
+    end
+
+    def manually_disabled?
+      Config.send("#{enum_value}_disabled?")
+    end
+
     def scraper_enabled?
-      @scraper.enabled? && !Config.send("#{enum_value}_disabled?")
+      missing_config_keys.none? && !manually_disabled?
     end
 
     def new_scraper(artist_url)

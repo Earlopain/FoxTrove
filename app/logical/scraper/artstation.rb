@@ -7,10 +7,6 @@ module Scraper
       @page = 1
     end
 
-    def self.enabled?
-      true
-    end
-
     def fetch_next_batch
       ids = get_ids_from_page(@page)
       end_reached if ids.count == 0

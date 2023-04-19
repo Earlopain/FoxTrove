@@ -10,10 +10,8 @@ module Scraper
       @offset = 0
     end
 
-    def self.enabled?
-      Config.tumblr_consumer_key.present? && Config.tumblr_consumer_secret.present? &&
-        Config.tumblr_oauth_token.present? && Config.tumblr_oauth_secret.present? &&
-        Config.tumblr_reblog_blog_uuid.present?
+    def self.required_config_keys
+      %i[tumblr_consumer_key tumblr_consumer_secret tumblr_oauth_token tumblr_oauth_secret tumblr_reblog_blog_uuid]
     end
 
     def fetch_next_batch

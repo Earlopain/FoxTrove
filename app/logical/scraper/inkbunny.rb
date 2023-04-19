@@ -9,8 +9,8 @@ module Scraper
       @page = 1
     end
 
-    def self.enabled?
-      Config.inkbunny_user.present? && Config.inkbunny_pass.present?
+    def self.required_config_keys
+      %i[inkbunny_user inkbunny_pass]
     end
 
     def fetch_next_batch

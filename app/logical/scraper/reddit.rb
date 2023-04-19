@@ -8,8 +8,8 @@ module Scraper
       @after = nil
     end
 
-    def self.enabled?
-      Config.reddit_client_id.present? && Config.reddit_client_secret.present?
+    def self.required_config_keys
+      %i[reddit_client_id reddit_client_secret]
     end
 
     def fetch_next_batch
