@@ -10,6 +10,14 @@ module Sites
       submission.identifier_on_site
     end
 
+    def missing_config_keys
+      []
+    end
+
+    def manually_disabled?
+      false
+    end
+
     def scraper_enabled?
       false
     end
