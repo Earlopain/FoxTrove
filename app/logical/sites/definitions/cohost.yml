@@ -1,0 +1,8 @@
+type: SimpleDefinition
+enum_value: cohost
+display_name: cohost
+homepage: https://cohost.org/
+gallery_templates:
+  - cohost.org/{site_artist_identifier}
+username_identifier_regex: "[a-zA-Z0-9-]{3,200}"
+submission_template: https://cohost.org/{site_artist_identifier}/post/{site_submission_identifier}-abcd

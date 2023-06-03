@@ -1,0 +1,8 @@
+type: SimpleDefinition
+enum_value: inkblot
+display_name: InkBlot
+homepage: https://inkblot.art/
+gallery_templates:
+  - inkblot.art/profile/{site_artist_identifier}
+username_identifier_regex: "[^ !$%^&*()#@]{3,16}"
+submission_template: https://inkblot.art/post/{site_submission_identifier}
