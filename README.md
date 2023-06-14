@@ -20,6 +20,7 @@ You can also search for non-uploaded submission for artists. How well this works
 
 ## Currently supported sites
 * Artconomy
+* Art Fight
 * Artstation
 * Baraag
 * Deviantart
