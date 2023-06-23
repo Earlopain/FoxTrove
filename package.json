@@ -6,7 +6,7 @@
     "@rails/ujs": "7.0.5"
   },
   "scripts": {
-    "build:js": "esbuild app/typescript/*.* --bundle --sourcemap --outdir=./public/build",
+    "build:js": "esbuild app/typescript/*.* --target=es2022 --bundle --sourcemap --outdir=./public/build",
     "build:css": "sass ./app/stylesheet/application.scss ./public/build/application.css --load-path=node_modules --embed-sources",
     "tsc": "tsc --noEmit"
   },
