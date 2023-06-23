@@ -259,6 +259,8 @@ GEM
     rubocop-erb (0.2.4)
       better_html
       rubocop (~> 1.45)
+    rubocop-factory_bot (2.23.1)
+      rubocop (~> 1.33)
     rubocop-minitest (0.31.0)
       rubocop (>= 1.39, < 2.0)
     rubocop-performance (1.18.0)
@@ -342,6 +344,7 @@ DEPENDENCIES
   rouge
   rubocop
   rubocop-erb
+  rubocop-factory_bot
   rubocop-minitest
   rubocop-performance
   rubocop-rails

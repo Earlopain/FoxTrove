@@ -1,5 +1,6 @@
 require:
   - rubocop-erb
+  - rubocop-factory_bot
   - rubocop-minitest
   - rubocop-performance
   - rubocop-rails
