@@ -1,9 +1,9 @@
-FROM ruby:3.2.2-alpine3.17 as ruby-builder
+FROM ruby:3.2.2-alpine3.18 as ruby-builder
 
 RUN apk --no-cache add build-base postgresql15-dev
 
 COPY Gemfile Gemfile.lock ./
-RUN gem i bundler:2.4.12 foreman && bundle install \
+RUN gem i foreman && bundle install \
  && rm -rf /usr/local/bundle/cache/*.gem \
  && find /usr/local/bundle/gems/ -name "*.c" -delete \
  && find /usr/local/bundle/gems/ -name "*.o" -delete
@@ -13,13 +13,13 @@ RUN if [[ $COMPOSE_PROFILES == *"solargraph"* ]]; then \
   bundle exec yard gems; \
 fi
 
-FROM node:18-alpine3.17 as node-builder
+FROM node:18-alpine3.18 as node-builder
 
 WORKDIR /app
 COPY package.json pnpm-lock.yaml ./
 RUN corepack enable && corepack prepare --activate && pnpm install
 
-FROM ruby:3.2.2-alpine3.17
+FROM ruby:3.2.2-alpine3.18
 
 WORKDIR /app
 

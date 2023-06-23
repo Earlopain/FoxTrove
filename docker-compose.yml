@@ -38,7 +38,7 @@ services:
       - solargraph
 
   postgres:
-    image: postgres:15.2-alpine
+    image: postgres:15.3-alpine
     environment:
       - POSTGRES_USER=reverser
       - POSTGRES_DB=reverser_development
@@ -55,7 +55,7 @@ services:
       - ${REVERSER_DATA_PATH}/iqdb_data:/iqdb
 
   selenium:
-    image: selenium/standalone-chrome:4.8.3-20230404
+    image: selenium/standalone-chrome:4.10.0-20230614
     environment:
       - VNC_NO_PASSWORD=1
     shm_size: 2gb
