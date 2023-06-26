@@ -1,4 +1,4 @@
-type: SimpleDefinition
+type: ScraperDefinition
 enum_value: artfight
 display_name: Art Fight
 homepage: https://artfight.net

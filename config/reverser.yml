@@ -38,6 +38,7 @@ tumblr_disabled?: false
 baraag_disabled?: false
 pawoo_disabled?: false
 itaku_disabled?: false
+artfight_disabled?: false
 
 # Credentials, overwrite in custom file
 inkbunny_user:
@@ -76,3 +77,6 @@ baraag_access_token:
 pawoo_access_token:
 artconomy_user:
 artconomy_pass:
+artfight_user:
+artfight_pass:
+
