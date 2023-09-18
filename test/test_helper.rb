@@ -72,12 +72,12 @@ module ActiveSupport
     private
 
     def stub_e6_iqdb_request(response_post_ids)
-      response = json(:e6_iqdb_response, post_ids: response_post_ids)
+      response = build(:e6_iqdb_response, post_ids: response_post_ids)
       stub_request_once(:post, "https://e621.net/iqdb_queries.json", body: response, content_type: "application/json")
     end
 
     def stub_e6_post_request(post_id, md5)
-      response = json(:e6_post_response, post_id: post_id, md5: md5)
+      response = build(:e6_post_response, post_id: post_id, md5: md5)
       stub_request_once(:get, "https://e621.net/posts/#{post_id}.json", body: response, content_type: "application/json")
     end
   end
