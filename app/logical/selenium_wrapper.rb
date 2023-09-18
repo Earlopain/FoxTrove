@@ -41,8 +41,8 @@ module Selenium
           wait_for(timeout: timeout) { cookie_value(cookie_name) }
         end
 
-        def wait_for_element(timeout: 10, **selector_params)
-          wait_for(timeout: timeout) { find_element(**selector_params) }
+        def wait_for_element(timeout: 10, **)
+          wait_for(timeout: timeout) { find_element(**) }
         end
       end
     end

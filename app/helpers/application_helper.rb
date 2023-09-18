@@ -16,12 +16,12 @@ module ApplicationHelper
     tag.span value.to_fs(:long), datetime: value.to_fs(:iso8601), class: "time-ago"
   end
 
-  def link_to_external(text, url, **options)
-    link_to text, url, **options, rel: "nofollow noopener noreferrer"
+  def link_to_external(text, url, **)
+    link_to text, url, **, rel: "nofollow noopener noreferrer"
   end
 
-  def fake_link(text, **params)
-    tag.a(text, href: "#", **params, onclick: "return false;")
+  def fake_link(text, **)
+    tag.a(text, href: "#", **, onclick: "return false;")
   end
 
   def page_title(title = nil)

@@ -49,7 +49,7 @@ module Scraper
     def fetch_api_identifier
       response = make_request("/accounts/search", q: "#{url_identifier}@#{domain}")
       account = response[0]
-      return account["id"] if account&.dig("acct")&.casecmp? url_identifier
+      account["id"] if account&.dig("acct")&.casecmp? url_identifier
     end
 
     private
