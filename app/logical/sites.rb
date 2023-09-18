@@ -30,8 +30,10 @@ module Sites
   def download_file(outfile, url)
     fixed_uri = fix_url(url)
     headers = download_headers_for_image_uri(fixed_uri)
-    response = HTTParty.get(fixed_uri, { headers: headers }) do |chunk|
-      outfile.write(chunk)
+    response = HTTParty.get(fixed_uri, headers: headers) do |fragment|
+      next if [301, 302].include?(fragment.code)
+
+      outfile.write(fragment)
     end
     outfile.rewind
     response

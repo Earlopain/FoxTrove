@@ -73,4 +73,19 @@ class SitesTest < ActiveSupport::TestCase
       )
     end
   end
+
+  describe "download_file" do
+    it "properly handles redirects" do
+      redirect_url = "https://example.com/redirected"
+      initial_request = stub_request_once(:get, "https://example.com", body: "Your are being redirected", status: 302, headers: { Location: redirect_url })
+      redirect_request = stub_request_once(:get, redirect_url, body: "Actual content")
+
+      file = Tempfile.new(binmode: true)
+      Sites.download_file(file, "https://example.com")
+
+      assert_requested(initial_request)
+      assert_requested(redirect_request)
+      assert_equal("Actual content", file.read)
+    end
+  end
 end
