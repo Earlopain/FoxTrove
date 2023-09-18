@@ -19,7 +19,7 @@ module Scraper
         build(:twitter_tweet, description: "user tweet"),
         build(:twitter_tweet, description: "promoted tweet", is_promoted: true),
       ]
-      stub_request_once(:get, USER_MEDIA, body: build(:twitter_user_media, tweets: tweets))
+      stub_request_once(:get, USER_MEDIA, body: build(:twitter_user_media, tweets: tweets).to_json)
       scraped_tweets = scraper.fetch_next_batch
       assert_equal(1, scraped_tweets.count)
       submission = scraper.to_submission(scraped_tweets[0])
@@ -40,7 +40,7 @@ module Scraper
         description_end: 90,
         url_entities: [url],
       )
-      stub_request_once(:get, USER_MEDIA, body: build(:twitter_user_media, tweets: [tweet]))
+      stub_request_once(:get, USER_MEDIA, body: build(:twitter_user_media, tweets: [tweet]).to_json)
       scraped_tweets = scraper.fetch_next_batch
       submission = scraper.to_submission(scraped_tweets[0])
       assert_equal("J'ai de la place pour le mois prochain si tu veux ♥ \nhttps://www.furaffinity.net/commissions/vorpale/", submission.description)
@@ -55,7 +55,7 @@ module Scraper
         description_end: 23,
         media: [media],
       )
-      stub_request_once(:get, USER_MEDIA, body: build(:twitter_user_media, tweets: [tweet]))
+      stub_request_once(:get, USER_MEDIA, body: build(:twitter_user_media, tweets: [tweet]).to_json)
       scraped_tweets = scraper.fetch_next_batch
       submission = scraper.to_submission(scraped_tweets[0])
       assert_equal("", submission.description)
@@ -70,7 +70,7 @@ module Scraper
         description_end: 25,
         media: [media],
       )
-      stub_request_once(:get, USER_MEDIA, body: build(:twitter_user_media, tweets: [tweet]))
+      stub_request_once(:get, USER_MEDIA, body: build(:twitter_user_media, tweets: [tweet]).to_json)
       scraped_tweets = scraper.fetch_next_batch
       submission = scraper.to_submission(scraped_tweets[0])
       assert_equal("Commission for @LaxyVRC 🦊", submission.description)

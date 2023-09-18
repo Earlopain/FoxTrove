@@ -63,22 +63,21 @@ module ActiveSupport
       sites.each { |site| site.unstub(:scraper_enabled?) }
     end
 
-    def stub_request_once(method, url_matcher, body:, content_type: nil)
-      stub_request(method, url_matcher)
-        .to_return(body: body.to_json, headers: { "Content-Type" => content_type })
+    def stub_request_once(method, url_matcher, **)
+      stub_request(method, url_matcher).to_return(**)
         .then.to_raise(ArgumentError.new("can only be stubbed once"))
     end
 
     private
 
     def stub_e6_iqdb_request(response_post_ids)
-      response = build(:e6_iqdb_response, post_ids: response_post_ids)
-      stub_request_once(:post, "https://e621.net/iqdb_queries.json", body: response, content_type: "application/json")
+      response = build(:e6_iqdb_response, post_ids: response_post_ids).to_json
+      stub_request_once(:post, "https://e621.net/iqdb_queries.json", body: response, headers: { content_type: "application/jsons" })
     end
 
     def stub_e6_post_request(post_id, md5)
-      response = build(:e6_post_response, post_id: post_id, md5: md5)
-      stub_request_once(:get, "https://e621.net/posts/#{post_id}.json", body: response, content_type: "application/json")
+      response = build(:e6_post_response, post_id: post_id, md5: md5).to_json
+      stub_request_once(:get, "https://e621.net/posts/#{post_id}.json", body: response, headers: { content_type: "application/json" })
     end
   end
 end
