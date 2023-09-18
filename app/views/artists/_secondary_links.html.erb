@@ -6,8 +6,9 @@
 <% if @artist&.id %>
   |
   <%= subnav_link_to "Enqueue All", enqueue_all_urls_artist_path(@artist), method: :post %>
-  <% raise ArgumentError, "@search_params must be set" unless instance_variable_defined?(:@search_params) %>
-  <%= subnav_link_to "Update IQDB for matching", update_matching_e6_posts_submission_files_path(search: @search_params), method: :post, data: { confirm: "Are you sure?" } %>
+  <% if instance_variable_defined?(:@search_params)%>
+    <%= subnav_link_to "Update IQDB for matching", update_matching_e6_posts_submission_files_path(search: @search_params), method: :post, data: { confirm: "Are you sure?" } %>
+  <% end %>
   <%= subnav_link_to "Scraper Logs", log_events_path(search: { loggable_type: "ArtistUrl", loggable_id: @artist.artist_urls.map(&:id).join(",") }) %>
   <%= subnav_link_to "Edit", edit_artist_path(@artist) %>
   <%= subnav_link_to "Delete", artist_path(@artist), method: :delete, data: { confirm: "Are you sure?" } %>
