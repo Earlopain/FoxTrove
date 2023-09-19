@@ -45,6 +45,7 @@ Metrics/BlockLength:
   AllowedMethods:
     - "class_methods"
     - "concerning"
+    - "describe"
   Exclude:
     - "config/routes.rb"
     - "test/factories/web/**/*"
