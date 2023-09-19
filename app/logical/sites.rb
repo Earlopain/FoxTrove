@@ -18,6 +18,7 @@ module Sites
       match = definition.match_for_gallery(uri)
       return match.merge(site: definition) if match
     end
+    nil
   end
 
   def download_headers_for_image_uri(uri)

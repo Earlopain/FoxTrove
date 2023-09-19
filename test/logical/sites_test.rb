@@ -72,6 +72,11 @@ class SitesTest < ActiveSupport::TestCase
         valid: false,
       )
     end
+
+    it "returns nil when no definitions match" do
+      result = Sites.from_gallery_url("https://example.com")
+      assert_nil(result)
+    end
   end
 
   describe "download_file" do
