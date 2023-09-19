@@ -41,7 +41,7 @@ module Scraper
       )
 
       files.each do |file|
-        CreateSubmissionFileJob.perform_later artist_submission.id, file
+        CreateSubmissionFileJob.perform_later(artist_submission, file)
       end
     end
 

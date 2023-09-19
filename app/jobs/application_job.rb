@@ -5,6 +5,7 @@ class ApplicationJob < ActiveJob::Base
   retry_on StandardError, wait: :exponentially_longer, attempts: 25 do |_job, exception|
     log_exception(exception)
   end
+  discard_on ActiveJob::DeserializationError
 
   around_perform do |_job, block|
     logger.log_at(:debug) do

@@ -3,15 +3,12 @@
 class SubmissionFileUpdateJob < ApplicationJob
   queue_as :variant_generation
 
-  def perform(submission_file_id)
-    submission_file = SubmissionFile.find_by id: submission_file_id
-    return unless submission_file
-
+  def perform(submission_file)
     submission_file.generate_variants
     submission_file.save
     return unless submission_file.can_iqdb?
 
     IqdbProxy.update_submission submission_file
-    E6IqdbQueryJob.set(priority: E6IqdbQueryJob::PRIORITIES[:automatic_action]).perform_later submission_file.id
+    E6IqdbQueryJob.set(priority: E6IqdbQueryJob::PRIORITIES[:automatic_action]).perform_later(submission_file)
   end
 end

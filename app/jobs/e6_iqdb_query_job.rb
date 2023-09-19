@@ -2,7 +2,7 @@
 
 class E6IqdbQueryJob < ApplicationJob
   queue_as :e6_iqdb
-  good_job_control_concurrency_with(total_limit: 1, key: -> { arguments.first })
+  good_job_control_concurrency_with(total_limit: 1, key: -> { arguments.first.id })
 
   PRIORITIES = {
     immediate: 100,
@@ -10,10 +10,7 @@ class E6IqdbQueryJob < ApplicationJob
     automatic_action: 0,
   }.freeze
 
-  def perform(submission_file_id)
-    submission_file = SubmissionFile.find_by id: submission_file_id
-    return unless submission_file
-
+  def perform(submission_file)
     submission_file.update_e6_posts!
   end
 end

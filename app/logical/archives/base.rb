@@ -27,7 +27,7 @@ module Archives
         bin_file.rewind
 
         blob = ActiveStorage::Blob.create_and_upload!(io: bin_file, filename: File.basename(entry.name))
-        ArchiveBlobImportJob.perform_later(blob.id, artist_submission.id, entry.name)
+        ArchiveBlobImportJob.perform_later(blob, artist_submission, entry.name)
 
         @imported_files[artist_submission.artist_url.id] ||= 0
         @imported_files[artist_submission.artist_url.id] += 1

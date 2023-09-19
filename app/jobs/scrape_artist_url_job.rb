@@ -2,11 +2,10 @@
 
 class ScrapeArtistUrlJob < ApplicationJob
   queue_as :scraping
-  good_job_control_concurrency_with(total_limit: 1, key: -> { arguments.first })
+  good_job_control_concurrency_with(total_limit: 1, key: -> { arguments.first.id })
 
-  def perform(artist_url_id)
-    artist_url = ArtistUrl.find_by id: artist_url_id
-    return unless artist_url&.scraper_enabled?
+  def perform(artist_url)
+    return unless artist_url.scraper_enabled?
 
     scraper = artist_url.scraper
     while scraper.more?

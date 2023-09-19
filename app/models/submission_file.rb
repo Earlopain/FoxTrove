@@ -55,9 +55,9 @@ class SubmissionFile < ApplicationRecord
     "select from e6_posts where submission_files.id = e6_posts.submission_file_id #{"and #{condition}" if condition}"
   end
 
-  def self.from_attachable(attachable:, artist_submission_id:, url:, created_at:, file_identifier:)
+  def self.from_attachable(attachable:, artist_submission:, url:, created_at:, file_identifier:)
     submission_file = SubmissionFile.new(
-      artist_submission_id: artist_submission_id,
+      artist_submission: artist_submission,
       direct_url: url,
       created_at_on_site: created_at,
       file_identifier: file_identifier,
@@ -124,7 +124,7 @@ class SubmissionFile < ApplicationRecord
   def update_variants_and_iqdb
     return if attachment_changes["original"].blank?
 
-    SubmissionFileUpdateJob.perform_later id
+    SubmissionFileUpdateJob.perform_later(self)
   end
 
   def update_e6_posts(priority: E6IqdbQueryJob::PRIORITIES[:manual_action])
@@ -132,12 +132,12 @@ class SubmissionFile < ApplicationRecord
     similar = IqdbProxy.query_submission_file(self).pluck(:submission_file)
     similar.each { |s| s.e6_posts.destroy_all }
 
-    E6IqdbQueryJob.set(priority: priority).perform_later id
+    E6IqdbQueryJob.set(priority: priority).perform_later(self)
     similar.each do |s|
       # Process matches from other artists after everything else.
       # Chances are that they're just wrong iqdb matches.
       priority_for_similar = s.artist_submission.artist == artist_submission.artist ? priority : priority - 50
-      E6IqdbQueryJob.set(priority: priority_for_similar).perform_later s.id
+      E6IqdbQueryJob.set(priority: priority_for_similar).perform_later(s)
     end
   end
 
