@@ -39,6 +39,7 @@ baraag_disabled?: false
 pawoo_disabled?: false
 itaku_disabled?: false
 artfight_disabled?: false
+commishes_disabled?: false
 
 # Credentials, overwrite in custom file
 inkbunny_user:
@@ -79,4 +80,5 @@ artconomy_user:
 artconomy_pass:
 artfight_user:
 artfight_pass:
-
+commishes_user:
+commishes_pass:

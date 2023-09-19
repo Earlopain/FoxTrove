@@ -1,8 +1,10 @@
-type: SimpleDefinition
+type: ScraperDefinition
 enum_value: commishes
 display_name: Commishes
 homepage: https://commishes.com
 gallery_templates:
   - portfolio.commishes.com/user/{site_artist_identifier}
   - ych.commishes.com/user/{site_artist_identifier}
+  - ping.commishes.com/@{site_artist_identifier}
 username_identifier_regex: "[a-zA-Z0-9_-]{3,20}"
+submission_template: https://portfolio.commishes.com/upload/show/{site_submission_identifier}/
