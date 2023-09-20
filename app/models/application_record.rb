@@ -114,4 +114,20 @@ class ApplicationRecord < ActiveRecord::Base
       end
     end
   end
+
+  concerning :Decoration do
+    def decorate
+      self.class.decorator_class.new(self)
+    end
+
+    class_methods do
+      def decorator_class
+        "#{model_name}Decorator".constantize
+      end
+
+      def decorate
+        PaginatedDecorator.new(all)
+      end
+    end
+  end
 end

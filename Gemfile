@@ -3,7 +3,6 @@
 source "https://rubygems.org"
 
 gem "addressable"
-gem "draper"
 gem "good_job"
 gem "httparty"
 gem "kaminari"
