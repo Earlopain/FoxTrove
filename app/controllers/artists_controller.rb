@@ -4,13 +4,13 @@ class ArtistsController < ApplicationController
   respond_to :html
 
   def index
-    @artists = Artist.includes(:artist_urls).search(index_search_params).page params[:page]
+    @pagy, @artists = Artist.includes(:artist_urls).search(index_search_params).pagy(params)
   end
 
   def show
     @artist = Artist.includes(:artist_urls).find(params[:id])
     @search_params = instance_search_params.merge(artist_id: @artist.id)
-    @submission_files = SubmissionFile.search(@search_params).with_everything.page params[:page]
+    @pagy, @submission_files = SubmissionFile.search(@search_params).with_everything.pagy(params)
     respond_with(@artist)
   end
 

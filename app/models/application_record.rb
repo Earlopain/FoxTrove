@@ -115,7 +115,7 @@ class ApplicationRecord < ActiveRecord::Base
     end
   end
 
-  concerning :Decoration do
+  concerning :ControllerMethods do
     def decorate
       self.class.decorator_class.new(self)
     end
@@ -125,8 +125,16 @@ class ApplicationRecord < ActiveRecord::Base
         "#{model_name}Decorator".constantize
       end
 
-      def decorate
-        PaginatedDecorator.new(all)
+      def pagy(params)
+        page = [params[:page].to_i, 1].max
+        limit = params[:limit].to_i <= 0 ? nil : params[:limit]
+        pagy = Pagy.new(page: page, items: limit, count: count)
+        [pagy, offset(pagy.offset).limit(pagy.items)]
+      end
+
+      def pagy_and_decorate(params)
+        pagy, elements = pagy(params)
+        [pagy, elements.map(&:decorate)]
       end
     end
   end

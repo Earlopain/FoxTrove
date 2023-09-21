@@ -7,6 +7,5 @@
 <% @submission_files.each do |file| %>
   <%= render "submission_files/sample", submission_file: file %>
 <% end %>
-<%= paginated @submission_files %>
 
 <% page_title "Submission Files" %>

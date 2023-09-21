@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 module ApplicationHelper
+  include Pagy::Frontend
+
   def error_messages_for(value)
     value.errors.full_messagess.join(",")
   end
@@ -50,10 +52,6 @@ module ApplicationHelper
       end
     end
     tag.div(search)
-  end
-
-  def paginated(values)
-    content_for(:paginator) { paginate values }
   end
 
   def job_stats

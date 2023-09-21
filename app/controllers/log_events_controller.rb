@@ -2,7 +2,7 @@
 
 class LogEventsController < ApplicationController
   def index
-    @log_events = LogEvent.search(search_params).page(params[:page]).decorate
+    @pagy, @log_events = LogEvent.search(search_params).pagy_and_decorate(params)
   end
 
   def show

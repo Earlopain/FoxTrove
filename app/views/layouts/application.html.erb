@@ -20,7 +20,7 @@
         <% end %>
           <%= yield %>
       </div>
-      <%= content_for(:paginator) if content_for? :paginator %>
+      <%= pagy_nav(@pagy).html_safe if instance_variable_defined?(:@pagy) && @pagy.pages > 1 %>
     </div>
     <div class="footer-padding"></div>
     <%= render "application/footer" %>
