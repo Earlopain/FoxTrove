@@ -9,7 +9,7 @@ class ApplicationDecorator
     super
     model_class = decorator_class.name.delete_suffix("Decorator").constantize
     decorator_class.class_eval do
-      delegate *model_class.column_names, *model_class.instance_methods(false), to: :@object # rubocop:disable Lint/AmbiguousOperator
+      delegate(*model_class.column_names, *model_class.instance_methods(false), to: :@object)
     end
   end
 
