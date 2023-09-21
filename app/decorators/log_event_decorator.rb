@@ -25,7 +25,7 @@ class LogEventDecorator < ApplicationDecorator
       remaining_json = JSON.pretty_generate(remaining_params)
       h.safe_join([
         h.tag.pre(remaining_json),
-        h.tag.pre(pretty_response.html_safe), # rubocop:disable Rails/OutputSafety
+        h.tag.pre(pretty_response.html_safe),
       ])
     else
       "Unknown action #{action}"
