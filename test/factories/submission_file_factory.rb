@@ -11,7 +11,14 @@ FactoryBot.define do
     width { 1_000 }
     height { 1_000 }
     size { 100.kilobytes }
-    skip_original_validation { true }
+
+    transient do
+      skip_original_validation { true }
+    end
+
+    before(:create) do |submission_file, evaluator|
+      submission_file.stubs(:original_present) if evaluator.skip_original_validation
+    end
 
     factory :submission_file_with_original do
       skip_original_validation { false }

@@ -46,6 +46,8 @@ Metrics/BlockLength:
     - "class_methods"
     - "concerning"
     - "describe"
+    - "define"
+    - "FactoryBot.define"
   Exclude:
     - "config/routes.rb"
     - "test/factories/web/**/*"
