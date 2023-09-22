@@ -13,10 +13,6 @@ module E6ApiClient
     make_request(:get, "/posts/#{id}.json")["post"]
   end
 
-  def get_posts(ids)
-    make_request(:get, "/posts.json?limit=300&tags=status:any id:#{ids.join(',')}")["posts"]
-  end
-
   def make_request(method, path, **params)
     params[:headers] ||= {}
     params[:headers].merge!(headers)
