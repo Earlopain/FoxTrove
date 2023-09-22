@@ -38,7 +38,11 @@ class ArtistUrl < ApplicationRecord
 
   def self.search(params)
     q = join_attribute_nil_check(params[:in_backlog], submissions: { submission_files: :added_to_backlog_at })
-    q.join_attribute_nil_check(params[:hidden_from_search], submissions: { submission_files: :hidden_from_search_at })
+    q = q.join_attribute_nil_check(params[:hidden_from_search], submissions: { submission_files: :hidden_from_search_at })
+    q = q.attribute_matches(params[:site_type], :site_type)
+    q = q.attribute_matches(params[:url_identifier], :url_identifier)
+    q = q.attribute_matches(params[:api_identifier], :api_identifier)
+    q.order(id: :desc)
   end
 
   def set_api_identifier!

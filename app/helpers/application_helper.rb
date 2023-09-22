@@ -15,6 +15,8 @@ module ApplicationHelper
   end
 
   def time_ago(value)
+    return "" if value.nil?
+
     tag.span value.to_fs(:long), datetime: value.to_fs(:iso8601), class: "time-ago"
   end
 

@@ -1,0 +1,34 @@
+<%= hideable_search(artist_urls_path) do |f| %>
+  <%= f.input :site_type, label: "Site", collection: site_types_collection, include_blank: true %>
+  <%= f.input :url_identifier %>
+  <%= f.input :api_identifier %>
+<% end %>
+
+<table class="table full-width">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Type</th>
+      <th>URL Identifier</th>
+      <th>API Identifier</th>
+      <th>Status</th>
+      <th>Last Scraped</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @artist_urls.each do |artist_url| %>
+      <tr>
+        <td><%= link_to artist_url.id, artist_path(artist_url.artist, search: { artist_url_id: [artist_url.id] }) %></td>
+        <td><%= artist_url.site_type.humanize %></td>
+        <td><%= artist_url.url_identifier %></td>
+        <td><%= artist_url.api_identifier %></td>
+        <td><%= scraper_status(artist_url) %> </td>
+        <td><%= time_ago artist_url.last_scraped_at %></td>
+        <td><%= link_to "Delete", artist_url_path(artist_url), method: :delete, data: { confirm: "Are you sure?" } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<% page_title "Artist URLs" %>
