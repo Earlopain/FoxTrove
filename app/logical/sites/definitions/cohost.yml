@@ -1,6 +1,6 @@
 type: SimpleDefinition
 enum_value: cohost
-display_name: cohost
+display_name: Cohost
 homepage: https://cohost.org/
 gallery_templates:
   - cohost.org/{site_artist_identifier}
