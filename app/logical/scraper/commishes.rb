@@ -11,6 +11,10 @@ module Scraper
       %i[commishes_user commishes_pass]
     end
 
+    def self.state
+      :until
+    end
+
     def fetch_next_batch
       ids = get_ids_from_page("https://portfolio.commishes.com/user/#{api_identifier}.json?until=#{@until}")
       end_reached if @until.nil?

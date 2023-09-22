@@ -14,6 +14,10 @@ module Scraper
       %i[tumblr_consumer_key tumblr_consumer_secret tumblr_oauth_token tumblr_oauth_secret tumblr_reblog_blog_uuid]
     end
 
+    def self.state
+      :offset
+    end
+
     def fetch_next_batch
       response = get("https://api.tumblr.com/v2/blog/#{api_identifier}/posts/photo", {
         limit: 20,

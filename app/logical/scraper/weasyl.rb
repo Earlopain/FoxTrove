@@ -12,6 +12,10 @@ module Scraper
       %i[weasyl_apikey]
     end
 
+    def self.state
+      :nextid
+    end
+
     def fetch_next_batch
       url = "https://www.weasyl.com/api/users/#{url_identifier}/gallery"
       response = fetch_json(url,

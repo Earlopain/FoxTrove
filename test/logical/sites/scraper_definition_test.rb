@@ -34,4 +34,12 @@ class ScraperDefinitionTest < ActiveSupport::TestCase
       assert_not(definition.scraper_enabled?)
     end
   end
+
+  Sites.definitions.select { |s| s.is_a?(Sites::ScraperDefinition) }.each do |definition|
+    test "#{definition.enum_value} has correct state" do
+      scraper = stub_scraper_enabled(definition.enum_value) { definition.new_scraper(build(:artist_url)) }
+      assert_respond_to(scraper.class, :state)
+      assert(scraper.instance_variable_defined?(:"@#{scraper.class.state}"))
+    end
+  end
 end

@@ -14,6 +14,10 @@ module Scraper
       %i[furrynetwork_user furrynetwork_pass]
     end
 
+    def self.state
+      :offset
+    end
+
     def fetch_next_batch
       json = make_request("/search", {
         size: PER_REQUEST,

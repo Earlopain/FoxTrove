@@ -8,6 +8,10 @@ module Scraper
       @after = nil
     end
 
+    def self.state
+      :after
+    end
+
     def self.required_config_keys
       %i[reddit_client_id reddit_client_secret]
     end

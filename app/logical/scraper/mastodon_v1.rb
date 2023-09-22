@@ -10,6 +10,15 @@ module Scraper
       @max_id = nil
     end
 
+    def self.inherited(base)
+      super
+      base.class_eval do
+        def self.state
+          :max_id
+        end
+      end
+    end
+
     def domain
       raise NotImplementedError
     end

@@ -21,6 +21,16 @@ module Scraper
       raise NotImplementedError
     end
 
+    # Value that describes the progress during scraping. Can be a page/offset/cursor etc.
+    def state_value
+      instance_variable_get(:"@#{self.class.state}")
+    end
+
+    # Insert the value where the scraper should continue from in case of an error
+    def jumpstart(value)
+      instance_variable_set(:"@#{self.class.state}", value)
+    end
+
     def fetch_and_save_next_submissions
       fetch_next_batch.map do |api_submission|
         submission = to_submission(api_submission)

@@ -19,6 +19,10 @@ module Scraper
       %i[twitter_user twitter_pass]
     end
 
+    def self.state
+      :cursor
+    end
+
     def fetch_next_batch
       variables = {
         userId: api_identifier,

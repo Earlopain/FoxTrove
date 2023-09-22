@@ -15,6 +15,10 @@ module Scraper
       %i[newgrounds_user newgrounds_pass]
     end
 
+    def self.state
+      :page
+    end
+
     def fetch_next_batch
       # Newgrounds has no api, searching basically only returns the url, nothing more.
       # Loading all html pages just to see if something new is bad, so it's buffered here, so that

@@ -7,6 +7,10 @@ module Scraper
       @from_id = 999_999_999
     end
 
+    def self.state
+      :from_id
+    end
+
     def fetch_next_batch
       response = fetch_json("https://piczel.tv/api/users/#{url_identifier}/gallery?from_id=#{@from_id}")
       @from_id = response.pluck("id").min

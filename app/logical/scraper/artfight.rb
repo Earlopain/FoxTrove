@@ -9,6 +9,10 @@ module Scraper
       @will_have_more = true
     end
 
+    def self.state
+      :page
+    end
+
     def self.required_config_keys
       %i[artfight_user artfight_pass]
     end

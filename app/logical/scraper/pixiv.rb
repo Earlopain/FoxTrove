@@ -26,6 +26,10 @@ module Scraper
       %i[pixiv_user pixiv_pass]
     end
 
+    def self.state
+      :offset
+    end
+
     def fetch_next_batch
       json = make_request("user/illusts", {
         user_id: api_identifier,

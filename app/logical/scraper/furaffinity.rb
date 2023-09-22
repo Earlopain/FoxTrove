@@ -13,6 +13,10 @@ module Scraper
       %i[furaffinity_user furaffinity_pass]
     end
 
+    def self.state
+      :page
+    end
+
     def fetch_next_batch
       if @submission_cache.empty?
         @submission_cache = get_submission_ids(@page)

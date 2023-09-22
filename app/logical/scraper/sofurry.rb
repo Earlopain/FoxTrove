@@ -15,6 +15,10 @@ module Scraper
       @previous_ids = []
     end
 
+    def self.state
+      :page
+    end
+
     def self.required_config_keys
       %i[sofurry_user sofurry_pass]
     end

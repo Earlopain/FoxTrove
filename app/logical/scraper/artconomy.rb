@@ -11,6 +11,10 @@ module Scraper
       %i[artconomy_user artconomy_pass]
     end
 
+    def self.state
+      :page
+    end
+
     def fetch_next_batch
       response = fetch_json("https://artconomy.com/api/profiles/v1/account/#{url_identifier}/submissions/art/?page=#{@page}", headers: headers)
       @page += 1

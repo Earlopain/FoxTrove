@@ -15,6 +15,10 @@ module Scraper
       %i[deviantart_client_id deviantart_client_secret deviantart_user deviantart_pass]
     end
 
+    def self.state
+      :next_offset
+    end
+
     # https://www.deviantart.com/developers/http/v1/20210526/gallery_all/bdb19761e6debcc6609356d6b78f4a5d
     def fetch_next_batch
       json = make_api_call("/gallery/all", {

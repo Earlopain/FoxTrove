@@ -13,6 +13,10 @@ module Scraper
       %i[inkbunny_user inkbunny_pass]
     end
 
+    def self.state
+      :page
+    end
+
     def fetch_next_batch
       json = if @rid
                search_mode2
