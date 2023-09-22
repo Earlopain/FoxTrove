@@ -3,10 +3,10 @@
   <%= link_to artist_url.url_identifier, artist_path(artist_url.artist, search: { artist_url_id: [artist_url.id] }), class: "site-icon-text" %>
   <%= link_to "[U]", enqueue_artist_url_path(artist_url), method: :post, title: "Last scraped: #{last_scraped_at_text(artist_url)}" if artist_url.scraper_enabled? %>
   <% if artist_url.id.in? job_stats.scraping_now %>
-    [Scraping now!]
+    [Scraping now!] <%= scraper_status(artist_url, prefix: "Status") %>
   <% end %>
   <% if job_stats.scraping_queued[artist_url.id] %>
-    [Scraping queued]
+    [Scraping queued] <%= scraper_status(artist_url, prefix: "Status") %>
   <% end %>
   <% if job_stats.submission_download_queued[artist_url.id] %>
     [<%= job_stats.submission_download_queued[artist_url.id] %> pending

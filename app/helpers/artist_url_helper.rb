@@ -32,9 +32,10 @@ module ArtistUrlHelper
     artist_url.last_scraped_at
   end
 
-  def scraper_status(artist_url)
+  def scraper_status(artist_url, prefix: "")
     return "" if artist_url.scraper_status.blank?
 
-    artist_url.scraper_status.to_json
+    beginning = "#{prefix}: " if prefix.present?
+    "#{beginning}#{artist_url.scraper_status.to_json}"
   end
 end
