@@ -7,8 +7,8 @@ module Scraper
       @until = "99999999999999"
     end
 
-    def self.enabled?
-      true
+    def self.required_config_keys
+      %i[commishes_user commishes_pass]
     end
 
     def fetch_next_batch
