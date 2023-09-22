@@ -6,7 +6,7 @@ FactoryBot.define do
 
     created_at_on_site { Time.current }
     description_on_site { "" }
-    identifier_on_site { "" }
+    sequence(:identifier_on_site) { |n| "submission_#{n}" }
     title_on_site { "" }
   end
 end

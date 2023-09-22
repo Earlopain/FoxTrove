@@ -2,7 +2,7 @@
 
 class JobStats
   def active_urls
-    e6_iqdb_queued.keys + submission_download_queued.keys + scraping_queued.keys + scraping_now
+    (e6_iqdb_queued.keys + submission_download_queued.keys + scraping_queued.keys + scraping_now).uniq
   end
 
   def e6_iqdb_queued
@@ -21,25 +21,25 @@ class JobStats
   end
 
   def scraping_now
-    @scraping_now ||= GoodJob::JobsFilter.new(state: "running", queue_name: "scraping").records.map do |job|
-      job.serialized_params["arguments"][0]
-    end
+    @scraping_now ||= GoodJob::JobsFilter.new(state: "running", queue_name: "scraping").records.map { |job| extract_model_id(job) }
   end
 
   private
 
+  def extract_model_id(job)
+    first_argument = job.serialized_params["arguments"][0]
+    URI::GID.parse(first_argument["_aj_globalid"]).model_id.to_i
+  end
+
   def stats_queued(queue_name, count_proc)
-    result = Hash.new(0)
+    result = {}
     query = GoodJob::JobsFilter.new(queue_name: queue_name).filtered_query
     query = query.merge(GoodJob::Job.queued.or(GoodJob::Job.retried))
-    query.each_slice(1000) do |batch|
-      ids = batch.map { |job| job.serialized_params["arguments"][0] }
-      count_db = count_proc.call(ids)
-      count_db.each do |artist_url_id, count|
-        result[artist_url_id] += count
-      end
+    query.find_in_batches(batch_size: 1000) do |batch|
+      ids = batch.map { |job| extract_model_id(job) }
+      db_count = count_proc.call(ids)
+      result = result.merge(db_count) { |_k, old_v, new_v| old_v + new_v }
     end
-    result.default = nil
     result
   end
 end

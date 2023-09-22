@@ -6,7 +6,7 @@ FactoryBot.define do
 
     created_at_on_site { Time.current }
     direct_url { "https://localhost/image.webp" }
-    file_identifier { "" }
+    sequence(:file_identifier) { |n| "file_identifier_#{n}" }
     content_type { "image/png" }
     width { 1_000 }
     height { 1_000 }
