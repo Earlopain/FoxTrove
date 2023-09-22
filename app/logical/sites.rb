@@ -4,7 +4,7 @@ module Sites
   module_function
 
   def from_enum(value)
-    all.find { |definition| definition.enum_value == value }
+    definitions.find { |definition| definition.enum_value == value }
   end
 
   def from_gallery_url(url)
@@ -14,7 +14,7 @@ module Sites
       return nil
     end
 
-    all.each do |definition|
+    definitions.each do |definition|
       match = definition.match_for_gallery(uri)
       return match.merge(site: definition) if match
     end
@@ -22,7 +22,7 @@ module Sites
   end
 
   def download_headers_for_image_uri(uri)
-    definition = all.find do |d|
+    definition = definitions.find do |d|
       d.handles_image_domain? uri.domain
     end
     definition&.download_headers || {}
@@ -51,14 +51,14 @@ module Sites
     uri
   end
 
-  def all
-    @all ||= Rails.root.glob("app/logical/sites/definitions/*.yml").map do |file_path|
+  def definitions
+    @definitions ||= Rails.root.glob("app/logical/sites/definitions/*.yml").map do |file_path|
       data = Psych.safe_load_file(file_path)
       Sites.const_get(data["type"]).new(data.except("type"))
     end
   end
 
   def reset_cache
-    @all = nil
+    @definitions = nil
   end
 end

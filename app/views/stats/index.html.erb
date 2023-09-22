@@ -11,18 +11,18 @@
     </tr>
   </thead>
   <tbody>
-    <% @counts.keys.sort.map { |key| Sites.from_enum(key) }.each do |site| %>
+    <% @counts.keys.sort.map { |key| Sites.from_enum(key) }.each do |definition| %>
       <tr>
-        <td><%= site.display_name %></td>
-        <td><%= @counts[site.enum_value]["artist_count"] %></td>
-        <td><%= @counts[site.enum_value]["url_count"] %></td>
-        <td><%= @counts[site.enum_value]["submission_count"] %></td>
-        <td><%= @counts[site.enum_value]["file_count"] %></td>
+        <td><%= definition.display_name %></td>
+        <td><%= @counts[definition.enum_value]["artist_count"] %></td>
+        <td><%= @counts[definition.enum_value]["url_count"] %></td>
+        <td><%= @counts[definition.enum_value]["submission_count"] %></td>
+        <td><%= @counts[definition.enum_value]["file_count"] %></td>
         <td>
-          <% if site.manually_disabled? %>
+          <% if definition.manually_disabled? %>
             Manually disabled
-          <% elsif site.missing_config_keys.any? %>
-            Missing config <%= "key".pluralize(site.missing_config_keys.count) %>: <%= site.missing_config_keys.join(", ") %>
+          <% elsif definition.missing_config_keys.any? %>
+            Missing config <%= "key".pluralize(definition.missing_config_keys.count) %>: <%= definition.missing_config_keys.join(", ") %>
           <% else %>
             Enabled
           <% end %>
