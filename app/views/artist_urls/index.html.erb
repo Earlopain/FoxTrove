@@ -21,7 +21,7 @@
       <tr>
         <td><%= link_to artist_url.id, artist_path(artist_url.artist, search: { artist_url_id: [artist_url.id] }) %></td>
         <td><%= artist_url.site_type.humanize %></td>
-        <td><%= artist_url.url_identifier %></td>
+        <td><%= artist_url.unescaped_url_identifier %></td>
         <td><%= artist_url.api_identifier %></td>
         <td><%= scraper_status(artist_url) %> </td>
         <td><%= time_ago artist_url.last_scraped_at %></td>

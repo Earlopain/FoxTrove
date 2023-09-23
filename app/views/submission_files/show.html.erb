@@ -1,5 +1,5 @@
 <h1>
-  Submission from <%= @submission_file.artist_url.url_identifier %>
+  Submission from <%= @submission_file.artist_url.unescaped_url_identifier %>
   <% if display_artist_name?(@submission_file) %>
     [<%= @submission_file.artist.name %>]
   <% end %>

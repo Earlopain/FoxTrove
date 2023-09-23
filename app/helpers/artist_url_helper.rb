@@ -2,7 +2,7 @@
 
 module ArtistUrlHelper
   def gallery_url(artist_url)
-    artist_url.site.gallery_url(artist_url.url_identifier)
+    artist_url.site.gallery_url(artist_url.unescaped_url_identifier)
   end
 
   def submission_url(submission)
@@ -15,7 +15,7 @@ module ArtistUrlHelper
 
   def site_icon(artist_url)
     icon = tag.span(class: artist_url.site.icon_class)
-    link_to tag.span(icon), gallery_url(artist_url), title: "#{artist_url.site.display_name} - #{artist_url.url_identifier}"
+    link_to tag.span(icon), gallery_url(artist_url), title: "#{artist_url.site.display_name} - #{artist_url.unescaped_url_identifier}"
   end
 
   def ordered_artist_urls(artist)
