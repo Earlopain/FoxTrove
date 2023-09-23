@@ -36,6 +36,6 @@ module ArtistUrlHelper
     return "" if artist_url.scraper_status.blank?
 
     beginning = "#{prefix}: " if prefix.present?
-    "#{beginning}#{artist_url.scraper_status.to_json}"
+    "#{beginning}#{artist_url.scraper_status.except('started_at').to_json}"
   end
 end

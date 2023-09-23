@@ -4,11 +4,12 @@ class ScrapeArtistUrlJob < ApplicationJob
   queue_as :scraping
   good_job_control_concurrency_with(total_limit: 1, key: -> { arguments.first.id })
 
-  def perform(artist_url)
+  def perform(artist_url) # rubocop:disable Metrics/CyclomaticComplexity
     return unless artist_url.scraper_enabled?
 
     scraper = artist_url.scraper
     scraper.jumpstart(artist_url.scraper_status[scraper.class.state.to_s]) if artist_url.scraper_status.present?
+    artist_url.scraper_status["started_at"] ||= Time.current
 
     while scraper.more?
       submissions = scraper.fetch_and_save_next_submissions
@@ -18,8 +19,8 @@ class ScrapeArtistUrlJob < ApplicationJob
       stop_marker = artist_url.last_scraped_at
       break if stop_marker.present? && submissions.any? { |submission| submission.created_at.before? stop_marker }
     end
+    artist_url.last_scraped_at = artist_url.scraper_status["started_at"]
     artist_url.scraper_status = {}
-    artist_url.last_scraped_at = Time.current
     artist_url.save
   end
 end
