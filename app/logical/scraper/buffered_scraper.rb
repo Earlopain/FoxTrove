@@ -9,12 +9,14 @@ module Scraper
       super
       @buffer = []
       @will_have_more = true
+      @after_first_request = false
     end
 
     def fetch_from_batch(&)
       if @buffer.empty?
+        update_state if @after_first_request
         @buffer = yield
-        update_state
+        @after_first_request = true
         @will_have_more = !@buffer.empty?
       end
 
