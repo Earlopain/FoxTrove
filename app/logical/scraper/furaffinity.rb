@@ -1,12 +1,10 @@
 # frozen_string_literal: true
 
 module Scraper
-  class Furaffinity < Base
+  class Furaffinity < BufferedScraper
     def initialize(artist_url)
       super
       @page = 1
-      @submission_cache = []
-      @will_have_more = true
     end
 
     def self.required_config_keys
@@ -18,15 +16,7 @@ module Scraper
     end
 
     def fetch_next_batch
-      if @submission_cache.empty?
-        @submission_cache = get_submission_ids(@page)
-        @page += 1
-        @will_have_more = !@submission_cache.empty?
-      end
-
-      single_submission_id = @submission_cache.shift
-      end_reached if @submission_cache.empty? && !@will_have_more
-      # Will happen when the user has no submissions at all
+      single_submission_id = fetch_from_batch { get_submission_ids(@page) }
       return [] if single_submission_id.nil?
 
       html = get_submission_html single_submission_id
@@ -45,6 +35,10 @@ module Scraper
           },
         ]
       end
+    end
+
+    def update_state
+      @page += 1
     end
 
     def to_submission(submission)

@@ -1,12 +1,10 @@
 # frozen_string_literal: true
 
 module Scraper
-  class Artfight < Base
+  class Artfight < BufferedScraper
     def initialize(artist_url)
       super
       @page = 1
-      @submission_cache = []
-      @will_have_more = true
     end
 
     def self.state
@@ -18,17 +16,14 @@ module Scraper
     end
 
     def fetch_next_batch
-      if @submission_cache.empty?
-        @submission_cache = get_attacks(@page)
-        @page += 1
-        @will_have_more = !@submission_cache.empty?
-      end
-
-      single_attack_id = @submission_cache.shift
-      end_reached if @submission_cache.empty? && !@will_have_more
+      single_attack_id = fetch_from_batch { get_attacks(@page) }
       return [] if single_attack_id.nil?
 
       [get_attack_details(single_attack_id)]
+    end
+
+    def update_state
+      @page += 1
     end
 
     def to_submission(submission)

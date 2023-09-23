@@ -1,14 +1,12 @@
 # frozen_string_literal: true
 
 module Scraper
-  class Newgrounds < Base
+  class Newgrounds < BufferedScraper
     COOKIE_NAME = "vmkIdu5l8m"
 
     def initialize(artist_url)
       super
       @page = 1
-      @submission_cache = []
-      @will_have_more = true
     end
 
     def self.required_config_keys
@@ -20,20 +18,15 @@ module Scraper
     end
 
     def fetch_next_batch
-      # Newgrounds has no api, searching basically only returns the url, nothing more.
-      # Loading all html pages just to see if something new is bad, so it's buffered here, so that
-      # it can be checked on each submission one after the other
-      if @submission_cache.empty?
-        response = get_from_page(@page)
-        submissions = response["items"].keys.map { |year| response["items"][year] }.flatten
-        @submission_cache = submissions.map { |entry| Nokogiri::HTML(entry).css("a").first.attributes["href"].value }
-        @page += 1
-        @will_have_more = response["load_more"].strip.present?
-      end
+      single_submission_url = fetch_from_batch { get_from_page(@page) }
 
-      single_submission_url = @submission_cache.shift
-      end_reached if @submission_cache.empty? && !@will_have_more
+      return [] if single_submission_url.nil?
+
       [get_submission_details(single_submission_url)]
+    end
+
+    def update_state
+      @page += 1
     end
 
     def to_submission(submission)
@@ -67,7 +60,13 @@ module Scraper
         "X-Requested-With": "XMLHttpRequest",
         "Cookie": "#{COOKIE_NAME}=#{fetch_cookie}",
       })
-      JSON.parse(response.body)
+      body = JSON.parse(response.body)
+      if body["items"].empty? # Empty pages contain an array instead of an object here
+        []
+      else
+        submissions = body["items"].keys.map { |year| body["items"][year] }.flatten
+        submissions.map { |entry| Nokogiri::HTML(entry).css("a").first.attributes["href"].value }
+      end
     end
 
     def get_submission_details(url)
