@@ -1,6 +1,6 @@
 name: Checks
 
-on:
+on: # yamllint disable-line rule:truthy
   push:
     branches:
       - master
@@ -17,10 +17,10 @@ jobs:
 
     steps:
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
+        uses: docker/setup-buildx-action@v3
 
       - name: Build
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v5
         with:
           cache-from: type=gha
           cache-to: type=gha,mode=max
@@ -47,7 +47,7 @@ jobs:
           --health-retries 5
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: ./.github/prepare-docker-image
 
       - name: Create DB
@@ -61,8 +61,21 @@ jobs:
     needs: docker-build
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: ./.github/prepare-docker-image
 
       - name: Run Rubocop
         run: $DOCKER_RUN bundle exec rubocop --format github
+
+  yamllint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+
+      - run: >
+          pip install yamllint==1.32.0 &&
+          yamllint -c .github/yamllint.yml -s .

@@ -43,14 +43,14 @@ Metrics/AbcSize:
 
 Metrics/BlockLength:
   AllowedMethods:
-    - "class_methods"
-    - "concerning"
-    - "describe"
-    - "define"
-    - "FactoryBot.define"
+    - class_methods
+    - concerning
+    - describe
+    - define
+    - FactoryBot.define
   Exclude:
-    - "config/routes.rb"
-    - "test/factories/web/**/*"
+    - config/routes.rb
+    - test/factories/web/**/*
 
 Metrics/ClassLength:
   Enabled: false

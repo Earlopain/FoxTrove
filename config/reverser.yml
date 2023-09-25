@@ -1,12 +1,12 @@
 # Provide a overwrite file with REVERSER_CUSTOM_CONFIG_PATH
-app_name: "Reverser"
+app_name: Reverser
 # How large should the generated thumbnails be
 # This is a bounding box
 thumbnail_size: 300
 # The server which handles similar images search
 # Must respond like https://github.com/danbooru/iqdb
-iqdb_server: "http://iqdb:5588"
-selenium_url: "http://selenium:4444"
+iqdb_server: http://iqdb:5588
+selenium_url: http://selenium:4444
 
 # Only overwriteable through env
 custom_config_path: config/reverser_custom_config.yml
