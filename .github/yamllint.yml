@@ -1,0 +1,17 @@
+extends: default
+
+ignore: |
+  pnpm-lock.yaml
+
+rules:
+  document-start: disable
+  line-length: disable
+  quoted-strings:
+    quote-type: double
+    required: only-when-needed
+  comments:
+    min-spaces-from-content: 1
+  empty-lines:
+    max: 1
+  indentation:
+    spaces: 2

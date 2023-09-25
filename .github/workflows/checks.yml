@@ -1,6 +1,6 @@
 name: Checks
 
-on:
+on: # yamllint disable-line rule:truthy
   push:
     branches:
       - master
@@ -66,3 +66,16 @@ jobs:
 
       - name: Run Rubocop
         run: $DOCKER_RUN bundle exec rubocop --format github
+
+  yamllint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+
+      - run: >
+          pip install yamllint==1.32.0 &&
+          yamllint -c .github/yamllint.yml -s .

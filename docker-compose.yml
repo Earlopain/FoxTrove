@@ -50,7 +50,7 @@ services:
       - 5432:5432
 
   iqdb:
-    image: ghcr.io/e621ng/iqdb:d4fed9d9a51184e72d2f14d4ec461d7830bd177a 
+    image: ghcr.io/e621ng/iqdb:d4fed9d9a51184e72d2f14d4ec461d7830bd177a
     volumes:
       - ${REVERSER_DATA_PATH}/iqdb_data:/iqdb
 
