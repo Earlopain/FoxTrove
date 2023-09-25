@@ -7,10 +7,12 @@ services:
       args:
         COMPOSE_PROFILES: ${COMPOSE_PROFILES-}
     image: reverser
+    environment:
+      EXPOSED_VNC_PORT: ${EXPOSED_VNC_PORT:?}
     volumes:
       - .:/app
       - build_assets:/app/public/build
-      - ${REVERSER_DATA_PATH}/active_storage:/app/public/storage
+      - ${REVERSER_DATA_PATH:?}/active_storage:/app/public/storage
       - temp:/app/tmp
     tmpfs:
       - /app/.pnpm-store
@@ -23,7 +25,7 @@ services:
       - iqdb
       - selenium
     ports:
-      - 9000:9000
+      - ${EXPOSED_SERVER_PORT:?}:9000
     command: foreman start --color
 
   solargraph:
@@ -44,15 +46,15 @@ services:
       - POSTGRES_DB=reverser_development
       - POSTGRES_HOST_AUTH_METHOD=trust
     volumes:
-      - ${REVERSER_DATA_PATH}/db_data:/var/lib/postgresql/data
+      - ${REVERSER_DATA_PATH:?}/db_data:/var/lib/postgresql/data
     shm_size: 256mb
     ports:
-      - 5432:5432
+      - ${EXPOSED_POSTGRES_PORT:?}:5432
 
   iqdb:
     image: ghcr.io/e621ng/iqdb:d4fed9d9a51184e72d2f14d4ec461d7830bd177a
     volumes:
-      - ${REVERSER_DATA_PATH}/iqdb_data:/iqdb
+      - ${REVERSER_DATA_PATH:?}/iqdb_data:/iqdb
 
   selenium:
     image: selenium/standalone-chrome:4.12.1-20230912
@@ -60,7 +62,7 @@ services:
       - VNC_NO_PASSWORD=1
     shm_size: 2gb
     ports:
-      - 7900:7900
+      - ${EXPOSED_VNC_PORT:?}:7900
 
   # Profiles for standalone things
 

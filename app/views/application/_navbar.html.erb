@@ -8,7 +8,7 @@
       <%= nav_link_to "Submission Files", submission_files_path %>
       <%= nav_link_to "Archive Importer", new_archive_import_path %>
       <%= nav_link_to "Stats", stats_path %>
-      <%= nav_link_to "Selenium", "http://localhost:7900" %>
+      <%= nav_link_to "Selenium", "http://localhost:#{ENV.fetch('EXPOSED_VNC_PORT')}" %>
       <%= nav_link_to "GoodJob", "/good_job" %>
     </menu>
     <menu class="secondary-navbar">
