@@ -16,5 +16,43 @@ module Scraper
         assert_respond_to(scraper.class, :required_config_keys)
       end
     end
+
+    describe "caching" do
+      setup do
+        @scraper = Scraper::Twitter.new(create(:artist_url))
+      end
+
+      it "calls the original method only once" do
+        @scraper.expects(:tokens_old).once.returns("value")
+
+        @scraper.tokens
+        @scraper.tokens
+      end
+
+      it "doesn't cache nil" do
+        @scraper.expects(:tokens_old).twice.returns(nil)
+
+        @scraper.tokens
+        @scraper.tokens
+      end
+
+      it "invalidates the cache when config values change" do
+        @scraper.expects(:tokens_old).twice.returns("value")
+
+        @scraper.tokens
+        Config.stubs(:twitter_user).returns("new_value")
+        @scraper.tokens
+        Config.unstub(:twitter_user)
+        @scraper.tokens
+      end
+
+      it "correctly removes the currently cached value" do
+        @scraper.expects(:tokens_old).twice.returns("value")
+
+        @scraper.tokens
+        @scraper.class.delete_cache(:tokens)
+        @scraper.tokens
+      end
+    end
   end
 end

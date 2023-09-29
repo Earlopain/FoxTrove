@@ -47,11 +47,11 @@ module Scraper
     end
 
     def self.cache(method_name, expires_in)
-      key = "#{name}.#{method_name}"
-      raise ArgumentError, "#{key} must have arity == 0" unless instance_method(method_name).arity == 0
+      raise ArgumentError, "#{method_name} must have arity == 0" unless instance_method(method_name).arity == 0
 
       alias_method "#{method_name}_old", method_name
       define_method(method_name) do
+        key = self.class.cache_key(method_name)
         return Rails.cache.fetch(key) if Rails.cache.exist?(key)
 
         value = send("#{method_name}_old")
@@ -61,8 +61,12 @@ module Scraper
     end
 
     def self.delete_cache(method_name)
-      key = "#{name}.#{method_name}"
-      Rails.cache.delete(key)
+      Rails.cache.delete(cache_key(method_name))
+    end
+
+    def self.cache_key(method_name)
+      config_checksum = Digest::MD5.hexdigest(required_config_keys.map { |key| Config.send(key) }.join)
+      "#{name}.#{method_name}/#{config_checksum}"
     end
 
     protected
