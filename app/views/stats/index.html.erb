@@ -8,6 +8,7 @@
       <th>Submission Count</th>
       <th>File Count</th>
       <th>Status</th>
+      <th>Cache</th>
     </tr>
   </thead>
   <tbody>
@@ -25,6 +26,15 @@
             Missing config <%= "key".pluralize(definition.missing_config_keys.count) %>: <%= definition.missing_config_keys.join(", ") %>
           <% else %>
             Enabled
+          <% end %>
+        </td>
+        <td>
+          <% cached = definition.cached_values %>
+          <% if cached.any? %>
+            <details>
+              <summary><%= cached.size %> <%= "value".pluralize(cached.size) %></summary>
+              <pre><%= cached.to_json %></pre>
+            </details>
           <% end %>
         </td>
       </tr>

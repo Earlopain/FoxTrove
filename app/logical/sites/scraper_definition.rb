@@ -23,6 +23,15 @@ module Sites
       @scraper.required_config_keys.select { |key| Config.send(key).blank? }
     end
 
+    def cached_values
+      @scraper.cached_methods.filter_map do |method|
+        key = @scraper.cache_key(method)
+        next unless Rails.cache.exist?(key)
+
+        [method, Rails.cache.fetch(key)]
+      end.to_h
+    end
+
     def manually_disabled?
       Config.send("#{enum_value}_disabled?")
     end

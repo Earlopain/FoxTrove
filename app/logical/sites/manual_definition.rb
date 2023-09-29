@@ -14,6 +14,10 @@ module Sites
       []
     end
 
+    def cached_values
+      {}
+    end
+
     def manually_disabled?
       false
     end

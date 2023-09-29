@@ -49,6 +49,9 @@ module Scraper
     def self.cache(method_name, expires_in)
       raise ArgumentError, "#{method_name} must have arity == 0" unless instance_method(method_name).arity == 0
 
+      @_cached_methods ||= []
+      @_cached_methods << method_name
+
       alias_method "#{method_name}_old", method_name
       define_method(method_name) do
         key = self.class.cache_key(method_name)
@@ -67,6 +70,10 @@ module Scraper
     def self.cache_key(method_name)
       config_checksum = Digest::MD5.hexdigest(required_config_keys.map { |key| Config.send(key) }.join)
       "#{name}.#{method_name}/#{config_checksum}"
+    end
+
+    def self.cached_methods
+      @_cached_methods || []
     end
 
     protected
