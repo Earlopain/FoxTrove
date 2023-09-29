@@ -11,9 +11,11 @@
       <%= nav_link_to "Selenium", "http://localhost:#{ENV.fetch('EXPOSED_VNC_PORT')}" %>
       <%= nav_link_to "GoodJob", "/good_job" %>
     </menu>
-    <menu class="secondary-navbar">
-      <% if lookup_context.template_exists?("secondary_links", controller_name, true) %>
+    <menu class="secondary-navbar <%= "empty" unless secondary_links_exist? %>">
+      <% if secondary_links_exist? %>
           <%= render "#{controller_name}/secondary_links" %>
+      <% else %>
+        <%= subnav_link_to "Height Placeholder", "" %>
       <% end %>
     </menu>
   </nav>
