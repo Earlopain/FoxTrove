@@ -7,6 +7,10 @@ module Scraper
       @page = "https://itaku.ee/api/galleries/images/?owner=#{api_identifier}&ordering=-date_added&page=1&page_size=100&date_range=&maturity_rating=SFW&maturity_rating=Questionable&maturity_rating=NSFW&visibility=PUBLIC&visibility=PROFILE_ONLY"
     end
 
+    def self.required_config_keys
+      []
+    end
+
     def self.state
       :page
     end

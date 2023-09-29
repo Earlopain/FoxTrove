@@ -41,5 +41,10 @@ class ScraperDefinitionTest < ActiveSupport::TestCase
       assert_respond_to(scraper.class, :state)
       assert(scraper.instance_variable_defined?(:"@#{scraper.class.state}"))
     end
+
+    test "#{definition.enum_value} responds to required_config_keys" do
+      scraper = stub_scraper_enabled(definition.enum_value) { definition.new_scraper(build(:artist_url)) }
+      assert_respond_to(scraper.class, :required_config_keys)
+    end
   end
 end

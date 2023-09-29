@@ -20,8 +20,7 @@ module Sites
     end
 
     def missing_config_keys
-      keys = @scraper.try(:required_config_keys) || []
-      keys.select { |key| Config.send(key).blank? }
+      @scraper.required_config_keys.select { |key| Config.send(key).blank? }
     end
 
     def manually_disabled?
