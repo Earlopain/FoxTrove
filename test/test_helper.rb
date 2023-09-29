@@ -31,6 +31,7 @@ module ActiveSupport
     before do
       Config.stubs(:custom_config).returns({})
       Config.stubs(:env).returns({})
+      Rails.cache.clear
     end
 
     # https://github.com/minitest/minitest/issues/666
