@@ -1,11 +1,35 @@
 header#top {
   background-color: $color-background;
 
+  #nav {
+    display: grid;
+    grid-template-columns: 3.75rem 1fr;
+    grid-template-areas: "logo primary" "logo secondary";
+
+    .logo {
+      grid-area: logo;
+
+      margin-top: 0.3rem;
+      background-image: url("/logo.png");
+      background-repeat: no-repeat;
+      background-size: contain;
+      background-position-y: center;
+    }
+
+    .primary-navbar {
+      grid-area: primary;
+    }
+
+    .secondary-navbar {
+      grid-area: secondary;
+    }
+  }
+
   menu {
     margin: 0;
     background-color: $color-foreground;
     border-radius: $border-radius-full;
-    padding: 0.25rem 1rem;
+    padding: 0.25rem 0;
 
     li {
       display: inline;
