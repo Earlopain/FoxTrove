@@ -38,5 +38,21 @@ module Sites
     def gallery_url(identifier)
       "https://#{gallery_templates.first.expand(site_artist_identifier: identifier)}"
     end
+
+    def missing_config_keys
+      []
+    end
+
+    def cached_values
+      {}
+    end
+
+    def manually_disabled?
+      false
+    end
+
+    def scraper_enabled?
+      false
+    end
   end
 end

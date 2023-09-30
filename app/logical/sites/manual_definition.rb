@@ -10,22 +10,6 @@ module Sites
       submission.identifier_on_site
     end
 
-    def missing_config_keys
-      []
-    end
-
-    def cached_values
-      {}
-    end
-
-    def manually_disabled?
-      false
-    end
-
-    def scraper_enabled?
-      false
-    end
-
     def match_for_gallery(_uri)
       # Do nothing
     end
