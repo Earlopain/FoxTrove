@@ -61,16 +61,10 @@ Metrics/MethodLength:
 Metrics/ModuleLength:
   Enabled: false
 
-Minitest/AssertPredicate:
-  Enabled: false
-
 Minitest/EmptyLineBeforeAssertionMethods:
   Enabled: false
 
 Minitest/MultipleAssertions:
-  Enabled: false
-
-Minitest/RefutePredicate:
   Enabled: false
 
 Style/Documentation:
@@ -78,9 +72,6 @@ Style/Documentation:
 
 Style/EmptyMethod:
   EnforcedStyle: expanded
-
-Style/GuardClause:
-  Enabled: false
 
 Style/HashSyntax:
   EnforcedShorthandSyntax: never
@@ -111,10 +102,6 @@ Style/TrailingCommaInArrayLiteral:
 
 Style/TrailingCommaInHashLiteral:
   EnforcedStyleForMultiline: consistent_comma
-
-Rails/Output:
-  Exclude:
-    - db/*.rb
 
 Rails/OutputSafety:
   Enabled: false

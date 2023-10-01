@@ -19,7 +19,7 @@ class SubmissionFileTest < ActiveSupport::TestCase
     it "can be omitted for testing purposes" do
       sm = create(:submission_file)
       assert_not sm.original.attached?
-      assert sm.valid?
+      assert_predicate(sm, :valid?)
     end
   end
 end

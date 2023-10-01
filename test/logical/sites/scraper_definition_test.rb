@@ -11,7 +11,7 @@ class ScraperDefinitionTest < ActiveSupport::TestCase
       definition = Sites.from_enum("twitter")
 
       assert_empty(definition.missing_config_keys)
-      assert(definition.scraper_enabled?)
+      assert_predicate(definition, :scraper_enabled?)
     end
 
     it "returns false if the scraper is manually disabled" do
