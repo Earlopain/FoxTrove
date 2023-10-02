@@ -12,18 +12,19 @@
     </tr>
   </thead>
   <tbody>
-    <% @counts.keys.sort.map { |key| Sites.from_enum(key) }.each do |definition| %>
+    <% @definitions.each do |definition| %>
       <tr>
         <td><%= definition.display_name %></td>
-        <td><%= @counts[definition.enum_value]["artist_count"] %></td>
-        <td><%= @counts[definition.enum_value]["url_count"] %></td>
-        <td><%= @counts[definition.enum_value]["submission_count"] %></td>
-        <td><%= @counts[definition.enum_value]["file_count"] %></td>
+        <td><%= @counts[definition.enum_value]&.[]("artist_count") || 0 %></td>
+        <td><%= @counts[definition.enum_value]&.[]("url_count") || 0  %></td>
+        <td><%= @counts[definition.enum_value]&.[]("submission_count") || 0  %></td>
+        <td><%= @counts[definition.enum_value]&.[]("file_count") || 0  %></td>
         <td>
           <% if definition.manually_disabled? %>
             Manually disabled
           <% elsif definition.missing_config_keys.any? %>
-            Missing config <%= "key".pluralize(definition.missing_config_keys.count) %>: <%= definition.missing_config_keys.join(", ") %>
+            Missing config <%= "key".pluralize(definition.missing_config_keys.count) %>:<br>
+            <%= definition.missing_config_keys.join(", ") %>
           <% else %>
             Enabled
           <% end %>
