@@ -11,7 +11,7 @@ module Scraper
     end
 
     def self.required_config_keys
-      %i[furrynetwork_user furrynetwork_pass]
+      []
     end
 
     def self.state
@@ -19,16 +19,10 @@ module Scraper
     end
 
     def fetch_next_batch
-      json = make_request("/search", {
-        size: PER_REQUEST,
-        from: @offset,
-        character: url_identifier,
-        types: ["artwork"],
-        sort: "published",
-      })
-      end_reached if @offset + PER_REQUEST >= json["total"]
-      @offset += PER_REQUEST
-      json["hits"].pluck("_source")
+      # This fetches EVERYTHING. Terribly sorry about that but I can't circumentvent the login captcha
+      json = make_request("/character/#{url_identifier}/artwork")
+      end_reached
+      json.sort_by { |entry| DateTime.parse(entry["published"]) }
     end
 
     def to_submission(submission)
@@ -48,31 +42,16 @@ module Scraper
 
     def fetch_api_identifier
       make_request("/character/#{url_identifier}")["id"]
+    rescue JSON::ParserError
+      # Some characters (the_secret_cave) return php error traces with status code 200 because why not
+      entries = make_request("/character/#{url_identifier}/artwork")
+      entries&.first&.dig("character_id")
     end
 
     private
 
-    def make_request(endpoint, query = {})
-      fetch_json("#{API_PREFIX}#{endpoint}",
-        query: query,
-        headers: {
-          Authorization: "Bearer #{bearer_token}",
-        },
-      )
+    def make_request(endpoint)
+      fetch_json("#{API_PREFIX}#{endpoint}")
     end
-
-    # This whole thing is very brittle and may break at any moment
-    def bearer_token
-      SeleniumWrapper.driver do |driver|
-        driver.navigate.to "https://furrynetwork.com/login"
-        driver.manage.window.maximize
-        driver.find_element(id: "email").send_keys Config.furrynetwork_user
-        driver.find_element(id: "password").send_keys Config.furrynetwork_pass
-        driver.find_element(css: ".page--login__form button[type='submit']").click
-        driver.wait_for_element(class: "profile-switcher-menu")
-        driver.execute_script "return JSON.parse(window.localStorage.getItem('token')).access_token"
-      end
-    end
-    cache(:bearer_token, 55.minutes)
   end
 end
