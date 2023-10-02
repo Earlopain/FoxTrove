@@ -49,7 +49,10 @@ module Scraper
     def fetch_api_identifier
       response = fetch_html("https://www.weasyl.com/~#{url_identifier}", headers: { "X-Weasyl-API-Key": Config.weasyl_apikey })
       html = Nokogiri::HTML(response.body)
-      html.at("#user-shouts .comment-form input[name='userid']")&.attribute("value")&.value
+      shoutbox_id = html.at("#user-shouts .comment-form input[name='userid']")&.attribute("value")&.value
+      # Unverified accounts can't shout: Your account has to be verified to comment
+      ignore_id = html.at("form[name=ignoreuser] input[name='userid']")&.attribute("value")&.value
+      shoutbox_id || ignore_id
     end
   end
 end
