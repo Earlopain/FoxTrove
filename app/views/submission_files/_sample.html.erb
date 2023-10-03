@@ -3,8 +3,7 @@
   <% if submission_file.sample_generated? %>
     <div class="file-container">
       <% if submission_file.sample.content_type.in? %w[image/jpeg image/gif] %>
-        <%= image_tag url_for(submission_file.sample), loading: "lazy", class: "submission-file", width: submission_file.width, height: submission_file.height %>
-        <%= original_file_tag(submission_file) %>
+        <%= submission_file_tag(submission_file) %>
       <% else %>
         Unhandled content_type <%= submission_file.sample.content_type %>
       <% end %>

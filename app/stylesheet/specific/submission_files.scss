@@ -21,6 +21,8 @@
     .submission-file-full {
       max-width: 75vw;
       max-height: 75vh;
+      width: auto;
+      object-fit: contain;
       z-index: 2;
       position: fixed;
       left: 50%;
