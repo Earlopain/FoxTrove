@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 class SubmissionFilesController < ApplicationController
-  respond_to :json, only: %i[hide_many backlog_many enqueue_many]
-
   def index
     @search_params = search_params
     @pagy, @submission_files = SubmissionFile.search(@search_params).with_everything.pagy(params)

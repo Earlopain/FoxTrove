@@ -212,9 +212,6 @@ GEM
       ffi (~> 1.0)
     rbs (2.8.4)
     regexp_parser (2.8.1)
-    responders (3.1.0)
-      actionpack (>= 5.2)
-      railties (>= 5.2)
     reverse_markdown (2.1.1)
       nokogiri
     rexml (3.2.6)
@@ -315,7 +312,6 @@ DEPENDENCIES
   pg (~> 1.1)
   puma
   rails (~> 7.0)
-  responders
   rotp
   rouge
   rubocop

@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 class ArtistsController < ApplicationController
-  respond_to :html
-
   def index
     @pagy, @artists = Artist.includes(:artist_urls).search(index_search_params).pagy(params)
   end
@@ -11,17 +9,14 @@ class ArtistsController < ApplicationController
     @artist = Artist.includes(:artist_urls).find(params[:id])
     @search_params = instance_search_params.merge(artist_id: @artist.id)
     @pagy, @submission_files = SubmissionFile.search(@search_params).with_everything.pagy(params)
-    respond_with(@artist)
   end
 
   def new
     @artist = Artist.new
-    respond_with(@artist)
   end
 
   def edit
     @artist = Artist.includes(:artist_urls).find(params[:id])
-    respond_with(@artist)
   end
 
   def create

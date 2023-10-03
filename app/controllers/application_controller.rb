@@ -51,6 +51,15 @@ class ApplicationController < ActionController::Base
     render "application/error", formats: [:html], status: EXCEPTION_TYPES[exception.class] || 500
   end
 
+  def respond_with(value)
+    if value.errors.any?
+      # Always render new/edit, there are no specific templates for create/update
+      render({ "create" => "new", "update" => "edit" }.fetch(action_name, action_name))
+    else
+      redirect_to(value)
+    end
+  end
+
   private
 
   def deep_reject_blank(hash)
