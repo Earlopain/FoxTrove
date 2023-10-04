@@ -11,21 +11,13 @@ module Config
     @custom_config ||= File.exist?(custom_config_path) ? YAML.load_file(custom_config_path, fallback: {}) : {}
   end
 
-  def env_config
-    @env_config ||= begin
-      app_env = env.select { |k| k.downcase.start_with?("reverser_") }
-      app_env.to_h { |k, v| [k.downcase.delete_prefix("reverser_"), Psych.safe_load(v)] }
-    end
-  end
-
   def custom_config_path
-    env_config["custom_config_path"] || Rails.root.join(default_config["custom_config_path"])
+    Rails.root.join("config/reverser_custom_config.yml")
   end
 
   def force_reload
     @default_config = nil
     @custom_config = nil
-    @env_config = nil
   end
 
   def missing_values
@@ -35,9 +27,7 @@ module Config
   def method_missing(method)
     raise NoMethodError, "Unknown config #{method}" unless respond_to_missing?(method)
 
-    if env_config.key? method.to_s.chomp("?")
-      env_config[method.to_s.chomp("?")]
-    elsif custom_config.key? method.to_s
+    if custom_config.key? method.to_s
       custom_config[method.to_s]
     else
       default_config[method.to_s]
@@ -46,10 +36,5 @@ module Config
 
   def respond_to_missing?(method, *)
     default_config.key? method.to_s
-  end
-
-  # This is only here to stub in tests
-  def env
-    ENV
   end
 end

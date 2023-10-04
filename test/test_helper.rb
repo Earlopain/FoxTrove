@@ -30,17 +30,7 @@ module ActiveSupport
 
     setup do
       Config.stubs(:custom_config).returns({})
-      Config.stubs(:env).returns({})
       Rails.cache.clear
-    end
-
-    # https://github.com/minitest/minitest/issues/666
-    def assert_equal(expected, actual, message = nil, **)
-      if expected.nil?
-        assert_nil(actual, message)
-      else
-        super
-      end
     end
 
     def stub_e6(post_id:, iqdb_matches: [], md5: "abc", &)
