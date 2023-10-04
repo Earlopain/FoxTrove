@@ -1,7 +1,4 @@
 app_name: Reverser
-# How large should the generated thumbnails be
-# This is a bounding box
-thumbnail_size: 300
 
 log_scraper_requests?: true
 # How quickly requests will be sent in seconds. Accepts floats.
