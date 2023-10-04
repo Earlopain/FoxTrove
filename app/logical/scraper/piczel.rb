@@ -7,10 +7,6 @@ module Scraper
       @from_id = 999_999_999
     end
 
-    def self.required_config_keys
-      []
-    end
-
     def self.state
       :from_id
     end

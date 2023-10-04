@@ -11,10 +11,6 @@ module Scraper
       :page
     end
 
-    def self.required_config_keys
-      %i[artfight_user artfight_pass]
-    end
-
     def fetch_next_batch
       single_attack_id = fetch_from_batch { get_attacks(@page) }
       return [] if single_attack_id.nil?

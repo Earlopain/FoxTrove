@@ -7,10 +7,6 @@ module Scraper
       @until = "99999999999999"
     end
 
-    def self.required_config_keys
-      %i[commishes_user commishes_pass]
-    end
-
     def self.state
       :until
     end

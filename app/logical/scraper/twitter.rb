@@ -15,8 +15,8 @@ module Scraper
       @cursor = ""
     end
 
-    def self.required_config_keys
-      %i[twitter_user twitter_pass]
+    def self.optional_config_keys
+      %i[twitter_otp_secret]
     end
 
     def self.state

@@ -10,10 +10,6 @@ module Scraper
       @offset = 0
     end
 
-    def self.required_config_keys
-      []
-    end
-
     def self.state
       :offset
     end

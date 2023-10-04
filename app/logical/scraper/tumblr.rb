@@ -10,10 +10,6 @@ module Scraper
       @offset = 0
     end
 
-    def self.required_config_keys
-      %i[tumblr_consumer_key tumblr_consumer_secret tumblr_oauth_token tumblr_oauth_secret tumblr_reblog_blog_uuid]
-    end
-
     def self.state
       :offset
     end

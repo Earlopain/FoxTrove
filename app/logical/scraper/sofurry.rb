@@ -19,10 +19,6 @@ module Scraper
       :page
     end
 
-    def self.required_config_keys
-      %i[sofurry_user sofurry_pass]
-    end
-
     def fetch_next_batch
       json = make_request "https://api2.sofurry.com/browse/user/art", "uid": api_identifier, "art-page": @page, "format": "json"
       items = json["items"]

@@ -12,10 +12,6 @@ module Scraper
       :after
     end
 
-    def self.required_config_keys
-      %i[reddit_client_id reddit_client_secret]
-    end
-
     def fetch_next_batch
       response = make_request("https://oauth.reddit.com/user/#{url_identifier}/submitted.json", {
         after: @after,

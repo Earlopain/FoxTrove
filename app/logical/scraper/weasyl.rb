@@ -8,10 +8,6 @@ module Scraper
       @nextid = nil
     end
 
-    def self.required_config_keys
-      %i[weasyl_apikey]
-    end
-
     def self.state
       :nextid
     end

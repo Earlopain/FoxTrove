@@ -9,6 +9,18 @@ module Scraper
       @previous_request = 0
     end
 
+    def self.inherited(base)
+      super
+      base.class_eval do
+        def self.required_config_keys
+          prefix = name.demodulize.underscore
+          all_config_keys = Config.default_config.keys.select { |key| key.start_with?("#{prefix}_") && !key.end_with?("_disabled?") }.map(&:to_sym)
+          optional_config_keys = try(:optional_config_keys) || []
+          all_config_keys - optional_config_keys
+        end
+      end
+    end
+
     # Will there possibly be more results when calling fetch_next_batch
     def more?
       @has_more

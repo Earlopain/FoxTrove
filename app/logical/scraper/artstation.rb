@@ -7,10 +7,6 @@ module Scraper
       @page = 1
     end
 
-    def self.required_config_keys
-      []
-    end
-
     def self.state
       :page
     end

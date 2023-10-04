@@ -2,10 +2,6 @@
 
 module Scraper
   class Baraag < MastodonV1
-    def self.required_config_keys
-      %i[baraag_access_token]
-    end
-
     def domain
       "baraag.net"
     end

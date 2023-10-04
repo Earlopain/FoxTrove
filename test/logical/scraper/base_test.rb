@@ -10,10 +10,19 @@ module Scraper
         assert_respond_to(scraper.class, :state)
         assert(scraper.instance_variable_defined?(:"@#{scraper.class.state}"))
       end
+    end
 
-      test "#{definition.enum_value} responds to required_config_keys" do
-        scraper = stub_scraper_enabled(definition.enum_value) { definition.new_scraper(build(:artist_url)) }
-        assert_respond_to(scraper.class, :required_config_keys)
+    describe "required_config_keys" do
+      it "returns the correct values for inheritance chains" do
+        assert_equal(%i[baraag_access_token], Scraper::Baraag.required_config_keys)
+      end
+
+      it "doesn't return optional config keys" do
+        assert_equal(%i[twitter_user twitter_pass], Scraper::Twitter.required_config_keys)
+      end
+
+      it "returns an empty array when there are no necessary keys" do
+        assert_empty(Scraper::Piczel.required_config_keys)
       end
     end
 

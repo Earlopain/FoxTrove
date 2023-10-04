@@ -22,10 +22,6 @@ module Scraper
       @offset = 0
     end
 
-    def self.required_config_keys
-      %i[pixiv_user pixiv_pass]
-    end
-
     def self.state
       :offset
     end

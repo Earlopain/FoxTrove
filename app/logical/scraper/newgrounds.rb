@@ -9,10 +9,6 @@ module Scraper
       @page = 1
     end
 
-    def self.required_config_keys
-      %i[newgrounds_user newgrounds_pass]
-    end
-
     def self.state
       :page
     end

@@ -11,10 +11,6 @@ module Scraper
       @next_offset = nil
     end
 
-    def self.required_config_keys
-      %i[deviantart_client_id deviantart_client_secret deviantart_user deviantart_pass]
-    end
-
     def self.state
       :next_offset
     end

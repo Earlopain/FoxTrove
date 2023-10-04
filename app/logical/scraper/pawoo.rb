@@ -2,10 +2,6 @@
 
 module Scraper
   class Pawoo < MastodonV1
-    def self.required_config_keys
-      %i[pawoo_access_token]
-    end
-
     def domain
       "pawoo.net"
     end
