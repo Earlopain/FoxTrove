@@ -12,9 +12,12 @@ module Scraper
     def self.inherited(base)
       super
       base.class_eval do
-        def self.required_config_keys
+        def self.all_config_keys
           prefix = name.demodulize.underscore
-          all_config_keys = Config.default_config.keys.select { |key| key.start_with?("#{prefix}_") && !key.end_with?("_disabled?") }.map(&:to_sym)
+          Config.default_config.keys.select { |key| key.start_with?("#{prefix}_") && !key.end_with?("_disabled?") }.map(&:to_sym)
+        end
+
+        def self.required_config_keys
           optional_config_keys = try(:optional_config_keys) || []
           all_config_keys - optional_config_keys
         end
@@ -80,7 +83,7 @@ module Scraper
     end
 
     def self.cache_key(method_name)
-      config_checksum = Digest::MD5.hexdigest(required_config_keys.map { |key| Config.send(key) }.join)
+      config_checksum = Digest::MD5.hexdigest(all_config_keys.map { |key| Config.send(key) }.join("|"))
       "#{name}.#{method_name}/#{config_checksum}"
     end
 

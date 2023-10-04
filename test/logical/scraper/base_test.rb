@@ -46,12 +46,14 @@ module Scraper
       end
 
       it "invalidates the cache when config values change" do
-        @scraper.expects(:tokens_old).twice.returns("value")
+        @scraper.expects(:tokens_old).times(3).returns("value")
 
         @scraper.tokens
         Config.stubs(:twitter_user).returns("new_value")
         @scraper.tokens
         Config.unstub(:twitter_user)
+        @scraper.tokens
+        Config.stubs(:twitter_otp_secret).returns("new_value")
         @scraper.tokens
       end
 
