@@ -4,7 +4,7 @@ require "test_helper"
 
 class ConfigTest < ActiveSupport::TestCase
   setup do
-    Config.stubs(:default_config).returns({ "app_name" => "DefaultName" })
+    Config.stubs(:default_config).returns(app_name: "DefaultName")
     Config.force_reload
   end
 

@@ -4,11 +4,11 @@ module Config
   module_function
 
   def default_config
-    @default_config ||= YAML.load_file(Rails.root.join("config/reverser.yml"))
+    @default_config ||= YAML.load_file(Rails.root.join("config/reverser.yml"), symbolize_names: true)
   end
 
   def custom_config
-    @custom_config ||= File.exist?(custom_config_path) ? YAML.load_file(custom_config_path, fallback: {}) : {}
+    @custom_config ||= File.exist?(custom_config_path) ? YAML.load_file(custom_config_path, fallback: {}, symbolize_names: true) : {}
   end
 
   def custom_config_path
@@ -27,14 +27,14 @@ module Config
   def method_missing(method)
     raise NoMethodError, "Unknown config #{method}" unless respond_to_missing?(method)
 
-    if custom_config.key? method.to_s
-      custom_config[method.to_s]
+    if custom_config.key?(method)
+      custom_config[method]
     else
-      default_config[method.to_s]
+      default_config[method]
     end
   end
 
   def respond_to_missing?(method, *)
-    default_config.key? method.to_s
+    default_config.key?(method)
   end
 end

@@ -14,7 +14,7 @@ module Scraper
       base.class_eval do
         def self.all_config_keys
           prefix = name.demodulize.underscore
-          Config.default_config.keys.select { |key| key.start_with?("#{prefix}_") && !key.end_with?("_disabled?") }.map(&:to_sym)
+          Config.default_config.keys.select { |key| key.start_with?("#{prefix}_") && !key.end_with?("_disabled?") }
         end
 
         def self.required_config_keys
