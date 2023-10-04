@@ -11,7 +11,7 @@ module IqdbProxy
 
   # Makes the actual request to the iqdb server
   def make_request(path, request_type, params = {})
-    url = URI.parse(Config.iqdb_server)
+    url = URI.parse(DockerEnv.iqdb_url)
     url.path = path
     HTTParty.send request_type, url, { body: params, headers: { "Content-Type" => "application/json" } }
   end

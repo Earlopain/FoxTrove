@@ -9,6 +9,8 @@ services:
     image: reverser
     environment:
       EXPOSED_VNC_PORT: ${EXPOSED_VNC_PORT:?}
+      IQDB_URL: ${IQDB_URL:-http://iqdb:5588}
+      SELENIUM_URL: ${SELENIUM_URL:-http://selenium:4444}
     volumes:
       - .:/app
       - build_assets:/app/public/build

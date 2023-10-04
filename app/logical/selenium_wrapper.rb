@@ -9,7 +9,7 @@ class SeleniumWrapper
     prefs[:performance] = "ALL" if with_performance
     cps = Selenium::WebDriver::Options.chrome "goog:loggingPrefs": prefs
 
-    driver = Selenium::WebDriver.for :remote, capabilities: [options, cps], url: Config.selenium_url
+    driver = Selenium::WebDriver.for :remote, capabilities: [options, cps], url: DockerEnv.selenium_url
     if block_given?
       begin
         yield driver
