@@ -4,7 +4,7 @@ ENV["RAILS_ENV"] ||= "test"
 ENV["MT_NO_EXPECTATIONS"] ||= "1"
 require_relative "../config/environment"
 require "rails/test_help"
-require "minitest/rails"
+require "minitest-spec-rails"
 require "minitest/reporters"
 
 require "factory_bot_rails"
@@ -28,7 +28,7 @@ module ActiveSupport
   class TestCase
     include FactoryBot::Syntax::Methods
 
-    before do
+    setup do
       Config.stubs(:custom_config).returns({})
       Config.stubs(:env).returns({})
       Rails.cache.clear

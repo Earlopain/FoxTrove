@@ -3,12 +3,12 @@
 require "test_helper"
 
 class ConfigTest < ActiveSupport::TestCase
-  before do
+  setup do
     Config.stubs(:default_config).returns({ "app_name" => "DefaultName" })
     Config.force_reload
   end
 
-  after do
+  teardown do
     Config.force_reload
   end
 
