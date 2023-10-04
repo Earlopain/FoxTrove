@@ -15,7 +15,7 @@
     <% @definitions.each do |definition| %>
       <% entry = @counts[definition.enum_value] || {} %>
       <tr>
-        <td><%= definition.display_name %></td>
+        <td><%= link_to_if(definition.enum_value != "manual", definition.display_name, config_path(definition.enum_value)) %></td>
         <td><%= link_to(entry["artist_count"] || 0, artists_path(search: { site_type: definition.enum_value })) %></td>
         <td><%= link_to(entry["url_count"] || 0, artist_urls_path(search: { site_type: definition.enum_value }))  %></td>
         <td><%= link_to(entry["submission_count"] || 0, submission_files_path(search: { site_type: definition.enum_value }))  %></td>

@@ -1,0 +1,9 @@
+<h2>Settings for <%= @definition.display_name %></h2>
+<%= link_to @definition.homepage, @definition.homepage %><br>
+<%= simple_form_for(:config, url: modify_config_index_path, method: :put) do |f| %>
+  <% @definition.all_config_keys.each do |key| %>
+    <%= f.input key, label: key.to_s.delete_prefix("#{@definition.enum_value}_"), input_html: { value: Config.send(key) } %>
+  <% end %>
+  <%= f.input "#{@definition.enum_value}_disabled", as: :select, label: "disabled", selected: Config.send("#{@definition.enum_value}_disabled?").to_s %>
+  <%= f.submit %>
+<% end %>

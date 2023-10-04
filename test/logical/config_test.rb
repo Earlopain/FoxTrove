@@ -4,7 +4,7 @@ require "test_helper"
 
 class ConfigTest < ActiveSupport::TestCase
   setup do
-    Config.stubs(:default_config).returns(app_name: "DefaultName")
+    Config.stubs(:default_config).returns(app_name: "DefaultName", bool?: true)
     Config.force_reload
   end
 
@@ -19,6 +19,7 @@ class ConfigTest < ActiveSupport::TestCase
       f.flush
       Config.unstub(:custom_config)
       yield
+      Config.force_reload
     end
   end
 
@@ -46,6 +47,22 @@ class ConfigTest < ActiveSupport::TestCase
   it "returns the overwritten value of the custom config" do
     stub_custom_config(app_name: "OverwrittenName") do
       assert_equal("OverwrittenName", Config.app_name)
+    end
+  end
+
+  it "merges the config correctly" do
+    stub_custom_config(app_name: "OverwrittenName", other_key: "abc") do
+      assert_equal({ "app_name" => "NewName", "other_key" => "abc" }, Config.merge_custom_config("app_name" => "NewName"))
+      assert_equal({ "app_name" => "NewName", "other_key" => "abc" }, Config.merge_custom_config(app_name: "NewName"))
+    end
+  end
+
+  it "handles booleans" do
+    stub_custom_config(bool: "true") do
+      assert_predicate(Config, :bool?)
+    end
+    stub_custom_config(bool: "false") do
+      assert_not_predicate(Config, :bool?)
     end
   end
 end

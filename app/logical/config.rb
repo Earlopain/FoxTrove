@@ -15,6 +15,15 @@ module Config
     Rails.root.join("config/reverser_custom_config.yml")
   end
 
+  def merge_custom_config(new_values)
+    custom_config.merge(new_values).transform_keys(&:to_s)
+  end
+
+  def write_custom_config(new_values)
+    data = Psych.safe_dump(merge_custom_config(new_values))
+    File.write(custom_config_path, data)
+  end
+
   def force_reload
     @default_config = nil
     @custom_config = nil
@@ -27,7 +36,10 @@ module Config
   def method_missing(method)
     raise NoMethodError, "Unknown config #{method}" unless respond_to_missing?(method)
 
-    if custom_config.key?(method)
+    bool_key = method.to_s.delete_suffix("?").to_sym
+    if custom_config.key?(bool_key) && method.end_with?("?")
+      custom_config[bool_key] == "true"
+    elsif custom_config.key?(method)
       custom_config[method]
     else
       default_config[method]

@@ -1,0 +1,13 @@
+<h1>General Settings</h1>
+
+<%= simple_form_for(:config, url: modify_config_index_path, method: :put) do |f| %>
+  <%= f.input :app_name, input_html: { value: Config.app_name } %>
+  <%= f.input :log_scraper_requests, as: :select, selected: Config.log_scraper_requests? %>
+  <%= f.input :scraper_request_rate_limit, input_html: { value: Config.scraper_request_rate_limit } %>
+  <%= f.input :time_zone, collection: ActiveSupport::TimeZone.all.map { |tz| [tz.to_s, tz.name] }, selected: Config.time_zone %>
+  <%= f.submit %>
+<% end %>
+
+<% Sites.scraper_definitions.each do |definition| %>
+  <div><%= link_to "#{definition.display_name} settings", config_path(definition.enum_value) %></div>
+<% end %>

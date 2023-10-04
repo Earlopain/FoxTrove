@@ -79,6 +79,8 @@ services:
 
   tests:
     image: reverser
+    environment:
+      EXPOSED_VNC_PORT: "123"
     volumes:
       - .:/app
     entrypoint: bundle exec rails test

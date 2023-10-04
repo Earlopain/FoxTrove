@@ -23,6 +23,8 @@ module Sites
       @scraper.required_config_keys.select { |key| Config.send(key).blank? }
     end
 
+    delegate :all_config_keys, to: :@scraper
+
     def cached_values
       @scraper.cached_methods.filter_map do |method|
         key = @scraper.cache_key(method)
