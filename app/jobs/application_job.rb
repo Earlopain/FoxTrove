@@ -2,7 +2,7 @@
 
 class ApplicationJob < ActiveJob::Base
   include GoodJob::ActiveJobExtensions::Concurrency
-  retry_on StandardError, wait: :exponentially_longer, attempts: 25 do |_job, exception|
+  retry_on StandardError, wait: :polynomially_longer, attempts: 25 do |_job, exception|
     log_exception(exception)
   end
   discard_on ActiveJob::DeserializationError

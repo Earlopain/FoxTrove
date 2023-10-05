@@ -1,9 +1,9 @@
 {
   "name": "reverser",
-  "packageManager": "pnpm@8.7.6",
+  "packageManager": "pnpm@8.8.0",
   "private": true,
   "dependencies": {
-    "@rails/ujs": "7.0.8"
+    "@rails/ujs": "7.1.0"
   },
   "scripts": {
     "build:js": "esbuild app/typescript/*.* --target=es2022 --bundle --sourcemap --outdir=./public/build",
@@ -12,9 +12,9 @@
   },
   "version": "0.1.0",
   "devDependencies": {
-    "@types/rails__ujs": "^6.0.1",
-    "esbuild": "^0.19.3",
-    "sass": "^1.67.0",
+    "@types/rails__ujs": "^6.0.2",
+    "esbuild": "^0.19.4",
+    "sass": "^1.68.0",
     "typescript": "^5.2.2"
   }
 }

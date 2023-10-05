@@ -6,8 +6,8 @@ import Samples from "./samples";
 import TimeAgo from "./time_ago";
 import Toggleable from "./toggleable";
 
-import Rails from "@rails/ujs"
-Rails.start()
+// TODO: https://github.com/rails/rails/issues/49499
+import "@rails/ujs";
 
 document.addEventListener("DOMContentLoaded", () => {
   ClickMode.init();
