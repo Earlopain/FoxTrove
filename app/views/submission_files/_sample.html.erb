@@ -1,4 +1,4 @@
-<% similarity ||= nil %>
+<%# locals: (submission_file:, similarity: nil) -%>
 <%= tag.div class: "submission-sample", data: { id: submission_file.id } do %>
   <% if submission_file.sample_generated? %>
     <div class="file-container">

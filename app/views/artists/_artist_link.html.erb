@@ -1,3 +1,4 @@
+<%# locals: (artist_url:) -%>
 <div class="artist-link">
   <%= site_icon artist_url %>
   <%= link_to artist_url.unescaped_url_identifier, artist_path(artist_url.artist, search: { artist_url_id: [artist_url.id] }), class: "site-icon-text" %>

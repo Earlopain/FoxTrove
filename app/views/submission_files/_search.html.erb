@@ -1,3 +1,4 @@
+<%# locals: (path:, artist_urls:) -%>
 <%= hideable_search(path) do |f| %>
   <%= f.input :artist_url_id, label: "URLs", collection: artist_urls, input_html: { multiple: true } if artist_urls.any? %>
   <%= f.input :upload_status, label: "Status", collection: [
