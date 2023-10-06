@@ -9,5 +9,5 @@
 <% end %>
 
 <% Sites.scraper_definitions.each do |definition| %>
-  <div><%= link_to "#{definition.display_name} settings", config_path(definition.enum_value) %></div>
+  <div><%= link_to "#{definition.display_name} settings", config_path(definition.site_type) %></div>
 <% end %>

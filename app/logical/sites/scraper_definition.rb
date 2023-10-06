@@ -9,7 +9,7 @@ module Sites
       @submission_template = Addressable::Template.new(definition_data["submission_template"])
       @image_domains = definition_data["image_domains"] || []
       @download_headers = definition_data["download_headers"] || {}
-      @scraper = "Scraper::#{enum_value.camelize}".constantize
+      @scraper = "Scraper::#{site_type.camelize}".constantize
     end
 
     def submission_url(submission)
@@ -35,7 +35,7 @@ module Sites
     end
 
     def manually_disabled?
-      Config.send("#{enum_value}_disabled?")
+      Config.send("#{site_type}_disabled?")
     end
 
     def scraper_enabled?

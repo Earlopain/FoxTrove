@@ -4,7 +4,7 @@ module Sites
   module_function
 
   def from_enum(value)
-    definitions.find { |definition| definition.enum_value == value }
+    definitions.find { |definition| definition.site_type == value }
   end
 
   def from_gallery_url(url)

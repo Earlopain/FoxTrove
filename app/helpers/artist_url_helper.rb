@@ -10,7 +10,7 @@ module ArtistUrlHelper
   end
 
   def site_types_collection
-    Sites.definitions.map { |definitions| [definitions.display_name, definitions.enum_value] }.sort
+    Sites.definitions.map { |definition| [definition.display_name, definition.site_type] }.sort
   end
 
   def site_icon(artist_url)

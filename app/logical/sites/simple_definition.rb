@@ -2,10 +2,10 @@
 
 module Sites
   class SimpleDefinition
-    attr_reader :enum_value, :display_name, :homepage, :gallery_templates, :username_identifier_regex, :image_domains, :download_headers
+    attr_reader :site_type, :display_name, :homepage, :gallery_templates, :username_identifier_regex, :image_domains, :download_headers
 
     def initialize(definition_data)
-      @enum_value = definition_data["enum_value"]
+      @site_type = definition_data["enum_value"]
       @display_name = definition_data["display_name"]
       @homepage = definition_data["homepage"]
       @gallery_templates = definition_data["gallery_templates"].map { |t| Addressable::Template.new("{prefix}#{t}{/remaining}{?remaining}{#remaining}") }
@@ -32,7 +32,7 @@ module Sites
     end
 
     def icon_class
-      "site-icon-#{enum_value.starts_with?('youtube') ? 'youtube' : enum_value}"
+      "site-icon-#{site_type.starts_with?('youtube') ? 'youtube' : site_type}"
     end
 
     def gallery_url(identifier)

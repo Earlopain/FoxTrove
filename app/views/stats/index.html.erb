@@ -13,13 +13,13 @@
   </thead>
   <tbody>
     <% @definitions.each do |definition| %>
-      <% entry = @counts[definition.enum_value] || {} %>
+      <% entry = @counts[definition.site_type] || {} %>
       <tr>
-        <td><%= link_to_if(definition.enum_value != "manual", definition.display_name, config_path(definition.enum_value)) %></td>
-        <td><%= link_to(entry["artist_count"] || 0, artists_path(search: { site_type: definition.enum_value })) %></td>
-        <td><%= link_to(entry["url_count"] || 0, artist_urls_path(search: { site_type: definition.enum_value }))  %></td>
-        <td><%= link_to(entry["submission_count"] || 0, submission_files_path(search: { site_type: definition.enum_value }))  %></td>
-        <td><%= link_to(entry["file_count"] || 0, submission_files_path(search: { site_type: definition.enum_value }))  %></td>
+        <td><%= link_to_if(definition.site_type != "manual", definition.display_name, config_path(definition.site_type)) %></td>
+        <td><%= link_to(entry["artist_count"] || 0, artists_path(search: { site_type: definition.site_type })) %></td>
+        <td><%= link_to(entry["url_count"] || 0, artist_urls_path(search: { site_type: definition.site_type }))  %></td>
+        <td><%= link_to(entry["submission_count"] || 0, submission_files_path(search: { site_type: definition.site_type }))  %></td>
+        <td><%= link_to(entry["file_count"] || 0, submission_files_path(search: { site_type: definition.site_type }))  %></td>
         <td>
           <% if definition.manually_disabled? %>
             Manually disabled

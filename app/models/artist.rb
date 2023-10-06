@@ -24,7 +24,7 @@ class Artist < ApplicationRecord
       end
 
       artist_url = artist_urls.new(
-        site_type: result[:site].enum_value,
+        site_type: result[:site].site_type,
         url_identifier: result[:identifier],
         created_at_on_site: Time.current,
         about_on_site: "",
