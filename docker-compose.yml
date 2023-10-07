@@ -1,5 +1,10 @@
 version: "3"
 
+x-environment: &common-env
+  EXPOSED_VNC_PORT: ${EXPOSED_VNC_PORT:-7900}
+  IQDB_URL: ${IQDB_URL:-http://iqdb:5588}
+  SELENIUM_URL: ${SELENIUM_URL:-http://selenium:4444}
+
 services:
   reverser:
     build:
@@ -8,9 +13,7 @@ services:
         COMPOSE_PROFILES: ${COMPOSE_PROFILES-}
     image: reverser
     environment:
-      EXPOSED_VNC_PORT: ${EXPOSED_VNC_PORT:?}
-      IQDB_URL: ${IQDB_URL:-http://iqdb:5588}
-      SELENIUM_URL: ${SELENIUM_URL:-http://selenium:4444}
+      <<: *common-env
     volumes:
       - .:/app
       - build_assets:/app/public/build
@@ -27,7 +30,7 @@ services:
       - iqdb
       - selenium
     ports:
-      - ${EXPOSED_SERVER_PORT:?}:9000
+      - ${EXPOSED_SERVER_PORT:-9000}:9000
     command: foreman start --color
 
   solargraph:
@@ -51,7 +54,7 @@ services:
       - ${REVERSER_DATA_PATH:?}/db_data:/var/lib/postgresql/data
     shm_size: 256mb
     ports:
-      - ${EXPOSED_POSTGRES_PORT:?}:5432
+      - ${EXPOSED_POSTGRES_PORT:-34518}:5432
 
   iqdb:
     image: ghcr.io/e621ng/iqdb:d4fed9d9a51184e72d2f14d4ec461d7830bd177a
@@ -64,7 +67,7 @@ services:
       - VNC_NO_PASSWORD=1
     shm_size: 2gb
     ports:
-      - ${EXPOSED_VNC_PORT:?}:7900
+      - ${EXPOSED_VNC_PORT:-7900}:7900
 
   # Profiles for standalone things
 
@@ -80,7 +83,7 @@ services:
   tests:
     image: reverser
     environment:
-      EXPOSED_VNC_PORT: "123"
+      <<: *common-env
     volumes:
       - .:/app
     entrypoint: bundle exec rails test
