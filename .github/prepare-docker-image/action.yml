@@ -15,5 +15,5 @@ runs:
         tags: reverser:test
 
     - name: Set docker run command
-      run: echo "DOCKER_RUN=docker compose run --rm -e RAILS_ENV=test -e CI=true" >> "$GITHUB_ENV"
+      run: echo "DOCKER_RUN=docker compose run --rm -e RAILS_ENV=test -e REVERSER_DATA_PATH=$RUNNER_TEMP -e CI=true" >> "$GITHUB_ENV"
       shell: bash
