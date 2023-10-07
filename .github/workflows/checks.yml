@@ -34,9 +34,6 @@ jobs:
       - uses: actions/checkout@v4
       - uses: ./.github/prepare-docker-image
 
-      - name: Create DB
-        run: $DOCKER_RUN reverser bin/rails db:schema:load
-
       - name: Run Tests
         run: $DOCKER_RUN tests
 
