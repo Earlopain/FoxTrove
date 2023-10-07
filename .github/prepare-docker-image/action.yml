@@ -20,7 +20,9 @@ runs:
         --rm
         --network host
         -e POSTGRES_HOST=localhost
-        -e EXPOSED_VNC_PORT=123
+        -e EXPOSED_VNC_PORT=7900
+        -e IQDB_URL=http://iqdb:5588
+        -e SELENIUM_URL=http://selenium:4444
         -e RAILS_ENV=test
         -e CI=true
         -v $PWD:/app reverser:test
