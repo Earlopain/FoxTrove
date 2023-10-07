@@ -17,6 +17,16 @@ else
   Minitest::Reporters.use! Minitest::Reporters::DefaultReporter.new
 end
 
+# Relative output for test failures so the paths are clickable
+module Minitest
+  class Assertion
+    alias old_location location
+    def location
+      Pathname.new(old_location).relative_path_from(Rails.root)
+    end
+  end
+end
+
 FactoryBot::SyntaxRunner.class_eval do
   include ActiveSupport::Testing::FileFixtures
   self.file_fixture_path = ActiveSupport::TestCase.file_fixture_path
