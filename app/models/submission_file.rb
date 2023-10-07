@@ -2,14 +2,16 @@
 
 class SubmissionFile < ApplicationRecord
   belongs_to :artist_submission
-  has_one_attached :original
-  has_one_attached :sample
   has_many :e6_posts, dependent: :destroy
 
   validate :original_present
 
   after_destroy_commit :remove_from_iqdb
   after_save_commit :update_variants_and_iqdb
+  # This adds framework after_commit hooks which must run after
+  # the ones above for attachment_changes to work correctly
+  has_one_attached :original
+  has_one_attached :sample
 
   scope :with_attached, -> { with_attached_sample.with_attached_original }
   scope :with_everything, -> { with_attached.includes(:e6_posts, artist_submission: :artist_url) }
