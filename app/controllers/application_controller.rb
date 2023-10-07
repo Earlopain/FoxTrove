@@ -6,7 +6,17 @@ class ApplicationController < ActionController::Base
   before_action :normalize_params
   around_action :with_time_zone
 
-  rescue_from Exception, with: :rescue_exception
+  EXCEPTION_TYPES = {
+    ActionController::BadRequest => 400,
+    ActionController::ParameterMissing => 400,
+    ActionController::InvalidAuthenticityToken => 403,
+    ActionController::UnpermittedParameters => 403,
+    ActiveRecord::RecordNotFound => 404,
+    ActionController::UnknownFormat => 406,
+    PG::ConnectionBad => 503,
+  }.freeze
+  exception_classes = Rails.env.test? ? EXCEPTION_TYPES.keys : Exception
+  rescue_from(*exception_classes, with: :rescue_exception)
 
   def set_start_time
     @start_time = Time.current.to_f
@@ -24,19 +34,6 @@ class ApplicationController < ActionController::Base
   def with_time_zone(&)
     Time.use_zone(Config.time_zone, &)
   end
-
-  EXCEPTION_TYPES = {
-    ActionController::BadRequest => 400,
-    ActionController::ParameterMissing => 400,
-    ActionController::InvalidAuthenticityToken => 403,
-    ActionController::UnpermittedParameters => 403,
-    ActiveRecord::RecordNotFound => 404,
-    ActionController::UnknownFormat => 406,
-    ActionView::MissingTemplate => 500,
-    ActionView::Template::Error => 500,
-    ActiveRecord::QueryCanceled => 500,
-    PG::ConnectionBad => 503,
-  }.freeze
 
   def rescue_exception(exception)
     @exception = exception
