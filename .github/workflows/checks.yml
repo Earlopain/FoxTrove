@@ -35,7 +35,7 @@ jobs:
       - uses: ./.github/prepare-docker-image
 
       - name: Run Tests
-        run: $DOCKER_RUN tests
+        run: docker compose run --rm -e REVERSER_DATA_PATH=dummy -e CI=true tests
 
   rubocop:
     runs-on: ubuntu-latest
