@@ -35,6 +35,9 @@ module Reverser
       },
     }
 
+    # TODO: Remove this
+    config.active_record.run_after_transaction_callbacks_in_order_defined = false
+
     config.action_controller.action_on_unpermitted_parameters = :raise
 
     config.cache_store = :file_store, Rails.root.join("tmp/file_store")
