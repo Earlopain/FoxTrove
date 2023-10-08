@@ -69,7 +69,7 @@ $icons: (
         width: $icon_size;
         height: $icon_size;
         display: inline-block;
-        background: url("/build/icons.png");
+        background: url("/icons.png");
         background-size: $icon_size;
         background-position: 0px calc(-#{$i} * #{$icon_size});
       }
