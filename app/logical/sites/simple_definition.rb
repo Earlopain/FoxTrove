@@ -32,7 +32,7 @@ module Sites
     end
 
     def icon_class
-      "site-icon-#{site_type.starts_with?('youtube') ? 'youtube' : site_type}"
+      "site-icon-#{site_type}"
     end
 
     def gallery_url(identifier)

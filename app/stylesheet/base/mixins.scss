@@ -47,7 +47,9 @@ $icons: (
   "vkontakte"
   "weasyl"
   "ychart"
-  "youtube"
+  "youtube_channel"
+  "youtube_legacy"
+  "youtube_vanity"
 );
 
 @mixin site_icon($icon_size) {
