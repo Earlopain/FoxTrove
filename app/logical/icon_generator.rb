@@ -8,7 +8,10 @@ module IconGenerator
   ICON_SIZE = 64
 
   def run
-    files = Dir.glob("#{ICON_FOLDER}/*.png")
+    files = Dir.glob("#{ICON_FOLDER}/*.png").sort_by do |path|
+      index, = File.basename(path).split("-")
+      index.to_i
+    end
 
     result = Vips::Image.thumbnail(files.first, ICON_SIZE)
     result = result.add_alpha unless result.has_alpha?

@@ -31,10 +31,6 @@ module Sites
       image_domains.include? domain
     end
 
-    def icon_class
-      "site-icon-#{site_type}"
-    end
-
     def gallery_url(identifier)
       "https://#{gallery_templates.first.expand(site_artist_identifier: identifier)}"
     end

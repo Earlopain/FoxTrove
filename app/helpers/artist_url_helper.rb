@@ -14,7 +14,9 @@ module ArtistUrlHelper
   end
 
   def site_icon(artist_url)
-    icon = tag.span(class: artist_url.site.icon_class)
+    # NOTE: Would be neat to be able to use attr here but no browser supports this at the moment
+    icon_index = ArtistUrl.site_types[artist_url.site_type]
+    icon = tag.span(class: "site-icon", style: "--icon-index: #{icon_index};")
     link_to tag.span(icon), gallery_url(artist_url), title: "#{artist_url.site.display_name} - #{artist_url.unescaped_url_identifier}"
   end
 

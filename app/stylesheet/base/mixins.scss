@@ -1,57 +1,3 @@
-$icons: (
-  "afterdark"
-  "artconomy"
-  "artfight"
-  "artfol"
-  "artstation"
-  "baraag"
-  "bluesky"
-  "boosty"
-  "buzzly"
-  "carrd"
-  "cohost"
-  "commishes"
-  "deviantart"
-  "discord"
-  "facebook"
-  "fanbox"
-  "furaffinity"
-  "furrynetwork"
-  "furrystation"
-  "gumroad"
-  "hentai_foundry"
-  "inkblot"
-  "inkbunny"
-  "instagram"
-  "itaku"
-  "kofi"
-  "linktree"
-  "manual"
-  "newgrounds"
-  "patreon"
-  "pawoo"
-  "picarto"
-  "piczel"
-  "pillowfort"
-  "pixiv"
-  "reddit"
-  "skeb"
-  "sofurry"
-  "subscribestar"
-  "telegram"
-  "toyhouse"
-  "trello"
-  "tumblr"
-  "twitch"
-  "twitter"
-  "vkontakte"
-  "weasyl"
-  "ychart"
-  "youtube_channel"
-  "youtube_legacy"
-  "youtube_vanity"
-);
-
 @mixin site_icon($icon_size) {
   font-size: $icon_size;
   white-space: nowrap;
@@ -60,21 +6,16 @@ $icons: (
     padding-left: 0.5rem;
   }
 
-  // Arrays start at 1!?
-  @for $i from 0 through length($icons) - 1 {
-    $icon: nth($icons, $i + 1);
-
-    .site-icon-#{$icon} {
-      vertical-align: middle;
-      &::before {
-        content: "";
-        width: $icon_size;
-        height: $icon_size;
-        display: inline-block;
-        background: url("/icons.png");
-        background-size: $icon_size;
-        background-position: 0px calc(-#{$i} * #{$icon_size});
-      }
+  .site-icon {
+    vertical-align: middle;
+    &::before {
+      content: "";
+      width: $icon_size;
+      height: $icon_size;
+      display: inline-block;
+      background: url("/icons.png");
+      background-size: $icon_size;
+      background-position: 0px calc(var(--icon-index) * #{$icon_size} * -1);
     }
   }
 }
