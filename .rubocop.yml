@@ -47,6 +47,7 @@ Metrics/BlockLength:
     - concerning
     - describe
     - define
+    - factory
     - FactoryBot.define
   Exclude:
     - config/routes.rb

@@ -1,0 +1,10 @@
+<%# locals: (matches:) -%>
+<div class="iqdb-matches">
+  <% if matches.any? %>
+    <% matches.each do |match| %>
+      <%= render "submission_files/sample", submission_file: match[:submission_file], similarity: match[:score] %>
+    <% end %>
+  <% else  %>
+    None
+  <% end %>
+</div>

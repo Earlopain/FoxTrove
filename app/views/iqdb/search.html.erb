@@ -1,10 +1,6 @@
 <h1>Similar Images Search</h1>
 <%= render "search" %>
-<br>
-<div>
-  <% @result.each do |entry| %>
-    <%= render "submission_files/sample", submission_file: entry[:submission_file], similarity: entry[:score] %>
-  <% end %>
-</div>
+<h3>Matches</h3>
+<%= render "iqdb/matches", matches: @matches %>
 
-<% page_title "IQDB Results" %>
+<% page_title "IQDB Matches" %>

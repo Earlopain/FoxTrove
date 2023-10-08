@@ -5,7 +5,7 @@ class IqdbController < ApplicationController
   end
 
   def search
-    @result = query(params[:search])
+    @matches = query(params.fetch(:search, {}))
   end
 
   private

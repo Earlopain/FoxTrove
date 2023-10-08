@@ -31,6 +31,10 @@ FactoryBot.define do
         submission_file.attach_original_from_file!(file_fixture(evaluator.file_name).open)
         submission_file.sample.attach(io: file_fixture(evaluator.file_name).open, filename: "sample") if evaluator.with_sample
       end
+
+      factory :submission_file_for_view do
+        with_sample { true }
+      end
     end
   end
 end

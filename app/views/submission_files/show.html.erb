@@ -14,14 +14,6 @@
   </div>
 </div>
 <h3>Similar</h3>
-<div>
-  <% if @similar.any? %>
-    <% @similar.each do |entry| %>
-      <%= render "submission_files/sample", submission_file: entry[:submission_file], similarity: entry[:score] %>
-    <% end %>
-  <% else  %>
-    None
-  <% end %>
-</div>
+<%= render "iqdb/matches", matches: @similar %>
 
 <% page_title "#{@submission_file.artist.name} on #{@submission_file.artist_url.site.display_name}" %>
