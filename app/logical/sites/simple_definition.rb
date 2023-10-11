@@ -10,8 +10,9 @@ module Sites
       @homepage = definition_data["homepage"]
       @gallery_templates = definition_data["gallery_templates"].map { |t| Addressable::Template.new("{prefix}#{t}{/remaining}{?remaining}{#remaining}") }
       @username_identifier_regex = Regexp.new("^#{definition_data['username_identifier_regex']}$")
-      @image_domains = []
-      @download_headers = {}
+      @submission_template = Addressable::Template.new(definition_data["submission_template"]) if definition_data["submission_template"]
+      @image_domains = definition_data["image_domains"] || []
+      @download_headers = definition_data["download_headers"] || {}
     end
 
     def match_for_gallery(uri)
@@ -33,6 +34,13 @@ module Sites
 
     def gallery_url(identifier)
       "https://#{gallery_templates.first.expand(site_artist_identifier: identifier)}"
+    end
+
+    def submission_url(submission)
+      @submission_template.expand(
+        site_artist_identifier: submission.artist_url.url_identifier,
+        site_submission_identifier: submission.identifier_on_site,
+      ).to_s
     end
 
     def missing_config_keys
