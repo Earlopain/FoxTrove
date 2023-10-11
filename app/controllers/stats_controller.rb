@@ -14,7 +14,7 @@ class StatsController < ApplicationController
       "count(*) as file_count",
     ).joins(artist_submission: { artist_url: :artist }).group(:site_type).index_by(&:site_type)
     @counts.transform_keys! { |id| ArtistUrl.site_types.invert[id] }
-    @definitions = (Sites.scraper_definitions + [Sites.from_enum("manual")]).sort_by(&:display_name)
+    @definitions = Sites.definitions.sort_by(&:display_name)
   end
 
   private

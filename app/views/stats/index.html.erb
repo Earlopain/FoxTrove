@@ -14,6 +14,7 @@
   <tbody>
     <% @definitions.each do |definition| %>
       <% entry = @counts[definition.site_type] || {} %>
+      <% next if definition.instance_of?(Sites::SimpleDefinition) && !entry["file_count"] %>
       <tr>
         <td><%= link_to_if(definition.site_type != "manual", definition.display_name, config_path(definition.site_type)) %></td>
         <td><%= link_to(entry["artist_count"] || 0, artists_path(search: { site_type: definition.site_type })) %></td>
@@ -26,6 +27,8 @@
           <% elsif definition.missing_config_keys.any? %>
             Missing config <%= "key".pluralize(definition.missing_config_keys.count) %>:<br>
             <%= definition.missing_config_keys.join(", ") %>
+          <% elsif definition.instance_of?(Sites::SimpleDefinition) %>
+            Removed
           <% else %>
             Enabled
           <% end %>
