@@ -56,21 +56,15 @@ class ArtistUrl < ApplicationRecord
     end
   end
 
-  def site
-    @site ||= Sites.from_enum(site_type)
-  end
-
   def unescaped_url_identifier
     CGI.unescape(url_identifier)
   end
 
-  def scraper?
-    site.is_a?(Sites::ScraperDefinition)
+  def site
+    @site ||= Sites.from_enum(site_type)
   end
 
-  def scraper_enabled?
-    scraper? && site.scraper_enabled?
-  end
+  delegate :scraper?, :scraper_enabled?, to: :site
 
   def scraper
     site.new_scraper(self)

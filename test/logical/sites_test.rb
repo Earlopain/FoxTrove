@@ -6,9 +6,9 @@ class SitesTest < ActiveSupport::TestCase
   it "returns the correct definition for enum lookups" do
     twitter = Sites.from_enum("twitter")
     twitch = Sites.from_enum("twitch")
-    assert_instance_of(Sites::ScraperDefinition, twitter)
+    assert_predicate(twitter, :scraper?)
     assert_equal("Twitter", twitter.display_name)
-    assert_instance_of(Sites::SimpleDefinition, twitch)
+    assert_not_predicate(twitch, :scraper?)
     assert_equal("Twitch", twitch.display_name)
   end
 

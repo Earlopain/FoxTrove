@@ -58,5 +58,9 @@ module Sites
     def scraper_enabled?
       false
     end
+
+    def scraper?
+      false
+    end
   end
 end

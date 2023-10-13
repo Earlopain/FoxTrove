@@ -30,6 +30,10 @@ module Sites
       missing_config_keys.none? && !manually_disabled?
     end
 
+    def scraper?
+      true
+    end
+
     def new_scraper(artist_url)
       raise StandardError, "This scraper is not enabled!" unless scraper_enabled?
 

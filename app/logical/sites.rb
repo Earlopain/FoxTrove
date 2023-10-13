@@ -59,7 +59,7 @@ module Sites
   end
 
   def scraper_definitions
-    definitions.select { |s| s.is_a?(ScraperDefinition) }
+    definitions.select(&:scraper?)
   end
 
   def reset_cache

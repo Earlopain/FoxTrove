@@ -55,7 +55,7 @@ module ActiveSupport
     def stub_scraper_enabled(*site_types, &)
       sites = site_types.map { |site_type| Sites.from_enum(site_type.to_s) }
       sites.each.with_index do |site, index|
-        raise ArgumentError, "#{site_types[index]} is not a valid scraper" unless site.is_a?(Sites::ScraperDefinition)
+        raise ArgumentError, "#{site_types[index]} is not a valid scraper" unless site.scraper?
 
         site.stubs(:scraper_enabled?).returns(true)
       end
