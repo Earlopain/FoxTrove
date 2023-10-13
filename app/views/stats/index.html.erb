@@ -16,7 +16,7 @@
       <% entry = @counts[definition.site_type] || {} %>
       <% next unless definition.scraper? || entry["file_count"] %>
       <tr>
-        <td><%= link_to_if(definition.site_type != "manual", definition.display_name, config_path(definition.site_type)) %></td>
+        <td><%= link_to_if(definition.scraper?, definition.display_name, config_path(definition.site_type)) %></td>
         <td><%= link_to(entry["artist_count"] || 0, artists_path(search: { site_type: definition.site_type })) %></td>
         <td><%= link_to(entry["url_count"] || 0, artist_urls_path(search: { site_type: definition.site_type }))  %></td>
         <td><%= link_to(entry["submission_count"] || 0, submission_files_path(search: { site_type: definition.site_type }))  %></td>

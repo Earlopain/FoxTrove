@@ -6,6 +6,7 @@ class ConfigController < ApplicationController
 
   def show
     @definition = Sites.from_enum(params[:id])
+    raise ActiveRecord::RecordNotFound unless @definition
   end
 
   def modify
