@@ -44,8 +44,11 @@ class ApplicationController < ActionController::Base
       referrer: request.referer,
       user_agent: request.user_agent,
     }
+    status = EXCEPTION_TYPES[exception.class] || 500
+    error_template = "application/error"
+    error_template = "application/#{status}" if lookup_context.template_exists?(status, "application")
 
-    render "application/error", formats: [:html], status: EXCEPTION_TYPES[exception.class] || 500
+    render error_template, formats: [:html], status: status
   end
 
   def respond_with(value)
