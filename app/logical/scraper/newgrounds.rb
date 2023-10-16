@@ -32,7 +32,7 @@ module Scraper
       s.description = submission[:description]
       s.created_at = submission[:created_at]
 
-      submission[:files].each_with_index do |url, index|
+      submission[:files].reverse.each_with_index do |url, index|
         s.add_file({
           url: url,
           created_at: s.created_at,
@@ -65,18 +65,38 @@ module Scraper
       end
     end
 
-    def get_submission_details(url)
+    def get_submission_details(url) # rubocop:disable Metrics/CyclomaticComplexity
       response = fetch_html(url, headers: { Cookie: "#{COOKIE_NAME}=#{fetch_cookie}" })
       html = Nokogiri::HTML(response.body)
       media_object = html.at("[itemtype='https://schema.org/MediaObject']")
-      main_image_url = media_object.at(".image img").attributes["src"].value
-      secondary_image_urls = media_object.css("#author_comments img[data-smartload-src]").map { |e| e.attributes["data-smartload-src"].value }
+      image_urls = []
+      if (image = media_object.at(".medium_image"))
+        # Legacy single image submissions
+        # https://www.newgrounds.com/art/view/kooriki/gina-ref
+        image_urls << image.attributes["href"].value
+      end
+
+      # Multi-image submissions. New single image submissions also look like this
+      # Comics don't have a href on this element
+      # https://www.newgrounds.com/art/view/kooriki/early-bird-gets-the-wyrm
+      image_urls += media_object.css("[data-action='view-image'][href]").map { |e| e.attributes["href"].value }
+
+      # Comic submissions
+      # https://www.newgrounds.com/art/view/ethandoesathing/legend-of-arcana-ch-1-pages
+      image_data, = response.body.scan(/imageData = (\[[\s\S]*\]);/m).first
+      if image_data
+        image_urls += JSON.parse(image_data).pluck("image")
+      end
+
+      # Commentary images
+      # https://www.newgrounds.com/art/view/kooriki/gina-at-the-beach
+      image_urls += media_object.css("#author_comments img[data-smartload-src]").map { |e| e.attributes["data-smartload-src"].value }
       {
         identifier: url.split("/").pop,
         title: media_object.at("[itemprop='name']").content.strip,
         description: media_object.at("#author_comments")&.content&.strip || "",
         created_at: DateTime.parse(media_object.at("[itemprop='datePublished']").attributes["content"].value),
-        files: [main_image_url] + secondary_image_urls,
+        files: image_urls,
       }
     end
 
