@@ -6,10 +6,6 @@ body {
   margin: 0 auto;
   padding: 0 1rem;
 
-  @include mobile("small") {
-    padding: 0;
-  }
-
   // Footer always at bottom setup
   display: flex; 
   flex-direction: column; 
