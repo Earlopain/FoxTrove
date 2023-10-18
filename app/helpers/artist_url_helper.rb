@@ -13,11 +13,13 @@ module ArtistUrlHelper
     Sites.definitions.map { |definition| [definition.display_name, definition.site_type] }.sort
   end
 
-  def site_icon(artist_url)
+  def site_icon(artist_url, &)
     # NOTE: Would be neat to be able to use attr here but no browser supports this at the moment
     icon_index = ArtistUrl.site_types[artist_url.site_type]
     icon = tag.span(class: "site-icon", style: "--icon-index: #{icon_index};")
-    link_to tag.span(icon), gallery_url(artist_url), title: "#{artist_url.site.display_name} - #{artist_url.unescaped_url_identifier}"
+    icon_link = link_to(icon, gallery_url(artist_url), title: "#{artist_url.site.display_name} - #{artist_url.unescaped_url_identifier}")
+    text = tag.span(capture(&), class: "site-icon-text") if block_given?
+    tag.span(icon_link + text, class: "site-icon-wrapper")
   end
 
   def ordered_artist_urls(artist)

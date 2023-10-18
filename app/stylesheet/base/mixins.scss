@@ -1,5 +1,6 @@
-@mixin site_icon($icon_size) {
-  font-size: $icon_size;
+.site-icon-wrapper {
+  --_icon-size: var(--icon-size, 1rem);
+  font-size: var(--_icon-size);
   white-space: nowrap;
 
   .site-icon-text {
@@ -10,12 +11,12 @@
     vertical-align: middle;
     &::before {
       content: "";
-      width: $icon_size;
-      height: $icon_size;
+      width: var(--_icon-size);
+      height: var(--_icon-size);
       display: inline-block;
       background: url("/icons.png");
-      background-size: $icon_size;
-      background-position: 0px calc(var(--icon-index) * #{$icon_size} * -1);
+      background-size: var(--_icon-size);;
+      background-position: 0px calc(var(--icon-index) * var(--_icon-size) * -1);
     }
   }
 }
