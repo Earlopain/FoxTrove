@@ -1,8 +1,7 @@
 .simple_form {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  column-gap: 1em;
-  row-gap: 0.25em;
+  gap: 0.25em 1em;
   width: min-content;
 
   .input {
@@ -13,7 +12,7 @@
       white-space: pre;
     }
 
-    input[type=file] {
+    input[type="file"] {
       width: fit-content;
     }
   }

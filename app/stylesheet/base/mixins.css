@@ -12,7 +12,7 @@
       display: inline-block;
       background: url("../../../public/icons.png");
       background-size: var(--_icon-size);;
-      background-position: 0px calc(var(--icon-index) * var(--_icon-size) * -1);
+      background-position: 0 calc(var(--icon-index) * var(--_icon-size) * -1);
     }
   }
 }
