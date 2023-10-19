@@ -10,7 +10,6 @@ AllCops:
   Exclude:
     - bin/*
     - db/schema.rb
-    - node_modules/**/*
     - vendor/**/*
   TargetRubyVersion: 3.2
 

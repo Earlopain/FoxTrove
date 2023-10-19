@@ -1,7 +1,5 @@
 {
   "files.exclude": {
-    ".pnpm-store/": true,
-    "node_modules/": true,
     "tmp/": true
   },
   "editor.tabSize": 2,

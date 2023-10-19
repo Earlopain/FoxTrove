@@ -2,7 +2,5 @@
 **
 
 # Allow only the files that are actually needed
-!/package.json
-!/pnpm-lock.yaml
 !/Gemfile
 !/Gemfile.lock

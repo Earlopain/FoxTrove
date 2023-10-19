@@ -20,8 +20,6 @@ services:
       - ${REVERSER_DATA_PATH:?}/active_storage:/app/public/storage
       - temp:/app/tmp
     tmpfs:
-      - /app/.pnpm-store
-      - /app/node_modules
       - /app/tmp/cache
       - /app/tmp/pids
       - /app/tmp/sockets

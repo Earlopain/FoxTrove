@@ -1,8 +1,5 @@
 extends: default
 
-ignore: |
-  pnpm-lock.yaml
-
 rules:
   document-start: disable
   line-length: disable

@@ -14,9 +14,6 @@
 # Ignore master key for decrypting credentials and more.
 /config/master.key
 
-/.pnpm-store
-/node_modules
-
 config/reverser_custom_config.yml
 
 spec/examples.txt
