@@ -16,3 +16,21 @@ a:active {
 a.active {
   font-weight: bold;
 }
+
+.button_to {
+  display: inline;
+  
+  button {
+    background: none;
+    border: none;
+    padding: 0;
+    font-size: inherit;
+    line-height: inherit;
+    cursor: pointer;
+    color: var(--color-link);
+  
+    &:hover {
+      color: var(--color-link-hover);
+    }
+  }
+}

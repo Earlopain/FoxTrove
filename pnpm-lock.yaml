@@ -4,15 +4,7 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
-dependencies:
-  '@rails/ujs':
-    specifier: 7.1.0
-    version: 7.1.0
-
 devDependencies:
-  '@types/rails__ujs':
-    specifier: ^6.0.2
-    version: 6.0.2
   esbuild:
     specifier: ^0.19.4
     version: 0.19.4
@@ -219,14 +211,6 @@ packages:
     requiresBuild: true
     dev: true
     optional: true
-
-  /@rails/ujs@7.1.0:
-    resolution: {integrity: sha512-cO8+HREI8hhJDaFyzGCA4AL9/EotHYSTz1v7aQmfZmUdanx/ppXe+MPE4dly2/MtC6Ha6K2Dkzo7bkDGc46y6Q==}
-    dev: false
-
-  /@types/rails__ujs@6.0.2:
-    resolution: {integrity: sha512-ID5IXmBJE6C4ZxiwQ9QcxtcrbGcDjhhdmeq7hgM5mmTcPktA9qYiQvYfCW0UD+akgtDagREAYKohbdnYv11wpQ==}
-    dev: true
 
   /esbuild@0.19.4:
     resolution: {integrity: sha512-x7jL0tbRRpv4QUyuDMjONtWFciygUxWaUM1kMX2zWxI0X2YWOt7MSA0g4UdeSiHM8fcYVzpQhKYOycZwxTdZkA==}

@@ -20,6 +20,15 @@ module ApplicationHelper
     tag.span value.to_fs(:long), datetime: value.to_fs(:iso8601), class: "time-ago"
   end
 
+  # Properly support the method keyword argument
+  def link_to(text, url, **args)
+    if args[:method]
+      button_to(text, url, **args)
+    else
+      super(text, url, **args)
+    end
+  end
+
   def link_to_external(text, url, **)
     link_to text, url, **, rel: "nofollow noopener noreferrer"
   end

@@ -7,9 +7,7 @@ import MultiselectMode from "./multiselect_mode";
 import Samples from "./samples";
 import TimeAgo from "./time_ago";
 import Toggleable from "./toggleable";
-
-// TODO: https://github.com/rails/rails/issues/49499
-import "@rails/ujs";
+import UJS from "./ujs";
 
 document.addEventListener("DOMContentLoaded", () => {
   ClickMode.init();
@@ -17,4 +15,5 @@ document.addEventListener("DOMContentLoaded", () => {
   MultiselectMode.init();
   Samples.init();
   TimeAgo.init();
+  UJS.init();
 });
