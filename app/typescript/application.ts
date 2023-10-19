@@ -1,5 +1,7 @@
 // Entry point for the build script in your package.json
 
+import "../stylesheet/application";
+
 import ClickMode from "./click_mode";
 import MultiselectMode from "./multiselect_mode";
 import Samples from "./samples";
