@@ -8,9 +8,6 @@ devDependencies:
   esbuild:
     specifier: ^0.19.4
     version: 0.19.4
-  typescript:
-    specifier: ^5.2.2
-    version: 5.2.2
 
 packages:
 
@@ -240,10 +237,4 @@ packages:
       '@esbuild/win32-arm64': 0.19.4
       '@esbuild/win32-ia32': 0.19.4
       '@esbuild/win32-x64': 0.19.4
-    dev: true
-
-  /typescript@5.2.2:
-    resolution: {integrity: sha512-mI4WrpHsbCIcwT9cF4FZvr80QUeKvsUsUvKDoR+X/7XHQH98xYD8YHZg7ANtz2GtZt/CBq2QJ0thkGJMHfqc1w==}
-    engines: {node: '>=14.17'}
-    hasBin: true
     dev: true
