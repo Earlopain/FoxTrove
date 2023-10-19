@@ -1,5 +1,5 @@
 header#top {
-  background-color: $color-background;
+  background-color: var(--color-background);
 
   #nav {
     display: grid;
@@ -10,7 +10,7 @@ header#top {
       grid-area: logo;
 
       margin-top: 0.3rem;
-      background-image: url("/logo.png");
+      background-image: url("../../public/logo.png");
       background-repeat: no-repeat;
       background-size: contain;
       background-position-y: center;
@@ -27,8 +27,8 @@ header#top {
 
   menu {
     margin: 0;
-    background-color: $color-foreground;
-    border-radius: $border-radius-full;
+    background-color: var(--color-foreground);
+    border-radius: var(--border-radius-full);
     padding: 0.25rem 0;
 
     li {
@@ -42,10 +42,10 @@ header#top {
 
   .primary-navbar {
     margin-top: 0;
-    background-color: $color-background;
+    background-color: var(--color-background);
 
     li a.current {
-      background-color: $color-foreground;
+      background-color: var(--color-foreground);
       font-weight: bold;
     }
   }

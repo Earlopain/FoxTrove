@@ -1,12 +1,12 @@
 body {
-  color: $color-text;
-  background-color: $color-background;
-  font-family: $base-font-family;
+  color: var(--color-text);
+  background-color: var(--color-background);
+  font-family: Verdana, sans-serif;
   line-height: 1.25em;
   margin: 0 auto;
   padding: 0 1rem;
 
-  // Footer always at bottom setup
+  /* Footer always at bottom setup */
   display: flex; 
   flex-direction: column; 
   min-height: 100vh;

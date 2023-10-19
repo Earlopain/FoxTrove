@@ -10,7 +10,7 @@
       width: var(--_icon-size);
       height: var(--_icon-size);
       display: inline-block;
-      background: url("/icons.png");
+      background: url("../../../public/icons.png");
       background-size: var(--_icon-size);;
       background-position: 0px calc(var(--icon-index) * var(--_icon-size) * -1);
     }

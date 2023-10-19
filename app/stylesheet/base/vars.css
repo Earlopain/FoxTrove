@@ -1,2 +1,18 @@
-$border-radius-full: 6px;
-$base-font-family: Verdana, sans-serif;
+:root {
+  --color-background:    #000000;
+  --color-foreground:    #222222;
+  --color-text:          #ffffff;
+  --color-link:          #ffee95;
+  --color-link-hover:    #f68b00;
+  --color-link-active:   #ffffff;
+  --color-table-section: #333333;
+
+  /* Use relative colors, when available https://caniuse.com/css-relative-colors
+  hsl(from var(--color-foreground) h s calc(l - 5%)); */
+  --color-foreground-darken-5:      #151515;
+  --color-text-darken-10:           #e6e6e6;
+  --color-table-section-darken-5:   #262626;
+  --color-table-section-lighten-10: #4d4d4d;
+
+  --border-radius-full: 6px;
+}

@@ -6,15 +6,14 @@
     "@rails/ujs": "7.1.0"
   },
   "scripts": {
-    "build:js": "esbuild app/typescript/*.* --target=es2022 --bundle --sourcemap --outdir=./public/build",
-    "build:css": "sass ./app/stylesheet/application.scss ./public/build/application.css --load-path=node_modules --embed-sources",
+    "build:js": "esbuild app/typescript/application.ts --target=chrome111,firefox111,safari16 --bundle --sourcemap --outdir=public/build",
+    "build:css": "esbuild app/stylesheet/application.css --target=chrome111,firefox111,safari16 --bundle --sourcemap --outdir=public/build --loader:.png=file",
     "tsc": "tsc --noEmit"
   },
   "version": "0.1.0",
   "devDependencies": {
     "@types/rails__ujs": "^6.0.2",
     "esbuild": "^0.19.4",
-    "sass": "^1.68.0",
     "typescript": "^5.2.2"
   }
 }
