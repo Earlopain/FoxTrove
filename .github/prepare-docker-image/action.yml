@@ -15,7 +15,7 @@ runs:
         tags: reverser:test
 
     - name: Set docker run command
-      run: >
+      run: >-
         echo "DOCKER_RUN=docker run
         --rm
         --network host

@@ -76,6 +76,6 @@ jobs:
         with:
           python-version: "3.11"
 
-      - run: >
+      - run: >-
           pip install yamllint==1.32.0 &&
           yamllint -c .github/yamllint.yml -s .
