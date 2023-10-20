@@ -1,32 +1,6 @@
 GEM
   remote: https://rubygems.org/
   specs:
-    actioncable (7.1.0)
-      actionpack (= 7.1.0)
-      activesupport (= 7.1.0)
-      nio4r (~> 2.0)
-      websocket-driver (>= 0.6.1)
-      zeitwerk (~> 2.6)
-    actionmailbox (7.1.0)
-      actionpack (= 7.1.0)
-      activejob (= 7.1.0)
-      activerecord (= 7.1.0)
-      activestorage (= 7.1.0)
-      activesupport (= 7.1.0)
-      mail (>= 2.7.1)
-      net-imap
-      net-pop
-      net-smtp
-    actionmailer (7.1.0)
-      actionpack (= 7.1.0)
-      actionview (= 7.1.0)
-      activejob (= 7.1.0)
-      activesupport (= 7.1.0)
-      mail (~> 2.5, >= 2.5.4)
-      net-imap
-      net-pop
-      net-smtp
-      rails-dom-testing (~> 2.2)
     actionpack (7.1.0)
       actionview (= 7.1.0)
       activesupport (= 7.1.0)
@@ -36,13 +10,6 @@ GEM
       rack-test (>= 0.6.3)
       rails-dom-testing (~> 2.2)
       rails-html-sanitizer (~> 1.6)
-    actiontext (7.1.0)
-      actionpack (= 7.1.0)
-      activerecord (= 7.1.0)
-      activestorage (= 7.1.0)
-      activesupport (= 7.1.0)
-      globalid (>= 0.6.0)
-      nokogiri (>= 1.8.5)
     actionview (7.1.0)
       activesupport (= 7.1.0)
       builder (~> 3.1)
@@ -95,7 +62,6 @@ GEM
     crack (0.4.5)
       rexml
     crass (1.0.6)
-    date (3.3.3)
     diff-lcs (1.5.0)
     drb (2.1.1)
       ruby2_keywords
@@ -144,11 +110,6 @@ GEM
     loofah (2.21.3)
       crass (~> 1.0.2)
       nokogiri (>= 1.12.0)
-    mail (2.8.1)
-      mini_mime (>= 0.1.1)
-      net-imap
-      net-pop
-      net-smtp
     marcel (1.0.2)
     mini_mime (1.1.5)
     mini_portile2 (2.8.4)
@@ -165,15 +126,6 @@ GEM
       ruby2_keywords (>= 0.0.5)
     multi_xml (0.6.0)
     mutex_m (0.1.2)
-    net-imap (0.4.0)
-      date
-      net-protocol
-    net-pop (0.1.2)
-      net-protocol
-    net-protocol (0.2.1)
-      timeout
-    net-smtp (0.4.0)
-      net-protocol
     nio4r (2.5.9)
     nokogiri (1.15.4)
       mini_portile2 (~> 2.8.2)
@@ -200,20 +152,6 @@ GEM
     rackup (2.1.0)
       rack (>= 3)
       webrick (~> 1.8)
-    rails (7.1.0)
-      actioncable (= 7.1.0)
-      actionmailbox (= 7.1.0)
-      actionmailer (= 7.1.0)
-      actionpack (= 7.1.0)
-      actiontext (= 7.1.0)
-      actionview (= 7.1.0)
-      activejob (= 7.1.0)
-      activemodel (= 7.1.0)
-      activerecord (= 7.1.0)
-      activestorage (= 7.1.0)
-      activesupport (= 7.1.0)
-      bundler (>= 1.15.0)
-      railties (= 7.1.0)
     rails-dom-testing (2.2.0)
       activesupport (>= 5.0.0)
       minitest
@@ -318,9 +256,6 @@ GEM
       hashdiff (>= 0.4.0, < 2.0.0)
     webrick (1.8.1)
     websocket (1.2.10)
-    websocket-driver (0.7.6)
-      websocket-extensions (>= 0.1.0)
-    websocket-extensions (0.1.5)
     yard (0.9.34)
     zeitwerk (2.6.12)
 
@@ -328,6 +263,13 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  actionpack (~> 7.0)
+  actionview (~> 7.0)
+  activejob (~> 7.0)
+  activemodel (~> 7.0)
+  activerecord (~> 7.0)
+  activestorage (~> 7.0)
+  activesupport (~> 7.0)
   addressable
   factory_bot_rails
   good_job
@@ -341,7 +283,7 @@ DEPENDENCIES
   pagy
   pg (~> 1.1)
   puma
-  rails (~> 7.0)
+  railties (~> 7.0)
   rotp
   rouge
   rubocop

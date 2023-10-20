@@ -2,6 +2,16 @@
 
 source "https://rubygems.org"
 
+rails_version = "~> 7.0"
+gem "actionpack",    rails_version
+gem "actionview",    rails_version
+gem "activejob",     rails_version
+gem "activemodel",   rails_version
+gem "activerecord",  rails_version
+gem "activestorage", rails_version
+gem "activesupport", rails_version
+gem "railties",      rails_version
+
 gem "addressable"
 gem "good_job"
 gem "httparty"
@@ -11,7 +21,6 @@ gem "open3"
 gem "pagy"
 gem "pg", "~> 1.1"
 gem "puma"
-gem "rails", "~> 7.0"
 gem "rotp"
 gem "rouge"
 gem "ruby-vips"
