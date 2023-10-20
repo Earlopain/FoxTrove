@@ -14,7 +14,7 @@ class ConfigController < ApplicationController
     custom_config[:scraper_request_rate_limit] = custom_config[:scraper_request_rate_limit].tr(",", ".").to_f if custom_config[:scraper_request_rate_limit]
 
     Config.write_custom_config(custom_config)
-    Config.force_reload
+    Config.reset_cache
     redirect_back fallback_location: config_index_path
   end
 end

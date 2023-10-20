@@ -5,11 +5,11 @@ require "test_helper"
 class ConfigTest < ActiveSupport::TestCase
   setup do
     Config.stubs(:default_config).returns(app_name: "DefaultName", bool?: true)
-    Config.force_reload
+    Config.reset_cache
   end
 
   teardown do
-    Config.force_reload
+    Config.reset_cache
   end
 
   def stub_custom_config(**params, &)
@@ -19,7 +19,7 @@ class ConfigTest < ActiveSupport::TestCase
       f.flush
       Config.unstub(:custom_config)
       yield
-      Config.force_reload
+      Config.reset_cache
     end
   end
 

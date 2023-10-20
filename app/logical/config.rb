@@ -24,7 +24,7 @@ module Config
     File.write(custom_config_path, data)
   end
 
-  def force_reload
+  def reset_cache
     @default_config = nil
     @custom_config = nil
   end
