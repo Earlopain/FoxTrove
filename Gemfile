@@ -29,7 +29,6 @@ gem "simple_form"
 
 group :development, :test do
   gem "factory_bot_rails", require: false
-  gem "minitest-reporters", require: false
   gem "minitest-spec-rails", require: false
   gem "mocha", require: false
   gem "webmock", require: false

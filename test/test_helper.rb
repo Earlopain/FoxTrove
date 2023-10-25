@@ -5,17 +5,10 @@ ENV["MT_NO_EXPECTATIONS"] ||= "1"
 require_relative "../config/environment"
 require "rails/test_help"
 require "minitest-spec-rails"
-require "minitest/reporters"
 
 require "factory_bot_rails"
 require "mocha/minitest"
 require "webmock/minitest"
-
-if ENV["CI"]
-  # TODO: https://github.com/minitest-reporters/minitest-reporters/issues/330
-else
-  Minitest::Reporters.use! Minitest::Reporters::DefaultReporter.new
-end
 
 # Relative output for test failures so the paths are clickable
 module Minitest
