@@ -2,3 +2,11 @@
   white-space: pre-wrap;
   word-break: break-all;
 }
+
+.hidden {
+  display: none;
+}
+
+.full-width {
+  width: 100%;
+}

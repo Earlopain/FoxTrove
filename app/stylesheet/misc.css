@@ -1,0 +1,41 @@
+.simple_form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.25em 1em;
+  width: min-content;
+
+  .input {
+    display: contents;
+
+    label {
+      text-align: right;
+      white-space: pre;
+    }
+
+    input[type="file"] {
+      width: fit-content;
+    }
+  }
+}
+
+.pagy-nav {
+  text-align: center;
+  padding-top: 0.5rem;
+  margin-top: auto;
+}
+
+.toggleable-container {
+  width: max-content;
+
+  &[data-content-visible="true"] {
+    .link-show {
+      display: none;
+    }
+  }
+
+  &[data-content-visible="false"] {
+    .link-hide, .toggleable-content {
+      display: none;
+    }
+  }
+}

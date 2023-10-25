@@ -1,4 +1,23 @@
-div#page {
+body {
+  color: var(--color-text);
+  background-color: var(--color-background);
+  font-family: Verdana, sans-serif;
+  line-height: 1.25em;
+  margin: 0 auto;
+  padding: 0 1rem;
+
+  /* Footer always at bottom */
+  display: flex; 
+  flex-direction: column; 
+  min-height: 100vh;
+}
+
+header {
+  margin: 0 0 0.8rem 0;
+  padding: 0;
+}
+
+#page {
   background-color: var(--color-foreground);
   border-radius: var(--border-radius-full);
 
@@ -15,26 +34,4 @@ footer {
   margin-top: 1rem;
   padding: 0.5rem 0;
   background-color: var(--color-foreground);
-}
-
-.pagination {
-  text-align: center;
-  padding-top: 0.5rem;
-  margin-top: auto;
-}
-
-.toggleable-container {
-  width: max-content;
-
-  &[data-content-visible="true"] {
-    .link-show {
-      display: none;
-    }
-  }
-
-  &[data-content-visible="false"] {
-    .link-hide, .toggleable-content {
-      display: none;
-    }
-  }
 }
