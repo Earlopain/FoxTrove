@@ -21,11 +21,11 @@ module ApplicationHelper
   end
 
   # Properly support the method keyword argument
-  def link_to(text, url, **args)
-    if args[:method]
-      button_to(text, url, **args)
+  def link_to(name = nil, options = nil, html_options = nil, &)
+    if html_options&.dig(:method)
+      button_to(name, options, html_options, &)
     else
-      super(text, url, **args)
+      super
     end
   end
 
