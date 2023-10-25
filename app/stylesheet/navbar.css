@@ -1,28 +1,24 @@
-header#top {
-  background-color: var(--color-background);
+#header-nav {
+  display: grid;
+  grid-template-columns: 3.75rem 1fr;
+  grid-template-areas: "logo primary" "logo secondary";
 
-  #nav {
-    display: grid;
-    grid-template-columns: 3.75rem 1fr;
-    grid-template-areas: "logo primary" "logo secondary";
+  .logo {
+    grid-area: logo;
 
-    .logo {
-      grid-area: logo;
+    margin-top: 0.3rem;
+    background-image: url("../../public/logo.png");
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position-y: center;
+  }
 
-      margin-top: 0.3rem;
-      background-image: url("../../public/logo.png");
-      background-repeat: no-repeat;
-      background-size: contain;
-      background-position-y: center;
-    }
+  .primary-navbar {
+    grid-area: primary;
+  }
 
-    .primary-navbar {
-      grid-area: primary;
-    }
-
-    .secondary-navbar {
-      grid-area: secondary;
-    }
+  .secondary-navbar {
+    grid-area: secondary;
   }
 
   menu {

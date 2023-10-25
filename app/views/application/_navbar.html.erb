@@ -1,24 +1,22 @@
 <%# locals: () %>
-<header id="top">
-  <nav id="nav">
-    <%= link_to "", root_path, class: "logo" %>
-    <menu class="primary-navbar">
-      <%= nav_link_to "Search", iqdb_path %>
-      <%= nav_link_to "Artists", artists_path %>
-      <%= nav_link_to "Artist URLs", artist_urls_path %>
-      <%= nav_link_to "Submission Files", submission_files_path %>
-      <%= nav_link_to "Archive Importer", new_archive_import_path %>
-      <%= nav_link_to "Stats", stats_path %>
-      <%= nav_link_to "Config", config_index_path %>
-      <%= nav_link_to "Selenium", "http://localhost:#{DockerEnv.exposed_vnc_port}" %>
-      <%= nav_link_to "GoodJob", "/good_job" %>
-    </menu>
-    <menu class="secondary-navbar <%= "empty" unless secondary_links_exist? %>">
-      <% if secondary_links_exist? %>
-          <%= render "#{controller_name}/secondary_links" %>
-      <% else %>
-        <%= subnav_link_to "Height Placeholder", "" %>
-      <% end %>
-    </menu>
-  </nav>
-</header>
+<nav id="header-nav">
+  <%= link_to "", root_path, class: "logo" %>
+  <menu class="primary-navbar">
+    <%= nav_link_to "Search", iqdb_path %>
+    <%= nav_link_to "Artists", artists_path %>
+    <%= nav_link_to "Artist URLs", artist_urls_path %>
+    <%= nav_link_to "Submission Files", submission_files_path %>
+    <%= nav_link_to "Archive Importer", new_archive_import_path %>
+    <%= nav_link_to "Stats", stats_path %>
+    <%= nav_link_to "Config", config_index_path %>
+    <%= nav_link_to "Selenium", "http://localhost:#{DockerEnv.exposed_vnc_port}" %>
+    <%= nav_link_to "GoodJob", "/good_job" %>
+  </menu>
+  <menu class="secondary-navbar <%= "empty" unless secondary_links_exist? %>">
+    <% if secondary_links_exist? %>
+        <%= render "#{controller_name}/secondary_links" %>
+    <% else %>
+      <%= subnav_link_to "Height Placeholder", "" %>
+    <% end %>
+  </menu>
+</nav>
