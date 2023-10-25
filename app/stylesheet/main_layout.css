@@ -8,14 +8,11 @@ div#page {
   padding: 0.5rem;
 }
 
-.footer-padding {
-  min-height: 1rem;
-}
-
 footer {
   margin-top: auto;
   text-align: center;
   border-radius: var(--border-radius-full) var(--border-radius-full) 0 0;
+  margin-top: 1rem;
   padding: 0.5rem 0;
   background-color: var(--color-foreground);
 }
