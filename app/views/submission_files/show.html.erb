@@ -4,16 +4,17 @@
     [<%= @submission_file.artist.name %>]
   <% end %>
 </h1>
+
 <div class="original">
   <%= render "submission_files/sample", submission_file: @submission_file %>
   <div>
     <% if @artist_submission.title_on_site.present? %>
-      <h4 class="title"><%= @artist_submission.title_on_site %></h4>
+      <h3 class="title"><%= @artist_submission.title_on_site %></h3>
     <% end %>
     <%= tag.div @artist_submission.description_on_site, class: "description" %>
   </div>
 </div>
-<h3>Similar</h3>
+<h2>Similar</h2>
 <%= render "iqdb/matches", matches: @similar %>
 
 <% page_title "#{@submission_file.artist.name} on #{@submission_file.artist_url.site.display_name}" %>

@@ -1,5 +1,4 @@
-Name: <%= @artist.name %>
-<br>
+<h1><%= @artist.name %></h1>
 
 Links:
 <%= render "artist_urls/list", artist_urls: ordered_artist_urls(@artist) %>

@@ -1,4 +1,5 @@
-<h2>Settings for <%= @definition.display_name %></h2>
+<h1>Settings for <%= @definition.display_name %></h1>
+
 <%= link_to @definition.homepage, @definition.homepage %><br>
 <%= simple_form_for(:config, url: modify_config_index_path, method: :put) do |f| %>
   <% @definition.all_config_keys.each do |key| %>

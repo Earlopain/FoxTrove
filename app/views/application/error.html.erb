@@ -2,12 +2,12 @@
 
 <pre><%= @exception.message.dup.force_encoding("utf-8") %></pre>
 
-<h3>Request</h3>
+<h2>Request</h2>
 <div class="error-params">
   <pre><%= JSON.pretty_generate(@params) %></pre>
 </div>
 
-<h3>Stacktrace</h3>
+<h2>Stacktrace</h2>
 <div class="error-backtrace">
   <% Rails.backtrace_cleaner.clean(@exception.backtrace).each do |b| %>
     <div class="error-backtrace-line"><%= b %></div>
