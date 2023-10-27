@@ -1,12 +1,11 @@
-@import "base/vars";
-@import "base/links";
-@import "base/mixins";
-@import "base/helpers";
-@import "main_layout";
-@import "misc";
-@import "navbar";
-@import "table";
-
-@import "specific/artists";
-@import "specific/error";
-@import "specific/submission_files";
+@import url("base/vars");
+@import url("base/links");
+@import url("base/mixins");
+@import url("base/helpers");
+@import url("main_layout");
+@import url("misc");
+@import url("navbar");
+@import url("table");
+@import url("specific/artists");
+@import url("specific/error");
+@import url("specific/submission_files");
