@@ -92,3 +92,16 @@ jobs:
       - run: >-
           npm install stylelint@15.11.0 stylelint-config-standard@34.0.0 -g &&
           stylelint "**/*.css" --config .github/.stylelintrc.json
+
+  tslint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 20
+
+      - run: >-
+          npm install typescript@5.2.2 -g &&
+          tsc --noEmit -p .github/tsconfig.json

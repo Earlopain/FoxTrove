@@ -1,6 +1,6 @@
 {
   "include": [
-    "app/typescript/**/*"
+    "./../app/typescript/**/*"
   ],
   "compilerOptions": {
     /* Visit https://aka.ms/tsconfig.json to read more about this file */
@@ -11,7 +11,7 @@
     "declaration": false,
     "moduleResolution": "node",
 
-    "rootDir": "./app/typescript",
+    "rootDir": "./../app/typescript",
 
     "noImplicitAny": true,
     "strictNullChecks": true,
