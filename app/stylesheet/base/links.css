@@ -17,7 +17,7 @@ a.active {
   font-weight: bold;
 }
 
-.button_to {
+.button_to { /* stylelint-disable-line selector-class-pattern */
   display: inline;
   
   button {

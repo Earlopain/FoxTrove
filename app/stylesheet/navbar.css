@@ -3,24 +3,6 @@
   grid-template-columns: 3.75rem 1fr;
   grid-template-areas: "logo primary" "logo secondary";
 
-  .logo {
-    grid-area: logo;
-
-    margin-top: 0.3rem;
-    background-image: url("../../public/logo.png");
-    background-repeat: no-repeat;
-    background-size: contain;
-    background-position-y: center;
-  }
-
-  .primary-navbar {
-    grid-area: primary;
-  }
-
-  .secondary-navbar {
-    grid-area: secondary;
-  }
-
   menu {
     margin: 0;
     background-color: var(--color-foreground);
@@ -36,7 +18,19 @@
     }
   }
 
+  .logo {
+    grid-area: logo;
+
+    margin-top: 0.3rem;
+    background-image: url("../../public/logo.png");
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position-y: center;
+  }
+
   .primary-navbar {
+    grid-area: primary;
+
     margin-top: 0;
     background-color: var(--color-background);
 
@@ -46,7 +40,11 @@
     }
   }
 
-  .secondary-navbar.empty li {
-    visibility: hidden;
+  .secondary-navbar {
+    grid-area: secondary;
+
+    &.empty li {
+      visibility: hidden;
+    }
   }
 }

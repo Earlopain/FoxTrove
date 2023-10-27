@@ -79,3 +79,16 @@ jobs:
       - run: >-
           pip install yamllint==1.32.0 &&
           yamllint -c .github/yamllint.yml -s .
+
+  csslint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 20
+
+      - run: >-
+          npm install stylelint@15.11.0 stylelint-config-standard@34.0.0 -g &&
+          stylelint "**/*.css" --config .github/.stylelintrc.json

@@ -5,6 +5,7 @@
 
   .site-icon {
     vertical-align: middle;
+
     &::before {
       content: "";
       width: var(--_icon-size);

@@ -1,4 +1,4 @@
-.simple_form {
+.simple_form { /* stylelint-disable-line selector-class-pattern */
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 0.25em 1em;
