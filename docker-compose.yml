@@ -14,7 +14,7 @@ services:
     image: reverser
     environment:
       <<: *common-env
-      RAILS_SERVER_EXEC: bin/rails server -p 9000 -b 0.0.0.0
+      RAILS_SERVER_EXEC: bin/rails server -p ${EXPOSED_SERVER_PORT:-9000} -b 0.0.0.0
       ESBUILD_EXEC: >-
         esbuild app/typescript/application.ts
         --target=chrome111,firefox111,safari16
@@ -37,7 +37,7 @@ services:
       - iqdb
       - selenium
     ports:
-      - ${EXPOSED_SERVER_PORT:-9000}:9000
+      - ${EXPOSED_SERVER_PORT:-9000}:${EXPOSED_SERVER_PORT:-9000}
     command: foreman start --color
 
   solargraph:
