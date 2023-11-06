@@ -4,8 +4,6 @@ require "test_helper"
 
 class JobStatsTest < ActiveSupport::TestCase
   it "returns enqueued jobs" do
-    skip "flaky on CI" if ENV["CI"]
-
     url1 = create(:artist_url)
     submission1, submission2 = create_list(:artist_submission, 2, artist_url: url1)
     file1, file2 = create_list(:submission_file, 2, artist_submission: submission1)
