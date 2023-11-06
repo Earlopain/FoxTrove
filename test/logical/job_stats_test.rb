@@ -20,9 +20,11 @@ class JobStatsTest < ActiveSupport::TestCase
     jobs = jobs.concat [url1, url2].map { |url| ScrapeArtistUrlJob.perform_later(url) }
     jobs = jobs.concat [submission1, submission2, submission3].map { |submission| CreateSubmissionFileJob.perform_later(submission, {}) }
     jobs = jobs.concat [file1, file2, file3, file4, file5].map { |file| E6IqdbQueryJob.perform_later(file) }
-
-    puts jobs.map(&:good_job_concurrency_key)
-    puts GoodJob::Job.all.map(&:to_json)
+    
+    ids = [url1, url2, submission1, submission2, submission3, file1, file2, file3, file4, file5].map(&:id)
+    ids.zip(jobs).each do |id, job|
+      puts "#{id} => #{job.good_job_concurrency_key if job}"
+    end
 
     assert_equal(10, GoodJob::Job.count)
   end
