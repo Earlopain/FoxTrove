@@ -2,7 +2,6 @@
 
 class CreateSubmissionFileJob < ApplicationJob
   queue_as :submission_download
-  good_job_control_concurrency_with(total_limit: 1, key: -> { "#{arguments.first.id}-#{arguments.second[:identifier]}" })
 
   def perform(artist_submission, file)
     submission_file = SubmissionFile.find_by(artist_submission: artist_submission, file_identifier: file[:identifier])
