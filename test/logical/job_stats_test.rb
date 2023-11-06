@@ -23,7 +23,7 @@ class JobStatsTest < ActiveSupport::TestCase
     
     ids = [url1, url2, submission1, submission2, submission3, file1, file2, file3, file4, file5].map(&:id)
     ids.zip(jobs).each do |id, job|
-      puts "#{id} => #{job.good_job_concurrency_key if job}"
+      puts "#{id}:#{job.class} => #{job.good_job_concurrency_key if job}"
     end
 
     assert_equal(10, GoodJob::Job.count)
