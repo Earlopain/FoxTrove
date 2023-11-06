@@ -20,6 +20,9 @@ class JobStatsTest < ActiveSupport::TestCase
     [submission1, submission2, submission3].each { |submission| CreateSubmissionFileJob.perform_later(submission, {}) }
     [file1, file2, file3, file4, file5].each { |file| E6IqdbQueryJob.perform_later(file) }
 
+    puts GoodJob::Job.count # rubocop:disable
+    puts GoodJob::Job.all.map(&:to_json)
+
     stats = JobStats.new
 
     assert_equal({ url1.id => 1, url2.id => 1 }, stats.scraping_queued)
