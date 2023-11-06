@@ -20,7 +20,7 @@ class JobStatsTest < ActiveSupport::TestCase
     [submission1, submission2, submission3].each { |submission| CreateSubmissionFileJob.perform_later(submission, {}) }
     [file1, file2, file3, file4, file5].each { |file| E6IqdbQueryJob.perform_later(file) }
 
-    puts GoodJob::Job.count # rubocop:disable
+    puts GoodJob::Job.count
     puts GoodJob::Job.all.map(&:to_json)
 
     stats = JobStats.new
