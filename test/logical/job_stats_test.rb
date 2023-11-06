@@ -16,10 +16,12 @@ class JobStatsTest < ActiveSupport::TestCase
     # Should not match for active_urls
     _url3 = create(:artist_url)
 
-    [url1, url2].each { |url| ScrapeArtistUrlJob.perform_later(url) }
-    [submission1, submission2, submission3].each { |submission| CreateSubmissionFileJob.perform_later(submission, {}) }
-    [file1, file2, file3, file4, file5].each { |file| E6IqdbQueryJob.perform_later(file) }
+    jobs = []
+    jobs = jobs.concat [url1, url2].map { |url| ScrapeArtistUrlJob.perform_later(url) }
+    jobs = jobs.concat [submission1, submission2, submission3].map { |submission| CreateSubmissionFileJob.perform_later(submission, {}) }
+    jobs = jobs.concat [file1, file2, file3, file4, file5].map { |file| E6IqdbQueryJob.perform_later(file) }
 
+    puts jobs.map(&:good_job_concurrency_key)
     puts GoodJob::Job.all.map(&:to_json)
 
     assert_equal(10, GoodJob::Job.count)
