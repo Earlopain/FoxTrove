@@ -2,6 +2,15 @@
 
 class ApplicationJob < ActiveJob::Base
   include GoodJob::ActiveJobExtensions::Concurrency
+  # Automatically scope keys to the job/queue. Can be simplified should
+  # https://github.com/bensheldon/good_job/pull/1145 be merged.
+  def _good_job_concurrency_key
+    key = super
+    return if key.nil?
+
+    "#{self.class.name}-#{queue_name}-#{key}"
+  end
+
   retry_on StandardError, wait: :polynomially_longer, attempts: 25 do |_job, exception|
     log_exception(exception)
   end
