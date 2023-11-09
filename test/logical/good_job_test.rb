@@ -11,8 +11,5 @@ class GoodJobTest < ActiveSupport::TestCase
     artist_url = create(:artist_url)
     job = ScrapeArtistUrlJob.perform_later(artist_url)
     assert_equal("ScrapeArtistUrlJob-scraping-#{artist_url.id}", job.good_job_concurrency_key)
-
-    job = SubmissionFileUpdateJob.perform_later(create(:submission_file))
-    assert_nil job.good_job_concurrency_key
   end
 end

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class CreateSubmissionFileJob < ApplicationJob
+class CreateSubmissionFileJob < ConcurrencyControlledJob
   queue_as :submission_download
   good_job_control_concurrency_with(total_limit: 1, key: -> { "#{arguments.first.id}-#{arguments.second[:identifier]}" })
 
