@@ -99,10 +99,20 @@ class SubmissionFile < ApplicationRecord
     self.content_type = blob.content_type
     self.size = blob.byte_size
 
-    Vips::Image.new_from_file(blob.service.path_for(blob.key), fail: true).stats if can_iqdb?
+    if can_iqdb?
+      begin
+        Vips::Image.new_from_file(blob.service.path_for(blob.key), fail: true).stats
+      rescue Vips::Error => e
+        self.file_error = e.message.strip
+      end
+    end
 
     original.attach(blob)
     save!
+  end
+
+  def corrupt?
+    file_error.present?
   end
 
   def original_present
@@ -202,6 +212,7 @@ class SubmissionFile < ApplicationRecord
         q = q.attribute_matches(params[:content_type], :content_type)
         q = q.attribute_nil_check(params[:in_backlog], :added_to_backlog_at)
         q = q.attribute_nil_check(params[:hidden_from_search] || false, :hidden_from_search_at)
+        q = q.attribute_nil_check(params[:corrupt], :file_error)
         q = q.join_attribute_matches(params[:title], artist_submission: :title_on_site)
         q = q.join_attribute_matches(params[:description], artist_submission: :description_on_site)
         q = q.join_attribute_matches(params[:artist_url_id], artist_submission: { artist_url: :id })
@@ -230,7 +241,7 @@ class SubmissionFile < ApplicationRecord
       end
 
       def search_params
-        [:artist_id, :site_type, :upload_status, :zero_sources, :zero_artists, :larger_only_filesize_treshold, :content_type, :title, :description, { artist_url_id: [] }]
+        [:artist_id, :site_type, :upload_status, :corrupt, :zero_sources, :zero_artists, :larger_only_filesize_treshold, :content_type, :title, :description, { artist_url_id: [] }]
       end
     end
   end

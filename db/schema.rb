@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_09_22_142507) do
+ActiveRecord::Schema[7.1].define(version: 2023_11_11_120419) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -197,6 +197,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_22_142507) do
     t.timestamp "added_to_backlog_at"
     t.binary "iqdb_hash"
     t.timestamp "hidden_from_search_at"
+    t.string "file_error"
     t.index ["artist_submission_id", "file_identifier"], name: "index_submission_files_on_artist_submission_id_and_file_id", unique: true
     t.index ["artist_submission_id"], name: "index_submission_files_on_artist_submission_id"
   end

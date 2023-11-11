@@ -9,7 +9,7 @@ module SubmissionFileHelper
 
   def submission_file_tag(submission_file)
     dimensions = { width: submission_file.width, height: submission_file.height }
-    sample = image_tag(url_for(submission_file.sample), loading: "lazy", class: "submission-file", **dimensions)
+    sample = image_tag(url_for(submission_file.sample), loading: "lazy", class: "submission-file", **dimensions, data: { corrupt: submission_file.corrupt? })
     sample + original_file_tag(submission_file)
   end
 

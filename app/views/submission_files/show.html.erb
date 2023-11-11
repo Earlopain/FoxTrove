@@ -14,6 +14,11 @@
     <%= tag.div @artist_submission.description_on_site, class: "description" %>
   </div>
 </div>
+
+<% if @submission_file.corrupt? %>
+  <div><%= @submission_file.file_error %></div>
+<% end %>
+
 <h2>Similar</h2>
 <%= render "iqdb/matches", matches: @similar %>
 

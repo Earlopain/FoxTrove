@@ -17,6 +17,7 @@
   <%= f.input :site_type, label: "Site", collection: site_types_collection, include_blank: true %>
   <%= f.input :title %>
   <%= f.input :description %>
+  <%= f.input :corrupt, as: :boolean, label: "Corrupt?" %>
   <%= f.input :zero_sources, as: :boolean, label: "Zero Sources?" %>
   <%= f.input :zero_artists, as: :boolean, label: "Zero Artists?" %>
 <% end %>
