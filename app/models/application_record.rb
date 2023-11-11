@@ -27,26 +27,21 @@ class ApplicationRecord < ActiveRecord::Base
       end
 
       def attribute_nil_check(value, attribute)
-        return all if %w[true false].exclude?(value&.to_s)
-
-        nil_check(value.to_s, attribute)
+        case value&.to_s
+        when "true", "1"
+          where.not(attribute => nil)
+        when "false"
+          where(attribute => nil)
+        else
+          all
+        end
       end
 
       def join_attribute_nil_check(value, attribute)
-        return all if %w[true false].exclude?(value&.to_s)
-
         model_class, column = get_model_class_and_column(attribute)
         qualified_column = "#{model_class.table_name}.#{column.name}"
         q = distinct.joins(join_hash(attribute))
-        q.nil_check(value.to_s, qualified_column)
-      end
-
-      def nil_check(value, attribute)
-        if value == "true"
-          where.not(attribute => nil)
-        else
-          where(attribute => nil)
-        end
+        q.attribute_nil_check(value, qualified_column)
       end
 
       def column_matches(model_class, column, value)
