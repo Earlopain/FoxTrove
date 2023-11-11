@@ -3,13 +3,6 @@
 module ApplicationHelper
   include Pagy::Frontend
 
-  # The original doesn't seem to handle negatives at all
-  # -312153 => "-312153 Bytes"
-  def number_to_human_size(number, **options)
-    original_result = super(number.abs, **options)
-    "#{number < 0 ? '-' : ''}#{original_result}"
-  end
-
   def time_ago(value)
     return "" if value.nil?
 
