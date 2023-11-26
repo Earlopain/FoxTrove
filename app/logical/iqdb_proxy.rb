@@ -7,29 +7,21 @@ module IqdbProxy
   VALID_CONTENT_TYPES = ["image/png", "image/jpeg", "image/gif", "image/webp"].freeze
   IQDB_NUM_PIXELS = 128
 
-  module_function
-
-  # Makes the actual request to the iqdb server
-  def make_request(path, request_type, params = {})
-    url = URI.parse(DockerEnv.iqdb_url)
-    url.path = path
-    HTTParty.send request_type, url, { body: params, headers: { "Content-Type" => "application/json" } }
-  end
+  extend self
 
   # Puts the passed submission_file into the iqdb server
   # This can both insert and update an submission
   def update_submission(submission_file)
-    response = make_request "/images/#{submission_file.id}", :post, get_channels_data(submission_file.file_path_for(:sample))
-    raise StandardError, "iqdb request failed" if response.code != 200
+    response = client.post("/images/#{submission_file.id}", json: get_channels_data(submission_file.file_path_for(:sample)))
+    raise StandardError, "iqdb request failed" if response.status != 200
 
-    hash = JSON.parse(response.body)["hash"]
-    submission_file.iqdb_hash = [hash].pack("H*")
+    submission_file.iqdb_hash = [response.json["hash"]].pack("H*")
     submission_file.save
   end
 
   # Removes the passed submission_file from iqdb
   def remove_submission(submission_file)
-    make_request "/images/#{submission_file.id}", :delete
+    client.delete("/images/#{submission_file.id}")
   end
 
   def query_submission_file(submission_file)
@@ -48,7 +40,7 @@ module IqdbProxy
       raise Error, "'#{url}' URL not valid"
     end
 
-    raise Error, "Site responded with status code #{response.code}" if response.code != 200
+    raise Error, "Site responded with status code #{response.status}" if response.status != 200
 
     query_file(file)
   end
@@ -59,8 +51,18 @@ module IqdbProxy
     mime_type = Marcel::MimeType.for input
     raise Error, "Unsupported file of type #{mime_type}" unless can_iqdb?(mime_type)
 
-    response = make_request "/query", :post, get_channels_data(input.path)
-    process_iqbd_result(response.parsed_response)
+    response = client.post("/query", json: get_channels_data(input.path))
+    process_iqbd_result(response.json)
+  end
+
+  def can_iqdb?(mime_type)
+    VALID_CONTENT_TYPES.include?(mime_type)
+  end
+
+  private
+
+  def client
+    @client ||= HTTPX.with(origin: DockerEnv.iqdb_url, headers: { "content-type" => "application/json" })
   end
 
   def get_channels_data(file_path)
@@ -81,7 +83,7 @@ module IqdbProxy
         b << (is_grayscale ? rgb[0] : rgb[2])
       end
     end
-    { channels: { r: r, g: g, b: b } }.to_json
+    { channels: { r: r, g: g, b: b } }
   end
 
   def process_iqbd_result(json, score_cutoff = 60)
@@ -99,9 +101,5 @@ module IqdbProxy
         submission_file: submissions[entry["post_id"]],
       }
     end
-  end
-
-  def can_iqdb?(mime_type)
-    VALID_CONTENT_TYPES.include?(mime_type)
   end
 end
