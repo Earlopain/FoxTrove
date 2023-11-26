@@ -59,7 +59,7 @@ module Scraper
     private
 
     def get_submission_ids(page)
-      response = fetch_html("https://www.furaffinity.net/search",
+      html = fetch_html("https://www.furaffinity.net/search",
         method: :post,
         headers: headers,
         body: {
@@ -77,7 +77,6 @@ module Scraper
           "mode": "extended",
         },
       )
-      html = Nokogiri::HTML(response.body)
       # Searching for "@lower scale" returns results from blue-scale
       relevant_submissions = html.css("#browse-search figure").select do |element|
         # Remove _ from displayname, https://www.furaffinity.net/user/thesecretcave/ => The_Secret_Cave
@@ -89,8 +88,7 @@ module Scraper
     end
 
     def get_submission_html(id)
-      response = fetch_html("https://www.furaffinity.net/view/#{id}", headers: headers)
-      Nokogiri::HTML(response.body)
+      fetch_html("https://www.furaffinity.net/view/#{id}", headers: headers)
     end
 
     def headers

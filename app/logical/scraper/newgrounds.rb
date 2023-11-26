@@ -43,8 +43,7 @@ module Scraper
     end
 
     def fetch_api_identifier
-      response = fetch_html("https://#{url_identifier}.newgrounds.com/")
-      html = Nokogiri::HTML(response.body)
+      html = fetch_html("https://#{url_identifier}.newgrounds.com/")
       html.at("#topsearch-elastic input[name='u']")&.attribute("value")&.value
     end
 
@@ -52,22 +51,20 @@ module Scraper
 
     def get_from_page(page)
       url = "https://#{url_identifier}.newgrounds.com/art/page/#{page}"
-      response = fetch_json(url, headers: {
+      json = fetch_json(url, headers: {
         "X-Requested-With": "XMLHttpRequest",
         "Cookie": "#{COOKIE_NAME}=#{fetch_cookie}",
       })
-      body = JSON.parse(response.body)
-      if body["items"].empty? # Empty pages contain an array instead of an object here
+      if json["items"].empty? # Empty pages contain an array instead of an object here
         []
       else
-        submissions = body["items"].keys.map { |year| body["items"][year] }.flatten
+        submissions = json["items"].keys.map { |year| json["items"][year] }.flatten
         submissions.map { |entry| Nokogiri::HTML(entry).css("a").first.attributes["href"].value }
       end
     end
 
     def get_submission_details(url) # rubocop:disable Metrics/CyclomaticComplexity
-      response = fetch_html(url, headers: { Cookie: "#{COOKIE_NAME}=#{fetch_cookie}" })
-      html = Nokogiri::HTML(response.body)
+      html = fetch_html(url, headers: { cookie: "#{COOKIE_NAME}=#{fetch_cookie}" })
       media_object = html.at("[itemtype='https://schema.org/MediaObject']")
       image_urls = []
       if (image = media_object.at(".medium_image"))

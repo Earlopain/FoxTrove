@@ -106,16 +106,20 @@ module Scraper
       response = enfore_rate_limit do
         HTTParty.send(method, path, params)
       end
-      log_response(path, method, params, response.code, response.body)
-      response
+      log_event = log_response(path, method, params, response.code, response.body)
+      raise_if_response_not_ok(path, log_event, response)
+
+      Nokogiri::HTML(response.body)
     end
 
     def fetch_json(path, method: :get, **params)
       response = enfore_rate_limit do
-        HTTParty.send(method, path, { format: :json, **params })
+        HTTParty.send(method, path, { **params })
       end
-      log_response(path, method, params, response.code, response.body)
-      response
+      log_event = log_response(path, method, params, response.code, response.body)
+      raise_if_response_not_ok(path, log_event, response)
+
+      JSON.parse(response.body)
     end
 
     def fetch_json_selenium(path)
@@ -134,6 +138,10 @@ module Scraper
     end
 
     private
+
+    def raise_if_response_not_ok(path, log_event, response)
+      raise StandardError, "Failed request for #{path} with #{response.code}: LogEvent-#{log_event.id}" if response.code != 200
+    end
 
     def log_response(path, method, request_params, status_code, body)
       return unless Config.log_scraper_requests?

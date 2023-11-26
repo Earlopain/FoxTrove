@@ -37,23 +37,20 @@ module Scraper
     end
 
     def fetch_api_identifier
-      response = fetch_html("https://artfight.net/~#{url_identifier}", headers: headers)
-      html = Nokogiri::HTML(response.body)
+      html = fetch_html("https://artfight.net/~#{url_identifier}", headers: headers)
       html.at(".btn.btn-danger.report-button")&.attribute("data-id")&.value
     end
 
     private
 
     def get_attacks(page)
-      response = fetch_html("https://artfight.net/~#{url_identifier}/attacks?page=#{page}", headers: headers)
-      html = Nokogiri::HTML(response.body)
+      html = fetch_html("https://artfight.net/~#{url_identifier}/attacks?page=#{page}", headers: headers)
       attacks = html.css(".profile-attacks-body a").select
       attacks.pluck("data-id")
     end
 
     def get_attack_details(id)
-      response = fetch_html("https://artfight.net/attack/#{id}", headers: headers)
-      html = Nokogiri::HTML(response.body)
+      html = fetch_html("https://artfight.net/attack/#{id}", headers: headers)
       date = html.at_css('.profile-header-normal-status div:contains("On:")').text
       {
         identifier: id,

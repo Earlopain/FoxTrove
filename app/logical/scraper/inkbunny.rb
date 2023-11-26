@@ -90,12 +90,12 @@ module Scraper
     end
 
     def fetch_sid
-      response = make_request("https://inkbunny.net/api_login.php",
+      json = make_request("https://inkbunny.net/api_login.php",
         with_sid: false,
         username: Config.inkbunny_user,
         password: Config.inkbunny_pass,
       )
-      JSON.parse(response.body)["sid"]
+      json["sid"]
     end
     cache(:fetch_sid, 1.hour)
   end

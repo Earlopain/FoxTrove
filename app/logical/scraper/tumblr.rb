@@ -35,8 +35,7 @@ module Scraper
       s.created_at = DateTime.strptime(api_post["timestamp"].to_s, "%s")
       # Prevent double reblogs, or when the scrape failed midway through
       if ArtistSubmission.for_site_with_identifier(identifier: api_post["id_string"], site: "tumblr").blank?
-        response = reblog(api_post)
-        raise StandardError, "Failed to reblog #{api_post['id_string']}: #{response.code}" if response.code != 201
+        reblog(api_post)
       end
       s
     end

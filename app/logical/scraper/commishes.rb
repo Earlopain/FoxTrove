@@ -47,8 +47,7 @@ module Scraper
 
     def get_details(urls)
       urls.map do |url|
-        response = fetch_html(url, headers: headers)
-        html = Nokogiri::HTML(response.body)
+        html = fetch_html(url, headers: headers)
         {
           identifier: url.split("/").pop,
           title: html.at("h1#upload-title").content,
