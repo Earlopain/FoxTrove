@@ -88,9 +88,12 @@ GEM
       railties (>= 6.0.0)
       thor (>= 0.14.1)
     hashdiff (1.0.1)
+    http-2-next (1.0.1)
     httparty (0.21.0)
       mini_mime (>= 1.0.0)
       multi_xml (>= 0.5.2)
+    httpx (1.1.5)
+      http-2-next (>= 1.0.1)
     i18n (1.14.1)
       concurrent-ruby (~> 1.0)
     io-console (0.6.0)
@@ -268,6 +271,7 @@ DEPENDENCIES
   factory_bot_rails
   good_job
   httparty
+  httpx
   listen
   minitest-spec-rails
   mocha

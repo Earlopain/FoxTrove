@@ -15,6 +15,7 @@ gem "railties",      rails_version
 gem "addressable"
 gem "good_job"
 gem "httparty"
+gem "httpx"
 gem "listen"
 gem "nokogiri"
 gem "open3"

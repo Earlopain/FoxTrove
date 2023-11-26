@@ -9,6 +9,7 @@ require "minitest-spec-rails"
 require "factory_bot_rails"
 require "mocha/minitest"
 require "webmock/minitest"
+require "httpx/adapters/webmock"
 
 # Relative output for test failures so the paths are clickable
 module Minitest
@@ -25,13 +26,13 @@ FactoryBot::SyntaxRunner.class_eval do
   self.file_fixture_path = ActiveSupport::TestCase.file_fixture_path
 end
 
-WebMock.disable_net_connect!
-
 module ActiveSupport
   class TestCase
     include FactoryBot::Syntax::Methods
 
     setup do
+      WebMock.enable!
+      WebMock.disable_net_connect!
       Config.stubs(:custom_config).returns({})
       Rails.cache.clear
     end
@@ -66,7 +67,7 @@ module ActiveSupport
 
     def stub_e6_iqdb_request(response_post_ids)
       response = build(:e6_iqdb_response, post_ids: response_post_ids).to_json
-      stub_request_once(:post, "https://e621.net/iqdb_queries.json", body: response, headers: { content_type: "application/jsons" })
+      stub_request_once(:post, "https://e621.net/iqdb_queries.json", body: response, headers: { content_type: "application/json" })
     end
 
     def stub_e6_post_request(post_id, md5)

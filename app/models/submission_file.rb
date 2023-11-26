@@ -156,8 +156,7 @@ class SubmissionFile < ApplicationRecord
 
     sample.open do |file|
       # FIXME: Error handling
-      response = E6ApiClient.iqdb_query file
-      json = JSON.parse(response.body)
+      json = E6ApiClient.iqdb_query(file)
       break unless json.is_a? Array
 
       json.each do |entry|
