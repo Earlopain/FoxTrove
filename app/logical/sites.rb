@@ -31,13 +31,14 @@ module Sites
   def download_file(outfile, url)
     fixed_uri = fix_url(url)
     headers = download_headers_for_image_uri(fixed_uri)
-    response = HTTParty.get(fixed_uri, headers: headers) do |fragment|
-      next if [301, 302].include?(fragment.code)
+    response = HTTPX.plugin(:stream).plugin(:follow_redirects).with(headers: headers).get(fixed_uri, stream: true)
+    response.each do |chunk|
+      next if response.status == 301 || response.status == 302
 
-      outfile.write(fragment)
+      outfile.write(chunk)
     end
     outfile.rewind
-    response
+    raise StandardError, "Failed to download #{url}: #{response.status}" if response.status != 200
   end
 
   def fix_url(url)

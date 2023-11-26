@@ -35,12 +35,10 @@ module IqdbProxy
   def query_url(url)
     file = Tempfile.new(binmode: true)
     begin
-      response = Sites.download_file file, url
+      Sites.download_file file, url
     rescue Addressable::URI::InvalidURIError
       raise Error, "'#{url}' URL not valid"
     end
-
-    raise Error, "Site responded with status code #{response.status}" if response.status != 200
 
     query_file(file)
   end
