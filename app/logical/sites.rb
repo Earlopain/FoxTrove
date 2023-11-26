@@ -28,10 +28,11 @@ module Sites
     definition&.download_headers || {}
   end
 
-  def download_file(outfile, url)
+  def download_file(url)
     fixed_uri = fix_url(url)
     headers = download_headers_for_image_uri(fixed_uri)
     response = HTTPX.plugin(:stream).plugin(:follow_redirects).with(headers: headers).get(fixed_uri, stream: true)
+    outfile = Tempfile.new(binmode: true)
     response.each do |chunk|
       next if response.status == 301 || response.status == 302
 
@@ -39,6 +40,10 @@ module Sites
     end
     outfile.rewind
     raise StandardError, "Failed to download #{url}: #{response.status}" if response.status != 200
+
+    yield outfile
+  ensure
+    outfile&.unlink
   end
 
   def fix_url(url)

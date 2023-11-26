@@ -10,15 +10,14 @@ class CreateSubmissionFileJob < ConcurrencyControlledJob
 
     # Deviantarts download links expire, they need to be fetched when you actually use them
     url = file[:url].presence || artist_submission.artist_url.scraper.get_download_link(file[:url_data])
-    bin_file = Tempfile.new(binmode: true)
-    Sites.download_file(bin_file, url)
-
-    SubmissionFile.from_attachable(
-      attachable: bin_file,
-      artist_submission: artist_submission,
-      url: url,
-      created_at: file[:created_at],
-      file_identifier: file[:identifier],
-    )
+    Sites.download_file(url) do |bin_file|
+      SubmissionFile.from_attachable(
+        attachable: bin_file,
+        artist_submission: artist_submission,
+        url: url,
+        created_at: file[:created_at],
+        file_identifier: file[:identifier],
+      )
+    end
   end
 end
