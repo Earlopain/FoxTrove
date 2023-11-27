@@ -48,7 +48,12 @@ class ArtistUrl < ApplicationRecord
   def set_api_identifier!
     return unless scraper_enabled?
 
+    begin
     self.api_identifier = scraper.fetch_api_identifier
+    rescue HTTPX::HTTPError => e
+      raise e unless e.status == 404
+    end
+
     if api_identifier
       save
     else

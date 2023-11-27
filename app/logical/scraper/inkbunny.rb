@@ -86,7 +86,7 @@ module Scraper
 
     def make_request(url, with_sid: true, **query_params)
       query_params[:sid] = fetch_sid if with_sid
-      fetch_json(url, query: query_params)
+      fetch_json(url, params: query_params)
     end
 
     def fetch_sid

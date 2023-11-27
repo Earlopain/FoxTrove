@@ -65,7 +65,7 @@ module Scraper
 
     def make_request(path, **query_params)
       url = "https://#{domain}/api/v1#{path}"
-      fetch_json(url, query: query_params, headers: { Authorization: "Bearer #{access_token}" })
+      fetch_json(url, params: query_params, headers: { Authorization: "Bearer #{access_token}" })
     end
   end
 end

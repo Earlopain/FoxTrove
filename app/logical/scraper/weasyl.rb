@@ -14,13 +14,13 @@ module Scraper
 
     def fetch_next_batch
       url = "https://www.weasyl.com/api/users/#{url_identifier}/gallery"
-      response = fetch_json(url,
+      json = fetch_json(url,
         headers: { "X-Weasyl-API-Key": Config.weasyl_apikey },
-        query: {}.tap { |h| h[:nextid] = @nextid if @nextid },
+        params: {}.tap { |h| h[:nextid] = @nextid if @nextid },
       )
-      @nextid = response["nextid"]
+      @nextid = json["nextid"]
       end_reached if @nextid.nil?
-      response["submissions"].select { |s| s["subtype"] == "visual" && s["media"]["submission"].present? }
+      json["submissions"].select { |s| s["subtype"] == "visual" && s["media"]["submission"].present? }
     end
 
     def to_submission(submission)

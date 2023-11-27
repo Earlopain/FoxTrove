@@ -60,11 +60,11 @@ module Scraper
 
     private
 
-    def make_api_call(endpoint, query = {})
+    def make_api_call(endpoint, params = {})
       fetch_json("#{API_PREFIX}#{endpoint}",
-        query: {
+        params: {
           access_token: access_token,
-          **query,
+          **params,
         },
         headers: {
           "dA-minor-version": "20210526",
@@ -102,7 +102,7 @@ module Scraper
 
         driver.wait_for { Addressable::URI.parse(driver.current_url).query_values&.dig("code") }
       end
-      response = fetch_json("https://www.deviantart.com/oauth2/token", query: {
+      response = fetch_json("https://www.deviantart.com/oauth2/token", params: {
         client_id: Config.deviantart_client_id,
         client_secret: Config.deviantart_client_secret,
         grant_type: "authorization_code",

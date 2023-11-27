@@ -51,7 +51,7 @@ module Scraper
 
     def get(url, query_params = {})
       fetch_json(url,
-        query: query_params,
+        params: query_params,
         headers: {
           Authorization: authorization_header(url, "get", query_params),
         },
@@ -61,7 +61,7 @@ module Scraper
     def post(url, params)
       fetch_json(url,
         method: :post,
-        body: URI.encode_www_form(params),
+        form: params,
         headers: {
           "Authorization": authorization_header(url, "post", params),
           "Content-Type": "application/x-www-form-urlencoded",

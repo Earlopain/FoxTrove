@@ -61,19 +61,19 @@ module Scraper
 
     private
 
-    def make_request(url, query = {})
-      fetch_json(url, query: query, headers: {
+    def make_request(url, params = {})
+      fetch_json(url, params: params, headers: {
         "User-Agent": "reverser.0.1 by earlopain",
         "Authorization": "bearer #{access_token}",
       })
     end
 
     def access_token
+      auth = "Basic #{Base64.strict_encode64("#{Config.reddit_client_id}:#{Config.reddit_client_secret}")}"
       response = fetch_json("https://www.reddit.com/api/v1/access_token",
         method: :post,
-        body: "grant_type=client_credentials",
-        basic_auth: { username: Config.reddit_client_id, password: Config.reddit_client_secret },
-        headers: { "Content-Type": "application/x-www-form-urlencoded", "User-Agent": "reverser.0.1 by earlopain" },
+        form: { grant_type: "client_credentials" },
+        headers: { "Authorization" => auth, "User-Agent": "reverser.0.1 by earlopain" },
       )
       response["access_token"]
     end

@@ -67,8 +67,8 @@ module Scraper
       url_identifier
     end
 
-    def make_request(endpoint, query = {})
-      fetch_json("#{API_BASE_URL}/#{endpoint}", query: query, headers: {
+    def make_request(endpoint, params = {})
+      fetch_json("#{API_BASE_URL}/#{endpoint}", params: params, headers: {
         **headers,
         Authorization: "Bearer #{access_token}",
       })
@@ -79,7 +79,7 @@ module Scraper
     def access_token
       code_verifier = urlsafe_b64 SecureRandom.base64(32)
       code = fetch_code code_verifier
-      response = fetch_json(AUTH_TOKEN_URL, method: :post, headers: headers, body: {
+      response = fetch_json(AUTH_TOKEN_URL, method: :post, headers: headers, form: {
         client_id: CLIENT_ID,
         client_secret: CLIENT_SECRET,
         code: code,

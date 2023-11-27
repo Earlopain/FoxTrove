@@ -169,7 +169,7 @@ module Scraper
     end
 
     def make_request(url, variables = {}, features = {})
-      fetch_json("#{API_BASE_URL}/#{url}", query: { variables: variables.to_json, features: features.to_json }, headers: api_headers)
+      fetch_json("#{API_BASE_URL}/#{url}", params: { variables: variables.to_json, features: features.to_json }, headers: api_headers)
     end
 
     def tokens

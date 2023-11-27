@@ -62,7 +62,7 @@ module Scraper
       html = fetch_html("https://www.furaffinity.net/search",
         method: :post,
         headers: headers,
-        body: {
+        form: {
           "page": page,
           # Searches can't start with a dash, and can' contain ~
           # ~ can be substituted with - when searching
