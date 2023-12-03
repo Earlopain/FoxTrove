@@ -49,7 +49,7 @@ class ArtistUrl < ApplicationRecord
     return unless scraper_enabled?
 
     begin
-    self.api_identifier = scraper.fetch_api_identifier
+      self.api_identifier = scraper.fetch_api_identifier
     rescue HTTPX::HTTPError => e
       raise e unless e.status == 404
     end
