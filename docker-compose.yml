@@ -70,6 +70,14 @@ services:
     shm_size: 2gb
     ports:
       - ${EXPOSED_VNC_PORT:-7900}:7900
+    # Work around issue with the default systemd service files that Arch ships
+    # https://github.com/SeleniumHQ/docker-selenium/issues/2045
+    # https://github.com/containerd/containerd/pull/8924
+    # https://github.com/moby/moby/pull/45534/files
+    ulimits:
+      nofile:
+        soft: 65536
+        hard: 65536
 
   # Profiles for standalone things
 
