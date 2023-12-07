@@ -47,7 +47,7 @@ services:
       - solargraph
 
   postgres:
-    image: postgres:15.4-alpine
+    image: postgres:15.5-alpine
     environment:
       - POSTGRES_USER=reverser
       - POSTGRES_DB=reverser_development
@@ -59,14 +59,14 @@ services:
       - ${EXPOSED_POSTGRES_PORT:-34518}:5432
 
   iqdb:
-    image: ghcr.io/e621ng/iqdb:d4fed9d9a51184e72d2f14d4ec461d7830bd177a
+    image: ghcr.io/e621ng/iqdb:b988f000f17008677c7546c0c13623bc956b585d
     volumes:
       - ${REVERSER_DATA_PATH:?}/iqdb_data:/iqdb
 
   selenium:
-    image: selenium/standalone-chrome:4.12.1-20230912
+    image: selenium/standalone-chrome:4.16.0-20231206
     environment:
-      - VNC_NO_PASSWORD=1
+      - SE_VNC_NO_PASSWORD=1
     shm_size: 2gb
     ports:
       - ${EXPOSED_VNC_PORT:-7900}:7900

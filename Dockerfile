@@ -15,7 +15,7 @@ fi
 
 FROM node:18-alpine3.18 as node-downloader
 
-RUN npm install esbuild@0.19.4 -g
+RUN npm install esbuild@0.19.8 -g
 
 FROM ruby:3.2.2-alpine3.18
 
