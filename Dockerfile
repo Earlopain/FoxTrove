@@ -1,6 +1,6 @@
-FROM ruby:3.2.2-alpine3.18 as ruby-builder
+FROM ruby:3.2.2-alpine3.19 as ruby-builder
 
-RUN apk --no-cache add build-base postgresql15-dev
+RUN apk --no-cache add build-base postgresql16-dev
 
 COPY Gemfile Gemfile.lock ./
 RUN gem i foreman && bundle install \
@@ -13,17 +13,17 @@ RUN if [[ $COMPOSE_PROFILES == *"solargraph"* ]]; then \
   bundle exec yard gems; \
 fi
 
-FROM node:18-alpine3.18 as node-downloader
+FROM node:20-alpine3.19 as node-downloader
 
 RUN npm install esbuild@0.19.8 -g
 
-FROM ruby:3.2.2-alpine3.18
+FROM ruby:3.2.2-alpine3.19
 
 WORKDIR /app
 
 RUN apk --no-cache add \
   tzdata git \
-  postgresql15-client \
+  postgresql16-client \
   vips ffmpeg
 
 RUN git config --global --add safe.directory /app
