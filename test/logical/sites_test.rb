@@ -44,33 +44,35 @@ class SitesTest < ActiveSupport::TestCase
   end
 
   describe "from_gallery_url" do
-    def assert_extracted(url:, site_type:, username:, valid: true)
+    def assert_extracted(url, site_type, username, valid: true)
       result = Sites.from_gallery_url(url)
-      assert(result)
-      assert_equal(site_type, result[:site].site_type)
-      assert_equal(username, result[:identifier])
-      assert_equal(valid, result[:valid])
+      assert(result, "expected #{url} to match")
+      assert_equal(site_type, result[:site].site_type, "expected #{url} to be #{site_type}")
+      assert_equal(username, result[:identifier], "expected #{url} to be #{username}")
+      assert_equal(valid, result[:valid], "expected #{url} to be #{valid ? 'valid' : 'invalid'}")
     end
 
     it "correctly extracts information from twitter" do
-      assert_extracted(
-        url: "https://twitter.com/username",
-        site_type: "twitter",
-        username: "username",
-      )
+      assert_extracted("https://twitter.com/username", "twitter", "username")
+      assert_extracted("https://twitter.com/@username", "twitter", "username")
+      assert_extracted("https://twitter.com/!invalid!", "twitter", "!invalid!", valid: false)
+    end
 
-      assert_extracted(
-        url: "https://twitter.com/@username",
-        site_type: "twitter",
-        username: "username",
-      )
+    it "correctly extracts information from furaffinity" do
+      assert_extracted("https://furaffinity.net/user/abc", "furaffinity", "abc")
+      assert_extracted("https://sfw.furaffinity.net/user/abc", "furaffinity", "abc")
+    end
 
-      assert_extracted(
-        url: "https://twitter.com/!invalid!",
-        site_type: "twitter",
-        username: "!invalid!",
-        valid: false,
-      )
+    it "correctly extracts information from reddit" do
+      assert_extracted("https://reddit.com/u/abc", "reddit", "abc")
+      assert_extracted("https://old.reddit.com/u/abc", "reddit", "abc")
+      assert_extracted("https://new.reddit.com/u/abc", "reddit", "abc")
+    end
+
+    it "correctly extracts information from pixiv" do
+      assert_extracted("pixiv.net/member.php?id=123", "pixiv", "123")
+      assert_extracted("https://pixiv.net/en/users/123", "pixiv", "123")
+      assert_extracted("https://pixiv.net/jp/users/123", "pixiv", "123")
     end
 
     it "returns nil when no definitions match" do
