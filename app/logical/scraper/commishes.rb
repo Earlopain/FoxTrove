@@ -49,7 +49,7 @@ module Scraper
       urls.map do |url|
         html = fetch_html(url, headers: headers)
         script_containing_id = html.xpath("//script[contains(text(), '/upload/tag/')]").first
-        original_image_id = script_containing_id.text.match(/\/(\d+)\/remove\//)[1]
+        original_image_id = script_containing_id.text.match(%r{/(\d+)/remove/})[1]
         {
           identifier: url.split("/").pop,
           title: html.at("h1#upload-title").content,
