@@ -28,38 +28,37 @@ module Scraper
         userId: api_identifier,
         count: 100,
         includePromotedContent: false,
-        withSuperFollowsUserFields: true,
-        withDownvotePerspective: false,
-        withReactionsMetadata: false,
-        withReactionsPerspective: false,
-        withSuperFollowsTweetFields: true,
         withClientEventToken: false,
         withBirdwatchNotes: false,
         withVoice: true,
         withV2Timeline: true,
       }
       features = {
-        responsive_web_twitter_blue_verified_badge_is_enabled: true,
-        responsive_web_graphql_exclude_directive_enabled: false,
+        responsive_web_graphql_exclude_directive_enabled: true,
         verified_phone_label_enabled: false,
+        creator_subscriptions_tweet_preview_api_enabled: true,
         responsive_web_graphql_timeline_navigation_enabled: true,
         responsive_web_graphql_skip_user_profile_image_extensions_enabled: false,
+        c9s_tweet_anatomy_moderator_badge_enabled: true,
         tweetypie_unmention_optimization_enabled: true,
-        vibe_api_enabled: true,
         responsive_web_edit_tweet_api_enabled: true,
         graphql_is_translatable_rweb_tweet_is_translatable_enabled: true,
         view_counts_everywhere_api_enabled: true,
         longform_notetweets_consumption_enabled: true,
+        responsive_web_twitter_article_tweet_consumption_enabled: false,
         tweet_awards_web_tipping_enabled: false,
-        freedom_of_speech_not_reach_fetch_enabled: false,
+        freedom_of_speech_not_reach_fetch_enabled: true,
         standardized_nudges_misinfo: true,
-        tweet_with_visibility_results_prefer_gql_limited_actions_policy_enabled: false,
-        interactive_text_enabled: true,
-        responsive_web_text_conversations_enabled: false,
+        tweet_with_visibility_results_prefer_gql_limited_actions_policy_enabled: true,
+        rweb_video_timestamps_enabled: true,
+        longform_notetweets_rich_text_read_enabled: true,
+        longform_notetweets_inline_media_enabled: true,
+        responsive_web_media_download_video_enabled: false,
         responsive_web_enhance_cards_enabled: false,
       }
       variables[:cursor] = @cursor if @cursor.present?
-      response = make_request("GDQgpalPZYZohObq6Hsj-w/UserMedia", variables, features)
+      params = { variables: variables, features: features }
+      response = make_request("oMVVrI5kt3kOpyHHTTKf5Q/UserMedia", params)
 
       if response.dig("data", "user", "result", "__typename") == "UserUnavailable"
         end_reached
@@ -95,25 +94,35 @@ module Scraper
       variables = {
         screen_name: url_identifier,
         withSafetyModeUserFields: true,
-        withSuperFollowsUserFields: true,
       }
       features = {
-        responsive_web_twitter_blue_verified_badge_is_enabled: true,
-        responsive_web_graphql_exclude_directive_enabled: false,
+        hidden_profile_likes_enabled: true,
+        hidden_profile_subscriptions_enabled: true,
+        responsive_web_graphql_exclude_directive_enabled: true,
         verified_phone_label_enabled: false,
+        subscriptions_verification_info_is_identity_verified_enabled: true,
+        subscriptions_verification_info_verified_since_enabled: true,
+        highlights_tweets_tab_ui_enabled: true,
+        responsive_web_twitter_article_notes_tab_enabled: false,
+        creator_subscriptions_tweet_preview_api_enabled: true,
         responsive_web_graphql_skip_user_profile_image_extensions_enabled: false,
         responsive_web_graphql_timeline_navigation_enabled: true,
       }
-      user_json = make_request("rePnxwe9LZ51nQ7Sn_xN_A/UserByScreenName", variables, features)
+      field_toggles = {
+        withAuxiliaryUserLabels: false,
+      }
+      params = { variables: variables, features: features, fieldToggles: field_toggles }
+      user_json = make_request("NimuplG1OB7Fd2btCLdBOw/UserByScreenName", params)
       user_json.dig("data", "user", "result", "rest_id")
     end
 
     private
 
-    def extract_tweets_and_cursor_entry(response) # rubocop:disable Metrics/CyclomaticComplexity
+    def extract_tweets_and_cursor_entry(response)
       instructions = response.dig("data", "user", "result", "timeline_v2", "timeline", "instructions")
-      timeline_add_entries = instructions.find { |instruction| instruction["type"] == "TimelineAddEntries" }["entries"].pluck("content")
-      item_content = entries_by_type(timeline_add_entries, "TimelineTimelineItem").filter_map { |content| content["itemContent"] }
+      timeline_add_entries = instruction_by_type(instructions, "TimelineAddEntries")["entries"].pluck("content")
+      items = extract_items(instructions, timeline_add_entries)
+      item_content = items.filter_map { |item| item.dig("item", "itemContent") }
       tweets = item_content.reject { |content| content["promotedMetadata"] }.filter_map { |content| content.dig("tweet_results", "result") }
       # Tweets deleted by the author
       tweets = tweets.reject { |tweet| tweet["__typename"] == "TweetTombstone" }
@@ -121,6 +130,20 @@ module Scraper
       tweets = tweets.select { |tweet| tweet.dig("legacy", "extended_entities", "media") }
       cursor_entry = entries_by_type(timeline_add_entries, "TimelineTimelineCursor").find { |cursor| cursor["cursorType"] == "Bottom" }
       [tweets, cursor_entry]
+    end
+
+    def extract_items(instructions, timeline_add_entries)
+      if (add_to_module = instruction_by_type(instructions, "TimelineAddToModule"))
+        add_to_module["moduleItems"]
+      elsif (timeline_module = entries_by_type(timeline_add_entries, "TimelineTimelineModule")).any?
+        timeline_module.filter_map { |content| content["items"] }.flatten
+      else
+        []
+      end
+    end
+
+    def instruction_by_type(instructions, type)
+      instructions.find { |instruction| instruction["type"] == type }
     end
 
     def entries_by_type(entries, type)
@@ -168,8 +191,8 @@ module Scraper
       description.strip
     end
 
-    def make_request(url, variables = {}, features = {})
-      fetch_json("#{API_BASE_URL}/#{url}", params: { variables: variables.to_json, features: features.to_json }, headers: api_headers)
+    def make_request(url, params)
+      fetch_json("#{API_BASE_URL}/#{url}", params: params.transform_values(&:to_json), headers: api_headers)
     end
 
     def tokens

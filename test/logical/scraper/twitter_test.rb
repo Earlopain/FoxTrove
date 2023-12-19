@@ -4,7 +4,7 @@ require "test_helper"
 
 module Scraper
   class TwitterTest < ActiveSupport::TestCase
-    USER_MEDIA = %r{GDQgpalPZYZohObq6Hsj-w/UserMedia}
+    USER_MEDIA = %r{oMVVrI5kt3kOpyHHTTKf5Q/UserMedia}
 
     def scraper
       @scraper ||= begin
@@ -19,11 +19,26 @@ module Scraper
         build(:twitter_tweet, description: "user tweet"),
         build(:twitter_tweet, description: "promoted tweet", is_promoted: true),
       ]
-      stub_request_once(:get, USER_MEDIA, body: build(:twitter_user_media, tweets: tweets).to_json)
+      stub_request_once(:get, USER_MEDIA, body: build(:twitter_user_media_page1, tweets: tweets).to_json)
       scraped_tweets = scraper.fetch_next_batch
       assert_equal(1, scraped_tweets.count)
       submission = scraper.to_submission(scraped_tweets[0])
       assert_equal("user tweet", submission.description)
+      assert_predicate(scraper, :more?)
+    end
+
+    it "returns results for the second page" do
+      tweet = build(:twitter_tweet)
+      stub_request_once(:get, USER_MEDIA, body: build(:twitter_user_media_page2, tweets: [tweet]).to_json)
+      scraped_tweets = scraper.fetch_next_batch
+      assert_equal(1, scraped_tweets.count)
+      assert_predicate(scraper, :more?)
+    end
+
+    it "stops once the end is reached" do
+      stub_request_once(:get, USER_MEDIA, body: build(:twitter_user_media_last_page).to_json)
+      assert_empty(scraper.fetch_next_batch)
+      assert_not_predicate(scraper, :more?)
     end
 
     it "correctly expands shortened links when replying" do
@@ -40,7 +55,7 @@ module Scraper
         description_end: 90,
         url_entities: [url],
       )
-      stub_request_once(:get, USER_MEDIA, body: build(:twitter_user_media, tweets: [tweet]).to_json)
+      stub_request_once(:get, USER_MEDIA, body: build(:twitter_user_media_page1, tweets: [tweet]).to_json)
       scraped_tweets = scraper.fetch_next_batch
       submission = scraper.to_submission(scraped_tweets[0])
       assert_equal("J'ai de la place pour le mois prochain si tu veux ♥ \nhttps://www.furaffinity.net/commissions/vorpale/", submission.description)
@@ -55,7 +70,7 @@ module Scraper
         description_end: 23,
         media: [media],
       )
-      stub_request_once(:get, USER_MEDIA, body: build(:twitter_user_media, tweets: [tweet]).to_json)
+      stub_request_once(:get, USER_MEDIA, body: build(:twitter_user_media_page1, tweets: [tweet]).to_json)
       scraped_tweets = scraper.fetch_next_batch
       submission = scraper.to_submission(scraped_tweets[0])
       assert_equal("", submission.description)
@@ -70,7 +85,7 @@ module Scraper
         description_end: 25,
         media: [media],
       )
-      stub_request_once(:get, USER_MEDIA, body: build(:twitter_user_media, tweets: [tweet]).to_json)
+      stub_request_once(:get, USER_MEDIA, body: build(:twitter_user_media_page1, tweets: [tweet]).to_json)
       scraped_tweets = scraper.fetch_next_batch
       submission = scraper.to_submission(scraped_tweets[0])
       assert_equal("Commission for @LaxyVRC 🦊", submission.description)
