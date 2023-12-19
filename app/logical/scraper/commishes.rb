@@ -48,12 +48,14 @@ module Scraper
     def get_details(urls)
       urls.map do |url|
         html = fetch_html(url, headers: headers)
+        script_containing_id = html.xpath("//script[contains(text(), '/upload/tag/')]").first
+        original_image_id = script_containing_id.text.match(/\/(\d+)\/remove\//)[1]
         {
           identifier: url.split("/").pop,
           title: html.at("h1#upload-title").content,
           description: "",
           created_at: html.at("h1#upload-title").parent.content.sub(/.*\u00a9.*(\d{4}) -/, '\1'),
-          file_url: html.at("img#preview")["data-large"],
+          file_url: "https://portfolio.commishes.com/image/#{original_image_id}/original/",
         }
       end
     end
