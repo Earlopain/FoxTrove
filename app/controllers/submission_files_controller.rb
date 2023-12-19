@@ -25,6 +25,11 @@ class SubmissionFilesController < ApplicationController
     submission_file.update(hidden_from_search_at: hide_from_search ? Time.current : nil)
   end
 
+  def set_last_known_good
+    submission_file = SubmissionFile.find(params[:id])
+    submission_file.artist_url.update(last_scraped_at: submission_file.created_at_on_site - 1.day)
+  end
+
   def update_e6_posts
     submission_file = SubmissionFile.find(params[:id])
     submission_file.update_e6_posts(priority: E6IqdbQueryJob::PRIORITIES[:immediate])

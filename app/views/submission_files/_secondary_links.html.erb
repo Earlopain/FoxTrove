@@ -4,10 +4,14 @@
 <% if instance_variable_defined?(:@search_params) %>
   <%= subnav_link_to "Update IQDB for matching", update_matching_e6_posts_submission_files_path(search: @search_params), method: :post, data: { confirm: "Are you sure?" } %>
 <% end %>
-<% if @submission_file&.artist %>
+<% if @submission_file&.id %>
   |
   <%= subnav_link_to "All From Artist", artist_path(@submission_file.artist) %>
   <%= subnav_link_to "All From URL", artist_path(@submission_file.artist, search: { artist_url_id: [@submission_file.artist_url.id] }) %>
   <%= subnav_link_to "Update E6 IQDB", update_e6_posts_submission_file_path(@submission_file), method: :post %>
+  <% if @submission_file.artist_url.last_scraped_at %>
+    |
+    <%= subnav_link_to "Last known good", set_last_known_good_submission_file_path(@submission_file), method: :put, data: { confirm: "Fix broken scrapers. Everything after this may be downloaded again if it failed in the past but is now fixed through an update. Will not cause duplicate entries." } %>
+  <% end %>
 <% end %>
 | <%= render "submission_files/multiselect" %>

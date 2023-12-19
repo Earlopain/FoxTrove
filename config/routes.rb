@@ -25,6 +25,7 @@ Rails.application.routes.draw do
       post :update_e6_posts
       put :modify_backlog
       put :modify_hidden
+      put :set_last_known_good
     end
     collection do
       get :backlog
