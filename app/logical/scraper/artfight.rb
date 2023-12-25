@@ -77,6 +77,6 @@ module Scraper
         driver.cookie_value("laravel_session")
       end
     end
-    cache(:fetch_cookie, 24.hours)
+    cache(:fetch_cookie, 55.minutes)
   end
 end
