@@ -28,5 +28,3 @@ COPY --from=node-downloader /usr/local/lib/node_modules/esbuild/bin/esbuild /usr
 
 # Copy gems
 COPY --from=ruby-builder /usr/local/bundle /usr/local/bundle
-
-RUN echo "IRB.conf[:USE_AUTOCOMPLETE] = false" > ~/.irbrc
