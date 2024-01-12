@@ -33,6 +33,11 @@ group :development, :test do
   gem "webmock", require: false
 end
 
+group :development do
+  gem "ruby-lsp"
+  gem "ruby-lsp-rails"
+end
+
 group :rubocop do
   gem "rubocop", require: false
   gem "rubocop-erb", require: false
@@ -40,9 +45,4 @@ group :rubocop do
   gem "rubocop-minitest", require: false
   gem "rubocop-performance", require: false
   gem "rubocop-rails", require: false
-end
-
-group :local do
-  gem "solargraph", require: false
-  gem "solargraph-rails", require: false
 end

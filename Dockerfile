@@ -8,11 +8,6 @@ RUN gem i foreman && bundle install \
  && find /usr/local/bundle/gems/ -name "*.c" -delete \
  && find /usr/local/bundle/gems/ -name "*.o" -delete
 
-ARG COMPOSE_PROFILES
-RUN if [[ $COMPOSE_PROFILES == *"solargraph"* ]]; then \
-  bundle exec yard gems; \
-fi
-
 FROM node:20-alpine3.19 as node-downloader
 
 RUN npm install esbuild@0.19.8 -g
