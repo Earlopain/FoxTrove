@@ -112,7 +112,7 @@ GEM
       nokogiri (>= 1.12.0)
     marcel (1.0.2)
     mini_portile2 (2.8.5)
-    minitest (5.20.0)
+    minitest (5.21.1)
     minitest-spec-rails (7.2.0)
       minitest (>= 5.0)
       railties (>= 4.1)
