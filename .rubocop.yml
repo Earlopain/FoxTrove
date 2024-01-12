@@ -7,10 +7,6 @@ require:
 
 AllCops:
   NewCops: enable
-  Exclude:
-    - bin/*
-    - db/schema.rb
-    - vendor/**/*
   TargetRubyVersion: 3.2
 
 FactoryBot/AssociationStyle:
