@@ -23,7 +23,7 @@ module Sites
     end
 
     def manually_disabled?
-      Config.send("#{site_type}_disabled?")
+      Config.send(:"#{site_type}_disabled?")
     end
 
     def scraper_enabled?

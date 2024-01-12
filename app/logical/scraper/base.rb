@@ -67,12 +67,12 @@ module Scraper
       @_cached_methods ||= []
       @_cached_methods << method_name
 
-      alias_method "#{method_name}_old", method_name
+      alias_method :"#{method_name}_old", method_name
       define_method(method_name) do
         key = self.class.cache_key(method_name)
         return Rails.cache.fetch(key) if Rails.cache.exist?(key)
 
-        value = send("#{method_name}_old")
+        value = send(:"#{method_name}_old")
         Rails.cache.write(key, value, expires_in: expires_in) if value # Don't cache nil
         value
       end
