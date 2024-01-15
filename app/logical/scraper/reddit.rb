@@ -69,7 +69,8 @@ module Scraper
     end
 
     def access_token
-      auth = "Basic #{Base64.strict_encode64("#{Config.reddit_client_id}:#{Config.reddit_client_secret}")}"
+      strict_base64_encoded = ["#{Config.reddit_client_id}:#{Config.reddit_client_secret}"].pack("m0")
+      auth = "Basic #{strict_base64_encoded}"
       response = fetch_json("https://www.reddit.com/api/v1/access_token",
         method: :post,
         form: { grant_type: "client_credentials" },

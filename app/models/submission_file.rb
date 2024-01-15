@@ -124,7 +124,8 @@ class SubmissionFile < ApplicationRecord
   end
 
   def md5
-    Base64.decode64(original.checksum).unpack1("H*")
+    base64_decoded = original.checksum.unpack1("m")
+    base64_decoded.unpack1("H*")
   end
 
   def can_iqdb?

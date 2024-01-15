@@ -96,8 +96,8 @@ module Scraper
       params_escaped = signature_params.sort.collect { |k, v| "#{CGI.escape(k.to_s)}=#{CGI.escape(v.to_s)}" }.join("&")
       base_string = "#{method.upcase}&#{CGI.escape(url)}&#{CGI.escape(params_escaped)}"
       signing_key = "#{Config.tumblr_consumer_secret}&#{Config.tumblr_oauth_secret}"
-      oauth_signature = Base64.encode64(OpenSSL::HMAC.digest("sha1", signing_key, base_string).to_s).chop
-      "OAuth #{{ **oauth_params, oauth_signature: oauth_signature }.map { |k, v| "#{k}=\"#{CGI.escape(v.to_s)}\"" }.join(', ')}"
+      base64_encoded_digest = [OpenSSL::HMAC.digest("sha1", signing_key, base_string).to_s].pack("m")
+      "OAuth #{{ **oauth_params, oauth_signature: base64_encoded_digest.chop }.map { |k, v| "#{k}=\"#{CGI.escape(v.to_s)}\"" }.join(', ')}"
     end
   end
 end
