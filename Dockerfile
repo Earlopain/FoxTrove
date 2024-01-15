@@ -19,9 +19,18 @@ WORKDIR /app
 RUN apk --no-cache add \
   tzdata git \
   postgresql16-client \
-  vips ffmpeg
+  vips ffmpeg \
+  sudo
 
 RUN git config --global --add safe.directory /app
+
+# Create a user with (potentially) the same id as on the host
+ARG HOST_UID=1000
+ARG HOST_GID=1000
+RUN addgroup --gid ${HOST_GID} reverser && \
+  adduser -S --shell /bin/sh --uid ${HOST_UID} reverser && \
+  addgroup reverser wheel && \
+  echo "reverser ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 
 # Copy native npm package binaries
 COPY --from=node-downloader /usr/local/lib/node_modules/esbuild/bin/esbuild /usr/local/bin
