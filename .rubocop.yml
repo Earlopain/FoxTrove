@@ -75,9 +75,6 @@ Style/HashSyntax:
 Style/IfUnlessModifier:
   Enabled: false
 
-Style/InfiniteLoop:
-  Enabled: false
-
 Style/StringLiterals:
   EnforcedStyle: double_quotes
 

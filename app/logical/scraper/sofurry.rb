@@ -11,7 +11,6 @@ module Scraper
       @otp_sequence = 0
       @otp_pad = ""
       @otp_salt = ""
-      @request_retries = 0
       @previous_ids = []
     end
 
@@ -60,7 +59,7 @@ module Scraper
     private
 
     def make_request(url, **query)
-      while true
+      5.times do
         password_hash = Digest::MD5.hexdigest "#{Config.sofurry_pass}#{@otp_salt}"
         otp_hash = Digest::MD5.hexdigest "#{password_hash}#{@otp_pad}#{@otp_sequence}"
         json = fetch_json(url, params: {
@@ -70,17 +69,15 @@ module Scraper
           **query,
         })
         if json["messageType"] != 6
-          @request_retries = 0
           @otp_sequence += 1
           return json
         end
-        @request_retries += 1
-        raise StandartError, "failed to authenticate" if @request_retries > 5
 
         @otp_sequence = json["newSequence"]
         @otp_pad = json["newPadding"]
         @otp_salt = json["salt"]
       end
+      raise StandartError, "failed to authenticate"
     end
   end
 end
