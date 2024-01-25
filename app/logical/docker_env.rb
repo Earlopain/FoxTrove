@@ -20,7 +20,12 @@ module DockerEnv
   end
 
   def master_commit
-    @master_commit ||= File.read("/docker/git_master_ref").first(GitHelper::COMMIT_ABREV_LENGTH)
+    @master_commit ||= begin
+      File.read("/docker/git_master_ref").first(GitHelper::COMMIT_ABREV_LENGTH)
+    rescue Errno::ENOENT
+      # The .git folder doesn't exist during build on CI for some reason
+      "unknown"
+    end
   end
 
   def docker_relevant_files
