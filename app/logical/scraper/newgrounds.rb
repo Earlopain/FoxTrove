@@ -80,7 +80,7 @@ module Scraper
 
       # Comic submissions
       # https://www.newgrounds.com/art/view/ethandoesathing/legend-of-arcana-ch-1-pages
-      image_data, = response.body.scan(/imageData = (\[[\s\S]*\]);/m).first
+      image_data, = html.to_s.scan(/imageData = (\[[\s\S]*\]);/m).first
       if image_data
         image_urls += JSON.parse(image_data).pluck("image")
       end
