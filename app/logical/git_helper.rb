@@ -20,6 +20,19 @@ module GitHelper
     end
   end
 
+  def self.current_branch
+    @current_branch ||= `git rev-parse --abbrev-ref HEAD`.strip
+  end
+
+  def self.build_outdated?
+    return false if current_branch != "master"
+
+    @build_outdated ||= begin
+      changed_files = `git diff --name-only #{DockerEnv.master_commit}..#{commit_hash}`.split("\n")
+      changed_files.intersect?(DockerEnv.docker_relevant_files)
+    end
+  end
+
   def self.url
     return @url if instance_variable_defined? :@url
 

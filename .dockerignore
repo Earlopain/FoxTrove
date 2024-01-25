@@ -4,3 +4,4 @@
 # Allow only the files that are actually needed
 !/Gemfile
 !/Gemfile.lock
+!/.git/refs/heads/master

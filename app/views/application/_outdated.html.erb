@@ -1,0 +1,14 @@
+<h3>Your current Docker image is outdated, it is recommended to perform a rebuild:</h3>
+<ol style="margin-top: 0">
+  <li><code>docker compose down</code></li>
+  <li><code>docker compose build</code></li>
+  <li><code>docker compose up</code></li>
+</ol>
+<div>
+  You can silence this message by setting <code>DEV_MODE=true</code> in the <code>.env</code> file.<br>
+  This is only recommended if you know what you're doing.
+</div>
+<p>
+  Old: <code><%= DockerEnv.master_commit %></code>
+  New: <code><%= GitHelper.commit_hash %></code><br>
+</p>
