@@ -46,6 +46,13 @@ module Scraper
       instance_variable_set(:"@#{self.class.state}", value)
     end
 
+    # Which date should already be considered scraped? Normally this is good to set to
+    # when the scrape started but some sites may exhibit a delay with indexing, resulting
+    # in images being missed. See https://github.com/Earlopain/reverser/issues/113
+    def cutoff_timestamp
+      @artist_url.scraper_status["started_at"]
+    end
+
     def fetch_and_save_next_submissions
       fetch_next_batch.map do |api_submission|
         submission = to_submission(api_submission)
