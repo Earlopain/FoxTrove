@@ -12,19 +12,9 @@ runs:
       with:
         cache-from: type=gha
         load: true
-        tags: reverser:test
+        tags: reverser
 
+    # It could be so easy. https://github.com/docker/compose/issues/7423
     - name: Set docker run command
-      run: >-
-        echo "DOCKER_RUN=docker run
-        --rm
-        --network host
-        -e POSTGRES_HOST=localhost
-        -e EXPOSED_VNC_PORT=7900
-        -e IQDB_URL=http://iqdb:5588
-        -e SELENIUM_URL=http://selenium:4444
-        -e RAILS_ENV=test
-        -e CI=true
-        -v $PWD:/app reverser:test
-        ">> "$GITHUB_ENV"
+      run: echo "DOCKER_RUN=echo -e \"CI=1\nREVERSER_DATA_PATH=${{ runner.temp }}/reverser\" > .env && docker compose run" >> "$GITHUB_ENV"
       shell: bash
