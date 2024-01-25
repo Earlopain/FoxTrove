@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class SeleniumWrapper
+  DEFAULT_TIMEOUT = 30
+
   def self.driver(with_performance: false)
     options = Selenium::WebDriver::Chrome::Options.new(exclude_switches: ["enable-automation"])
     options.add_argument("--disable-blink-features=AutomationControlled")
@@ -32,16 +34,16 @@ module Selenium
           nil
         end
 
-        def wait_for(timeout: 10, &)
+        def wait_for(timeout: SeleniumWrapper::DEFAULT_TIMEOUT, &)
           wait = Selenium::WebDriver::Wait.new(timeout: timeout)
           wait.until(&)
         end
 
-        def wait_for_cookie(cookie_name, timeout: 10)
+        def wait_for_cookie(cookie_name, timeout: SeleniumWrapper::DEFAULT_TIMEOUT)
           wait_for(timeout: timeout) { cookie_value(cookie_name) }
         end
 
-        def wait_for_element(timeout: 10, **)
+        def wait_for_element(timeout: SeleniumWrapper::DEFAULT_TIMEOUT, **)
           wait_for(timeout: timeout) { find_element(**) }
         end
       end
