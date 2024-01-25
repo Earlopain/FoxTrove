@@ -72,8 +72,7 @@ services:
     image: reverser
     volumes:
       - .:/app
-      - rubocop_cache:/rubocop_cache
-    entrypoint: bundle exec rubocop --cache-root /rubocop_cache
+    entrypoint: bundle exec rubocop
     profiles:
       - rubocop
 
@@ -95,4 +94,3 @@ services:
 
 volumes:
   build_assets:
-  rubocop_cache:
