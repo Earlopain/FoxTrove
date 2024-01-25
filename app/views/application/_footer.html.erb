@@ -1,6 +1,6 @@
 <%# locals: () %>
 <%= Config.app_name %>
-– Rendered in <%= (Time.current.to_f - @start_time).round(3) %> seconds
+Rendered in <%= number_with_precision(Time.current.to_f - @start_time, precision: 3) %> seconds
 <% if GitHelper.enabled? %>
   – <%= link_to "Github", GitHelper.url %>
   (<%= link_to "#{GitHelper.commit_hash} from #{Time.zone.at(GitHelper.timestamp).strftime('%Y-%m-%d')}", "#{GitHelper.url}/tree/#{GitHelper.commit_hash}" %>)
