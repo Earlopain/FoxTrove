@@ -76,10 +76,7 @@ Install a WSL distribution, enable WSL2, and clone the project inside there. Exe
 1. `cd` into the repo.
 1. `cp .env.sample .env` and fill out the necessary environment variables.
 1. Build the docker image with `docker compose build`.
-1. Get inside the container with `docker compose run reverser sh`.
-1. Run `RAILS_ENV=test bin/rails db:create` to create the test database.
-1. Run `bin/rails db:schema:load` to finish setting up the database.
-1. You can now exit the container with `exit`.
+1. Run `docker compose run --rm reverser bin/setup`.
 1. Run `docker compose up`. The container is now available at `http://localhost:9000`. A few config options are mandatory, you will be notified of them when accessing the site. See [Configuration](#configuration) on how to set them.
 
 This project is only meant to run locally on your machine. You may host it somewhere and make it accessible to others, but be aware that there are no user accounts or fine grained permissions. Everyone can do anyhting.

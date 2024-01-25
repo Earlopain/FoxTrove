@@ -1,0 +1,7 @@
+#!/usr/bin/env ruby
+
+puts "Creating test database..."
+system("RAILS_ENV=test bin/rails db:create", exception: true)
+
+puts "Loading db schema..."
+system("bin/rails db:schema:load", exception: true)
