@@ -39,4 +39,5 @@ COPY --from=node-downloader /usr/local/lib/node_modules/esbuild/bin/esbuild /usr
 COPY --from=ruby-builder /usr/local/bundle /usr/local/bundle
 
 # Bust cache if local git ref changes and add it to the image
-ADD .git/refs/heads/maste? /docker/git_master_ref
+# This looks weird but handles the .git folder missing entirely
+ADD .gi?/ref?/head?/maste? /docker/git_master_ref
