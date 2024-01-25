@@ -56,9 +56,7 @@ A few sites throw captchas at you when trying to login through an automated brow
 
 ## Configuration
 
-A few scraper require credentials to work, this is how you can configure them. Higher entries in this list overwrite the lower ones.
-1. Entries in the file at `config/reverser_custom_config.yml`.
-1. Entries in the file at `config/reverser.yml`. Look here to see what you can/need to configure for more scraper to work. There are also a few other settings you can tweak, like disabling individual scrapers.
+A few scraper require credentials to work, you can configure them through the web UI under the `Config` header link.
 
 ## How do I actually use this?
 The following software is required to get started:

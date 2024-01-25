@@ -1,9 +1,19 @@
 <h1>Settings for <%= @definition.display_name %></h1>
 
 <%= link_to @definition.homepage, @definition.homepage %><br>
+
+<% if @definition.missing_config_keys.any? %>
+  <div>
+    The following must be set for the scraper to function:
+    <% @definition.missing_config_keys.each do |key| %>
+      <%= strip_config_prefix(@definition, key) %>
+    <% end %>
+  </div>
+<% end %>
+<br>
 <%= simple_form_for(:config, url: modify_config_index_path, method: :put) do |f| %>
   <% @definition.all_config_keys.each do |key| %>
-    <%= f.input key, label: key.to_s.delete_prefix("#{@definition.site_type}_"), input_html: { value: Config.send(key) } %>
+    <%= f.input key, label: strip_config_prefix(@definition, key), input_html: { value: Config.send(key) } %>
   <% end %>
   <%= f.input "#{@definition.site_type}_disabled", as: :select, label: "disabled", selected: Config.send(:"#{@definition.site_type}_disabled?").to_s %>
   <%= f.submit %>
