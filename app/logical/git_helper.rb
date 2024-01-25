@@ -1,14 +1,23 @@
 # frozen_string_literal: true
 
 module GitHelper
-  def self.enabled?
-    hash.present?
+  CommitData = Struct.new(:timestamp, :commit_hash)
+  COMMIT_ABREV_LENGTH = 7
+  class << self
+    delegate :timestamp, :commit_hash, to: :latest_commit
   end
 
-  def self.hash
-    return @hash if instance_variable_defined? :@hash
+  def self.enabled?
+    latest_commit.present?
+  end
 
-    @hash = `git rev-parse --short HEAD`.strip
+  def self.latest_commit
+    @latest_commit ||= begin
+      data = JSON.parse(`git log -1 --format='{ "timestamp": %at, "commit_hash": "%h" }' --abbrev=#{COMMIT_ABREV_LENGTH}`)
+      CommitData.new(**data)
+    rescue JSON::ParserError
+      {}
+    end
   end
 
   def self.url
