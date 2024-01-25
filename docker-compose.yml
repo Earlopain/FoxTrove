@@ -76,6 +76,42 @@ services:
     profiles:
       - rubocop
 
+  yamllint:
+    build:
+      dockerfile_inline: |
+        FROM python:3.11-alpine3.19
+        RUN pip install yamllint==1.32.0
+        WORKDIR /app
+    volumes:
+      - .:/app
+    entrypoint: yamllint -c .github/yamllint.yml -s .
+    profiles:
+      - yamllint
+
+  csslint:
+    build:
+      dockerfile_inline: |
+        FROM node:20-alpine3.19
+        RUN npm install stylelint@15.11.0 stylelint-config-standard@34.0.0 -g
+        WORKDIR /app
+    volumes:
+      - .:/app
+    entrypoint: stylelint "**/*.css" --config .github/.stylelintrc.json
+    profiles:
+      - csslint
+
+  tslint:
+    build:
+      dockerfile_inline: |
+        FROM node:20-alpine3.19
+        RUN npm install typescript@5.2.2 -g
+        WORKDIR /app
+    volumes:
+      - .:/app
+    entrypoint: tsc --noEmit -p .github/tsconfig.json
+    profiles:
+      - tslint
+
   tests:
     image: reverser
     environment:
