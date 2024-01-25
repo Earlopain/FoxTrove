@@ -8,6 +8,7 @@ require:
 AllCops:
   NewCops: enable
   TargetRubyVersion: 3.2
+  CacheRootDirectory: tmp/cache
 
 FactoryBot/AssociationStyle:
   EnforcedStyle: explicit
