@@ -56,36 +56,27 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v4
-        with:
-          python-version: "3.11"
+      - uses: ./.github/prepare-docker-image
 
-      - run: >-
-          pip install yamllint==1.32.0 &&
-          yamllint -c .github/yamllint.yml -s .
+      - name: Run yamllint
+        run: eval $DOCKER_RUN yamllint
 
   csslint:
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 20
+      - uses: ./.github/prepare-docker-image
 
-      - run: >-
-          npm install stylelint@15.11.0 stylelint-config-standard@34.0.0 -g &&
-          stylelint "**/*.css" --config .github/.stylelintrc.json
+      - name: Run yamllint
+        run: eval $DOCKER_RUN csslint
 
   tslint:
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 20
+      - uses: ./.github/prepare-docker-image
 
-      - run: >-
-          npm install typescript@5.2.2 -g &&
-          tsc --noEmit -p .github/tsconfig.json
+      - name: Run yamllint
+        run: eval $DOCKER_RUN tslint

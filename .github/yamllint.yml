@@ -1,5 +1,8 @@
 extends: default
 
+ignore: |
+  config/reverser_custom_config.yml
+
 rules:
   document-start: disable
   line-length: disable
