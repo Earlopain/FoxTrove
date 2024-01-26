@@ -23,6 +23,7 @@ gem "puma"
 gem "rotp"
 gem "rouge"
 gem "ruby-vips"
+gem "rugged"
 gem "selenium-webdriver"
 gem "simple_form"
 

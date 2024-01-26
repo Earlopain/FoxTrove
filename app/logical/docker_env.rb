@@ -24,7 +24,7 @@ module DockerEnv
       File.read("/docker/git_master_ref").first(GitHelper::COMMIT_ABREV_LENGTH)
     rescue Errno::ENOENT
       # The .git folder doesn't exist during build on CI for some reason
-      "unknown"
+      ""
     end
   end
 
