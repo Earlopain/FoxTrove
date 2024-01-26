@@ -88,7 +88,8 @@ module Scraper
         driver.wait_for_element(xpath: "//*[text()='Log In']").click
 
         driver.wait_for_element(id: "username").send_keys Config.deviantart_user
-        driver.find_element(id: "password").send_keys Config.deviantart_pass
+        driver.find_element(id: "loginbutton").click
+        driver.wait_for_element(id: "password").send_keys Config.deviantart_pass
         driver.find_element(id: "loginbutton").click
 
         begin
