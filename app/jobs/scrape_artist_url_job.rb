@@ -16,10 +16,10 @@ class ScrapeArtistUrlJob < ConcurrencyControlledJob
 
       artist_url.update(scraper_status: artist_url.scraper_status.merge(scraper.class.state => scraper.state_value))
 
-      stop_marker = artist_url.last_scraped_at
-      break if stop_marker.present? && submissions.any? { |submission| submission.created_at.before? stop_marker }
+      break if submissions.any? { |submission| artist_url.scraper_stop_marker&.after?(submission.created_at) }
     end
-    artist_url.last_scraped_at = scraper.cutoff_timestamp
+    artist_url.last_scraped_at = artist_url.scraper_status["started_at"]
+    artist_url.scraper_stop_marker = scraper.new_stop_marker
     artist_url.scraper_status = {}
     artist_url.save
   end

@@ -49,7 +49,7 @@ module Scraper
     # Which date should already be considered scraped? Normally this is good to set to
     # when the scrape started but some sites may exhibit a delay with indexing, resulting
     # in images being missed. See https://github.com/Earlopain/reverser/issues/113
-    def cutoff_timestamp
+    def new_stop_marker
       @artist_url.scraper_status["started_at"]
     end
 

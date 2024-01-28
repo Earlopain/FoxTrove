@@ -56,7 +56,7 @@ module Scraper
       url_identifier
     end
 
-    def cutoff_timestamp
+    def new_stop_marker
       query = SubmissionFile.joins(artist_submission: :artist_url).where(artist_submission: { artist_url: @artist_url })
       query.order(created_at_on_site: :desc).pick(:created_at_on_site)
     end
