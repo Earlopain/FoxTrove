@@ -25,7 +25,7 @@ services:
     volumes:
       - .:/app
       - build_assets:/app/public/build
-      - ${REVERSER_DATA_PATH:?}/active_storage:/app/public/storage
+      - ${REVERSER_DATA_PATH:-./data}/active_storage:/app/public/storage
     depends_on:
       postgres:
         condition: service_healthy
@@ -44,7 +44,7 @@ services:
       - POSTGRES_DB=reverser_development
       - POSTGRES_HOST_AUTH_METHOD=trust
     volumes:
-      - ${REVERSER_DATA_PATH:?}/db_data:/var/lib/postgresql/data
+      - ${REVERSER_DATA_PATH:-./data}/db_data:/var/lib/postgresql/data
     shm_size: 256mb
     ports:
       - ${EXPOSED_POSTGRES_PORT:-34518}:5432
@@ -57,7 +57,7 @@ services:
   iqdb:
     image: ghcr.io/e621ng/iqdb:b988f000f17008677c7546c0c13623bc956b585d
     volumes:
-      - ${REVERSER_DATA_PATH:?}/iqdb_data:/iqdb
+      - ${REVERSER_DATA_PATH:-./data}/iqdb_data:/iqdb
 
   selenium:
     image: selenium/standalone-chrome:4.16.1-20231212
