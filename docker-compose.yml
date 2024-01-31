@@ -115,6 +115,7 @@ services:
 
   tests:
     image: reverser
+    user: ${DOCKER_USER:-root}
     environment:
       <<: *common-env
       VIPS_WARNING: "0"

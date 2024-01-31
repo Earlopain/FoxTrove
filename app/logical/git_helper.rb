@@ -3,7 +3,7 @@
 module GitHelper
   REPO = begin
     Rugged::Repository.new(Rails.root)
-  rescue Rugged::RepositoryError
+  rescue Rugged::RepositoryError, Rugged::ConfigError
     nil
   end
 
