@@ -13,7 +13,7 @@ module Scraper
     end
 
     def fetch_next_batch
-      response = make_request("https://oauth.reddit.com/user/#{url_identifier}/submitted.json", {
+      response = make_request("/user/#{url_identifier}/submitted.json", {
         after: @after,
         limit: 100,
         sort: "new",
@@ -55,26 +55,29 @@ module Scraper
     end
 
     def fetch_api_identifier
-      json = make_request("https://oauth.reddit.com/user/#{url_identifier}/about.json")
+      json = make_request("/user/#{url_identifier}/about.json")
       json.dig("data", "id")
+    end
+
+    def extend_client(client)
+      client
+        .plugin(:basic_auth)
+        .with(headers: { "User-Agent": "reverser.0.1 by earlopain" }, origin: "https://oauth.reddit.com")
     end
 
     private
 
     def make_request(url, params = {})
-      fetch_json(url, params: params, headers: {
-        "User-Agent": "reverser.0.1 by earlopain",
-        "Authorization": "bearer #{access_token}",
+      client.fetch_json(url, params: params, headers: {
+        Authorization: "bearer #{access_token}",
       })
     end
 
     def access_token
-      strict_base64_encoded = ["#{Config.reddit_client_id}:#{Config.reddit_client_secret}"].pack("m0")
-      auth = "Basic #{strict_base64_encoded}"
-      response = fetch_json("https://www.reddit.com/api/v1/access_token",
+      with_basic_auth = client.basic_auth(Config.reddit_client_id, Config.reddit_client_secret)
+      response = with_basic_auth.fetch_json("https://www.reddit.com/api/v1/access_token",
         method: :post,
         form: { grant_type: "client_credentials" },
-        headers: { "Authorization" => auth, "User-Agent": "reverser.0.1 by earlopain" },
       )
       response["access_token"]
     end
