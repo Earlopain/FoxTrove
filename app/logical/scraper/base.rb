@@ -3,10 +3,13 @@
 module Scraper
   class Base
     delegate :url_identifier, :api_identifier, to: :@artist_url
+    attr_accessor :client
+
     def initialize(artist_url)
       @artist_url = artist_url.is_a?(Integer) ? ArtistUrl.find(artist_url) : artist_url
       @has_more = true
       @previous_request = 0
+      @client = extend_client(HTTPX.plugin(HttpxPlugin, scraper: self))
     end
 
     def self.inherited(base)
@@ -98,8 +101,6 @@ module Scraper
       @_cached_methods || []
     end
 
-    protected
-
     def end_reached
       @has_more = false
     end
@@ -109,25 +110,12 @@ module Scraper
       raise NotImplementedError
     end
 
-    def fetch_html(path, method: :get, **params)
-      response = enfore_rate_limit do
-        HTTPX.send(method, path, **params)
-      end
-      log_response(path, method, params, response.status, response.body.to_s)
-      raise_if_response_not_ok(response)
-
-      Nokogiri::HTML(response.body.to_s)
+    # Add more plugins, set default headers, etc.
+    def extend_client(client)
+      client
     end
 
-    def fetch_json(path, method: :get, **params)
-      response = enfore_rate_limit do
-        HTTPX.send(method, path, **params)
-      end
-      log_response(path, method, params, response.status, response.body.to_s)
-      raise_if_response_not_ok(response)
-
-      JSON.parse(response.body.to_s)
-    end
+    delegate :fetch_json, :fetch_html, to: :@client
 
     def fetch_json_selenium(path)
       SeleniumWrapper.driver do |d|
@@ -142,12 +130,6 @@ module Scraper
           raise JSON::ParserError, "#{path}: No response"
         end
       end
-    end
-
-    private
-
-    def raise_if_response_not_ok(response)
-      raise HTTPX::HTTPError, response if response.status != 200
     end
 
     def log_response(path, method, request_params, status_code, body)
