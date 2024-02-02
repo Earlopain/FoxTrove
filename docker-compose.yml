@@ -24,7 +24,6 @@ services:
       GOOD_JOB_EXEC: bundle exec good_job --queues=scraping:1;e6_iqdb:1;variant_generation:5;default:1;submission_download:5
     volumes:
       - .:/app
-      - build_assets:/app/public/build
       - ${REVERSER_DATA_PATH:-./data}/active_storage:/app/public/storage
     depends_on:
       postgres:
@@ -127,6 +126,3 @@ services:
         condition: service_healthy
     profiles:
       - tests
-
-volumes:
-  build_assets:

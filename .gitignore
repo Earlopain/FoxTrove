@@ -17,3 +17,4 @@
 /config/reverser_custom_config.yml
 /data
 /.env
+/public/build
