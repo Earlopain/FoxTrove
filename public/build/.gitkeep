@@ -1,0 +1,2 @@
+Required to listen to changes to this folder in config/initializers/listen.rb
+This throws if the folder doesn't exist (like on CI for example)
