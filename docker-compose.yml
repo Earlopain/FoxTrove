@@ -122,8 +122,6 @@ services:
     volumes:
       - .:/app
     entrypoint: bundle exec rails test
-    tmpfs:
-      - /app/tmp/storage
     depends_on:
       postgres:
         condition: service_healthy
