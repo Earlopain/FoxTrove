@@ -53,7 +53,8 @@ module Scraper
       fetch_json(url,
         params: query_params,
         headers: {
-          Authorization: authorization_header(url, "get", query_params),
+          "Authorization": authorization_header(url, "get", query_params),
+          "User-Agent": FRIENDLY_USER_AGENT,
         },
       )
     end
@@ -65,6 +66,7 @@ module Scraper
         headers: {
           "Authorization": authorization_header(url, "post", params),
           "Content-Type": "application/x-www-form-urlencoded",
+          "User-Agent": FRIENDLY_USER_AGENT,
         },
       )
     end

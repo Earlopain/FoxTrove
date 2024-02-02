@@ -2,6 +2,8 @@
 
 module Scraper
   class Base
+    FRIENDLY_USER_AGENT = "reverser/0.1 (by earlopain)"
+
     delegate :url_identifier, :api_identifier, to: :@artist_url
     attr_accessor :client
 

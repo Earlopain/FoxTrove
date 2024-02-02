@@ -62,7 +62,7 @@ module Scraper
     def extend_client(client)
       client
         .plugin(:basic_auth)
-        .with(headers: { "User-Agent": "reverser.0.1 by earlopain" }, origin: "https://oauth.reddit.com")
+        .with(headers: { "User-Agent": FRIENDLY_USER_AGENT }, origin: "https://oauth.reddit.com")
     end
 
     private

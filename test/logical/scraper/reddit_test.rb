@@ -10,14 +10,14 @@ module Scraper
 
     def stub_access_token_request
       stub_request(:post, "https://www.reddit.com/api/v1/access_token")
-        .with(body: { grant_type: "client_credentials" }, headers: { authorization: "Basic Og==", user_agent: "reverser.0.1 by earlopain" })
+        .with(body: { grant_type: "client_credentials" }, headers: { authorization: "Basic Og==", user_agent: Scraper::Base::FRIENDLY_USER_AGENT })
         .to_return(body: { access_token: "very-secret" }.to_json)
     end
 
     test "it makes the correct requests to fetch api identifiers" do
       access_token_request = stub_access_token_request
       api_request = stub_request(:get, "https://oauth.reddit.com/user/test/about.json")
-        .with(headers: { authorization: "bearer very-secret", user_agent: "reverser.0.1 by earlopain" })
+        .with(headers: { authorization: "bearer very-secret", user_agent: Scraper::Base::FRIENDLY_USER_AGENT })
         .to_return(body: { data: { id: 123 } }.to_json)
 
       id = @scraper.fetch_api_identifier
