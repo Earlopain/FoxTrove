@@ -7,7 +7,7 @@ module Scraper
 
       def request(method, uri, **params)
         response = scraper.enfore_rate_limit { super }
-        scraper.log_response(uri, method, params, response.status, response.body.to_s)
+        scraper.log_response(uri.first, method, params, response.status, response.body.to_s)
         raise_if_response_not_ok(response)
         response
       end

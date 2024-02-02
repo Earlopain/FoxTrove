@@ -29,5 +29,27 @@ module Scraper
       assert_kind_of(Nokogiri::XML::Document, html)
       assert_match("html fragment", html)
     end
+
+    test "it logs the responses" do
+      stub_request(:get, "https://example.com?abc=def").to_return(body: "{}")
+      @client.fetch_json("https://example.com", params: { abc: "def" })
+
+      payload = @submission_file.log_events.sole.payload
+      assert_equal({
+        "path" => "https://example.com",
+        "method" => "GET",
+        "response_body" => "{}",
+        "response_code" => 200,
+        "request_params" => { "params" => { "abc" => "def" } },
+      }, payload)
+    end
+
+    test "it logs the responses if it errors" do
+      stub_request(:get, "https://example.com").to_return(status: 404)
+      assert_raises(HTTPX::HTTPError) do
+        @client.fetch_json("https://example.com")
+      end
+      assert_equal(404, @submission_file.log_events.sole.payload["response_code"])
+    end
   end
 end
