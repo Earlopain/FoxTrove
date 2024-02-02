@@ -51,5 +51,38 @@ module Scraper
       end
       assert_equal(404, @submission_file.log_events.sole.payload["response_code"])
     end
+
+    test "it logs options that are set on the session" do
+      stub_request(:get, "https://example.com/test?foo=bar&baz=fiz")
+      @client.with(
+        origin: "https://example.com",
+        headers: { "x-a" => "a" },
+        params: { foo: "bar" },
+      ).get("/test", headers: { "x-b" => "b" }, params: { baz: "fiz" })
+
+      payload = @submission_file.log_events.sole.payload
+      assert_equal("https://example.com/test", payload["path"])
+      assert_equal({
+        "headers" => { "x-a" => "a", "x-b" => "b" },
+        "params" => { "foo" => "bar", "baz" => "fiz" },
+      }, payload["request_params"])
+    end
+
+    test "it logs json parameters" do
+      stub_request(:post, "https://example.com")
+      @client.with(json: { foo: "bar" }).post("https://example.com")
+
+      payload = @submission_file.log_events.sole.payload
+      assert_equal("POST", payload["method"])
+      assert_equal({ "json" => { "foo" => "bar" } }, payload["request_params"])
+    end
+
+    test "it doesn't log empty headers" do
+      stub_request(:get, "https://example.com")
+      @client.get("https://example.com")
+
+      payload = @submission_file.log_events.sole.payload
+      assert_empty(payload["request_params"])
+    end
   end
 end

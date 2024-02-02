@@ -7,7 +7,12 @@ module Scraper
 
       def request(method, uri, **params)
         response = scraper.enfore_rate_limit { super }
-        scraper.log_response(uri.first, method, params, response.status, response.body.to_s)
+
+        request_options = response.instance_variable_get(:@request).options.to_hash
+        relevant_options = request_options.slice(:headers, :params, :json, :form, :body)
+        relevant_options.delete(:headers) if relevant_options[:headers].to_h.blank?
+        scraper.log_response(response.uri, method, relevant_options, response.status, response.body.to_s)
+
         raise_if_response_not_ok(response)
         response
       end
