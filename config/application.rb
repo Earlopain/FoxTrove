@@ -28,6 +28,10 @@ module Reverser
         cron: "0 * * * *", # every hour
         class: "PurgeUnattachedBlobsJob",
       },
+      purge_log_events: {
+        cron: "0 * * * *",
+        class: "PurgeLogEventsJob",
+      },
     }
 
     config.action_controller.action_on_unpermitted_parameters = :raise

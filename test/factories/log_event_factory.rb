@@ -5,13 +5,10 @@ FactoryBot.define do
     action { :scraper_request }
     payload { {} }
 
-    transient do
-      loggable { nil }
-    end
+    for_artist
 
-    before(:create) do |log_event, evaluator|
-      log_event.loggable_id = evaluator.loggable.id
-      log_event.loggable_type = evaluator.loggable.class.name
+    trait :for_artist do
+      association :loggable, factory: :artist
     end
   end
 end
