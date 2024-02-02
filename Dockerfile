@@ -10,7 +10,7 @@ RUN gem i foreman && bundle install \
 
 FROM node:20-alpine3.19 as node-downloader
 
-RUN npm install esbuild@0.19.8 -g
+RUN npm install esbuild@0.20.0 -g
 
 FROM ruby:3.2.2-alpine3.19
 

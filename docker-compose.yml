@@ -55,12 +55,12 @@ services:
       retries: 5
 
   iqdb:
-    image: ghcr.io/e621ng/iqdb:b988f000f17008677c7546c0c13623bc956b585d
+    image: ghcr.io/e621ng/iqdb:ad5e363879d4e4b80a0821253ae610b7859c5d32
     volumes:
       - ${REVERSER_DATA_PATH:-./data}/iqdb_data:/iqdb
 
   selenium:
-    image: selenium/standalone-chrome:4.16.1-20231212
+    image: selenium/standalone-chrome:4.17.0-20240123
     environment:
       - SE_VNC_NO_PASSWORD=1
     shm_size: 2gb
@@ -80,8 +80,8 @@ services:
   yamllint:
     build:
       dockerfile_inline: |
-        FROM python:3.11-alpine3.19
-        RUN pip install yamllint==1.32.0
+        FROM python:3.12-alpine3.19
+        RUN pip install yamllint==1.33.0
         WORKDIR /app
     volumes:
       - .:/app
@@ -93,7 +93,7 @@ services:
     build:
       dockerfile_inline: |
         FROM node:20-alpine3.19
-        RUN npm install stylelint@15.11.0 stylelint-config-standard@34.0.0 -g
+        RUN npm install stylelint@16.2.1 stylelint-config-standard@36.0.0 -g
         WORKDIR /app
     volumes:
       - .:/app
@@ -105,7 +105,7 @@ services:
     build:
       dockerfile_inline: |
         FROM node:20-alpine3.19
-        RUN npm install typescript@5.2.2 -g
+        RUN npm install typescript@5.3.3 -g
         WORKDIR /app
     volumes:
       - .:/app
