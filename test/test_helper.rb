@@ -6,11 +6,12 @@ require_relative "../config/environment"
 require "rails/test_help"
 require "minitest-spec-rails"
 
-require "factory_bot_rails"
+require "factory_bot"
 require "mocha/minitest"
 require "webmock/minitest"
 require "httpx/adapters/webmock"
 
+FactoryBot.find_definitions
 FactoryBot::SyntaxRunner.class_eval do
   include ActiveSupport::Testing::FileFixtures
   self.file_fixture_path = ActiveSupport::TestCase.file_fixture_path
