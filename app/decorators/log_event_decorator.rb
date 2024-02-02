@@ -6,16 +6,21 @@ class LogEventDecorator < ApplicationDecorator
     when "scraper_request"
       lines = []
       lines << "#{payload['method'].upcase}: #{payload['path']}"
-      if (query_params = payload.dig("request_params", "query"))
+      if (query_params = payload.dig("request_params", "params"))
         lines << "?#{CGI.unescape(query_params.to_query)}"
       end
-      if (body_params = payload.dig("request_params", "body"))
-        lines << "body: #{body_params.is_a?(Hash) ? body_params.to_query : body_params}"
+      if (body_params = formatted_body_params)
+        lines << "body: #{body_params}"
       end
       h.safe_join(lines.map { |line| h.tag.div(line) })
     else
       "Unknown action #{action}"
     end
+  end
+
+  def formatted_body_params
+    body_params = payload["request_params"]&.slice("body", "json", "form")&.values&.first
+    body_params.is_a?(Hash) ? body_params.to_query : body_params
   end
 
   def full_text
