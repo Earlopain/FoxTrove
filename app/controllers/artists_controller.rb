@@ -3,6 +3,18 @@
 class ArtistsController < ApplicationController
   def index
     @pagy, @artists = Artist.includes(:artist_urls).search(index_search_params).pagy(params)
+
+    @artist_urls_count = ArtistUrl.select(:artist_id)
+      .where(artist: @artists).group(:artist_id).count
+    @submissions_count = ArtistSubmission.select(:artist_id).joins(:artist_url)
+      .where(artist_url: { artist: @artists }).group(:artist_id).count
+
+    base = SubmissionFile.select(:artist_id).joins(artist_submission: :artist_url)
+      .where("artist_url.artist_id": @artists.map(&:id)).group("artist_url.artist_id")
+    @submission_files_count = base.count
+    @not_uploaded_count = base.search(upload_status: "not_uploaded").reorder("").count
+    @larger_size_count = base.search(upload_status: "larger_only_filesize_percentage").reorder("").count
+    @larger_dimensions_count = base.search(upload_status: "larger_only_dimensions").reorder("").count
   end
 
   def show

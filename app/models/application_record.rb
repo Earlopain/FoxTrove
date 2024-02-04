@@ -17,6 +17,8 @@ class ApplicationRecord < ActiveRecord::Base
       end
 
       def join_attribute_matches(value, attribute)
+        return all if value.nil?
+
         q = distinct.joins(join_hash(attribute))
         model_class, column = get_model_class_and_column(attribute)
         q.column_matches(model_class, column, value)
@@ -34,6 +36,8 @@ class ApplicationRecord < ActiveRecord::Base
       end
 
       def join_attribute_nil_check(value, attribute)
+        return all if value.nil?
+
         model_class, column = get_model_class_and_column(attribute)
         qualified_column = "#{model_class.table_name}.#{column.name}"
         q = distinct.joins(join_hash(attribute))

@@ -53,18 +53,6 @@ class Artist < ApplicationRecord
     scraper_urls.map(&:last_scraped_at).min
   end
 
-  def not_uploaded
-    SubmissionFile.search(artist_id: id, upload_status: "not_uploaded")
-  end
-
-  def larger_submissions_size
-    SubmissionFile.search(artist_id: id, upload_status: "larger_only_filesize_percentage")
-  end
-
-  def larger_submissions_dimensions
-    SubmissionFile.search(artist_id: id, upload_status: "larger_only_dimensions")
-  end
-
   concerning :SearchMethods do
     class_methods do
       def search(params)

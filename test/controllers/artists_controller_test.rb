@@ -19,4 +19,13 @@ class ArtistsControllerTest < ActionDispatch::IntegrationTest
       assert_enqueued_jobs 3, only: ScrapeArtistUrlJob
     end
   end
+
+  test "index renders" do
+    create(:artist)
+    create(:artist_url)
+    create(:submission_file)
+
+    get artists_path
+    assert_response :success
+  end
 end

@@ -23,13 +23,13 @@
       <tr>
         <td><%= link_to artist.id, artist_path(artist) %></td>
         <td><%= artist.name %></td>
-        <td><%= artist.artist_urls.count %></td>
+        <td><%= @artist_urls_count[artist.id] || 0 %></td>
         <td><%= oldest_last_scraped_at_text(artist) %></td>
-        <td><%= artist.submissions.count %></td>
-        <td><%= artist.submission_files.count %></td>
-        <td><%= link_to artist.not_uploaded.count, artist_path(artist, search: { upload_status: "not_uploaded" }) %></td>
-        <td><%= link_to artist.larger_submissions_size.count, artist_path(artist, search: { upload_status: "larger_only_filesize_percentage" }) %></td>
-        <td><%= link_to artist.larger_submissions_dimensions.count, artist_path(artist, search: { upload_status: "larger_only_dimensions" }) %></td>
+        <td><%= @submissions_count[artist.id] || 0 %></td>
+        <td><%= @submission_files_count[artist.id] || 0 %></td>
+        <td><%= link_to @not_uploaded_count[artist.id] || 0, artist_path(artist, search: { upload_status: "not_uploaded" }) %></td>
+        <td><%= link_to @larger_size_count[artist.id] || 0, artist_path(artist, search: { upload_status: "larger_only_filesize_percentage" }) %></td>
+        <td><%= link_to @larger_dimensions_count[artist.id] || 0, artist_path(artist, search: { upload_status: "larger_only_dimensions" }) %></td>
       </tr>
     <% end %>
   </tbody>
