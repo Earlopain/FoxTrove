@@ -12,15 +12,11 @@ class ApplicationRecord < ActiveRecord::Base
   concerning :SearchMethods do
     class_methods do
       def attribute_matches(value, attribute)
-        return all if value.nil?
-
         _, column = get_model_class_and_column(attribute)
         column_matches(self, column, value)
       end
 
       def join_attribute_matches(value, attribute)
-        return all if value.nil?
-
         q = distinct.joins(join_hash(attribute))
         model_class, column = get_model_class_and_column(attribute)
         q.column_matches(model_class, column, value)
@@ -45,15 +41,23 @@ class ApplicationRecord < ActiveRecord::Base
       end
 
       def column_matches(model_class, column, value)
-        qualified_column = "#{model_class.table_name}.#{column.name}"
-        values = value.is_a?(Array) ? value : value.to_s.split(",")
-        return if values.empty?
+        return all if value.nil?
 
+        values = [""] if value == ""
+        values ||= value if value.is_a?(Array)
+        values ||= value.to_s.split(",")
+        column_matches_array(model_class, column, values)
+      end
+
+      def column_matches_array(model_class, column, values)
+        return none if values.empty?
+
+        qualified_column = "#{model_class.table_name}.#{column.name}"
         if model_class.defined_enums.key? column.name.to_s
           where("#{qualified_column} IN(?)", values.map { |v| model_class.defined_enums[column.name.to_s][v] })
         else
           case column.sql_type_metadata.type
-          when :text
+          when :text, :string
             text_column_matches(qualified_column, values)
           when :integer
             where("#{qualified_column} IN(?)", values)
