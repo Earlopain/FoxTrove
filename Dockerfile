@@ -20,7 +20,10 @@ RUN apk --no-cache add \
   tzdata \
   postgresql16-client \
   vips ffmpeg \
-  sudo
+  sudo jemalloc
+
+ENV LD_PRELOAD=/usr/lib/libjemalloc.so.2
+ENV RUBY_YJIT_ENABLE=1
 
 # Create a user with (potentially) the same id as on the host
 ARG HOST_UID=1000
