@@ -1,3 +1,5 @@
+<%# locals: () -%>
+
 <%= simple_form_for :search, url: search_iqdb_path do |f| %>
   <%= f.input :url, label: "URL", placeholder: "Also supports e621 post links" %>
   <%= f.input :file, as: :file, input_html: { accept: "image/*,video/*" } %>

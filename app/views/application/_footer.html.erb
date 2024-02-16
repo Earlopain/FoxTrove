@@ -1,4 +1,4 @@
-<%# locals: () %>
+<%# locals: () -%>
 <%= Config.app_name %>
 Rendered in <%= number_with_precision(Time.current.to_f - @start_time, precision: 3) %> seconds
 <% if GitHelper.enabled? %>
