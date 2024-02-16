@@ -35,6 +35,7 @@ group :development, :test do
 end
 
 group :development do
+  gem "debug"
   gem "ruby-lsp"
   gem "ruby-lsp-rails"
 end

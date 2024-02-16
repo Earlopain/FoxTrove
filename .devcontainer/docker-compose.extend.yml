@@ -1,0 +1,22 @@
+version: "3"
+
+services:
+  dev-container:
+    image: reverser
+    user: ${DOCKER_USER:-root}
+    volumes:
+      - .:/app
+    # For ruby-lsp-rails
+    depends_on:
+      - postgres
+
+  # Don't start any other services
+  reverser:
+    profiles:
+    - dev-container
+  iqdb:
+    profiles:
+    - dev-container
+  selenium:
+    profiles:
+    - dev-container
