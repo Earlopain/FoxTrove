@@ -13,10 +13,10 @@ services:
   # Don't start any other services
   reverser:
     profiles:
-    - dev-container
+      - dev-container
   iqdb:
     profiles:
-    - dev-container
+      - dev-container
   selenium:
     profiles:
-    - dev-container
+      - dev-container
