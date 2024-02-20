@@ -1,5 +1,8 @@
 {
   "extends": ["stylelint-config-standard"],
+  "ignoreFiles": [
+    "../public/build/**/*"
+  ],
   "rules": {
     "color-hex-length": "long",
     "custom-property-pattern": "^_?[\\-a-z0-9]+$",
