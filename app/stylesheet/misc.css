@@ -21,7 +21,15 @@
 .pagy-nav {
   text-align: center;
   padding-top: 0.5rem;
-  margin-top: auto;
+  display: flex;
+  gap: 0.25rem;
+  margin: auto auto 0;
+
+  .page {
+    a[aria-disabled="true"] {
+      color: inherit;
+    }
+  }
 }
 
 .toggleable-container {
