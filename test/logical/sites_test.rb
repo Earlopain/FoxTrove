@@ -94,4 +94,21 @@ class SitesTest < ActiveSupport::TestCase
       end
     end
   end
+
+  test "all scrapers are mentioned in the readme" do
+    sites = Rails.root.join("README.md").read
+      .split("<!--- sites:start -->")[1]
+      .split("<!--- sites:stop -->")[0]
+      .lines.drop(2)
+      .map { |l| l.split("(")[0][2..].strip }
+    display_names = Sites.scraper_definitions.map(&:display_name)
+    diff = (sites - display_names) | (display_names - sites)
+
+    assert_equal(Sites.scraper_definitions.count, sites.count, "Readme sites are out of sync: #{diff}")
+    assert_equal(sites.map(&:downcase).sort, sites.map(&:downcase), "Readme sites are not sorted")
+    sites.each do |site|
+      scraper = Sites.scraper_definitions.find { |definition| definition.display_name == site }
+      assert(scraper, "Scraper definition for display name #{site} not found")
+    end
+  end
 end

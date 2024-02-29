@@ -19,13 +19,15 @@ The current upload on e6 is only 0.3x of the dimensions from the twitter post. I
 You can also search for non-uploaded submission for artists. How well this works depends on the artist and page. Some artists don't seperate their personal and art accounts and post irrelevant content which would also appear in this list.
 
 ## Currently supported sites
-* Artconomy
+<!--- sites:start -->
+<!--- Automatically linted. You can add notes in brackets (see tumblr) -->
 * Art Fight
-* Artstation
+* Artconomy
+* ArtStation
 * Baraag
 * Commishes
-* Deviantart
-* Furaffinity
+* DeviantArt
+* FurAffinity
 * FurryNetwork
 * Inkbunny
 * Itaku
@@ -35,9 +37,10 @@ You can also search for non-uploaded submission for artists. How well this works
 * Pixiv
 * Reddit
 * Sofurry
-* Tumblr (kind of)
+* Tumblr ([see notes](#tumblr))
 * Twitter
 * Weasyl
+<!--- sites:stop -->
 
 ### Tumblr
 
