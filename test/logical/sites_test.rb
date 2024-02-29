@@ -96,19 +96,27 @@ class SitesTest < ActiveSupport::TestCase
   end
 
   test "all scrapers are mentioned in the readme" do
-    sites = Rails.root.join("README.md").read
-      .split("<!--- sites:start -->")[1]
+    lines = Rails.root.join("README.md").read
+      .split("<!--- sites:start -->\n")[1]
       .split("<!--- sites:stop -->")[0]
-      .lines.drop(2)
-      .map { |l| l.split("(")[0][2..].strip }
+      .lines
+    images, sites = lines
+      .filter_map { |l| l.scan(/\* <img src="(.*)" width="16px" height="16px"> ([^(]+?)(?:\n| \()/).first }
+      .flatten.partition.with_index { |_, index| index.even? }
+
+    assert_equal(images.count, lines.count, "Unparsable line in readme scraper section")
+
     display_names = Sites.scraper_definitions.map(&:display_name)
     diff = (sites - display_names) | (display_names - sites)
 
     assert_equal(Sites.scraper_definitions.count, sites.count, "Readme sites are out of sync: #{diff}")
     assert_equal(sites.map(&:downcase).sort, sites.map(&:downcase), "Readme sites are not sorted")
-    sites.each do |site|
+
+    images.zip(sites).each do |image, site|
       scraper = Sites.scraper_definitions.find { |definition| definition.display_name == site }
       assert(scraper, "Scraper definition for display name #{site} not found")
+      assert_path_exists(image)
+      assert_equal(scraper.site_type, Pathname.new(image).basename.to_s.split(".")[0].split("-")[1], "Wrong image for #{site}")
     end
   end
 end

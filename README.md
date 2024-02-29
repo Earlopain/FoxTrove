@@ -19,27 +19,27 @@ The current upload on e6 is only 0.3x of the dimensions from the twitter post. I
 You can also search for non-uploaded submission for artists. How well this works depends on the artist and page. Some artists don't seperate their personal and art accounts and post irrelevant content which would also appear in this list.
 
 ## Currently supported sites
-<!--- sites:start -->
 <!--- Automatically linted. You can add notes in brackets (see tumblr) -->
-* Art Fight
-* Artconomy
-* ArtStation
-* Baraag
-* Commishes
-* DeviantArt
-* FurAffinity
-* FurryNetwork
-* Inkbunny
-* Itaku
-* Newgrounds
-* Pawoo
-* Piczel
-* Pixiv
-* Reddit
-* Sofurry
-* Tumblr ([see notes](#tumblr))
-* Twitter
-* Weasyl
+<!--- sites:start -->
+* <img src="public/icons/38-artfight.png" width="16px" height="16px"> Art Fight
+* <img src="public/icons/37-artconomy.png" width="16px" height="16px"> Artconomy
+* <img src="public/icons/5-artstation.png" width="16px" height="16px"> ArtStation
+* <img src="public/icons/30-baraag.png" width="16px" height="16px"> Baraag
+* <img src="public/icons/33-commishes.png" width="16px" height="16px"> Commishes
+* <img src="public/icons/4-deviantart.png" width="16px" height="16px"> DeviantArt
+* <img src="public/icons/1-furaffinity.png" width="16px" height="16px"> FurAffinity
+* <img src="public/icons/34-furrynetwork.png" width="16px" height="16px"> FurryNetwork
+* <img src="public/icons/2-inkbunny.png" width="16px" height="16px"> Inkbunny
+* <img src="public/icons/46-itaku.png" width="16px" height="16px"> Itaku
+* <img src="public/icons/11-newgrounds.png" width="16px" height="16px"> Newgrounds
+* <img src="public/icons/29-pawoo.png" width="16px" height="16px"> Pawoo
+* <img src="public/icons/19-piczel.png" width="16px" height="16px"> Piczel
+* <img src="public/icons/7-pixiv.png" width="16px" height="16px"> Pixiv
+* <img src="public/icons/10-reddit.png" width="16px" height="16px"> Reddit
+* <img src="public/icons/3-sofurry.png" width="16px" height="16px"> Sofurry
+* <img src="public/icons/9-tumblr.png" width="16px" height="16px"> Tumblr ([see notes](#tumblr))
+* <img src="public/icons/0-twitter.png" width="16px" height="16px"> Twitter
+* <img src="public/icons/8-weasyl.png" width="16px" height="16px"> Weasyl
 <!--- sites:stop -->
 
 ### Tumblr
