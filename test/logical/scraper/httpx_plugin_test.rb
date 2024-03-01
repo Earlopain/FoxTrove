@@ -23,6 +23,19 @@ module Scraper
       end
     end
 
+    test "get doesn't raise if should_raise: false" do
+      stub_request(:get, "https://example.com").to_return(status: 500, body: "OK")
+      response = @client.get("https://example.com", should_raise: false)
+      assert_equal(500, response.status)
+      assert_equal("OK", response.body.to_s)
+    end
+
+    test "fetch_json doesn't raise if should_raise: false" do
+      stub_request(:get, "https://example.com").to_return(status: 500, body: '{"status": "OK"}')
+      json = @client.fetch_json("https://example.com", should_raise: false)
+      assert_equal({ "status" => "OK" }, json)
+    end
+
     test "fetch_html returns a nokogiri doc" do
       stub_request(:get, "https://example.com").to_return(body: "<p>html fragment</p>")
       html = @client.fetch_html("https://example.com")
