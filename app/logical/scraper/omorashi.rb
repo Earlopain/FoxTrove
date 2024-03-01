@@ -45,8 +45,13 @@ module Scraper
     private
 
     def get_from_page(page)
-      html = fetch_html("https://www.omorashi.org/profile/#{url_identifier}/content/page/#{page}/?type=gallery_image")
-      html.css("a.ipsImageBlock__main").pluck("href")
+      response = client.get("https://www.omorashi.org/profile/#{url_identifier}/content/page/#{page}/?type=gallery_image", should_raise: false)
+      if response.status == 303
+        []
+      else
+        html = Nokogiri::HTML(response.body.to_s)
+        html.css("a.ipsImageBlock__main").pluck("href")
+      end
     end
 
     def get_submission_details(url)
