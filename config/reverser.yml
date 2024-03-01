@@ -29,6 +29,7 @@ pawoo_disabled?: false
 itaku_disabled?: false
 artfight_disabled?: false
 commishes_disabled?: false
+omorashi_disabled?: false
 
 # Credentials, overwrite in custom file
 inkbunny_user:

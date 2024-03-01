@@ -32,6 +32,7 @@ You can also search for non-uploaded submission for artists. How well this works
 * <img src="public/icons/2-inkbunny.png" width="16px" height="16px"> Inkbunny
 * <img src="public/icons/46-itaku.png" width="16px" height="16px"> Itaku
 * <img src="public/icons/11-newgrounds.png" width="16px" height="16px"> Newgrounds
+* <img src="public/icons/51-omorashi.png" width="16px" height="16px"> Omorashi
 * <img src="public/icons/29-pawoo.png" width="16px" height="16px"> Pawoo
 * <img src="public/icons/19-piczel.png" width="16px" height="16px"> Piczel
 * <img src="public/icons/7-pixiv.png" width="16px" height="16px"> Pixiv

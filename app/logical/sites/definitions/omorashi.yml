@@ -1,0 +1,8 @@
+type: ScraperDefinition
+enum_value: omorashi
+display_name: Omorashi
+homepage: https://www.omorashi.org/
+gallery_templates:
+  - omorashi.org/profile/{site_artist_identifier}
+username_identifier_regex: "[0-9]{1,6}-[a-z0-9-]{3,14}"
+submission_template: https://www.omorashi.org/gallery/image/{site_submission_identifier}--
