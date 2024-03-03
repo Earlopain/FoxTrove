@@ -11,6 +11,8 @@ require "mocha/minitest"
 require "webmock/minitest"
 require "httpx/adapters/webmock"
 
+$VERBOSE = true
+
 FactoryBot.find_definitions
 FactoryBot::SyntaxRunner.class_eval do
   include ActiveSupport::Testing::FileFixtures

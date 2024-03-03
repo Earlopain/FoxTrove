@@ -43,12 +43,12 @@ class SubmissionFile < ApplicationRecord
 
   delegate :artist_url, :artist, to: :artist_submission
 
-  def self.select_from_e6_posts_where_exists(condition = nil, *args)
-    where("exists (#{select_from_e6_posts(condition)})", args)
+  def self.select_from_e6_posts_where_exists(condition = nil, *condition_args)
+    where("exists (#{select_from_e6_posts(condition)})", *condition_args)
   end
 
-  def self.select_from_e6_posts_where_not_exists(condition = nil, *args)
-    where("not exists (#{select_from_e6_posts(condition)})", args)
+  def self.select_from_e6_posts_where_not_exists(condition = nil, *condition_args)
+    where("not exists (#{select_from_e6_posts(condition)})", *condition_args)
   end
 
   def self.select_from_e6_posts(condition)
