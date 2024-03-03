@@ -49,6 +49,7 @@ module Scraper
       if response.status == 303
         []
       else
+        response.raise_unless_ok
         html = Nokogiri::HTML(response.body.to_s)
         html.css("a.ipsImageBlock__main").pluck("href")
       end

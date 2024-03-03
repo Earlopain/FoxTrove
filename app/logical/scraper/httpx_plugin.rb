@@ -13,7 +13,7 @@ module Scraper
         relevant_options.delete(:headers) if relevant_options[:headers].to_h.blank?
         scraper.log_response(response.uri, method, relevant_options, response.status, response.body.to_s)
 
-        raise_if_response_not_ok(response) if should_raise
+        response.raise_unless_ok if should_raise
         response
       end
 
@@ -26,11 +26,11 @@ module Scraper
         response = send(method, path, **params)
         JSON.parse(response.body.to_s)
       end
+    end
 
-      private
-
-      def raise_if_response_not_ok(response)
-        raise HTTPX::HTTPError, response if response.status != 200
+    module ResponseMethods
+      def raise_unless_ok
+        raise HTTPX::HTTPError, self if status != 200
       end
     end
 
