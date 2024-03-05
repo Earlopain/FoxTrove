@@ -1,0 +1,9 @@
+type: SimpleDefinition
+enum_value: threads
+display_name: Threads
+homepage: https://threads.net
+gallery_templates:
+  - threads.net/@{site_artist_identifier}
+  - threads.net/{site_artist_identifier}
+username_identifier_regex: "[a-zA-Z0-9_.]{1,30}"
+submission_template: https://www.threads.net/@{site_artist_identifier}/post/{site_submission_identifier}
