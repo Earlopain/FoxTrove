@@ -1,5 +1,3 @@
-version: "3"
-
 x-environment: &common-env
   EXPOSED_VNC_PORT: ${EXPOSED_VNC_PORT:-7900}
   IQDB_URL: ${IQDB_URL:-http://iqdb:5588}
