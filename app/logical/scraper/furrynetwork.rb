@@ -18,7 +18,10 @@ module Scraper
       # This fetches EVERYTHING. Terribly sorry about that but I can't circumentvent the login captcha
       json = make_request("/character/#{url_identifier}/artwork")
       end_reached
-      json.sort_by { |entry| DateTime.parse(entry["published"]) }
+      json.sort_by do |entry|
+        # 1274418 (NSFW) has published: nil, fall back to something else instead
+        DateTime.parse(entry["published"] || entry["created"])
+      end
     end
 
     def to_submission(submission)
