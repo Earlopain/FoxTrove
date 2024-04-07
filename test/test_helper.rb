@@ -2,6 +2,33 @@
 
 ENV["RAILS_ENV"] ||= "test"
 ENV["MT_NO_EXPECTATIONS"] ||= "1"
+
+require "simplecov"
+module SimpleCov
+  class SourceFile
+    def coverage_exceeding_source_warn
+      # no-op, https://github.com/simplecov-ruby/simplecov/issues/1057
+    end
+  end
+end
+
+SimpleCov.start "rails" do
+  enable_coverage :branch
+  enable_coverage_for_eval
+
+  groups.delete "Channels"
+  groups.delete "Mailers"
+  groups.delete "Libraries"
+
+  add_group "Sites", "app/logical/sites"
+  add_group "Scraper", "app/logical/scraper"
+  add_group "Views", "app/views"
+  add_group "Logical" do |src_file|
+    not_filtered_further = ["logical/sites", "logical/scraper"].none? { |e| src_file.filename.include? e }
+    not_filtered_further && src_file.filename.include?("app/logical")
+  end
+end
+
 require_relative "../config/environment"
 require "rails/test_help"
 require "minitest-spec-rails"

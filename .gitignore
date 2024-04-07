@@ -18,3 +18,4 @@
 /data
 /.env
 /public/build
+/coverage

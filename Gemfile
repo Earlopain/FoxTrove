@@ -27,6 +27,10 @@ gem "rugged"
 gem "selenium-webdriver"
 gem "simple_form"
 
+group :test do
+  gem "simplecov", require: false
+end
+
 group :development, :test do
   gem "factory_bot", require: false
   gem "minitest-spec-rails", require: false
