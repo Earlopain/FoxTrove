@@ -18,6 +18,18 @@ class SubmissionFileTest < ActiveSupport::TestCase
       assert_match(/Original file not attached/, e.message)
     end
 
+    it "allows updating unrelated attributes" do
+      sm = create(:submission_file_with_original, file_name: "1.webp")
+      sm.update!(file_identifier: "foo")
+      SubmissionFile.find(sm.id).update!(file_identifier: "bar")
+    end
+
+    it "allows replacing the original" do
+      sm = create(:submission_file_with_original, file_name: "1.webp")
+      sm.update!(original: file_fixture("1.jpg"))
+      assert_equal("1.jpg", sm.original.blob.filename.to_s)
+    end
+
     it "can be omitted for testing purposes" do
       sm = create(:submission_file)
       assert_not sm.original.attached?
