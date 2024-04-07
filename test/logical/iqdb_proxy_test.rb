@@ -25,10 +25,9 @@ class IqdbProxyTest < ActiveSupport::TestCase
     sm.generate_variants
 
     similar_sm = create(:submission_file)
-    response = [{ score: 70, post_id: similar_sm.id }]
-    stub_request(:post, "#{DockerEnv.iqdb_url}/query").to_return(status: 200, body: response.to_json, headers: { content_type: "application/json" })
-
-    similar = IqdbProxy.query_submission_file(sm)
+    similar = stub_iqdb(similar_sm => 70) do
+      IqdbProxy.query_submission_file(sm)
+    end
     assert_equal([{ score: 70, submission_file: similar_sm }], similar)
   end
 end

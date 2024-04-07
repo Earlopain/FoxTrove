@@ -40,6 +40,14 @@ module ActiveSupport
       remove_request_stub(post_stub) if post_stub
     end
 
+    def stub_iqdb(result)
+      response = result.map { |sm, score| { post_id: sm.id, score: score } }.to_json
+      stub = stub_request_once(:post, "#{DockerEnv.iqdb_url}/query", body: response, headers: { content_type: "application/json" })
+      yield
+    ensure
+      remove_request_stub(stub) if stub
+    end
+
     def stub_scraper_enabled(*site_types, &)
       sites = site_types.map { |site_type| Sites.from_enum(site_type.to_s) }
       sites.each.with_index do |site, index|
