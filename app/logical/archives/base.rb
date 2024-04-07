@@ -26,11 +26,15 @@ module Archives
         bin_file.write(entry.get_input_stream.read)
         bin_file.rewind
 
-        blob = ActiveStorage::Blob.create_and_upload!(io: bin_file, filename: File.basename(entry.name))
-        ArchiveBlobImportJob.perform_later(blob, artist_submission, entry.name)
+        blob = SubmissionFile.blob_for_io(bin_file, File.basename(entry.name))
+        if !blob || blob&.content_type == "application/octet-stream"
+          @failed_imports.push("#{entry.name} isn't a valid file")
+        else
+          ArchiveBlobImportJob.perform_later(blob, artist_submission, entry.name)
 
-        @imported_files[artist_submission.artist_url.id] ||= 0
-        @imported_files[artist_submission.artist_url.id] += 1
+          @imported_files[artist_submission.artist_url.id] ||= 0
+          @imported_files[artist_submission.artist_url.id] += 1
+        end
       end
     end
 

@@ -55,6 +55,16 @@ class SubmissionFile < ApplicationRecord
     "select from e6_posts where submission_files.id = e6_posts.submission_file_id #{"and #{condition}" if condition}"
   end
 
+  def self.blob_for_io(io, filename)
+    # Deviantart doesn't have to return only images.
+    # No way to find this out through the api response as far as I'm aware.
+    # https://www.deviantart.com/fr95/art/779625010/
+    mime_type = Marcel::MimeType.for io
+    return if mime_type.in? Scraper::Submission::MIME_IGNORE
+
+    ActiveStorage::Blob.create_and_upload!(io: io, filename: filename, content_type: mime_type, identify: false)
+  end
+
   def self.from_attachable(attachable:, artist_submission:, url:, created_at:, file_identifier:)
     submission_file = SubmissionFile.new(
       artist_submission: artist_submission,
@@ -73,16 +83,10 @@ class SubmissionFile < ApplicationRecord
   end
 
   def attach_original_from_file!(file)
-    # Deviantart doesn't have to return only images.
-    # No way to find this out through the api response as far as I'm aware.
-    # https://www.deviantart.com/fr95/art/779625010/
-    mime_type = Marcel::MimeType.for file
-    return if mime_type.in? Scraper::Submission::MIME_IGNORE
-
     filename = File.basename(Addressable::URI.parse(direct_url).path)
-    blob = ActiveStorage::Blob.create_and_upload!(io: file, filename: filename)
+    blob = self.class.blob_for_io(file, filename)
     begin
-      attach_original_from_blob!(blob)
+      attach_original_from_blob!(blob) if blob
     rescue StandardError => e
       blob.purge
       raise e
