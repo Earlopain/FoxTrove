@@ -27,6 +27,7 @@ module ActiveSupport
       WebMock.enable!
       WebMock.disable_net_connect!
       Config.stubs(:custom_config).returns({})
+      Config.stubs(:time_zone).returns("UTC")
       Rails.cache.clear
     end
 
