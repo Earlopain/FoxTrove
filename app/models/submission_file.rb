@@ -105,7 +105,7 @@ class SubmissionFile < ApplicationRecord
 
     if can_iqdb?
       begin
-        Vips::Image.new_from_file(blob.service.path_for(blob.key), fail: true).stats
+        Vips::Image.new_from_file(file_path_for(blob), fail: true).stats
       rescue Vips::Error => e
         self.file_error = e.message.strip
       end
@@ -210,8 +210,9 @@ class SubmissionFile < ApplicationRecord
     sample.attach(io: io, filename: "sample")
   end
 
-  def file_path_for(variant)
-    send(variant).service.path_for(send(variant).key)
+  def file_path_for(variant_or_blob)
+    blob = variant_or_blob.is_a?(Symbol) ? send(variant_or_blob) : variant_or_blob
+    blob.service.path_for(blob.key)
   end
 
   concerning :SearchMethods do
