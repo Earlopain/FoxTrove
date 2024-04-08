@@ -215,6 +215,10 @@ class SubmissionFile < ApplicationRecord
     blob.service.path_for(blob.key)
   end
 
+  def url_for(variant, **)
+    Rails.application.routes.url_helpers.rails_blob_path(send(variant), only_path: true, **)
+  end
+
   concerning :SearchMethods do
     class_methods do
       def search(params)

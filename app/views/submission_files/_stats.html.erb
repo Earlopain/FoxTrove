@@ -29,7 +29,7 @@
   <div class="submission-links">
     <%= link_to_external "SRC", submission_url(artist_submission), title: "Original Source" %>
     | <%= link_to_external "DLE", submission_file.direct_url, title: "Direct Link External" %>
-    | <%= link_to "DLO", rails_blob_url(submission_file.original, disposition: :inline), title: "Direct Link Onsite" %>
+    | <%= link_to "DLO", submission_file.url_for(:original, disposition: :inline), title: "Direct Link Onsite" %>
     | <%= link_to "REV", submission_file_path(submission_file), title: "Similar Indexed" %>
   </div>
   <div class="e6-links">
