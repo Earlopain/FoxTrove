@@ -103,8 +103,8 @@ module Scraper
         }
 
         driver.navigate.to "#{LOGIN_URL}?#{login_params.to_query}"
-        driver.wait_for_element(css: "form input[autocomplete='username']").send_keys Config.pixiv_user
-        driver.find_element(css: "form input[autocomplete='current-password']").send_keys Config.pixiv_pass
+        driver.wait_for_element(css: "form input[autocomplete~='username']").send_keys Config.pixiv_user
+        driver.find_element(css: "form input[autocomplete~='current-password']").send_keys Config.pixiv_pass
         # Scroll the login button into view
         driver.execute_script("window.scrollTo(0, document.body.scrollHeight)")
         driver.find_element(xpath: "//*[text()='Log In']").click
