@@ -18,6 +18,9 @@ FactoryBot.define do
           flags: {
             deleted: false,
           },
+          sample: {
+            url: "https://static1.e621.net/data/#{md5[0..1]}/#{md5[2..3]}/#{md5}.png",
+          },
         },
       }
     end
