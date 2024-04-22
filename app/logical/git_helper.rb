@@ -26,7 +26,7 @@ module GitHelper
   end
 
   def self.build_outdated?
-    return false if DockerEnv.master_commit.blank? || !master_branch?
+    return false if !enabled? || DockerEnv.master_commit.blank? || !master_branch?
 
     @build_outdated ||= begin
       buildtime = REPO.lookup(DockerEnv.master_commit)
