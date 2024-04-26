@@ -1,4 +1,4 @@
-FROM ruby:3.2.2-alpine3.19 as ruby-builder
+FROM ruby:3.3.1-alpine3.19 as ruby-builder
 
 RUN apk --no-cache add build-base cmake postgresql16-dev
 
@@ -12,7 +12,7 @@ FROM node:20-alpine3.19 as node-downloader
 
 RUN npm install esbuild@0.20.0 -g
 
-FROM ruby:3.2.2-alpine3.19
+FROM ruby:3.3.1-alpine3.19
 
 WORKDIR /app
 
