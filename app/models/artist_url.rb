@@ -20,7 +20,7 @@ class ArtistUrl < ApplicationRecord
   validates :api_identifier, uniqueness: { scope: :site_type, case_sensitive: false, allow_nil: true }
   after_create :set_api_identifier!
 
-  enum site_type: %i[
+  enum :site_type, %i[
     twitter furaffinity inkbunny sofurry
     deviantart artstation patreon pixiv
     weasyl tumblr reddit newgrounds

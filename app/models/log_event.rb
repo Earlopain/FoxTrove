@@ -3,7 +3,7 @@
 class LogEvent < ApplicationRecord
   belongs_to :loggable, polymorphic: true
 
-  enum action: {
+  enum :action, {
     scraper_request: 0,
   }
 
