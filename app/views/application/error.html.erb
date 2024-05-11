@@ -14,4 +14,11 @@
   <% end %>
 </div>
 
+<h2>Framework Stacktrace</h2>
+<div class="error-backtrace">
+  <% @exception.backtrace.each do |b| %>
+    <div class="error-backtrace-line"><%= b %></div>
+  <% end %>
+</div>
+
 <% page_title "Something went wrong" %>
