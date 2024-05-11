@@ -11,7 +11,7 @@
     <%= site_icon artist_url %>
     <%= "#{submission_file.width}x#{submission_file.height}" %>, 
     <%= number_to_human_size submission_file.size %>, 
-    <%= "#{Marcel::TYPE_EXTS[submission_file.content_type].first.upcase}" %>
+    <%= Marcel::TYPE_EXTS[submission_file.content_type].first.upcase %>
   </div>
   <div class="submission-time-ago">
     <%= time_ago submission_file.created_at_on_site %>
