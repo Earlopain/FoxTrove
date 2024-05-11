@@ -31,6 +31,7 @@ export default class MultiselectMode {
     const elements = {
       hide_many: document.getElementById("hide-selected"),
       backlog_many: document.getElementById("backlock-selected"),
+      unbacklog_many: document.getElementById("unbacklock-selected"),
       enqueue_many: document.getElementById("enqueue-selected"),
     };
     for (const [endpoint, link] of Object.entries(elements)) {
