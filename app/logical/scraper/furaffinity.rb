@@ -20,13 +20,12 @@ module Scraper
       if html.at(".submission-area.submission-writing")
         []
       else
-        time_string = html.css(".submission-id-container .popup_date").first.content.strip
         [
           {
             id: single_submission_id,
             title: html.css(".submission-title").first.content.strip,
             description: html.css(".submission-description").first.content.strip,
-            created_at: DateTime.strptime(time_string, "%b %d, %Y %I:%M %p"),
+            created_at: submission_timestamp(html),
             url: "https:#{html.css('.download a').first.attributes['href'].value}",
           },
         ]
@@ -94,6 +93,17 @@ module Scraper
 
     def get_submission_html(id)
       fetch_html("https://www.furaffinity.net/view/#{id}", headers: headers)
+    end
+
+    def submission_timestamp(html)
+      element = html.css(".submission-id-container .popup_date").first
+      begin
+        # Full date format
+        DateTime.strptime(element.content.strip, "%b %d, %Y %I:%M %p")
+      rescue ArgumentError
+        # Fuzzy date format
+        DateTime.strptime(element.attribute("title").content.strip, "%b %d, %Y %I:%M %p")
+      end
     end
 
     def headers
