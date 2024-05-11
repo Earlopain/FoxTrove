@@ -12,4 +12,14 @@ class ConfigControllerTest < ActionDispatch::IntegrationTest
     get config_path("twitter")
     assert_response :success
   end
+
+  test "show includes setup instructions when available" do
+    get config_path("furaffinity")
+    assert_response :success
+    assert_select "#setup-instructions"
+
+    get config_path("twitter")
+    assert_response :success
+    assert_select "#setup-instructions", count: 0
+  end
 end

@@ -31,17 +31,14 @@ artfight_disabled?: false
 commishes_disabled?: false
 omorashi_disabled?: false
 
-# Credentials, overwrite in custom file
 inkbunny_user:
 inkbunny_pass:
-# The applications redirect uri must be `http://localhost`
 deviantart_client_id:
 deviantart_client_secret:
 deviantart_user:
 deviantart_pass:
 e6_user:
 e6_apikey:
-# Set timezone to 00:00 without daylight saving correction. Modern Theme required. Full Date Format.
 furaffinity_user:
 furaffinity_pass:
 weasyl_apikey:
@@ -49,7 +46,6 @@ sofurry_user:
 sofurry_pass:
 twitter_user:
 twitter_pass:
-# Only set if your account requires 2fa
 twitter_otp_secret:
 reddit_client_id:
 reddit_client_secret:

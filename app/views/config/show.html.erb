@@ -18,3 +18,10 @@
   <%= f.input "#{@definition.site_type}_disabled", as: :select, label: "disabled", selected: Config.send(:"#{@definition.site_type}_disabled?").to_s %>
   <%= f.submit %>
 <% end %>
+
+<% if lookup_context.template_exists?("info/#{@definition.site_type}", [controller_name], true) %>
+  <h2>Additional setup instructions:</h2>
+  <span id="setup-instructions">
+    <%= render "#{controller_name}/info/#{@definition.site_type}" %>
+  </span>
+<% end %>
