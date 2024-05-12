@@ -3,10 +3,10 @@ import Toggleable from "./toggleable";
 
 export default class MultiselectMode {
   private static submitting = false;
-  private static counters: NodeListOf<HTMLElement>;
+  private static counter: HTMLElement | null;
 
   public static init() {
-    this.counters = document.querySelectorAll(".selected-count");
+    this.counter = document.getElementById("selected-count");
     
     const toggleable = Toggleable.get("multiselect");
     toggleable?.setShowAction(() => {
@@ -62,9 +62,9 @@ export default class MultiselectMode {
   }
 
   private static setCount(count?: number) {
-    count = count || ClickMode.getSelectedIds().length;
-    for (const counter  of this.counters) {
-      counter.innerText = count.toString();
+    if(this.counter) {
+      count = count || ClickMode.getSelectedIds().length;
+      this.counter.innerText = count.toString();
     }
   }
 

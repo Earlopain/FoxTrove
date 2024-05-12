@@ -1,8 +1,9 @@
 <%# locals: () -%>
 <%= toggleable("multiselect", "Enter select mode", "Leave select mode", visible_on_load: false) do %>
-  <li><%= fake_link("Hide selected", id: "hide-selected") %> (<span class="selected-count">0</span>)</li>
-  <li><%= fake_link("Backlog selected", id: "backlock-selected") %> (<span class="selected-count">0</span>)</li>
-  <li><%= fake_link("Unbacklog selected", id: "unbacklock-selected") %> (<span class="selected-count">0</span>)</li>
-  <li><%= fake_link("Enqueue selected", id: "enqueue-selected") %> (<span class="selected-count">0</span>)</li>
+  <li>(<span id="selected-count">0</span>)</li>
+  <li><%= fake_link("Hide", id: "hide-selected") %></li>
+  <li><%= fake_link("Backlog", id: "backlock-selected") %></li>
+  <li><%= fake_link("Unbacklog", id: "unbacklock-selected") %></li>
+  <li><%= fake_link("Enqueue", id: "enqueue-selected") %></li>
   <li><%= fake_link("Select All", id: "select-all") %></li>
 <% end %>
