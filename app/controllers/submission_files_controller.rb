@@ -67,6 +67,12 @@ class SubmissionFilesController < ApplicationController
     end
   end
 
+  def unbacklog_many
+    SubmissionFile.where(id: params[:ids]).where.not(added_to_backlog_at: nil).find_each do |submission_file|
+      submission_file.update(added_to_backlog_at: nil)
+    end
+  end
+
   def enqueue_many
     SubmissionFile.where(id: params[:ids]).find_each(&:update_e6_posts)
   end

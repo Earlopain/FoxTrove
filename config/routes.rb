@@ -32,6 +32,7 @@ Rails.application.routes.draw do
       get :hidden
       put :hide_many
       put :backlog_many
+      put :unbacklog_many
       put :enqueue_many
       post :update_matching_e6_posts
     end
