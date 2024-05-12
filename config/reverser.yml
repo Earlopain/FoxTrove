@@ -9,28 +9,6 @@ scraper_request_rate_limit: 0
 # https://github.com/rails/rails/blob/2d2fdc941e7497ca77f99ce5ad404b6e58f043ef/activesupport/lib/active_support/values/time_zone.rb#L31-L183
 time_zone: Berlin
 
-# Disable individual scrapers
-artconomy_disabled?: false
-artstation_disabled?: false
-deviantart_disabled?: false
-furaffinity_disabled?: false
-furrynetwork_disabled?: false
-inkbunny_disabled?: false
-newgrounds_disabled?: false
-reddit_disabled?: false
-sofurry_disabled?: false
-twitter_disabled?: false
-weasyl_disabled?: false
-pixiv_disabled?: false
-piczel_disabled?: false
-tumblr_disabled?: false
-baraag_disabled?: false
-pawoo_disabled?: false
-itaku_disabled?: false
-artfight_disabled?: false
-commishes_disabled?: false
-omorashi_disabled?: false
-
 inkbunny_user:
 inkbunny_pass:
 deviantart_client_id:
