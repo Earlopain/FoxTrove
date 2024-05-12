@@ -60,6 +60,7 @@ export default class MultiselectMode {
     });
     this.submitting = false;
     ClickMode.deselectAll();
+    this.reset();
   }
 
   private static setCount(count?: number) {
