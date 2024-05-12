@@ -57,6 +57,11 @@ class ConfigTest < ActiveSupport::TestCase
     end
   end
 
+  it "merges boolean values" do
+    assert_equal({ "bool?" => true }, Config.merge_custom_config("bool" => "true"))
+    assert_equal({ "bool?" => false }, Config.merge_custom_config(bool?: false))
+  end
+
   it "handles booleans" do
     stub_custom_config(bool: "true") do
       assert_predicate(Config, :bool?)

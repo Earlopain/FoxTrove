@@ -20,7 +20,14 @@ module Config
   end
 
   def merge_custom_config(new_values)
-    custom_config.merge(new_values).transform_keys(&:to_s)
+    mapped = new_values.to_h do |k, v|
+      if respond_to?(:"#{k}?") || k.end_with?("?")
+        ["#{k.to_s.delete_suffix('?')}?", ActiveModel::Type::Boolean.new.cast(v)]
+      else
+        [k, v]
+      end
+    end
+    custom_config.merge(mapped).transform_keys(&:to_s)
   end
 
   def write_custom_config(new_values)
