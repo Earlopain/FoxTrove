@@ -12,7 +12,7 @@ module Scraper
       end
     end
 
-    describe "required_config_keys" do
+    describe "config keys" do
       it "returns the correct values for inheritance chains" do
         assert_equal(%i[baraag_access_token], Scraper::Baraag.required_config_keys)
       end
@@ -24,11 +24,24 @@ module Scraper
       it "returns an empty array when there are no necessary keys" do
         assert_empty(Scraper::Piczel.required_config_keys)
       end
+
+      it "returns the correct values for all config keys" do
+        assert_equal(%i[twitter_user twitter_pass twitter_otp_secret twitter_disabled?], Scraper::Twitter.all_config_keys)
+      end
+
+      it "returns the correct values for optional config keys" do
+        assert_equal(%i[twitter_otp_secret], Scraper::Twitter.optional_config_keys)
+        assert_empty(Scraper::Piczel.optional_config_keys)
+      end
     end
 
     describe "caching" do
       setup do
         @scraper = Scraper::Twitter.new(create(:artist_url))
+      end
+
+      it "is stable" do
+        assert_equal("Scraper::Twitter.foo/7d010443693eec253a121e2aa2ba177c", @scraper.class.cache_key("foo"))
       end
 
       it "calls the original method only once" do

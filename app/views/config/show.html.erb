@@ -13,9 +13,12 @@
 <br>
 <%= simple_form_for(:config, url: modify_config_index_path, method: :put) do |f| %>
   <% @definition.all_config_keys.each do |key| %>
-    <%= f.input key, label: strip_config_prefix(@definition, key), input_html: { value: Config.send(key) } %>
+      <% if key.end_with?("_disabled?") %>
+        <%= f.input key, as: :select, label: strip_config_prefix(@definition, key), selected: Config.send(key).to_s %>
+      <% else %>
+        <%= f.input key, label: strip_config_prefix(@definition, key), input_html: { value: Config.send(key) } %>
+      <% end %>
   <% end %>
-  <%= f.input "#{@definition.site_type}_disabled", as: :select, label: "disabled", selected: Config.send(:"#{@definition.site_type}_disabled?").to_s %>
   <%= f.submit %>
 <% end %>
 

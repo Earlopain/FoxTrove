@@ -5,6 +5,7 @@ module Scraper
     # Inspired by https://github.com/JustAnotherArchivist/snscrape/blob/e7d35ec1ebb008108082fc79161f351bc8a707e4/snscrape/modules/twitter.py
     class ApiError < RuntimeError; end
 
+    OPTIONAL_CONFIG_KEYS = %i[twitter_otp_secret].freeze
     STATE = :cursor
 
     BEARER_TOKEN = "AAAAAAAAAAAAAAAAAAAAANRILgAAAAAAnNwIzUejRCOuH5E6I8xnZz4puTs=1Zv7ttfk8LF81IUq16cHjhLTvJu4FA33AGWWjCpTnA"
@@ -15,10 +16,6 @@ module Scraper
       super
       @user_agent = random_user_agent
       @cursor = ""
-    end
-
-    def self.optional_config_keys
-      %i[twitter_otp_secret]
     end
 
     def fetch_next_batch
