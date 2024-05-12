@@ -2,6 +2,7 @@
 <%= toggleable("multiselect", "Enter select mode", "Leave select mode", visible_on_load: false) do %>
   <li>(<span id="selected-count">0</span>)</li>
   <li><%= fake_link("Hide", id: "hide-selected") %></li>
+  <li><%= fake_link("Unhide", id: "unhide-selected") %></li>
   <li><%= fake_link("Backlog", id: "backlock-selected") %></li>
   <li><%= fake_link("Unbacklog", id: "unbacklock-selected") %></li>
   <li><%= fake_link("Enqueue", id: "enqueue-selected") %></li>

@@ -121,8 +121,7 @@ class SubmissionFilesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "hide many" do
-    sm1, sm2 = create_list(:submission_file, 2)
-    sm3 = create(:submission_file)
+    sm1, sm2, sm3 = create_list(:submission_file, 3)
 
     put hide_many_submission_files_path(ids: [sm1, sm2])
     assert_response :success
@@ -139,9 +138,26 @@ class SubmissionFilesControllerTest < ActionDispatch::IntegrationTest
     assert_not_nil(sm3.reload.hidden_from_search_at)
   end
 
+  test "unhide many" do
+    sm1, sm2, sm3 = create_list(:submission_file, 3, hidden_from_search_at: Time.current)
+
+    put unhide_many_submission_files_path(ids: [sm1, sm2])
+    assert_response :success
+    assert_nil(sm1.reload.hidden_from_search_at)
+    assert_nil(sm2.reload.hidden_from_search_at)
+    assert_not_nil(sm3.reload.hidden_from_search_at)
+
+    assert_no_changes(-> { sm1.reload.hidden_from_search_at }, from: sm1.hidden_from_search_at) do
+      assert_no_changes(-> { sm2.reload.hidden_from_search_at }, from: sm2.hidden_from_search_at) do
+        put unhide_many_submission_files_path(ids: [sm1, sm2, sm3])
+      end
+    end
+    assert_response :success
+    assert_nil(sm3.reload.hidden_from_search_at)
+  end
+
   test "backlog many" do
-    sm1, sm2 = create_list(:submission_file, 2)
-    sm3 = create(:submission_file)
+    sm1, sm2, sm3 = create_list(:submission_file, 3)
 
     put backlog_many_submission_files_path(ids: [sm1, sm2])
     assert_response :success
@@ -156,6 +172,24 @@ class SubmissionFilesControllerTest < ActionDispatch::IntegrationTest
     end
     assert_response :success
     assert_not_nil(sm3.reload.added_to_backlog_at)
+  end
+
+  test "ununhide many" do
+    sm1, sm2, sm3 = create_list(:submission_file, 3, added_to_backlog_at: Time.current)
+
+    put unbacklog_many_submission_files_path(ids: [sm1, sm2])
+    assert_response :success
+    assert_nil(sm1.reload.added_to_backlog_at)
+    assert_nil(sm2.reload.added_to_backlog_at)
+    assert_not_nil(sm3.reload.added_to_backlog_at)
+
+    assert_no_changes(-> { sm1.reload.added_to_backlog_at }, from: sm1.added_to_backlog_at) do
+      assert_no_changes(-> { sm2.reload.added_to_backlog_at }, from: sm2.added_to_backlog_at) do
+        put unbacklog_many_submission_files_path(ids: [sm1, sm2, sm3])
+      end
+    end
+    assert_response :success
+    assert_nil(sm3.reload.added_to_backlog_at)
   end
 
   test "enqueue many" do

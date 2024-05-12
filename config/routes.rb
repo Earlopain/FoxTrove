@@ -31,6 +31,7 @@ Rails.application.routes.draw do
       get :backlog
       get :hidden
       put :hide_many
+      put :unhide_many
       put :backlog_many
       put :unbacklog_many
       put :enqueue_many

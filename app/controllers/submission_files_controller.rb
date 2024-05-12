@@ -61,6 +61,12 @@ class SubmissionFilesController < ApplicationController
     end
   end
 
+  def unhide_many
+    SubmissionFile.where(id: params[:ids]).where.not(hidden_from_search_at: nil).find_each do |submission_file|
+      submission_file.update(hidden_from_search_at: nil)
+    end
+  end
+
   def backlog_many
     SubmissionFile.where(id: params[:ids], added_to_backlog_at: nil).find_each do |submission_file|
       submission_file.update(added_to_backlog_at: Time.current)
