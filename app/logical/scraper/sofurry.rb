@@ -5,6 +5,8 @@ module Scraper
   # https://wiki.sofurry.com/wiki/SoFurry_2.0_API
   # https://wiki.sofurry.com/wiki/How_to_use_OTP_authentication
   class Sofurry < Base
+    STATE = :page
+
     def initialize(artist_url)
       super
       @page = 1
@@ -12,10 +14,6 @@ module Scraper
       @otp_pad = ""
       @otp_salt = ""
       @previous_ids = []
-    end
-
-    def self.state
-      :page
     end
 
     def fetch_next_batch

@@ -5,6 +5,8 @@ module Scraper
     # Inspired by https://github.com/JustAnotherArchivist/snscrape/blob/e7d35ec1ebb008108082fc79161f351bc8a707e4/snscrape/modules/twitter.py
     class ApiError < RuntimeError; end
 
+    STATE = :cursor
+
     BEARER_TOKEN = "AAAAAAAAAAAAAAAAAAAAANRILgAAAAAAnNwIzUejRCOuH5E6I8xnZz4puTs=1Zv7ttfk8LF81IUq16cHjhLTvJu4FA33AGWWjCpTnA"
     DATETIME_FORMAT = "%a %b %d %H:%M:%S %z %Y"
     API_BASE_URL = "https://twitter.com/i/api/graphql"
@@ -17,10 +19,6 @@ module Scraper
 
     def self.optional_config_keys
       %i[twitter_otp_secret]
-    end
-
-    def self.state
-      :cursor
     end
 
     def fetch_next_batch

@@ -2,13 +2,11 @@
 
 module Scraper
   class Itaku < Base
+    STATE = :page
+
     def initialize(artist_url)
       super
       @page = "https://itaku.ee/api/galleries/images/?owner=#{api_identifier}&ordering=-date_added&page=1&page_size=100&date_range=&maturity_rating=SFW&maturity_rating=Questionable&maturity_rating=NSFW&visibility=PUBLIC&visibility=PROFILE_ONLY"
-    end
-
-    def self.state
-      :page
     end
 
     def fetch_next_batch

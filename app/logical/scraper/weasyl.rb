@@ -3,13 +3,11 @@
 module Scraper
   # https://projects.weasyl.com/weasylapi/
   class Weasyl < Base
+    STATE = :nextid
+
     def initialize(artist_url)
       super
       @nextid = nil
-    end
-
-    def self.state
-      :nextid
     end
 
     def fetch_next_batch

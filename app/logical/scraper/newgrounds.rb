@@ -2,15 +2,12 @@
 
 module Scraper
   class Newgrounds < BufferedScraper
+    STATE = :page
     COOKIE_NAME = "vmkIdu5l8m"
 
     def initialize(artist_url)
       super
       @page = 1
-    end
-
-    def self.state
-      :page
     end
 
     def fetch_next_batch

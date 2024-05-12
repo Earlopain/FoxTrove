@@ -43,12 +43,12 @@ module Scraper
 
     # Value that describes the progress during scraping. Can be a page/offset/cursor etc.
     def state_value
-      instance_variable_get(:"@#{self.class.state}")
+      instance_variable_get(:"@#{self.class::STATE}")
     end
 
     # Insert the value where the scraper should continue from in case of an error
     def jumpstart(value)
-      instance_variable_set(:"@#{self.class.state}", value)
+      instance_variable_set(:"@#{self.class::STATE}", value)
     end
 
     # Which date should already be considered scraped? Normally this is good to set to

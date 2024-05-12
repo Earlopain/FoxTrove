@@ -2,13 +2,11 @@
 
 module Scraper
   class Piczel < Base
+    STATE = :from_id
+
     def initialize(artist_url)
       super
       @from_id = 999_999_999
-    end
-
-    def self.state
-      :from_id
     end
 
     def fetch_next_batch

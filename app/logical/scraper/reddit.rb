@@ -3,13 +3,11 @@
 module Scraper
   # https://www.reddit.com/dev/api/
   class Reddit < Base
+    STATE = :after
+
     def initialize(artist_url)
       super
       @after = nil
-    end
-
-    def self.state
-      :after
     end
 
     def fetch_next_batch

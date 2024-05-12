@@ -7,8 +7,8 @@ module Scraper
     Sites.scraper_definitions.each do |definition|
       test "#{definition.site_type} has correct state" do
         scraper = stub_scraper_enabled(definition.site_type) { definition.new_scraper(build(:artist_url)) }
-        assert_respond_to(scraper.class, :state)
-        assert(scraper.instance_variable_defined?(:"@#{scraper.class.state}"))
+        assert(scraper.class.const_defined?(:STATE))
+        assert(scraper.instance_variable_defined?(:"@#{scraper.class::STATE}"))
       end
     end
 

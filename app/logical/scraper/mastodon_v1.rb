@@ -13,9 +13,7 @@ module Scraper
     def self.inherited(base)
       super
       base.class_eval do
-        def self.state
-          :max_id
-        end
+        const_set(:STATE, :max_id)
       end
     end
 

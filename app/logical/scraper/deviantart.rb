@@ -4,15 +4,12 @@ module Scraper
   # https://www.deviantart.com/developers/http/v1/20210526
   # https://www.deviantart.com/developers/console
   class Deviantart < Base
+    STATE = :next_offset
     API_PREFIX = "https://www.deviantart.com/api/v1/oauth2"
 
     def initialize(artist_url)
       super
       @next_offset = nil
-    end
-
-    def self.state
-      :next_offset
     end
 
     # https://www.deviantart.com/developers/http/v1/20210526/gallery_all/bdb19761e6debcc6609356d6b78f4a5d

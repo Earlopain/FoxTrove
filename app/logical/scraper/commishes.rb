@@ -2,13 +2,11 @@
 
 module Scraper
   class Commishes < Base
+    STATE = :until
+
     def initialize(artist_url)
       super
       @until = "99999999999999"
-    end
-
-    def self.state
-      :until
     end
 
     def fetch_next_batch

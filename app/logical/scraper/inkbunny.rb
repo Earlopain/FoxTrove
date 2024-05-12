@@ -3,14 +3,12 @@
 module Scraper
   # https://wiki.inkbunny.net/wiki/API
   class Inkbunny < Base
+    STATE = :page
+
     def initialize(artist_url)
       super
       @rid = nil
       @page = 1
-    end
-
-    def self.state
-      :page
     end
 
     def fetch_next_batch

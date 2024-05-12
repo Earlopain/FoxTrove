@@ -2,13 +2,11 @@
 
 module Scraper
   class Artconomy < Base
+    STATE = :page
+
     def initialize(artist_url)
       super
       @page = 1
-    end
-
-    def self.state
-      :page
     end
 
     def fetch_next_batch

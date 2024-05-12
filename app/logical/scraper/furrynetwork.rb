@@ -2,16 +2,14 @@
 
 module Scraper
   class Furrynetwork < Base
+    STATE = :offset
+
     PER_REQUEST = 72
     API_PREFIX = "https://furrynetwork.com/api"
 
     def initialize(artist_url)
       super
       @offset = 0
-    end
-
-    def self.state
-      :offset
     end
 
     def fetch_next_batch
