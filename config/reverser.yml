@@ -9,6 +9,8 @@ scraper_request_rate_limit: 0
 # https://github.com/rails/rails/blob/2d2fdc941e7497ca77f99ce5ad404b6e58f043ef/activesupport/lib/active_support/values/time_zone.rb#L31-L183
 time_zone: Berlin
 
+files_per_page: 25
+
 inkbunny_user:
 inkbunny_pass:
 deviantart_client_id:
