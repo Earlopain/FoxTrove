@@ -17,12 +17,12 @@ module Scraper
     def self.inherited(base)
       super
       base.class_eval do
-        def self.config_prefix
+        def self.site_type
           name.demodulize.underscore
         end
 
         def self.all_config_keys
-          Config.default_config.keys.select { |key| key.start_with?("#{config_prefix}_") }
+          Config.default_config.keys.select { |key| key.start_with?("#{site_type}_") }
         end
 
         def self.optional_config_keys
@@ -30,7 +30,7 @@ module Scraper
         end
 
         def self.required_config_keys
-          all_config_keys - optional_config_keys - [:"#{config_prefix}_disabled?"]
+          all_config_keys - optional_config_keys - [:"#{site_type}_disabled?"]
         end
       end
     end
