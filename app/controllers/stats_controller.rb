@@ -17,6 +17,10 @@ class StatsController < ApplicationController
     @definitions = Sites.definitions.sort_by(&:display_name)
   end
 
+  def selenium
+    render json: { active: SeleniumWrapper.active? }
+  end
+
   private
 
   def sum_for(name, record_type)

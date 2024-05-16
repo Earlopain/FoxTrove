@@ -14,13 +14,19 @@ class SeleniumWrapper
     driver = Selenium::WebDriver.for :remote, capabilities: [options, cps], url: DockerEnv.selenium_url
     if block_given?
       begin
+        Rails.cache.write("selenium-since", Time.current)
         yield driver
       ensure
         driver&.quit
+        Rails.cache.delete("selenium-since")
       end
     else
       driver
     end
+  end
+
+  def self.active?
+    (Rails.cache.fetch("selenium-since") || Time.current).before?(5.seconds.ago)
   end
 end
 

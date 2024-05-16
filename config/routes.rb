@@ -40,7 +40,11 @@ Rails.application.routes.draw do
   end
   resources :log_events, only: %i[index show]
   resources :archive_imports, only: %i[new create]
-  resources :stats, only: :index
+  resources :stats, only: :index do
+    collection do
+      get :selenium
+    end
+  end
   resources :config, controller: "config", only: %i[index show] do
     collection do
       put :modify

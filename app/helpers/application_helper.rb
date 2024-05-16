@@ -9,6 +9,10 @@ module ApplicationHelper
     tag.span value.to_fs(:long), datetime: value.to_fs(:iso8601), class: "time-ago"
   end
 
+  def selenium_path
+    "#{request.scheme}://#{request.host}:#{DockerEnv.exposed_vnc_port}"
+  end
+
   # Properly support the method keyword argument
   def link_to(name = nil, options = nil, html_options = nil, &)
     if html_options&.dig(:method)
