@@ -10,7 +10,7 @@ module ApplicationHelper
   end
 
   def selenium_path
-    "#{request.scheme}://#{request.host}:#{DockerEnv.exposed_vnc_port}"
+    "#{request.scheme}://#{request.host}:#{DockerEnv.exposed_vnc_port}?autoconnect=1"
   end
 
   # Properly support the method keyword argument
