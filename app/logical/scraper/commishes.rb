@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Scraper
-  class Commishes < Base
+  class Commishes < BufferedScraper
     STATE = :until
 
     def initialize(artist_url)
@@ -10,9 +10,16 @@ module Scraper
     end
 
     def fetch_next_batch
-      ids = get_ids_from_page("https://portfolio.commishes.com/user/#{api_identifier}.json?until=#{@until}")
-      end_reached if @until.nil?
-      get_details(ids)
+      single_id = fetch_from_batch do
+        get_ids_from_page("https://portfolio.commishes.com/user/#{api_identifier}.json?until=#{@until}")
+      end
+      return [] if single_id.nil?
+
+      [get_details(single_id)]
+    end
+
+    def update_state
+      # Do nothing, updated when calling get_ids_from_page
     end
 
     def to_submission(submission)
@@ -39,23 +46,21 @@ module Scraper
 
     def get_ids_from_page(page)
       response = fetch_json(page, headers: headers)
-      @until = response["until"]
+      @until = response["until"] || 1
       response["payload"].pluck("url")
     end
 
-    def get_details(urls)
-      urls.map do |url|
-        html = fetch_html(url, headers: headers)
-        script_containing_id = html.xpath("//script[contains(text(), '/upload/tag/')]").first
-        original_image_id = script_containing_id.text.match(%r{/(\d+)/remove/})[1]
-        {
-          identifier: url.split("/").pop,
-          title: html.at("h1#upload-title").content,
-          description: "",
-          created_at: html.at("h1#upload-title").parent.content.sub(/.*\u00a9.*(\d{4}) -/, '\1'),
-          file_url: "https://portfolio.commishes.com/image/#{original_image_id}/original/",
-        }
-      end
+    def get_details(url)
+      html = fetch_html(url, headers: headers)
+      script_containing_id = html.xpath("//script[contains(text(), '/upload/tag/')]").first
+      original_image_id = script_containing_id.text.match(%r{/(\d+)/remove/})[1]
+      {
+        identifier: url.split("/").pop,
+        title: html.at("h1#upload-title").content,
+        description: "",
+        created_at: html.at("h1#upload-title").parent.content.sub(/.*\u00a9.*(\d{4}) -/, '\1'),
+        file_url: "https://portfolio.commishes.com/image/#{original_image_id}/original/",
+      }
     end
 
     def headers
