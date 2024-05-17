@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Scraper
-  class Itaku < Base
+  class Itaku < BufferedScraper
     STATE = :page
 
     def initialize(artist_url)
@@ -10,9 +10,16 @@ module Scraper
     end
 
     def fetch_next_batch
-      ids = get_ids_from_page(@page)
-      end_reached if @page.nil?
-      get_details(ids)
+      single_id = fetch_from_batch do
+        if @page.nil?
+          []
+        else
+          get_ids_from_page(@page)
+        end
+      end
+      return [] if single_id.nil?
+
+      [fetch_json("https://itaku.ee/api/galleries/images/#{single_id}/")]
     end
 
     def to_submission(submission)
@@ -47,12 +54,6 @@ module Scraper
       response = fetch_json(page)
       @page = response["links"]["next"]
       response["results"].pluck("id")
-    end
-
-    def get_details(ids)
-      ids.map do |id|
-        fetch_json("https://itaku.ee/api/galleries/images/#{id}/")
-      end
     end
   end
 end
