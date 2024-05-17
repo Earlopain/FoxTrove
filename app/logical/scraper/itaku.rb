@@ -6,7 +6,7 @@ module Scraper
 
     def initialize(artist_url)
       super
-      @page = "https://itaku.ee/api/galleries/images/?owner=#{api_identifier}&ordering=-date_added&page=1&page_size=100&date_range=&maturity_rating=SFW&maturity_rating=Questionable&maturity_rating=NSFW&visibility=PUBLIC&visibility=PROFILE_ONLY"
+      @page = "https://itaku.ee/api/galleries/images/?owner=#{api_identifier}&ordering=-date_added&page=1&page_size=100&date_range=&maturity_rating=SFW&maturity_rating=Questionable&maturity_rating=NSFW&visibility=PUBLIC&visibility=PROFILE_ONLY&visibility=UNLISTED"
     end
 
     def fetch_next_batch
