@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Scraper
-  class Artstation < Base
+  class Artstation < BufferedScraper
     STATE = :page
 
     def initialize(artist_url)
@@ -10,10 +10,14 @@ module Scraper
     end
 
     def fetch_next_batch
-      ids = get_ids_from_page(@page)
-      end_reached if ids.count == 0
+      single_id = fetch_from_batch { get_ids_from_page(@page) }
+      return [] if single_id.nil?
+
+      [get_details(single_id)].compact
+    end
+
+    def update_state
       @page += 1
-      get_details(ids)
     end
 
     def to_submission(submission)
@@ -47,18 +51,11 @@ module Scraper
       response["data"].pluck("hash_id")
     end
 
-    def get_details(ids)
-      details = ids.map do |id|
-        make_request("/projects/#{id}.json")
-      end
+    def get_details(id)
+      json = make_request("/projects/#{id}.json")
       # Remove any non-image assets
-      details.map do |entry|
-        entry["assets"] = entry["assets"].select { |asset| asset["asset_type"].in? %w[image cover] }
-      end
-      # Remove ids where there are no image assets
-      details.reject do |entry|
-        entry["assets"].count == 0
-      end
+      json["assets"] = json["assets"].select { |asset| asset["asset_type"].in? %w[image cover] }
+      json if json["assets"].count > 0
     end
 
     # FIXME: Figure out a way to do this without selenium
