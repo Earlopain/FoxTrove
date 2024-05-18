@@ -35,6 +35,24 @@ module Scraper
       end
     end
 
+    def process!
+      jumpstart(@artist_url.scraper_status[self.class::STATE.to_s]) if @artist_url.scraper_status.present?
+      @artist_url.scraper_status["started_at"] ||= Time.current
+
+      while more?
+        submissions = fetch_and_save_next_submissions
+
+        @artist_url.update(scraper_status: @artist_url.scraper_status.merge(self.class::STATE => state_value))
+
+        break if submissions.any? { |submission| @artist_url.scraper_stop_marker&.after?(submission.created_at) }
+      end
+      @artist_url.update(
+        last_scraped_at: @artist_url.scraper_status["started_at"],
+        scraper_stop_marker: new_stop_marker,
+        scraper_status: {},
+      )
+    end
+
     # Will there possibly be more results when calling fetch_next_batch
     def more?
       @has_more
