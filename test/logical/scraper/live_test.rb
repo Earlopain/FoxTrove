@@ -20,8 +20,13 @@ module Scraper
         skip "Skipping #{scraper_class.site_type}: missing #{missing_keys}" if missing_keys.any?
 
         assert_equal(id, artist_url.scraper.fetch_api_identifier)
+        return if skip_files
+
         artist_url.api_identifier = id
-        assert_not_empty(artist_url.scraper.fetch_next_batch) unless skip_files
+        scraper = artist_url.scraper
+        scraper.stubs(:more?).returns(true).then.returns(false)
+        scraper.process!
+        assert_not_empty(artist_url.submissions)
       end
 
       def url(identifier)
