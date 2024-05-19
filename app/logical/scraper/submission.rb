@@ -2,7 +2,7 @@
 
 module Scraper
   class Submission
-    attr_accessor :identifier, :created_at, :title, :description, :files
+    attr_accessor :identifier, :created_at, :updated_at, :title, :description, :files
 
     MIME_IGNORE = %w[
       application/x-shockwave-flash
@@ -43,6 +43,12 @@ module Scraper
       files.each do |file|
         CreateSubmissionFileJob.perform_later(artist_submission, file)
       end
+    end
+
+    # When an already existing post is updated and gets pushed to the front the scraper
+    # should continue and look for potentially fresh posts before the updated one
+    def timestamp_for_cutoff
+      [created_at, updated_at || created_at].max
     end
 
     private

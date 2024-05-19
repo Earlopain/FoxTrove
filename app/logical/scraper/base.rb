@@ -44,7 +44,7 @@ module Scraper
 
         @artist_url.update(scraper_status: @artist_url.scraper_status.merge(self.class::STATE => state_value))
 
-        break if submissions.any? { |submission| @artist_url.scraper_stop_marker&.after?(submission.created_at) }
+        break if submissions.any? { |submission| @artist_url.scraper_stop_marker&.after?(submission.timestamp_for_cutoff) }
       end
       @artist_url.update(
         last_scraped_at: @artist_url.scraper_status["started_at"],

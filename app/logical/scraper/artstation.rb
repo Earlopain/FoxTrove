@@ -26,6 +26,7 @@ module Scraper
       s.title = submission["title"]
       s.description = Rails::Html::FullSanitizer.new.sanitize submission["description"]
       s.created_at = DateTime.parse(submission["created_at"])
+      s.updated_at = DateTime.parse(submission["updated_at"])
 
       submission["assets"].each do |asset|
         s.add_file({

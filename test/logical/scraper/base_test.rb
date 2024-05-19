@@ -12,6 +12,49 @@ module Scraper
       end
     end
 
+    describe "process!" do
+      it "stops once no more results are returned" do
+        artist_url = create(:artist_url, url_identifier: "foo", api_identifier: 123, scraper_stop_marker: 10.hours.ago)
+        scraper = Scraper::Artstation.new(artist_url)
+        scraper.stubs(:fetch_next_batch).returns([
+          {
+            "hash_id" => "bar",
+            "title" => "baz",
+            "description" => "hello!",
+            "created_at" => 15.hours.ago.to_s,
+            "updated_at" => 15.hours.ago.to_s,
+            "assets" => [],
+          },
+        ])
+        scraper.process!
+        assert_in_delta Time.current, artist_url.reload.last_scraped_at, 1
+      end
+
+      it "continues if an old submission has been updated" do
+        artist_url = create(:artist_url, url_identifier: "foo", api_identifier: 123, scraper_stop_marker: 10.hours.ago)
+        scraper = Scraper::Artstation.new(artist_url)
+        b1 = {
+          "hash_id" => "bar1",
+          "title" => "baz",
+          "description" => "hello!",
+          "created_at" => 15.hours.ago.to_s,
+          "updated_at" => 5.hours.ago.to_s,
+          "assets" => [],
+        }
+        b2 = {
+          "hash_id" => "bar2",
+          "title" => "baz",
+          "description" => "hello!",
+          "created_at" => 15.hours.ago.to_s,
+          "updated_at" => 15.hours.ago.to_s,
+          "assets" => [],
+        }
+        scraper.stubs(:fetch_next_batch).returns([b1]).then.returns([b2])
+        scraper.process!
+        assert_equal(2, artist_url.submissions.count)
+      end
+    end
+
     describe "config keys" do
       it "returns the correct values for inheritance chains" do
         assert_equal(%i[baraag_access_token], Scraper::Baraag.required_config_keys)
