@@ -16,8 +16,8 @@
   ], include_blank: true %>
   <%= f.input :site_type, label: "Site", collection: site_types_collection, include_blank: true %>
   <%= f.input :in_backlog, label: "In Backlog?", collection: [
-    ["Yes", "true"],
-    ["No", "false"],
+    %w[Yes true],
+    %w[No false],
   ], include_blank: true %>
   <%= f.input :title %>
   <%= f.input :description %>
