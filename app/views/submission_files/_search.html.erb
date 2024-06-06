@@ -15,6 +15,10 @@
     ["Pictures Only", "image/png,image/jpeg,"],
   ], include_blank: true %>
   <%= f.input :site_type, label: "Site", collection: site_types_collection, include_blank: true %>
+  <%= f.input :in_backlog, label: "In Backlog?", collection: [
+    ["Yes", "true"],
+    ["No", "false"],
+  ], include_blank: true %>
   <%= f.input :title %>
   <%= f.input :description %>
   <%= f.input :corrupt, as: :boolean, label: "Corrupt?" %>
