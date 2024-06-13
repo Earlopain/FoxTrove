@@ -257,7 +257,7 @@ class SubmissionFile < ApplicationRecord
       end
 
       def search_params
-        [:artist_id, :site_type, :upload_status, :corrupt, :zero_sources, :zero_artists, :larger_only_filesize_treshold, :content_type, :title, :description, { artist_url_id: [] }]
+        [:artist_id, :site_type, :upload_status, :corrupt, :zero_sources, :zero_artists, :larger_only_filesize_treshold, :content_type, :title, :description, { artist_url_id: [] }, :in_backlog]
       end
 
       def pagy(params)
