@@ -2,7 +2,11 @@
 
 require "test_helper"
 
-class JobStatsTest < ActiveSupport::TestCase
+class JobStatsTest < ActiveJob::TestCase
+  def queue_adapter_for_test
+    ActiveJob::QueueAdapters::GoodJobAdapter.new
+  end
+
   it "returns enqueued jobs" do
     url1 = create(:artist_url)
     submission1, submission2 = create_list(:artist_submission, 2, artist_url: url1)
