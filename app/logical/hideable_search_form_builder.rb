@@ -11,6 +11,6 @@ class HideableSearchFormBuilder < SimpleForm::FormBuilder
     else
       options[:input_html][:value] = value
     end
-    super(attribute_name, options, &)
+    super
   end
 end
