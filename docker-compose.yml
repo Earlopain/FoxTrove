@@ -35,7 +35,7 @@ services:
     command: foreman start --color
 
   postgres:
-    image: postgres:16.2-alpine3.19
+    image: postgres:16.3-alpine3.20
     environment:
       - POSTGRES_USER=reverser
       - POSTGRES_DB=reverser_development
@@ -52,12 +52,12 @@ services:
       retries: 5
 
   iqdb:
-    image: ghcr.io/e621ng/iqdb:ad5e363879d4e4b80a0821253ae610b7859c5d32
+    image: ghcr.io/e621ng/iqdb:d42a65ba35523eb46152744d68d8ff302c1c9f92
     volumes:
       - ${REVERSER_DATA_PATH:-./data}/iqdb_data:/iqdb
 
   selenium:
-    image: selenium/standalone-chrome:4.20.0-20240425
+    image: selenium/standalone-chrome:4.22.0-20240621
     environment:
       - SE_VNC_NO_PASSWORD=1
     shm_size: 2gb
@@ -77,7 +77,7 @@ services:
   yamllint:
     build:
       dockerfile_inline: |
-        FROM python:3.12-alpine3.19
+        FROM python:3.12-alpine3.20
         RUN pip install yamllint==1.35.1
         WORKDIR /app
     volumes:
@@ -89,8 +89,8 @@ services:
   csslint:
     build:
       dockerfile_inline: |
-        FROM node:20-alpine3.19
-        RUN npm install stylelint@16.4.0 stylelint-config-standard@36.0.0 -g
+        FROM node:20-alpine3.20
+        RUN npm install stylelint@16.6.1 stylelint-config-standard@36.0.1 -g
         WORKDIR /app
     volumes:
       - .:/app
@@ -101,8 +101,8 @@ services:
   tslint:
     build:
       dockerfile_inline: |
-        FROM node:20-alpine3.19
-        RUN npm install typescript@5.4.5 -g
+        FROM node:20-alpine3.20
+        RUN npm install typescript@5.5.2 -g
         WORKDIR /app
     volumes:
       - .:/app
