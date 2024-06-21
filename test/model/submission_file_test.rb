@@ -21,7 +21,7 @@ class SubmissionFileTest < ActiveSupport::TestCase
     it "allows updating unrelated attributes" do
       sm = create(:submission_file_with_original, file_name: "1.webp")
       sm.update!(file_identifier: "foo")
-      SubmissionFile.find(sm.id).update!(file_identifier: "bar")
+      assert_nothing_raised { SubmissionFile.find(sm.id).update!(file_identifier: "bar") }
     end
 
     it "allows replacing the original" do
