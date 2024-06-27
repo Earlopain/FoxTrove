@@ -24,4 +24,19 @@ class ApplicationControllerTest < ActionDispatch::IntegrationTest
       assert_response :success
     end
   end
+
+  describe "error page" do
+    def test_not_found_page
+      get artist_path(id: -1)
+      assert_response :not_found
+      assert_match(/Not Found/, @response.body)
+      assert_select(".error-backtrace", 0)
+    end
+
+    def test_error_page
+      get artists_path(search: { foo: "bar" })
+      assert_response :forbidden
+      assert_select(".error-backtrace")
+    end
+  end
 end
