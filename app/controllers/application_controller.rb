@@ -25,8 +25,7 @@ class ApplicationController < ActionController::Base
   def normalize_params
     return unless request.get? || request.head?
 
-    new_params = deep_reject_blank request.query_parameters
-
+    new_params = deep_compact_blank(request.query_parameters)
     redirect_to url_for(params: new_params) if new_params != request.query_parameters
   end
 
@@ -61,18 +60,15 @@ class ApplicationController < ActionController::Base
 
   private
 
-  def deep_reject_blank(hash)
+  def deep_compact_blank(hash)
     hash.transform_values do |v|
-      if v.blank?
-        nil
-      elsif v.is_a?(Array)
-        compact_array = v.compact_blank
-        compact_array.empty? ? nil : compact_array
+      if v.is_a?(Array)
+        v.compact_blank
       elsif v.is_a?(Hash)
-        deep_reject_blank v
+        deep_compact_blank v
       else
         v
       end
-    end.compact
+    end.compact_blank
   end
 end
