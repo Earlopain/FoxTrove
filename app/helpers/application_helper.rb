@@ -51,7 +51,7 @@ module ApplicationHelper
 
   def hideable_search(path, &)
     search = toggleable("search", "Show Search Options", "Hide Search Options", visible_on_load: params[:search].present?) do
-      simple_form_for(:search, method: :get, url: path, defaults: { required: false }, builder: HideableSearchFormBuilder, search_params: params[:search]) do |f|
+      simple_form_for(:search, method: :get, url: path, defaults: { required: false }, builder: HideableSearchFormBuilder, search_params: params[:search] || {}) do |f|
         capture { yield(f) } + f.submit("Search")
       end
     end

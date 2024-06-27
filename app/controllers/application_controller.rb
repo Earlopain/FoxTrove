@@ -25,7 +25,6 @@ class ApplicationController < ActionController::Base
   def normalize_params
     return unless request.get? || request.head?
 
-    params[:search] ||= ActionController::Parameters.new
     new_params = deep_reject_blank request.query_parameters
 
     redirect_to url_for(params: new_params) if new_params != request.query_parameters
