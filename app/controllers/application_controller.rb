@@ -49,12 +49,12 @@ class ApplicationController < ActionController::Base
     render error_template, formats: [:html], status: status
   end
 
-  def respond_with(value)
-    if value.errors.any?
+  def respond_with(model)
+    if model.errors.any?
       # Always render new/edit, there are no specific templates for create/update
       render({ "create" => "new", "update" => "edit" }.fetch(action_name, action_name))
     else
-      redirect_to(value)
+      redirect_to(url_for(model))
     end
   end
 
