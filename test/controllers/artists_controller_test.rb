@@ -35,6 +35,47 @@ class ArtistsControllerTest < ActionDispatch::IntegrationTest
       assert_redirected_to(url_for(Artist.first))
     end
 
+    test "create with an invalid artist name" do
+      post artists_path(artist: { name: "!invalid", url_string: "foo" })
+      assert_response :unprocessable_content
+      assert_equal("Name '!invalid' can only contain alphanumerics and _.-+()", css_select("#form-error").inner_text)
+    end
+
+    test "create with invalid url" do
+      assert_no_difference(-> { Artist.count }, -> { ArtistUrl.count }) do
+        post artists_path(artist: { name: "foo", url_string: "foo" })
+      end
+      assert_response :unprocessable_content
+    end
+
+    test "create with unsupported url" do
+      post artists_path(artist: { name: "foo", url_string: "https://example.com" })
+      assert_response :unprocessable_content
+      assert_equal("Url https://example.com is not a supported url", css_select("#form-error").inner_text)
+    end
+
+    test "create with invalid artist identifier" do
+      post artists_path(artist: { name: "foo", url_string: "https://furaffinity.net/user/!invalid" })
+      assert_response :unprocessable_content
+      assert_equal("Identifier !invalid is not valid for FurAffinity", css_select("#form-error").inner_text)
+    end
+
+    test "create rolls back if second url is invalid" do
+      assert_no_difference(-> { Artist.count }, -> { ArtistUrl.count }) do
+        post artists_path(artist: { name: "foo", url_string: "https://ko-fi.com/foo\nbar" })
+      end
+      assert_response :unprocessable_content
+    end
+
+    test "create rolls back if second url is duplicate" do
+      create(:artist_url, site_type: "furaffinity", url_identifier: "foo")
+      assert_no_difference(-> { Artist.count }, -> { ArtistUrl.count }) do
+        post artists_path(artist: { name: "foo", url_string: "https://ko-fi.com/foo\nhttps://furaffinity.net/user/foo" })
+      end
+      assert_response :unprocessable_content
+      assert_equal("https://furaffinity.net/user/foo is not valid: Url identifier has already been taken", css_select("#form-error").inner_text)
+    end
+
     test "create with scraper enabled" do
       stub_request(:get, "https://piczel.tv/api/users/foo?friendly=1").to_return(body: { id: 123 }.to_json)
       stub_scraper_enabled(:artstation) do

@@ -12,34 +12,30 @@ class Artist < ApplicationRecord
   attr_accessor :url_string
 
   def add_artist_url(url)
-    Artist.transaction do
-      result = Sites.from_gallery_url url
+    result = Sites.from_gallery_url url
 
-      if !result
-        errors.add(:url, " #{url} is not a supported url")
-        next
-      elsif !result[:valid]
-        errors.add(:identifier, "#{result[:identifier]} is not valid for #{result[:site].display_name}")
-        next
-      end
-
-      artist_url = artist_urls.new(
-        site_type: result[:site].site_type,
-        url_identifier: result[:identifier],
-        created_at_on_site: Time.current,
-        about_on_site: "",
-      )
-
-      artist_url.save
-
-      if artist_url.errors.any?
-        errors.add(:base, "#{url} is not valid: #{artist_url.errors.full_messages.join(',')}")
-        artist_urls.delete(artist_url)
-        raise ActiveRecord::Rollback
-      end
-
-      artist_url
+    if !result
+      errors.add(:url, "#{url} is not a supported url")
+      return
+    elsif !result[:valid]
+      errors.add(:identifier, "#{result[:identifier]} is not valid for #{result[:site].display_name}")
+      return
     end
+
+    artist_url = artist_urls.new(
+      site_type: result[:site].site_type,
+      url_identifier: result[:identifier],
+      created_at_on_site: Time.current,
+      about_on_site: "",
+    )
+
+    artist_url.save
+
+    if artist_url.errors.any?
+      errors.add(:base, "#{url} is not valid: #{artist_url.errors.full_messages.join(',')}")
+    end
+
+    artist_url
   end
 
   def enqueue_all_urls
