@@ -52,7 +52,7 @@ class ApplicationController < ActionController::Base
   def respond_with(model)
     if model.errors.any?
       # Always render new/edit, there are no specific templates for create/update
-      render({ "create" => "new", "update" => "edit" }.fetch(action_name, action_name))
+      render({ "create" => "new", "update" => "edit" }.fetch(action_name, action_name), status: :unprocessable_content)
     else
       redirect_to(url_for(model))
     end
