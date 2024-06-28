@@ -1,6 +1,7 @@
 {
   "extends": ["stylelint-config-standard"],
   "ignoreFiles": [
+    "../coverage/**/*",
     "../public/build/**/*"
   ],
   "rules": {
