@@ -58,6 +58,14 @@ module ApplicationHelper
     tag.div(search)
   end
 
+  def form_errors(model)
+    return if model.errors.none?
+
+    tag.div(id: "form-error") do
+      model.errors.full_messages.join(", ")
+    end
+  end
+
   def job_stats
     @job_stats ||= JobStats.new
   end

@@ -1,6 +1,6 @@
 Current Links:
 <%= render "artist_urls/list", artist_urls: ordered_artist_urls(@artist) %>
-<%= @artist.errors.full_messages.join(", ") %>
+<%= form_errors(@artist) %>
 <%= simple_form_for @artist do |f| %>
   <%= f.input :name, as: :string %>
   <%= f.input :url_string, as: :text, label: "New Links", input_html: { rows: 10, cols: 50 } %>
