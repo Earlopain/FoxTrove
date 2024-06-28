@@ -16,7 +16,7 @@ class Artist < ApplicationRecord
       result = Sites.from_gallery_url url
 
       if !result
-        errors.add(:url, " #{url} is not a supported url") unless result
+        errors.add(:url, " #{url} is not a supported url")
         next
       elsif !result[:valid]
         errors.add(:identifier, "#{result[:identifier]} is not valid for #{result[:site].display_name}")
