@@ -3,8 +3,6 @@
 require "test_helper"
 
 class SubmissionFilesControllerTest < ActionDispatch::IntegrationTest
-  include ActiveJob::TestHelper
-
   test "index" do
     create(:submission_file_with_original, file_name: "1.jpg", with_sample: true)
     get submission_files_path
