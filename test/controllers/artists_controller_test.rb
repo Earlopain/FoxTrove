@@ -34,5 +34,27 @@ class ArtistsControllerTest < ActionDispatch::IntegrationTest
       post artists_path(artist: { name: "foo", url_string: "" })
       assert_redirected_to(url_for(Artist.first))
     end
+
+    test "create with scraper enabled" do
+      stub_request(:get, "https://piczel.tv/api/users/foo?friendly=1").to_return(body: { id: 123 }.to_json)
+      stub_scraper_enabled(:artstation) do
+        post artists_path(artist: { name: "foo", url_string: "piczel.tv/gallery/foo" })
+      end
+
+      assert_response :found
+      assert_equal("123", ArtistUrl.last.api_identifier)
+      assert_enqueued_jobs 1
+      assert_enqueued_with(job: ScrapeArtistUrlJob, args: [ArtistUrl.last])
+    end
+
+    test "create with scraper enabled when the second url fails enqueues no jobs" do
+      stub_request(:get, "https://piczel.tv/api/users/foo?friendly=1").to_return(body: { id: 123 }.to_json)
+      stub_scraper_enabled(:artstation) do
+        post artists_path(artist: { name: "foo", url_string: "piczel.tv/gallery/foo\nbar" })
+      end
+
+      assert_response :unprocessable_content
+      assert_enqueued_jobs 0
+    end
   end
 end

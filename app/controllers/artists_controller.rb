@@ -82,12 +82,11 @@ class ArtistsController < ApplicationController
   end
 
   def add_new_artist_urls_and_save(artist)
-    new_artist_urls = artist.url_string.lines.map(&:strip).compact_blank.map do |url|
+    artist.url_string.lines.map(&:strip).compact_blank.each do |url|
       artist.add_artist_url(url)
     end
     return if artist.errors.any?
 
-    new_artist_urls.each(&:enqueue_scraping)
     artist.save
   end
 end
