@@ -158,7 +158,7 @@ class SubmissionFile < ApplicationRecord
     similar.each do |s|
       # Process matches from other artists after everything else.
       # Chances are that they're just wrong iqdb matches.
-      priority_for_similar = s.artist_submission.artist == artist_submission.artist ? priority : priority - 50
+      priority_for_similar = s.artist_submission.artist == artist_submission.artist ? priority : priority + 50
       E6IqdbQueryJob.set(priority: priority_for_similar).perform_later(s)
     end
   end
