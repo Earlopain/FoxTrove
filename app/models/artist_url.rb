@@ -53,13 +53,15 @@ class ArtistUrl < ApplicationRecord
     begin
       self.api_identifier = scraper.fetch_api_identifier
     rescue HTTPX::HTTPError => e
-      raise e unless e.status == 404
+      http_status_error = e.status
     end
 
     if api_identifier
       save
     else
-      errors.add(:base, "#{url_identifier} failed api lookup")
+      error_message = "#{url_identifier} failed api lookup"
+      error_message << " (#{Rack::Utils::HTTP_STATUS_CODES[http_status_error]})" if http_status_error
+      errors.add(:base, error_message)
     end
   end
 

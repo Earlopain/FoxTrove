@@ -97,5 +97,35 @@ class ArtistsControllerTest < ActionDispatch::IntegrationTest
       assert_response :unprocessable_content
       assert_enqueued_jobs 0
     end
+
+    test "create with failed api lookup" do
+      stub_request(:get, "https://piczel.tv/api/users/foo?friendly=1").to_return(status: 404)
+      stub_scraper_enabled(:artstation) do
+        post artists_path(artist: { name: "foo", url_string: "piczel.tv/gallery/foo" })
+      end
+
+      assert_response :unprocessable_content
+      assert_equal("piczel.tv/gallery/foo is not valid: foo failed api lookup (Not Found)", css_select("#form-error").inner_text)
+    end
+
+    test "create with api lookup returns nil" do
+      stub_request(:get, "https://piczel.tv/api/users/foo?friendly=1").to_return(body: {}.to_json)
+      stub_scraper_enabled(:artstation) do
+        post artists_path(artist: { name: "foo", url_string: "piczel.tv/gallery/foo" })
+      end
+
+      assert_response :unprocessable_content
+      assert_equal("piczel.tv/gallery/foo is not valid: foo failed api lookup", css_select("#form-error").inner_text)
+    end
+
+    test "create with errored api lookup" do
+      stub_request(:get, "https://piczel.tv/api/users/foo?friendly=1").to_return(status: 500)
+      stub_scraper_enabled(:artstation) do
+        post artists_path(artist: { name: "foo", url_string: "piczel.tv/gallery/foo" })
+      end
+
+      assert_response :unprocessable_content
+      assert_equal("piczel.tv/gallery/foo is not valid: foo failed api lookup (Internal Server Error)", css_select("#form-error").inner_text)
+    end
   end
 end
