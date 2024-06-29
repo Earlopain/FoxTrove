@@ -17,6 +17,11 @@ class ApplicationRecordTest < ActiveSupport::TestCase
     assert_equal(result.id, SubmissionFile.attribute_matches("", :file_error).sole.id)
   end
 
+  test "when searching by integer field" do
+    sm1, _, sm3 = create_list(:submission_file, 3)
+    assert_equal([sm1, sm3], SubmissionFile.attribute_matches("#{sm1.id},#{sm3.id}", :id))
+  end
+
   test "when searching for nil it returns all results" do
     r1 = create(:submission_file, file_error: nil)
     r2 = create(:submission_file, file_error: "")

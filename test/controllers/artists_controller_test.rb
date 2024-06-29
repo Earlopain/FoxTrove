@@ -29,6 +29,12 @@ class ArtistsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test "show renders" do
+    sm = create(:submission_file_with_original, file_name: "1.jpg")
+    get artist_path(sm.artist)
+    assert_response :success
+  end
+
   describe "create" do
     test "create with no urls" do
       post artists_path(artist: { name: "foo", url_string: "" })

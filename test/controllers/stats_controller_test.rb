@@ -7,4 +7,10 @@ class StatsControllerTest < ActionDispatch::IntegrationTest
     get stats_path
     assert_response :success
   end
+
+  test "selenium active" do
+    get selenium_stats_path
+    assert_response :success
+    assert_not(@response.parsed_body[:active])
+  end
 end
