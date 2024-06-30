@@ -39,7 +39,11 @@ class SubmissionFileTest < ActiveSupport::TestCase
     it "enqueues the update job on create" do
       create(:submission_file_with_original, file_name: "1.webp")
       assert_enqueued_jobs 1, only: SubmissionFileUpdateJob
-      assert_enqueued_jobs 1
+    end
+
+    it "enqueues the analyze job for the generated sample" do
+      create(:submission_file_with_original, file_name: "1.webp", with_sample: true)
+      assert_enqueued_jobs 1, only: ActiveStorage::AnalyzeJob
     end
 
     it "enqueues nothing if the attachment didn't change" do
