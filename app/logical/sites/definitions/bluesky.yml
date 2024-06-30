@@ -1,4 +1,4 @@
-type: SimpleDefinition
+type: ScraperDefinition
 enum_value: bluesky
 display_name: Bluesky
 homepage: https://bsky.app

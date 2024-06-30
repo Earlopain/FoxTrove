@@ -49,6 +49,10 @@ module Scraper
         assert_scraper(Scraper::Baraag, "keki", "447907")
       end
 
+      test "bluesky" do
+        assert_scraper(Scraper::Bluesky, "hioshiru.bsky.social", "did:plc:aywqtpcdp4wuoxmiiolht4da")
+      end
+
       test "commishes" do
         assert_scraper(Scraper::Commishes, "TotesFleisch8", 839)
       end
