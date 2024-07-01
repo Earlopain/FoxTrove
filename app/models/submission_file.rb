@@ -3,6 +3,7 @@
 class SubmissionFile < ApplicationRecord
   belongs_to :artist_submission
   has_many :e6_posts, dependent: :destroy
+  has_many :relevant_e6_posts, -> { where(similarity_score: Config.similarity_cutoff..) }, inverse_of: :submission_file, dependent: nil, class_name: "E6Post"
 
   validate :original_present
 
@@ -14,7 +15,7 @@ class SubmissionFile < ApplicationRecord
   has_one_attached :sample
 
   scope :with_attached, -> { with_attached_sample.with_attached_original }
-  scope :with_everything, -> { with_attached.includes(:e6_posts, artist_submission: :artist_url) }
+  scope :with_everything, -> { with_attached.includes(:relevant_e6_posts, artist_submission: :artist_url) }
 
   scope :larger_iqdb_filesize_kb_exists, ->(treshold) { select_from_e6_posts_where_exists("size - ? > post_size and not post_is_deleted", treshold) }
   scope :larger_iqdb_filesize_percentage_exists, ->(treshold) { select_from_e6_posts_where_exists("size - (size / 100 * ?) > post_size and not post_is_deleted", treshold) }
@@ -34,11 +35,11 @@ class SubmissionFile < ApplicationRecord
   # avoid_posting and conditional_dnp never appear alone
   NON_ARTIST_TAGS = %w[unknown_artist unknown_artist_signature sound_warning epilepsy_warning].freeze
 
-  scope :zero_sources, -> { joins(:e6_posts).where(e6_posts: { post_is_deleted: false }).where("jsonb_array_length(post_json->'sources') = 0") }
+  scope :zero_sources, -> { joins(:relevant_e6_posts).where(relevant_e6_posts: { post_is_deleted: false }).where("jsonb_array_length(post_json->'sources') = 0") }
   scope :zero_artists, -> {
     artists_path = "post_json->'tags'->'artist'"
     artists_count = "jsonb_array_length(#{artists_path})"
-    joins(:e6_posts).where(e6_posts: { post_is_deleted: false }).where("#{artists_count} = 0 or (#{artists_count} = 1 and #{artists_path}->>0 in (?))", NON_ARTIST_TAGS)
+    joins(:relevant_e6_posts).where(relevant_e6_posts: { post_is_deleted: false }).where("#{artists_count} = 0 or (#{artists_count} = 1 and #{artists_path}->>0 in (?))", NON_ARTIST_TAGS)
   }
 
   delegate :artist_url, :artist, to: :artist_submission
@@ -52,7 +53,7 @@ class SubmissionFile < ApplicationRecord
   end
 
   def self.select_from_e6_posts(condition)
-    "select from e6_posts where submission_files.id = e6_posts.submission_file_id #{"and #{condition}" if condition}"
+    "select from e6_posts where submission_files.id = e6_posts.submission_file_id and e6_posts.similarity_score >= #{Config.similarity_cutoff} #{"and #{condition}" if condition}"
   end
 
   def self.blob_for_io(io, filename)

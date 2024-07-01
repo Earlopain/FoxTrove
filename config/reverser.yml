@@ -11,6 +11,8 @@ time_zone: Berlin
 
 files_per_page: 25
 
+similarity_cutoff: 70
+
 inkbunny_user:
 inkbunny_pass:
 deviantart_client_id:

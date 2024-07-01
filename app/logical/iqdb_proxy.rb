@@ -79,10 +79,10 @@ module IqdbProxy
     { channels: { r: r, g: g, b: b } }
   end
 
-  def process_iqbd_result(json, score_cutoff = 60)
+  def process_iqbd_result(json)
     raise Error, "Server returned an error: #{json['message']}" unless json.is_a?(Array)
 
-    json.filter! { |entry| entry["score"] >= score_cutoff }
+    json.filter! { |entry| entry["score"] >= Config.similarity_cutoff }
     submission_ids = json.pluck("post_id")
     submissions = SubmissionFile.where(id: submission_ids).index_by(&:id)
 

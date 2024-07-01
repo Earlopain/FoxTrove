@@ -102,4 +102,84 @@ class SubmissionFileTest < ActiveSupport::TestCase
     _, sm = SubmissionFile.pagy({})
     assert_equal(2, sm.count)
   end
+
+  describe "search" do
+    it "returns results for larger by filesize absolute" do
+      sm1 = create(:submission_file, size: 200.kilobytes)
+      create(:e6_post, submission_file: sm1, post_size: 50.kilobytes)
+      sm2 = create(:submission_file, size: 60.kilobytes)
+      create(:e6_post, submission_file: sm2, post_size: 50.kilobytes)
+
+      assert_equal([sm2, sm1], SubmissionFile.search(upload_status: "larger_only_filesize_kb", larger_only_filesize_treshold: 5))
+      assert_equal([sm1], SubmissionFile.search(upload_status: "larger_only_filesize_kb", larger_only_filesize_treshold: 50))
+    end
+
+    it "returns results for larger by filesize relative" do
+      sm1 = create(:submission_file, size: 1.megabyte)
+      create(:e6_post, submission_file: sm1, post_size: 0.5.kilobytes)
+      sm2 = create(:submission_file, size: 1.megabyte)
+      create(:e6_post, submission_file: sm2, post_size: 0.85.megabyte)
+
+      assert_equal([sm2, sm1], SubmissionFile.search(upload_status: "larger_only_filesize_percentage", larger_only_filesize_treshold: 10))
+      assert_equal([sm1], SubmissionFile.search(upload_status: "larger_only_filesize_percentage", larger_only_filesize_treshold: 40))
+    end
+
+    it "returns results for larger by dimensions" do
+      sm1, sm2 = create_list(:submission_file, 2, width: 100, height: 100)
+      create(:e6_post, submission_file: sm1, post_width: 50, post_height: 50)
+      create(:e6_post, submission_file: sm2, post_width: 150, post_height: 150)
+
+      assert_equal([sm1], SubmissionFile.search(upload_status: "larger_only_dimensions"))
+    end
+
+    it "returns results for already uploaded" do
+      sm1, sm2 = create_list(:submission_file, 3)
+      create(:e6_post, submission_file: sm1)
+      create(:e6_post, submission_file: sm2)
+
+      assert_equal([sm2, sm1], SubmissionFile.search(upload_status: "already_uploaded"))
+    end
+
+    it "returns results for exact matches" do
+      sm1, sm2, _sm3 = create_list(:submission_file, 3)
+      create(:e6_post, submission_file: sm1, is_exact_match: true)
+      create(:e6_post, submission_file: sm1, is_exact_match: false)
+      create(:e6_post, submission_file: sm2, is_exact_match: false)
+
+      assert_equal([sm1], SubmissionFile.search(upload_status: "exact_match_exists"))
+    end
+
+    it "returns results for not uploaded" do
+      sm1, sm2, sm3 = create_list(:submission_file, 3)
+      create_list(:e6_post, 2, submission_file: sm1)
+      create(:e6_post, submission_file: sm2)
+
+      assert_equal([sm3], SubmissionFile.search(upload_status: "not_uploaded"))
+    end
+
+    it "returns results for zero sources" do
+      sm1, sm2 = create_list(:submission_file, 2)
+      create(:e6_post, submission_file: sm1, post_json: { sources: [] })
+      create(:e6_post, submission_file: sm2, post_json: { sources: ["whatever"] })
+
+      assert_equal([sm1], SubmissionFile.search(zero_sources: "1"))
+    end
+
+    it "returns results for zero artists" do
+      sm1, sm2 = create_list(:submission_file, 2)
+      create(:e6_post, submission_file: sm1, post_json: { tags: { artist: [] } })
+      create(:e6_post, submission_file: sm2, post_json: { tags: { artist: ["foo"] } })
+
+      assert_equal([sm1], SubmissionFile.search(zero_artists: "1"))
+    end
+
+    it "returns results for zero sources mixed with zero artists" do
+      sm1, sm2, sm3 = create_list(:submission_file, 3)
+      create(:e6_post, submission_file: sm1, post_json: { tags: { artist: ["foo"] }, sources: [] })
+      create(:e6_post, submission_file: sm2, post_json: { tags: { artist: [] }, sources: [] })
+      create(:e6_post, submission_file: sm3, post_json: { tags: { artist: [] }, sources: ["foo"] })
+
+      assert_equal([sm2], SubmissionFile.search(zero_sources: "1", zero_artists: "1"))
+    end
+  end
 end

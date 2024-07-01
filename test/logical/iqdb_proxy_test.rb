@@ -30,4 +30,16 @@ class IqdbProxyTest < ActiveSupport::TestCase
     end
     assert_equal([{ score: 70, submission_file: similar_sm }], similar)
   end
+
+  test "it filters out results that fall below the score cutoff" do
+    Config.stubs(:similarity_cutoff).returns(70)
+    sm = create(:submission_file_with_original, file_name: "1.jpg")
+    sm.generate_variants
+
+    similar_sm1, similar_sm2 = create_list(:submission_file, 2)
+    similar = stub_iqdb(similar_sm1 => 60, similar_sm2 => 80) do
+      IqdbProxy.query_submission_file(sm)
+    end
+    assert_equal([{ score: 80, submission_file: similar_sm2 }], similar)
+  end
 end

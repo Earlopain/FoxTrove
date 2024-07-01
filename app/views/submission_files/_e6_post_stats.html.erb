@@ -1,5 +1,5 @@
 <%# locals: (submission_file:) -%>
-<% submission_file.e6_posts.sort_by(&:similarity_score).reverse_each do |entry| %>
+<% submission_file.relevant_e6_posts.sort_by(&:similarity_score).reverse_each do |entry| %>
   <div>
   <%= link_to_external "##{entry.post_id}", "https://e621.net/posts/#{entry.post_id}", title: "Score: #{entry.score}" %>
   <% if entry.post_is_deleted? %>
