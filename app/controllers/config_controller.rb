@@ -11,7 +11,6 @@ class ConfigController < ApplicationController
 
   def modify
     custom_config = params.fetch(:config, {}).permit!
-    custom_config[:scraper_request_rate_limit] = custom_config[:scraper_request_rate_limit].tr(",", ".").to_f if custom_config[:scraper_request_rate_limit]
 
     Config.write_custom_config(custom_config)
     Config.reset_cache

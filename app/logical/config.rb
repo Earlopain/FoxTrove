@@ -23,6 +23,8 @@ module Config
     mapped = new_values.to_h do |k, v|
       if respond_to?(:"#{k}?") || k.end_with?("?")
         ["#{k.to_s.delete_suffix('?')}?", ActiveModel::Type::Boolean.new.cast(v)]
+      elsif default_config[k.to_sym].is_a?(Numeric)
+        [k, cast_number(v)]
       else
         [k, v]
       end
@@ -33,6 +35,15 @@ module Config
   def write_custom_config(new_values)
     data = Psych.safe_dump(merge_custom_config(new_values))
     File.write(custom_config_path, data)
+  end
+
+  def cast_number(value)
+    value = value.tr(",", ".").delete_suffix(".0")
+    if value.include?(".")
+      value.to_f
+    else
+      value.to_i
+    end
   end
 
   def reset_cache

@@ -4,7 +4,7 @@ require "test_helper"
 
 class ConfigTest < ActiveSupport::TestCase
   setup do
-    Config.stubs(:default_config).returns(app_name: "DefaultName", bool?: true)
+    Config.stubs(:default_config).returns(app_name: "DefaultName", bool?: true, numeric: 123)
     Config.reset_cache
   end
 
@@ -69,5 +69,12 @@ class ConfigTest < ActiveSupport::TestCase
     stub_custom_config(bool: "false") do
       assert_not_predicate(Config, :bool?)
     end
+  end
+
+  it "merges numeric values" do
+    assert_equal({ "numeric" => 456 }, Config.merge_custom_config("numeric" => "456"))
+    assert_equal({ "numeric" => 456 }, Config.merge_custom_config("numeric" => "456.0"))
+    assert_equal({ "numeric" => 456.789 }, Config.merge_custom_config("numeric" => "456.789"))
+    assert_equal({ "numeric" => 456.789 }, Config.merge_custom_config("numeric" => "456,789"))
   end
 end
