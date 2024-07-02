@@ -29,7 +29,7 @@ ENV RUBY_YJIT_ENABLE=1
 ARG HOST_UID=1000
 ARG HOST_GID=1000
 RUN addgroup --gid ${HOST_GID} reverser && \
-  adduser -S --shell /bin/sh --uid ${HOST_UID} reverser && \
+  adduser -S --shell /bin/sh --uid ${HOST_UID} reverser -G reverser && \
   addgroup reverser wheel && \
   echo "reverser ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 
