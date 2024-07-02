@@ -1,5 +1,3 @@
-app_name: Reverser
-
 log_scraper_requests?: true
 # How quickly requests will be sent in seconds. Accepts floats.
 # A rate limt of 0.5 means that the next request will be sent at

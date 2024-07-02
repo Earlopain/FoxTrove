@@ -4,7 +4,7 @@ require "test_helper"
 
 class ConfigTest < ActiveSupport::TestCase
   setup do
-    Config.stubs(:default_config).returns(app_name: "DefaultName", bool?: true, numeric: 123)
+    Config.stubs(:default_config).returns(text: "foo", bool?: true, numeric: 123)
     Config.reset_cache
   end
 
@@ -25,7 +25,7 @@ class ConfigTest < ActiveSupport::TestCase
 
   it "works when the custom config file doesn't exist" do
     # This is the default stub
-    assert_equal("DefaultName", Config.app_name)
+    assert_equal("foo", Config.text)
     assert_empty(Config.custom_config)
   end
 
@@ -33,27 +33,23 @@ class ConfigTest < ActiveSupport::TestCase
     assert_raises(NoMethodError) { Config.missing_key }
   end
 
-  it "returns the value of the default value" do
-    assert_equal("DefaultName", Config.app_name)
-  end
-
   it "works when the custom config file is empty" do
     stub_custom_config do
-      assert_equal("DefaultName", Config.app_name)
+      assert_equal("foo", Config.text)
       assert_empty(Config.custom_config)
     end
   end
 
   it "returns the overwritten value of the custom config" do
-    stub_custom_config(app_name: "OverwrittenName") do
-      assert_equal("OverwrittenName", Config.app_name)
+    stub_custom_config(text: "bar") do
+      assert_equal("bar", Config.text)
     end
   end
 
   it "merges the config correctly" do
-    stub_custom_config(app_name: "OverwrittenName", other_key: "abc") do
-      assert_equal({ "app_name" => "NewName", "other_key" => "abc" }, Config.merge_custom_config("app_name" => "NewName"))
-      assert_equal({ "app_name" => "NewName", "other_key" => "abc" }, Config.merge_custom_config(app_name: "NewName"))
+    stub_custom_config(text: "bar", other_key: "abc") do
+      assert_equal({ "text" => "baz", "other_key" => "abc" }, Config.merge_custom_config("text" => "baz"))
+      assert_equal({ "text" => "baz", "other_key" => "abc" }, Config.merge_custom_config(text: "baz"))
     end
   end
 
