@@ -30,14 +30,8 @@ module ApplicationHelper
     tag.a(text, href: "#", **, onclick: "return false;")
   end
 
-  def page_title(title = nil)
-    if title.present?
-      content_for(:page_title) { title }
-    elsif content_for? :page_title
-      "#{content_for(:page_title)} - #{Config.app_name}"
-    else
-      Config.app_name
-    end
+  def page_title(title)
+    content_for(:page_title) { title }
   end
 
   def toggleable(id, show_text, hide_text, visible_on_load:, &block)
