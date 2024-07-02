@@ -5,4 +5,8 @@ class BooleanInput < SimpleForm::Inputs::BooleanInput
   def label_input(wrapper_options = nil)
     label(wrapper_options) + input(wrapper_options)
   end
+
+  def label_text
+    "#{super}?"
+  end
 end
