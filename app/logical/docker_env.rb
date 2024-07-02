@@ -15,10 +15,6 @@ module DockerEnv
     ENV.fetch("SELENIUM_URL")
   end
 
-  def dev_mode?
-    ENV.fetch("DEV_MODE", "false") == "true"
-  end
-
   def master_commit
     @master_commit ||= begin
       File.read("/docker/git_master_ref").first(GitHelper::COMMIT_ABREV_LENGTH)

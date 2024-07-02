@@ -2,7 +2,6 @@ x-environment: &common-env
   EXPOSED_VNC_PORT: ${EXPOSED_VNC_PORT:-7900}
   IQDB_URL: ${IQDB_URL:-http://iqdb:5588}
   SELENIUM_URL: ${SELENIUM_URL:-http://selenium:4444}
-  DEV_MODE: ${DEV_MODE:-false}
 
 services:
   reverser:
