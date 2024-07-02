@@ -32,6 +32,10 @@ RUN addgroup --gid ${HOST_GID} reverser && \
   adduser -S --shell /bin/sh --uid ${HOST_UID} reverser -G reverser && \
   addgroup reverser wheel && \
   echo "reverser ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+ARG DOCKER_RUN_AS_USER
+ENV USER=${DOCKER_RUN_AS_USER:+reverser}
+ENV USER=${USER:-root}
+USER $USER
 
 # Copy native npm package binaries
 COPY --from=node-downloader /usr/local/lib/node_modules/esbuild/bin/esbuild /usr/local/bin

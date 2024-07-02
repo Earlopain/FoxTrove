@@ -18,6 +18,7 @@
     <div id="page">
       <div id="content">
         <%= render "application/outdated" if GitHelper.build_outdated? %>
+        <%= render "application/deprecations" %>
         <% if Config.missing_values.any? %>
           <div>You must set the following config values for correct functionality:</div>
           <%= safe_join(Config.missing_values, tag.br) %>

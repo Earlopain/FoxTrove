@@ -1,0 +1,8 @@
+<%# locals: () -%>
+
+<% if DockerEnv.specifies_docker_user? %>
+  <div>
+    The environment variable <code>DOCKER_USER</code> got replaced by <code>DOCKER_RUN_AS_USER</code>.
+    <br>Please specify <code>DOCKER_RUN_AS_USER=1</code> and remove <code>DOCKER_USER</code> in your <code>.env</code> file to remove this warning.
+  </div>
+<% end %>

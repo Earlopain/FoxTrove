@@ -10,8 +10,8 @@ services:
       args:
         HOST_UID: ${HOST_UID:-1000}
         HOST_GID: ${HOST_GID:-1000}
+        DOCKER_RUN_AS_USER: ${DOCKER_RUN_AS_USER:-}
     image: reverser
-    user: ${DOCKER_USER:-root}
     environment:
       <<: *common-env
       RAILS_SERVER_EXEC: bin/rails server -p ${EXPOSED_SERVER_PORT:-9000} -b 0.0.0.0 --pid /tmp/server.pid
@@ -115,7 +115,6 @@ services:
 
   tests:
     image: reverser
-    user: ${DOCKER_USER:-root}
     environment:
       <<: *common-env
       VIPS_WARNING: "0"

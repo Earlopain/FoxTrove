@@ -15,6 +15,10 @@ module DockerEnv
     ENV.fetch("SELENIUM_URL")
   end
 
+  def specifies_docker_user?
+    ENV.key?("DOCKER_USER")
+  end
+
   def master_commit
     @master_commit ||= begin
       File.read("/docker/git_master_ref").first(GitHelper::COMMIT_ABREV_LENGTH)
