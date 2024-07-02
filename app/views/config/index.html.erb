@@ -13,3 +13,5 @@
 <% Sites.scraper_definitions.each do |definition| %>
   <div><%= link_to "#{definition.display_name} settings", config_path(definition.site_type) %></div>
 <% end %>
+
+<% page_title "Settings" %>
