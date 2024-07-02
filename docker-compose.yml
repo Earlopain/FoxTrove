@@ -6,7 +6,11 @@ x-environment: &common-env
 
 services:
   reverser:
-    build: ./
+    build:
+      context: ./
+      args:
+        HOST_UID: ${HOST_UID:-1000}
+        HOST_GID: ${HOST_GID:-1000}
     image: reverser
     user: ${DOCKER_USER:-root}
     environment:
