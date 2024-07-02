@@ -181,5 +181,22 @@ class SubmissionFileTest < ActiveSupport::TestCase
 
       assert_equal([sm2], SubmissionFile.search(zero_sources: "1", zero_artists: "1"))
     end
+
+    it "respects the score cutoff value" do
+      sm1, sm2, sm3 = create_list(:submission_file, 3)
+      create(:e6_post, submission_file: sm1, similarity_score: 90)
+      create(:e6_post, submission_file: sm1, similarity_score: 75)
+      create(:e6_post, submission_file: sm2, similarity_score: 75)
+      create(:e6_post, submission_file: sm3, similarity_score: 50)
+
+      Config.stubs(:similarity_cutoff).returns(40)
+      assert_equal([sm3, sm2, sm1], SubmissionFile.search(upload_status: "already_uploaded"))
+
+      Config.stubs(:similarity_cutoff).returns(60)
+      assert_equal([sm2, sm1], SubmissionFile.search(upload_status: "already_uploaded"))
+
+      Config.stubs(:similarity_cutoff).returns(80)
+      assert_equal([sm1], SubmissionFile.search(upload_status: "already_uploaded"))
+    end
   end
 end
