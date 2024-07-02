@@ -26,8 +26,8 @@ ENV LD_PRELOAD=/usr/lib/libjemalloc.so.2
 ENV RUBY_YJIT_ENABLE=1
 
 # Create a user with (potentially) the same id as on the host
-ARG HOST_UID
-ARG HOST_GID
+ARG HOST_UID=1000
+ARG HOST_GID=1000
 RUN addgroup --gid ${HOST_GID} reverser && \
   adduser -S --shell /bin/sh --uid ${HOST_UID} reverser -G reverser && \
   addgroup reverser wheel && \
