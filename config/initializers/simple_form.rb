@@ -7,7 +7,7 @@
 # Dir[Rails.root.join('lib/components/**/*.rb')].each { |f| require f }
 #
 # Use this setup block to configure all options available in SimpleForm.
-SimpleForm.setup do |config|
+SimpleForm.setup do |config| # rubocop:disable Metrics/BlockLength
   # Wrappers are used by the form builder to generate a
   # complete input. You can remove any component from the
   # wrapper, change the order or even add your own to the
@@ -110,7 +110,7 @@ SimpleForm.setup do |config|
   # config.item_wrapper_class = nil
 
   # How the label text should be generated altogether with the required text.
-  # config.label_text = lambda { |label, required, explicit_label| "#{required} #{label}" }
+  config.label_text = ->(label, required, _explicit_label) { "#{required} #{label.titleize}" }
 
   # You can define the class to use on all labels. Default is nil.
   # config.label_class = nil
