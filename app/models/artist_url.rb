@@ -44,6 +44,10 @@ class ArtistUrl < ApplicationRecord
     q = q.attribute_matches(params[:site_type], :site_type)
     q = q.attribute_matches(params[:url_identifier], :url_identifier)
     q = q.attribute_matches(params[:api_identifier], :api_identifier)
+    if params[:missing_api_identifier] == "1"
+      scrapers = Sites.definitions.select(&:scraper_enabled?).map(&:site_type)
+      q = q.attribute_nil_check("false", :api_identifier).attribute_matches(scrapers, :site_type)
+    end
     q.order(id: :desc)
   end
 

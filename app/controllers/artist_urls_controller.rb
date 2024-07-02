@@ -24,6 +24,6 @@ class ArtistUrlsController < ApplicationController
   private
 
   def index_search_params
-    params.fetch(:search, {}).permit(:site_type, :url_identifier, :api_identifier)
+    params.fetch(:search, {}).permit(:site_type, :url_identifier, :api_identifier, :missing_api_identifier)
   end
 end
