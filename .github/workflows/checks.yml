@@ -40,6 +40,11 @@ jobs:
       - name: Run Tests
         run: docker compose run -e CI=1 tests
 
+      - name: Upload Coverage
+        uses: codecov/codecov-action@v4
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+
   rubocop:
     runs-on: ubuntu-latest
 

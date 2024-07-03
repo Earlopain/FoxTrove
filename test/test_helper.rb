@@ -29,6 +29,11 @@ SimpleCov.start "rails" do
   end
 end
 
+if ENV["CI"]
+  require "simplecov_json_formatter"
+  SimpleCov.formatter = SimpleCov::Formatter::JSONFormatter
+end
+
 require_relative "../config/environment"
 require "rails/test_help"
 require "minitest-spec-rails"

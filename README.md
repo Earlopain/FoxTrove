@@ -1,5 +1,7 @@
 # Reverser
 
+[![codecov](https://codecov.io/github/Earlopain/reverser/graph/badge.svg?token=JK5X2YBOHK)](https://codecov.io/github/Earlopain/reverser)
+
 A content aggregator for a variety of sites to make uploading to e6 easier. Created because Saucenao doesn't support all the sites I want it to.
 
 You provide links where the artist is uploading their content to. The content will then be scraped of those sites and put into iqdb (a reverse image search software). It also checks e6' version of iqdb to provide you information on if submissions are already uploaded, or if the current upload has a better version available elsewere.
