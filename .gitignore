@@ -14,7 +14,7 @@
 # Ignore master key for decrypting credentials and more.
 /config/master.key
 
-/config/reverser_custom_config.yml
+/config/foxtrove_custom_config.yml
 /data
 /.env
 /public/build

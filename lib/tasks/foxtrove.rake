@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-namespace :reverser do
+namespace :foxtrove do
   desc "Generate the icon spritemap"
   task generate_spritemap: :environment do
     IconGenerator.run

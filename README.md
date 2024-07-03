@@ -1,6 +1,6 @@
-# Reverser
+# FoxTrove
 
-[![codecov](https://codecov.io/github/Earlopain/reverser/graph/badge.svg?token=JK5X2YBOHK)](https://codecov.io/github/Earlopain/reverser)
+[![codecov](https://codecov.io/github/Earlopain/FoxTrove/graph/badge.svg?token=JK5X2YBOHK)](https://codecov.io/github/Earlopain/FoxTrove)
 
 A content aggregator for a variety of sites to make uploading to e6 easier. Created because Saucenao doesn't support all the sites I want it to.
 
@@ -77,11 +77,11 @@ Install a WSL distribution, enable WSL2, and clone the project inside there. Exe
 
 ### Installation
 
-1. Clone the repo with `git clone https://github.com/earlopain/reverser.git`.
+1. Clone the repo with `git clone https://github.com/Earlopain/FoxTrove.git`.
 1. `cd` into the repo.
 1. `cp .env.sample .env` and fill out the necessary environment variables.
 1. Build the docker image with `docker compose build`.
-1. Run `docker compose run --rm reverser bin/setup`.
+1. Run `docker compose run --rm foxtrove bin/setup`.
 1. Run `docker compose up`. The container is now available at `http://localhost:9000`. A few config options are mandatory, you will be notified of them when accessing the site. See [Configuration](#configuration) on how to set them.
 
 This project is only meant to run locally on your machine. You may host it somewhere and make it accessible to others, but be aware that there are no user accounts or fine grained permissions. Everyone can do anyhting.

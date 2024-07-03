@@ -20,6 +20,6 @@ module E6ApiClient
     @client ||= HTTPX
       .plugin(:basic_auth)
       .basic_auth(Config.e6_user, Config.e6_apikey)
-      .with(origin: ORIGIN, headers: { "user-agent" => "reverser/0.1 (by earlopain)" })
+      .with(origin: ORIGIN, headers: { "user-agent" => Scraper::Base::FRIENDLY_USER_AGENT })
   end
 end

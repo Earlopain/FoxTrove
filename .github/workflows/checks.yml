@@ -26,16 +26,16 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
           load: true
-          tags: reverser
+          tags: foxtrove
 
       - name: Set env file
         run: |
           cat <<EOT >> .env
-          REVERSER_DATA_PATH=${{ runner.temp }}/reverser
+          FOXTROVE_DATA_PATH=${{ runner.temp }}/foxtrove
           EOT
 
       - name: Create DB
-        run: docker compose run reverser bin/setup
+        run: docker compose run foxtrove bin/setup
 
       - name: Run Tests
         run: docker compose run -e CI=1 tests

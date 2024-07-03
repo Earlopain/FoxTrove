@@ -4,14 +4,14 @@ x-environment: &common-env
   SELENIUM_URL: ${SELENIUM_URL:-http://selenium:4444}
 
 services:
-  reverser:
+  foxtrove:
     build:
       context: ./
       args:
         HOST_UID: ${HOST_UID:-1000}
         HOST_GID: ${HOST_GID:-1000}
         DOCKER_RUN_AS_USER: ${DOCKER_RUN_AS_USER:-}
-    image: reverser
+    image: foxtrove
     environment:
       <<: *common-env
       RAILS_SERVER_EXEC: bin/rails server -p ${EXPOSED_SERVER_PORT:-9000} -b 0.0.0.0 --pid /tmp/server.pid
@@ -25,7 +25,7 @@ services:
       GOOD_JOB_EXEC: bundle exec good_job --queues=scraping:1;e6_iqdb:1;variant_generation:5;default:1;submission_download:5
     volumes:
       - .:/app
-      - ${REVERSER_DATA_PATH:-./data}/active_storage:/app/public/storage
+      - ${REVERSER_DATA_PATH:-${FOXTROVE_DATA_PATH:-./data}}/active_storage:/app/public/storage
     depends_on:
       postgres:
         condition: service_healthy
@@ -44,7 +44,7 @@ services:
       - POSTGRES_DB=reverser_development
       - POSTGRES_HOST_AUTH_METHOD=trust
     volumes:
-      - ${REVERSER_DATA_PATH:-./data}/db_data:/var/lib/postgresql/data
+      - ${REVERSER_DATA_PATH:-${FOXTROVE_DATA_PATH:-./data}}/db_data:/var/lib/postgresql/data
     shm_size: 256mb
     ports:
       - ${EXPOSED_POSTGRES_PORT:-34518}:5432
@@ -57,7 +57,7 @@ services:
   iqdb:
     image: ghcr.io/e621ng/iqdb:d42a65ba35523eb46152744d68d8ff302c1c9f92
     volumes:
-      - ${REVERSER_DATA_PATH:-./data}/iqdb_data:/iqdb
+      - ${REVERSER_DATA_PATH:-${FOXTROVE_DATA_PATH:-./data}}/iqdb_data:/iqdb
 
   selenium:
     image: selenium/standalone-chrome:4.22.0-20240621
@@ -70,7 +70,7 @@ services:
   # Profiles for standalone things
 
   rubocop:
-    image: reverser
+    image: foxtrove
     volumes:
       - .:/app
     entrypoint: bundle exec rubocop
@@ -114,7 +114,7 @@ services:
       - tslint
 
   tests:
-    image: reverser
+    image: foxtrove
     environment:
       <<: *common-env
       VIPS_WARNING: "0"

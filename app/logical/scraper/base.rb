@@ -2,7 +2,7 @@
 
 module Scraper
   class Base
-    FRIENDLY_USER_AGENT = "reverser/0.1 (by earlopain)"
+    FRIENDLY_USER_AGENT = "FoxTrove/0.1 (by earlopain)"
 
     delegate :url_identifier, :api_identifier, to: :@artist_url
     attr_accessor :client
@@ -77,7 +77,7 @@ module Scraper
 
     # Which date should already be considered scraped? Normally this is good to set to
     # when the scrape started but some sites may exhibit a delay with indexing, resulting
-    # in images being missed. See https://github.com/Earlopain/reverser/issues/113
+    # in images being missed. See https://github.com/Earlopain/FoxTrove/issues/113
     def new_stop_marker
       @artist_url.scraper_status["started_at"]
     end

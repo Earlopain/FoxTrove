@@ -7,7 +7,7 @@ class ArtistUrl < ApplicationRecord
         Missing API identifier for #{url_identifier}:#{site_type}.
         You may be able to fix this by executing the following command:
 
-        docker compose run --rm reverser bin/rails reverser:backfill_api_identifiers SITE_TYPE=#{site_type}
+        docker compose run --rm foxtrove bin/rails foxtrove:backfill_api_identifiers SITE_TYPE=#{site_type}
       MSG
       super(msg)
     end

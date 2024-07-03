@@ -19,6 +19,10 @@ module DockerEnv
     ENV.key?("DOCKER_USER")
   end
 
+  def specifies_deprecated_data_path?
+    ENV.key?("REVERSER_DATA_PATH")
+  end
+
   def master_commit
     @master_commit ||= begin
       File.read("/docker/git_master_ref").first(GitHelper::COMMIT_ABREV_LENGTH)

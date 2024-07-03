@@ -1,7 +1,7 @@
 extends: default
 
 ignore: |
-  config/reverser_custom_config.yml
+  config/foxtrove_custom_config.yml
 
 rules:
   document-start: disable

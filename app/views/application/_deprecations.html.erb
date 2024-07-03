@@ -6,3 +6,10 @@
     <br>Please specify <code>DOCKER_RUN_AS_USER=1</code> and remove <code>DOCKER_USER</code> in your <code>.env</code> file to remove this warning.
   </div>
 <% end %>
+
+<% if DockerEnv.specifies_deprecated_data_path? %>
+  <div>
+    The environment variable <code>REVERSER_DATA_PATH</code> got replaced by <code>FOXTROVE_DATA_PATH</code>.
+    <br>Please rename it in your <code>.env</code> file to remove this warning.
+  </div>
+<% end %>
