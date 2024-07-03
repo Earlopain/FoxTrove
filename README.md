@@ -91,7 +91,3 @@ The compose file contains services to easily run some developments tools:
 * `docker compose run --rm rubocop`
 
 You can pass addition parameters like individual test files or `-a` for rubocop simply by appending it to the command. I suggest you make an alias for these. You may also run these commands locally, since docker does add a fair bit of startup overhead.
-
-#### Ruby LSP
-
-This repo comes with [Ruby LSP](https://github.com/Shopify/ruby-lsp) preconfigured. Install the [VSCode extension](https://marketplace.visualstudio.com/items?itemName=Shopify.ruby-lsp) and follow the instructions. The only requirement is that the Ruby version used by reverser ([see here](https://github.com/e621ng/e621ng/blob/master/Dockerfile#L1)) is installed on your host. I recommend [rbenv](https://github.com/rbenv/rbenv) to manage your Ruby versions.
