@@ -11,6 +11,8 @@ require "action_controller/railtie"
 require "action_view/railtie"
 require "rails/test_unit/railtie"
 
+require_relative "../app/logical/pg_version_mismatch_handler"
+
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
@@ -39,6 +41,8 @@ module FoxTrove
 
     config.cache_store = :file_store, Rails.root.join("tmp/file_store")
     config.action_controller.cache_store = config.cache_store
+
+    config.middleware.insert_after(ActionDispatch::Callbacks, PgVersionMismatchHandler)
 
     config.logger = ActiveSupport::Logger.new($stdout)
     if GoodJob::CLI.within_exe?

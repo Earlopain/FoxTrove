@@ -1,6 +1,8 @@
 <%# locals: () -%>
 FoxTrove
-– Rendered in <%= number_with_precision(Time.current.to_f - @start_time, precision: 3) %> seconds
+<% if @start_time %>
+  – Rendered in <%= number_with_precision(Time.current.to_f - @start_time, precision: 3) %> seconds
+<% end %>
 <% if GitHelper.enabled? %>
   – <%= link_to "Github", GitHelper.url %>
   (<%= link_to "#{GitHelper.last_commit_hash} from #{Time.zone.at(GitHelper.last_commit_timestamp).strftime('%Y-%m-%d')}", "#{GitHelper.url}/tree/#{GitHelper.last_commit_hash}" %>)

@@ -26,13 +26,12 @@ services:
     volumes:
       - .:/app
       - ${REVERSER_DATA_PATH:-${FOXTROVE_DATA_PATH:-./data}}/active_storage:/app/public/storage
+      # Only requires a single file but would create it as a folder on initial setup
+      - ${REVERSER_DATA_PATH:-${FOXTROVE_DATA_PATH:-./data}}/db_data:/docker/db_data
     depends_on:
-      postgres:
-        condition: service_healthy
-      iqdb:
-        condition: service_started
-      selenium:
-        condition: service_started
+      - postgres
+      - iqdb
+      - selenium
     ports:
       - ${EXPOSED_SERVER_PORT:-9000}:${EXPOSED_SERVER_PORT:-9000}
     command: foreman start --color
@@ -53,6 +52,10 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+    # Make the version file world readable. Will only happen on second boot when the data actually exists
+    entrypoint: [/bin/sh, -c, chmod -f +r /var/lib/postgresql/data/PG_VERSION || true && docker-entrypoint.sh postgres]
+    # By default the command is "postgres" but that wouldn't properly appended to the entrypoint anymore
+    command: ""
 
   iqdb:
     image: ghcr.io/e621ng/iqdb:d42a65ba35523eb46152744d68d8ff302c1c9f92
