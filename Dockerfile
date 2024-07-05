@@ -25,6 +25,9 @@ RUN apk --no-cache add \
 ENV LD_PRELOAD=/usr/lib/libjemalloc.so.2
 ENV RUBY_YJIT_ENABLE=1
 
+RUN echo "[safe]" > ~/.gitconfig && \
+  echo "        directory = /app" >> ~/.gitconfig
+
 # Create a user with (potentially) the same id as on the host
 ARG HOST_UID=1000
 ARG HOST_GID=1000
