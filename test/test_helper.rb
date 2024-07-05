@@ -15,6 +15,7 @@ end
 SimpleCov.start "rails" do
   enable_coverage :branch
   enable_coverage_for_eval
+  track_files "{app,lib}/**/*.{rb,erb}"
 
   groups.delete "Channels"
   groups.delete "Mailers"
