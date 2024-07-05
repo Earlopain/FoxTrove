@@ -3,21 +3,32 @@
 require "test_helper"
 
 class ArtistsControllerTest < ActionDispatch::IntegrationTest
-  describe "enqueue_everything" do
-    it "enqueues the correct amount of jobs" do
-      artist1 = create(:artist)
-      create(:artist_url, artist: artist1, site_type: :furaffinity, api_identifier: "1")
-      create(:artist_url, artist: artist1, site_type: :twitter, api_identifier: "2")
-      artist2 = create(:artist)
-      create(:artist_url, artist: artist2, site_type: :twitter, api_identifier: "3")
-      create(:artist_url, artist: artist2, site_type: :carrd)
+  test "enqueue_all_urls" do
+    artist = create(:artist)
+    create(:artist_url, artist: artist, site_type: :furaffinity, api_identifier: "1")
+    create(:artist_url, artist: artist, site_type: :twitter, api_identifier: "2")
+    create(:artist_url, artist: artist, site_type: :carrd)
 
-      stub_scraper_enabled(:furaffinity, :twitter) do
-        post enqueue_everything_artists_path
-      end
-      assert_response :success
-      assert_enqueued_jobs 3, only: ScrapeArtistUrlJob
+    stub_scraper_enabled(:furaffinity, :twitter) do
+      post enqueue_all_urls_artist_path(artist)
     end
+    assert_response :success
+    assert_enqueued_jobs 2, only: ScrapeArtistUrlJob
+  end
+
+  test "enqueue_everything" do
+    artist1 = create(:artist)
+    create(:artist_url, artist: artist1, site_type: :furaffinity, api_identifier: "1")
+    create(:artist_url, artist: artist1, site_type: :twitter, api_identifier: "2")
+    artist2 = create(:artist)
+    create(:artist_url, artist: artist2, site_type: :twitter, api_identifier: "3")
+    create(:artist_url, artist: artist2, site_type: :carrd)
+
+    stub_scraper_enabled(:furaffinity, :twitter) do
+      post enqueue_everything_artists_path
+    end
+    assert_response :success
+    assert_enqueued_jobs 3, only: ScrapeArtistUrlJob
   end
 
   test "index renders" do
@@ -32,6 +43,11 @@ class ArtistsControllerTest < ActionDispatch::IntegrationTest
   test "show renders" do
     sm = create(:submission_file_with_original, file_name: "1.jpg")
     get artist_path(sm.artist)
+    assert_response :success
+  end
+
+  test "new renders" do
+    get new_artist_path
     assert_response :success
   end
 
@@ -132,6 +148,30 @@ class ArtistsControllerTest < ActionDispatch::IntegrationTest
 
       assert_response :unprocessable_content
       assert_equal("piczel.tv/gallery/foo is not valid: foo failed api lookup (Internal Server Error)", css_select("#form-error").inner_text)
+    end
+  end
+
+  test "update adds new urls" do
+    artist = create(:artist)
+    create(:artist_url, site_type: "kofi")
+
+    assert_difference(-> { ArtistUrl.count }, 1) do
+      put artist_path(artist, artist: { url_string: "https://foo.carrd.co" })
+      assert_redirected_to(artist_path(artist))
+    end
+  end
+
+  test "edit renders" do
+    artist = create(:artist)
+    get edit_artist_path(artist)
+    assert_response :success
+  end
+
+  test "destroy renders" do
+    artist = create(:artist)
+    assert_difference(-> { Artist.count }, -1) do
+      delete artist_path(artist)
+      assert_redirected_to(artists_path)
     end
   end
 end

@@ -17,9 +17,15 @@ class ArtistUrlsControllerTest < ActionDispatch::IntegrationTest
 
   test "destroy removes the artist url" do
     artist_url = create(:artist_url)
-    delete artist_url_path(artist_url)
+    assert_difference(-> { ArtistUrl.count }, -1) do
+      delete artist_url_path(artist_url)
+      assert_redirected_to(artist_urls_path)
+    end
+  end
 
-    assert_redirected_to(artist_urls_path)
-    assert_not(ArtistUrl.exists?(artist_url.id))
+  test "enqueue" do
+    artist_url = create(:artist_url)
+    post enqueue_artist_url_path(artist_url)
+    assert_response :success
   end
 end

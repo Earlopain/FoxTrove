@@ -14,8 +14,10 @@ module Archives
         output.put_next_entry("invalid_file.jpg")
         output.write "abc"
       end
-      archive = Archives::Manual.new(zip)
+
       Zip::File.stubs(:open).with(zip).yields(Zip::File.open_buffer(zip))
+      archive = Archives.detect(zip)
+      assert_instance_of(Archives::Manual, archive)
 
       archive.import(create(:artist).id, "https://manual.com")
       assert_enqueued_jobs 1, only: ArchiveBlobImportJob

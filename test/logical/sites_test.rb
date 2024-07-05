@@ -93,6 +93,14 @@ class SitesTest < ActiveSupport::TestCase
         assert_equal("Actual content", file.read)
       end
     end
+
+    it "applies download headers" do
+      request = stub_request(:get, "https://pximg.net/foo").with(headers: { Referer: "https://www.pixiv.net" })
+
+      Sites.download_file("https://pximg.net/foo") do
+        assert_requested(request)
+      end
+    end
   end
 
   test "all scrapers are mentioned in the readme" do
