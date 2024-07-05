@@ -13,15 +13,13 @@ module IconGenerator
       index.to_i
     end
 
-    result = Vips::Image.thumbnail(files.first, ICON_SIZE)
-    result = result.add_alpha unless result.has_alpha?
-
-    files.drop(1).each do |file|
-      image = Vips::Image.thumbnail(file, ICON_SIZE)
-      image = image.add_alpha unless image.has_alpha?
-      result = result.join(image, :vertical)
+    thumbs = files.map do |file|
+      thumb = Vips::Image.thumbnail(file, ICON_SIZE)
+      thumb = thumb.add_alpha unless thumb.has_alpha?
+      thumb
     end
 
-    result.pngsave(TARGET_FILE.to_s)
+    icons = thumbs.reduce { |result, thumb| result.join(thumb, :vertical) }
+    icons.pngsave(TARGET_FILE.to_s)
   end
 end
