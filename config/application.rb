@@ -35,7 +35,6 @@ module FoxTrove
         class: "PurgeLogEventsJob",
       },
     }
-    config.good_job.smaller_number_is_higher_priority = true
 
     config.action_controller.action_on_unpermitted_parameters = :raise
 
