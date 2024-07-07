@@ -1,4 +1,4 @@
-type: SimpleDefinition
+type: ScraperDefinition
 enum_value: cohost
 display_name: Cohost
 homepage: https://cohost.org/

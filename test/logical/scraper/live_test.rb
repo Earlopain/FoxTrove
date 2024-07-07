@@ -53,6 +53,10 @@ module Scraper
         assert_scraper(Scraper::Bluesky, "hioshiru.bsky.social", "did:plc:aywqtpcdp4wuoxmiiolht4da")
       end
 
+      test "cohost" do
+        assert_scraper(Scraper::Cohost, "MeldritchHorror", 12_229)
+      end
+
       test "commishes" do
         assert_scraper(Scraper::Commishes, "TotesFleisch8", 839)
       end

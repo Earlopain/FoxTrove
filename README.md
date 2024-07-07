@@ -28,6 +28,7 @@ You can also search for non-uploaded submission for artists. How well this works
 * <img src="public/icons/5-artstation.png" width="16px" height="16px"> ArtStation
 * <img src="public/icons/30-baraag.png" width="16px" height="16px"> Baraag
 * <img src="public/icons/50-bluesky.png" width="16px" height="16px"> Bluesky
+* <img src="public/icons/48-cohost.png" width="16px" height="16px"> Cohost
 * <img src="public/icons/33-commishes.png" width="16px" height="16px"> Commishes
 * <img src="public/icons/4-deviantart.png" width="16px" height="16px"> DeviantArt
 * <img src="public/icons/1-furaffinity.png" width="16px" height="16px"> FurAffinity
