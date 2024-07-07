@@ -30,7 +30,7 @@ module Scraper
 
     module ResponseMethods
       def raise_unless_ok
-        raise HTTPX::HTTPError, self if status != 200
+        raise HTTPX::HTTPError, self if status < 200 || status > 299
       end
     end
 

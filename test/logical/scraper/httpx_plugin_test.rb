@@ -23,6 +23,12 @@ module Scraper
       end
     end
 
+    test "fetch_json doesn't raise when the response code is in the 200 range" do
+      stub_request(:post, "https://example.com").to_return(body: "123", status: 201)
+      json = @client.fetch_json("https://example.com", method: :post)
+      assert_equal(123, json)
+    end
+
     test "get doesn't raise if should_raise: false" do
       stub_request(:get, "https://example.com").to_return(status: 500, body: "OK")
       response = @client.get("https://example.com", should_raise: false)
