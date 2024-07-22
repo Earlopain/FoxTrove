@@ -131,8 +131,8 @@ class ApplicationRecord < ActiveRecord::Base
       def pagy(params)
         page = [params[:page].to_i, 1].max
         limit = params[:limit].to_i <= 0 ? nil : params[:limit]
-        pagy = Pagy.new(page: page, items: limit, count: count)
-        [pagy, offset(pagy.offset).limit(pagy.items)]
+        pagy = Pagy.new(page: page, limit: limit, count: count)
+        [pagy, offset(pagy.offset).limit(pagy.limit)]
       end
 
       def pagy_and_decorate(params)
