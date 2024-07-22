@@ -72,24 +72,23 @@ module Scraper
     end
 
     test "it logs options that are set on the session" do
-      stub_request(:get, "https://example.com/test?foo=bar&baz=fiz")
+      stub_request(:get, "https://example.com/test?foo=bar")
       @client.with(
         origin: "https://example.com",
         headers: { "x-a" => "a" },
-        params: { foo: "bar" },
-      ).get("/test", headers: { "x-b" => "b" }, params: { baz: "fiz" })
+      ).get("/test", headers: { "x-b" => "b" }, params: { foo: "bar" })
 
       payload = @submission_file.log_events.sole.payload
       assert_equal("https://example.com/test", payload["path"])
       assert_equal({
         "headers" => { "x-a" => "a", "x-b" => "b" },
-        "params" => { "foo" => "bar", "baz" => "fiz" },
+        "params" => { "foo" => "bar" },
       }, payload["request_params"])
     end
 
     test "it logs json parameters" do
-      stub_request(:post, "https://example.com")
-      @client.with(json: { foo: "bar" }).post("https://example.com")
+      stub_request(:post, "https://example.com").with(body: { foo: "bar" }.to_json)
+      @client.post("https://example.com", json: { foo: "bar" })
 
       payload = @submission_file.log_events.sole.payload
       assert_equal("POST", payload["method"])

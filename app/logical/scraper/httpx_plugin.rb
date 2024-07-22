@@ -8,9 +8,9 @@ module Scraper
       def request(method, uri, should_raise: true, **params)
         response = scraper.enfore_rate_limit { super(method, uri, **params) }
 
-        request_options = response.instance_variable_get(:@request).options.to_hash
-        relevant_options = request_options.slice(:headers, :params, :json, :form, :body)
-        relevant_options.delete(:headers) if relevant_options[:headers].to_h.blank?
+        headers = @options.headers.merge(params[:headers] || {}).to_h
+        relevant_options = params.slice(:params, :json, :form, :body)
+        relevant_options[:headers] = headers if headers.present?
         scraper.log_response(response.uri, method, relevant_options, response.status, response.body.to_s)
 
         response.raise_unless_ok if should_raise
