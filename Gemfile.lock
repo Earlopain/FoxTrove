@@ -209,7 +209,7 @@ GEM
     ruby-vips (2.2.1)
       ffi (~> 1.12)
     ruby2_keywords (0.0.5)
-    rubyzip (2.3.2)
+    rubyzip (2.4.rc1)
     rugged (1.7.2)
     selenium-webdriver (4.22.0)
       base64 (~> 0.2)
@@ -278,6 +278,7 @@ DEPENDENCIES
   ruby-lsp
   ruby-lsp-rails
   ruby-vips
+  rubyzip (~> 2.4.rc1)
   rugged
   selenium-webdriver
   simple_form
