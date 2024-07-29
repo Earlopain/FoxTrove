@@ -14,25 +14,20 @@ module Scraper
       @client = extend_client(HTTPX.plugin(HttpxPlugin, scraper: self))
     end
 
-    def self.inherited(base)
-      super
-      base.class_eval do
-        def self.site_type
-          name.demodulize.underscore
-        end
+    def self.site_type
+      name.demodulize.underscore
+    end
 
-        def self.all_config_keys
-          Config.default_config.keys.select { |key| key.start_with?("#{site_type}_") }
-        end
+    def self.all_config_keys
+      Config.default_config.keys.select { |key| key.start_with?("#{site_type}_") }
+    end
 
-        def self.optional_config_keys
-          const_defined?(:OPTIONAL_CONFIG_KEYS) ? self::OPTIONAL_CONFIG_KEYS : []
-        end
+    def self.optional_config_keys
+      const_defined?(:OPTIONAL_CONFIG_KEYS) ? self::OPTIONAL_CONFIG_KEYS : []
+    end
 
-        def self.required_config_keys
-          all_config_keys - optional_config_keys - [:"#{site_type}_disabled?"]
-        end
-      end
+    def self.required_config_keys
+      all_config_keys - optional_config_keys - [:"#{site_type}_disabled?"]
     end
 
     def process!

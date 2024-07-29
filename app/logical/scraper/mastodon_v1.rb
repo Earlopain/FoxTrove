@@ -3,18 +3,12 @@
 module Scraper
   # https://docs.joinmastodon.org/
   class MastodonV1 < Base
+    STATE = :max_id
     MAX_LIMIT = 40
 
     def initialize(artist_url)
       super
       @max_id = nil
-    end
-
-    def self.inherited(base)
-      super
-      base.class_eval do
-        const_set(:STATE, :max_id)
-      end
     end
 
     def domain
