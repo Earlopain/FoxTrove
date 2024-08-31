@@ -23,7 +23,6 @@ RUN apk --no-cache add \
   sudo jemalloc
 
 ENV LD_PRELOAD=/usr/lib/libjemalloc.so.2
-ENV RUBY_YJIT_ENABLE=1
 
 RUN echo "[safe]" > ~/.gitconfig && \
   echo "        directory = /app" >> ~/.gitconfig
