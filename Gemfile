@@ -2,7 +2,7 @@
 
 source "https://rubygems.org"
 
-rails_version = "~> 7.0"
+rails_version = "~> 7.1.0"
 gem "actionpack",    rails_version
 gem "actionview",    rails_version
 gem "activejob",     rails_version

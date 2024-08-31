@@ -233,13 +233,13 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  actionpack (~> 7.0)
-  actionview (~> 7.0)
-  activejob (~> 7.0)
-  activemodel (~> 7.0)
-  activerecord (~> 7.0)
-  activestorage (~> 7.0)
-  activesupport (~> 7.0)
+  actionpack (~> 7.1.0)
+  actionview (~> 7.1.0)
+  activejob (~> 7.1.0)
+  activemodel (~> 7.1.0)
+  activerecord (~> 7.1.0)
+  activestorage (~> 7.1.0)
+  activesupport (~> 7.1.0)
   addressable
   factory_bot
   good_job
@@ -251,7 +251,7 @@ DEPENDENCIES
   pagy
   pg (~> 1.1)
   puma
-  railties (~> 7.0)
+  railties (~> 7.1.0)
   rotp
   rouge
   rubocop
