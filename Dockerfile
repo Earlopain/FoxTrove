@@ -1,4 +1,4 @@
-FROM ruby:3.3.3-alpine3.20 AS ruby-builder
+FROM ruby:3.3.4-alpine3.20 AS ruby-builder
 
 RUN apk --no-cache add build-base cmake postgresql16-dev
 
@@ -10,9 +10,9 @@ RUN gem i foreman && bundle install \
 
 FROM node:20-alpine3.20 AS node-downloader
 
-RUN npm install esbuild@0.21.5 -g
+RUN npm install esbuild@0.23.1 -g
 
-FROM ruby:3.3.3-alpine3.20
+FROM ruby:3.3.4-alpine3.20
 
 WORKDIR /app
 
