@@ -118,7 +118,7 @@ class SubmissionFileTest < ActiveSupport::TestCase
       sm1 = create(:submission_file, size: 1.megabyte)
       create(:e6_post, submission_file: sm1, post_size: 0.5.kilobytes)
       sm2 = create(:submission_file, size: 1.megabyte)
-      create(:e6_post, submission_file: sm2, post_size: 0.85.megabyte)
+      create(:e6_post, submission_file: sm2, post_size: 0.85.megabytes)
 
       assert_equal([sm2, sm1], SubmissionFile.search(upload_status: "larger_only_filesize_percentage", larger_only_filesize_treshold: 10))
       assert_equal([sm1], SubmissionFile.search(upload_status: "larger_only_filesize_percentage", larger_only_filesize_treshold: 40))
