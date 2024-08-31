@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module DockerEnv
   NEEDED_PG_VERSION = "16"
 

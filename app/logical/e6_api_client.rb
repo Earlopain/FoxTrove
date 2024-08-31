@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module E6ApiClient
   ORIGIN = "https://e621.net"
   extend self

@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module Scraper
   class Submission
     attr_accessor :identifier, :created_at, :updated_at, :title, :description, :files

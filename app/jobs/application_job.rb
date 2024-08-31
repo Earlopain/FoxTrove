@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class ApplicationJob < ActiveJob::Base
   retry_on StandardError, wait: :polynomially_longer, attempts: 25 do |_job, exception|
     log_exception(exception)

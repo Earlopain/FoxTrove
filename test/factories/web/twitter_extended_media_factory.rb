@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 FactoryBot.define do
   factory :twitter_extended_media, parent: :json do
     type { nil }

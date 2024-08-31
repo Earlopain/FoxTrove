@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module Archives
   class Manual < Base
     def import_submission_files(artist_id, source_url)

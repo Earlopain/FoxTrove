@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module Sites
   class SimpleDefinition
     attr_reader :site_type, :display_name, :homepage, :gallery_templates, :username_identifier_regex, :image_domains, :download_headers

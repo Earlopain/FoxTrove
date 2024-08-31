@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module GitHelper
   REPO = begin
     Rugged::Repository.new(Rails.root)

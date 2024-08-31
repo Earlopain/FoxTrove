@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module ArtistUrlHelper
   def gallery_url(artist_url)
     artist_url.site.gallery_url(artist_url.unescaped_url_identifier)

@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module Scraper
   class Pawoo < MastodonV1
     def domain

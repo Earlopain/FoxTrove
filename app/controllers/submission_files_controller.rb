@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class SubmissionFilesController < ApplicationController
   def index
     @search_params = search_params

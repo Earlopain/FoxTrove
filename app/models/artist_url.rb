@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class ArtistUrl < ApplicationRecord
   class MissingApiIdentifier < StandardError
     def initialize(url_identifier, site_type)

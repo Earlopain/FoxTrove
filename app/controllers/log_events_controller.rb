@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class LogEventsController < ApplicationController
   def index
     @pagy, @log_events = LogEvent.search(search_params).pagy_and_decorate(params)

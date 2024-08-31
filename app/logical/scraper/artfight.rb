@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module Scraper
   class Artfight < BufferedScraper
     STATE = :page

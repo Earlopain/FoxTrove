@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 FactoryBot.define do
   factory :twitter_tweet, parent: :json do
     rest_id { "123" }

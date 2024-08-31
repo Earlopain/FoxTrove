@@ -23,6 +23,7 @@ RUN apk --no-cache add \
   sudo jemalloc
 
 ENV LD_PRELOAD=/usr/lib/libjemalloc.so.2
+ENV RUBYOPT=--enable=frozen-string-literal
 
 RUN echo "[safe]" > ~/.gitconfig && \
   echo "        directory = /app" >> ~/.gitconfig

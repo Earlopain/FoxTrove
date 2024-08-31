@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class ArchiveBlobImportJob < ConcurrencyControlledJob
   queue_as :submission_download
   retry_on StandardError, attempts: 5

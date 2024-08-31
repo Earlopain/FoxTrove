@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class JobStats
   def active_urls
     (e6_iqdb_queued.keys + submission_download_queued.keys + scraping_queued.keys + scraping_now).uniq

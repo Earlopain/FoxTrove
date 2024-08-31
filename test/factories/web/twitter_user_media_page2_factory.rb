@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 FactoryBot.define do
   factory :twitter_user_media_page2, parent: :twitter_timeline do
     instructions do

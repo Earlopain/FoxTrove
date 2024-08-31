@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class SubmissionFileUpdateJob < ApplicationJob
   queue_as :variant_generation
 

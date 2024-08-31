@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class E6Post < ApplicationRecord
   belongs_to :submission_file
 

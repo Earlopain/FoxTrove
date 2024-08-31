@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 namespace :foxtrove do
   desc "Generate the icon spritemap"
   task generate_spritemap: :environment do

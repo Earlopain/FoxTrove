@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module Scraper
   class Base
     FRIENDLY_USER_AGENT = "FoxTrove/0.1 (by earlopain)"

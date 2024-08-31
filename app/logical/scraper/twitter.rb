@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module Scraper
   class Twitter < Base
     # Inspired by https://github.com/JustAnotherArchivist/snscrape/blob/e7d35ec1ebb008108082fc79161f351bc8a707e4/snscrape/modules/twitter.py

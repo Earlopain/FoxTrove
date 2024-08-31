@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module Scraper
   # Some sites return many entries per page but fetching full data for these takes a long time.
   # Loading all entries just to see if something is new is bad. Buffer it instead, so that

@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module Scraper
   # https://www.tumblr.com/docs/en/api/v2
   # This doesn't download the images, they just get reblogged

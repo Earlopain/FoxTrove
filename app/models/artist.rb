@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class Artist < ApplicationRecord
   has_many :artist_urls, dependent: :destroy
   has_many :submissions, through: :artist_urls

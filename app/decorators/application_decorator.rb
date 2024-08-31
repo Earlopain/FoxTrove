@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class ApplicationDecorator
   include ActiveModel::Serialization
   include ActiveModel::Serializers::JSON

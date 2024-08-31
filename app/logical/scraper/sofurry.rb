@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module Scraper
   # This is unnecessarily convoluted. Let's hope Sofurry Next will actually happen sometime
   # https://wiki.sofurry.com/wiki/SoFurry_2.0_API

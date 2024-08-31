@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 Rails.application.config.after_initialize do
   Listen.to(Rails.root.join("config"), only: /foxtrove.*\.yml/) do
     Config.reset_cache

@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module NavHelper
   def nav_link_to(text, url, **)
     link = link_to(text, url, class: nav_link_class(url), **)

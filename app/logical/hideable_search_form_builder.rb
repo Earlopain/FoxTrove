@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class HideableSearchFormBuilder < SimpleForm::FormBuilder
   def input(attribute_name, options = {}, &)
     value = @options[:search_params][attribute_name]

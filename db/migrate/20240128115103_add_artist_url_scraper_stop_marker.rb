@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class AddArtistUrlScraperStopMarker < ActiveRecord::Migration[7.1]
   def change
     add_column :artist_urls, :scraper_stop_marker, :datetime

@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module Scraper
   # https://www.deviantart.com/developers/http/v1/20210526
   # https://www.deviantart.com/developers/console

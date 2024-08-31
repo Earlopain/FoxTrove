@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module EsbuildManifest
   FILE_LOCATION = Rails.public_path.join("build/manifest.json")
 

@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module Scraper
   # https://docs.joinmastodon.org/
   class MastodonV1 < Base

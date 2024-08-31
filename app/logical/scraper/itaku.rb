@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module Scraper
   class Itaku < BufferedScraper
     STATE = :page

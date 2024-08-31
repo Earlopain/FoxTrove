@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 FactoryBot.define do
   factory :e6_post_response, parent: :json do
     post_id { nil }

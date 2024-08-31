@@ -8,6 +8,7 @@ require:
 AllCops:
   NewCops: enable
   CacheRootDirectory: tmp/cache
+  StringLiteralsFrozenByDefault: true
 
 FactoryBot/AssociationStyle:
   EnforcedStyle: explicit
@@ -68,6 +69,9 @@ Style/Documentation:
 
 Style/EmptyMethod:
   EnforcedStyle: expanded
+
+Style/FrozenStringLiteralComment:
+  EnforcedStyle: never
 
 Style/HashSyntax:
   EnforcedShorthandSyntax: never

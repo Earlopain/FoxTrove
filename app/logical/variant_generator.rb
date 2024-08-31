@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module VariantGenerator
   THUMBNAIL_SIZE = 300
 

@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class ArtistUrlsController < ApplicationController
   def index
     @pagy, @artist_urls = ArtistUrl.search(index_search_params).pagy(params)

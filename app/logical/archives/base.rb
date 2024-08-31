@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module Archives
   class Base
     attr_accessor :imported_files, :already_imported_count, :failed_imports, :error

@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 FactoryBot.define do
   factory :twitter_url_entity, parent: :json do
     short_url { nil }

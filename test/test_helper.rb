@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 ENV["RAILS_ENV"] ||= "test"
 ENV["MT_NO_EXPECTATIONS"] ||= "1"
 

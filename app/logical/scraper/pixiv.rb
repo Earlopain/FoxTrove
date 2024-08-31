@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module Scraper
   # https://gist.github.com/upbit/6edda27cb1644e94183291109b8a5fde
   # https://github.com/upbit/pixivpy/wiki/Sniffer-for-iOS-6.x---Common-API

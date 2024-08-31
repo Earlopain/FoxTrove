@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class ArtistsController < ApplicationController
   def index
     @pagy, @artists = Artist.includes(:artist_urls).search(index_search_params).pagy(params)
