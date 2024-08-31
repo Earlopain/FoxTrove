@@ -39,12 +39,6 @@ group :development, :test do
   gem "webmock", require: false
 end
 
-group :development do
-  gem "debug"
-  gem "ruby-lsp"
-  gem "ruby-lsp-rails"
-end
-
 group :rubocop do
   gem "rubocop", require: false
   gem "rubocop-erb", require: false
