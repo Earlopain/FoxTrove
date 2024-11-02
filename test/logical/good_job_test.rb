@@ -2,6 +2,7 @@ require "test_helper"
 
 class GoodJobTest < ActiveSupport::TestCase
   test "current migrations are applied" do
+    skip("Skip for bleeding edge") if ENV["BLEEDING_EDGE"]
     assert_predicate GoodJob, :migrated?
   end
 

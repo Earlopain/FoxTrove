@@ -7,6 +7,14 @@ on: # yamllint disable-line rule:truthy
   pull_request:
     branches:
       - master
+  schedule:
+    - cron: 49 3 * * *
+  workflow_dispatch:
+    inputs:
+      bleeding_edge:
+        type: boolean
+        default: false
+        description: Run with gems from git sources
 
 permissions:
   contents: read
@@ -15,38 +23,55 @@ jobs:
   tests:
     runs-on: ubuntu-latest
 
+    env:
+      BLEEDING_EDGE: ${{ (inputs.bleeding_edge == true || github.event_name == 'schedule') && 'true' || 'false' }}
+
     steps:
       - uses: actions/checkout@v4
+
+      - if: env.BLEEDING_EDGE == 'true'
+        uses: ruby/setup-ruby@v1
+      - if: env.BLEEDING_EDGE == 'true'
+        name: Use git gem sources
+        run: ruby .github/bleeding_edge.rb && bundle lock && cat Gemfile.lock
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
       - name: Build
         uses: docker/build-push-action@v5
         with:
+          context: .
           cache-from: type=gha
           cache-to: type=gha,mode=max
           load: true
           tags: foxtrove
+          build-args: |
+            BASE_IMAGE=${{ env.BLEEDING_EDGE == 'true' && 'ghcr.io/docker-ruby-nightly/ruby:alpine3.20-nightly' || ''}}
 
       - name: Set env file
         run: |
           cat <<EOT >> .env
           FOXTROVE_DATA_PATH=${{ runner.temp }}/foxtrove
+          CI=1
+          ${{ env.BLEEDING_EDGE == 'true' && 'BLEEDING_EDGE=true' || ''}}
           EOT
 
       - name: Create DB
         run: docker compose run foxtrove bin/setup
 
       - name: Run Tests
-        run: docker compose run -e CI=1 tests
+        run: docker compose run -e CI -e BLEEDING_EDGE tests
 
-      - name: Upload Coverage
+      - if: env.BLEEDING_EDGE == 'false'
+        name: Upload Coverage
         uses: codecov/codecov-action@v4
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
 
   rubocop:
     runs-on: ubuntu-latest
+    if: github.event_name != 'schedule' && github.event_name != 'workflow_dispatch'
 
     steps:
       - uses: actions/checkout@v4
@@ -59,6 +84,8 @@ jobs:
 
   docker-checks:
     runs-on: ubuntu-latest
+    if: github.event_name != 'schedule' && github.event_name != 'workflow_dispatch'
+
     name: Run ${{ matrix.service }}
     strategy:
       fail-fast: false

@@ -1,6 +1,7 @@
-FROM ruby:3.3.4-alpine3.20 AS ruby-builder
+ARG BASE_IMAGE
+FROM ${BASE_IMAGE:-ruby:3.3.4-alpine3.20} AS ruby-builder
 
-RUN apk --no-cache add build-base cmake postgresql16-dev
+RUN apk --no-cache add build-base cmake postgresql16-dev git
 
 COPY Gemfile Gemfile.lock ./
 RUN gem i foreman && bundle install \
@@ -12,7 +13,7 @@ FROM node:20-alpine3.20 AS node-downloader
 
 RUN npm install esbuild@0.23.1 -g
 
-FROM ruby:3.3.4-alpine3.20
+FROM ${BASE_IMAGE:-ruby:3.3.4-alpine3.20}
 
 WORKDIR /app
 
