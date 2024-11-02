@@ -100,5 +100,41 @@ module Scraper
       payload = @submission_file.log_events.sole.payload
       assert_empty(payload["request_params"])
     end
+
+    describe "encoding" do
+      test "it logs utf-8" do
+        stub_request(:get, "https://example.com").to_return(body: "🦊")
+        @client.get("https://example.com")
+
+        payload = @submission_file.log_events.sole.payload
+        assert_equal("🦊", payload["response_body"])
+      end
+
+      test "it logs broken utf-8" do
+        stub_request(:get, "https://example.com").to_return(body: "foo \xF0\x9F\xA6")
+        @client.get("https://example.com")
+
+        payload = @submission_file.log_events.sole.payload
+        assert_equal("foo �", payload["response_body"])
+      end
+
+      test "it converts to utf-8 when the response is encoded differently but is utf-8 compatible" do
+        body = "こんにちは世界!".encode(Encoding::SHIFT_JIS)
+        stub_request(:get, "https://example.com").to_return(body: body, headers: { content_type: ";charset=shift_jis" })
+        @client.get("https://example.com")
+
+        payload = @submission_file.log_events.sole.payload
+        assert_equal(body.encode(Encoding::UTF_8), payload["response_body"])
+      end
+
+      test "it converts to utf-8 when the response is encoded differently and is not utf-8 compatible" do
+        body = "foo ß".dup.force_encoding(Encoding::SHIFT_JIS)
+        stub_request(:get, "https://example.com").to_return(body: body, headers: { content_type: ";charset=shift_jis" })
+        @client.get("https://example.com")
+
+        payload = @submission_file.log_events.sole.payload
+        assert_equal("foo ﾃ?", payload["response_body"])
+      end
+    end
   end
 end

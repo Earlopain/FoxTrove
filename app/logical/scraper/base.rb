@@ -155,6 +155,11 @@ module Scraper
     def log_response(path, method, request_params, status_code, body)
       return unless Config.log_scraper_requests?
 
+      if body.encoding == Encoding::BINARY
+        body = body.force_encoding(Encoding::UTF_8)
+      end
+      body = body.encode(body.encoding, body.encoding, invalid: :replace) unless body.valid_encoding?
+
       @artist_url.add_log_event(:scraper_request, {
         path: path,
         method: method,
@@ -162,7 +167,7 @@ module Scraper
           **request_params,
         },
         response_code: status_code,
-        response_body: body.encode(body.encoding, body.encoding, invalid: :replace),
+        response_body: body,
       })
     end
 
