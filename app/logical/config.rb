@@ -1,25 +1,27 @@
 module Config
+  DEFAULT_PATH = Rails.root.join("config/foxtrove.yml")
+  CUSTOM_PATH = Rails.root.join("config/foxtrove_custom_config.yml")
+
   module_function
 
   def default_config
     @default_config ||= begin
-      file_config = YAML.load_file(Rails.root.join("config/foxtrove.yml"), symbolize_names: true)
+      file_config = YAML.load_file(DEFAULT_PATH, symbolize_names: true)
       scraper_disabled_keys = Sites.scraper_definitions.to_h { |definition| [:"#{definition.site_type}_disabled?", false] }
       file_config.merge(scraper_disabled_keys)
     end
   end
 
   def custom_config
-    @custom_config ||= File.exist?(custom_config_path) ? YAML.load_file(custom_config_path, fallback: {}, symbolize_names: true) : {}
+    @custom_config ||= custom_config_path.exist? ? YAML.load_file(custom_config_path, fallback: {}, symbolize_names: true) : {}
   end
 
   def custom_config_path
     old_config_path = Rails.root.join("config/reverser_custom_config.yml")
-    current_config_path = Rails.root.join("config/foxtrove_custom_config.yml")
     if old_config_path.exist?
-      old_config_path.rename(current_config_path)
+      old_config_path.rename(CUSTOM_PATH)
     end
-    current_config_path
+    CUSTOM_PATH
   end
 
   def merge_custom_config(new_values)

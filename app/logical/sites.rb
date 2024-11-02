@@ -1,4 +1,6 @@
 module Sites
+  DEFINITIONS_PATH = Rails.root.join("app/logical/sites/definitions")
+
   module_function
 
   def from_enum(value)
@@ -56,7 +58,7 @@ module Sites
   end
 
   def definitions
-    @definitions ||= Rails.root.glob("app/logical/sites/definitions/*.yml").map do |file_path|
+    @definitions ||= DEFINITIONS_PATH.glob("*.yml").map do |file_path|
       data = Psych.safe_load_file(file_path)
       Sites.const_get(data["type"]).new(data.except("type"))
     end
@@ -64,9 +66,5 @@ module Sites
 
   def scraper_definitions
     definitions.select(&:scraper?)
-  end
-
-  def reset_cache
-    @definitions = nil
   end
 end

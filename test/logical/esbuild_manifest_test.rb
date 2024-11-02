@@ -17,7 +17,7 @@ class EsbuildManifestTest < ActiveSupport::TestCase
       "application.ts" => "build/application-QTMXSKWO.js",
       "application.css" => "build/application-D737BFOQ.css",
     }
-    stub_const(EsbuildManifest, :FILE_LOCATION, StringIO.new(manifest)) do
+    stub_const(EsbuildManifest, :FILE_PATH, StringIO.new(manifest)) do
       assert_equal(expected, EsbuildManifest.parse)
     end
   end

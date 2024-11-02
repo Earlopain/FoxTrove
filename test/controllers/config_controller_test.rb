@@ -31,7 +31,7 @@ class ConfigControllerTest < ActionDispatch::IntegrationTest
   test "modify" do
     Tempfile.create do |f|
       Config.unstub(:custom_config)
-      Config.stubs(:custom_config_path).returns(f.path)
+      Config.stubs(:custom_config_path).returns(Pathname.new(f.path))
 
       put modify_config_index_path, params: { config: {
         files_per_page: "75",

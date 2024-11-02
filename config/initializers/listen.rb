@@ -1,13 +1,18 @@
-Rails.application.config.after_initialize do
-  Listen.to(Rails.root.join("config"), only: /foxtrove.*\.yml/) do
-    Config.reset_cache
-  end.start
+Rails.application.config.after_initialize do |app|
+  files_to_watch = [
+    Config::DEFAULT_PATH,
+    Config::CUSTOM_PATH,
+    EsbuildManifest::FILE_PATH,
+  ].map(&:to_s)
 
-  Listen.to(Rails.root.join("app/logical/sites/definitions"), only: /.*\.yml/) do
-    Sites.reset_cache
-  end.start
+  dirs_to_watch = [
+    Sites::DEFINITIONS_PATH,
+  ].to_h { |dir| [dir.to_s, []] }
 
-  Listen.to(EsbuildManifest::FILE_LOCATION.dirname, only: /#{EsbuildManifest::FILE_LOCATION.basename}$/) do
-    EsbuildManifest.reset_cache
-  end.start
+  reloader = app.config.file_watcher.new(files_to_watch, dirs_to_watch) do
+    # Do nothing, just have changes to these files trigger a code reload
+  end
+
+  app.reloaders << reloader
+  app.reloader.to_run { reloader.execute_if_updated }
 end

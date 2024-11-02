@@ -1,5 +1,5 @@
 module EsbuildManifest
-  FILE_LOCATION = Rails.public_path.join("build/manifest.json")
+  FILE_PATH = Rails.public_path.join("build/manifest.json")
 
   module_function
 
@@ -14,7 +14,7 @@ module EsbuildManifest
   end
 
   def parse
-    data = JSON.parse(FILE_LOCATION.read)
+    data = JSON.parse(FILE_PATH.read)
     available_entrypoints = data["outputs"].select { |_k, v| v["entryPoint"].present? }
     result = {}
     available_entrypoints.each do |entrypoint_path, entrypoint_data|
@@ -26,10 +26,6 @@ module EsbuildManifest
     result
   rescue Errno::ENOENT, JSON::ParserError
     {}
-  end
-
-  def reset_cache
-    @entrypoints = nil
   end
 
   def relative_to_public(input)

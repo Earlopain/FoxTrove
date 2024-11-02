@@ -13,7 +13,6 @@ gem "railties",      rails_version
 gem "addressable"
 gem "good_job"
 gem "httpx"
-gem "listen"
 gem "nokogiri"
 gem "pagy"
 gem "pg", "~> 1.1"
