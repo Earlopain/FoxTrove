@@ -22,6 +22,9 @@ permissions:
 jobs:
   tests:
     runs-on: ubuntu-latest
+    # Allow disabling scheduled runs when an issue has been found. Also stops it from running on forks.
+    # Configure at https://github.com/Earlopain/FoxTrove/settings/variables/actions
+    if: (github.event_name == 'schedule' && vars.ALLOW_SCHEDULED_RUN == 'true') || github.event_name != 'schedule'
 
     env:
       BLEEDING_EDGE: ${{ (inputs.bleeding_edge == true || github.event_name == 'schedule') && 'true' || 'false' }}
