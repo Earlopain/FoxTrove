@@ -17,7 +17,7 @@ class LogEventDecorator < ApplicationDecorator
   end
 
   def formatted_body_params
-    body_params = payload["request_params"]&.slice("body", "json", "form")&.values&.first
+    body_params = payload["request_params"]&.values_at("body", "json", "form")&.find(&:itself)
     body_params.is_a?(Hash) ? body_params.to_query : body_params
   end
 
