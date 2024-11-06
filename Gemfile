@@ -23,7 +23,6 @@ gem "ruby-vips"
 gem "rubyzip", "~> 2.4.rc1"
 gem "rugged"
 gem "selenium-webdriver"
-gem "simple_form"
 
 group :test do
   gem "simplecov", require: false

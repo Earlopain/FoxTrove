@@ -1,10 +1,10 @@
 <h1>General Settings</h1>
 
-<%= simple_form_for(:config, url: modify_config_index_path, method: :put) do |f| %>
-  <%= f.input :files_per_page, input_html: { value: Config.files_per_page } %>
-  <%= f.input :similarity_cutoff, input_html: { value: Config.similarity_cutoff } %>
+<%= form_with(scope: :config, url: modify_config_index_path, method: :put) do |f| %>
+  <%= f.input :files_per_page, value: Config.files_per_page %>
+  <%= f.input :similarity_cutoff, value: Config.similarity_cutoff %>
   <%= f.input :log_scraper_requests, as: :select, selected: Config.log_scraper_requests? %>
-  <%= f.input :scraper_request_rate_limit, input_html: { value: Config.scraper_request_rate_limit } %>
+  <%= f.input :scraper_request_rate_limit, value: Config.scraper_request_rate_limit %>
   <%= f.input :time_zone, collection: ActiveSupport::TimeZone.all.map { |tz| [tz.to_s, tz.name] }, selected: Config.time_zone %>
   <%= f.submit %>
 <% end %>

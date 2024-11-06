@@ -1,7 +1,7 @@
 <h1>Archive Import</h1>
 
-<%= simple_form_for :import, url: archive_imports_path, method: :post do |f| %>
-  <%= f.input :file, as: :file, label: "Archive", input_html: { accept: "application/zip,.zip" }  %>
+<%= form_with scope: :import, url: archive_imports_path, method: :post do |f| %>
+  <%= f.input :file, as: :file, label: "Archive", accept: "application/zip,.zip" %>
 
   <%= f.input :artist_id, label: "Artist ID", placeholder: "Ignore for Tumblr" %>
   <%= f.input :source_url, label: "Source URL", placeholder: "Ignore for Tumblr" %>

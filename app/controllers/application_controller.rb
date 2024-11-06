@@ -4,6 +4,8 @@ class ApplicationController < ActionController::Base
   before_action :normalize_params
   around_action :with_time_zone
 
+  default_form_builder BasicFormBuilder
+
   EXCEPTION_TYPES = {
     ActionController::BadRequest => 400,
     ActionController::ParameterMissing => 400,

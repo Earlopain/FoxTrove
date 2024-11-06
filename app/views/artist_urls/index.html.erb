@@ -2,7 +2,7 @@
   <%= f.input :site_type, label: "Site", collection: site_types_collection, include_blank: true %>
   <%= f.input :url_identifier %>
   <%= f.input :api_identifier %>
-  <%= f.input :missing_api_identifier, as: :boolean %>
+  <%= f.input :missing_api_identifier, as: :checkbox %>
 <% end %>
 
 <table class="table full-width">

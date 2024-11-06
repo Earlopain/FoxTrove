@@ -21,7 +21,7 @@
   ], include_blank: true %>
   <%= f.input :title %>
   <%= f.input :description %>
-  <%= f.input :corrupt, as: :boolean %>
-  <%= f.input :zero_sources, as: :boolean %>
-  <%= f.input :zero_artists, as: :boolean %>
+  <%= f.input :corrupt, as: :checkbox %>
+  <%= f.input :zero_sources, as: :checkbox %>
+  <%= f.input :zero_artists, as: :checkbox %>
 <% end %>

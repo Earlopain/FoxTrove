@@ -1,8 +1,8 @@
 <%= form_errors(@artist) %>
-<%= simple_form_for @artist do |f| %>
+<%= form_with model: @artist do |f| %>
   <%= f.input :name, as: :string %>
-  <%= f.input :url_string, as: :text, label: "Links", input_html: { rows: 10, cols: 50 } %>
-  <%= f.button :submit %>
+  <%= f.input :url_string, as: :textarea, label: "Links", rows: 10, cols: 50 %>
+  <%= f.submit %>
 <% end %>
 
 <% page_title "New Artist" %>

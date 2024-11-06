@@ -11,12 +11,12 @@
   </div>
 <% end %>
 <br>
-<%= simple_form_for(:config, url: modify_config_index_path, method: :put) do |f| %>
+<%= form_with(scope: :config, url: modify_config_index_path, method: :put) do |f| %>
   <% @definition.all_config_keys.each do |key| %>
       <% if key.end_with?("_disabled?") %>
         <%= f.input key, as: :select, label: strip_config_prefix(@definition, key), selected: Config.send(key).to_s %>
       <% else %>
-        <%= f.input key, label: strip_config_prefix(@definition, key), input_html: { value: Config.send(key) } %>
+        <%= f.input key, label: strip_config_prefix(@definition, key), value: Config.send(key) %>
       <% end %>
   <% end %>
   <%= f.submit %>
