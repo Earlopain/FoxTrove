@@ -26,9 +26,11 @@ module Config
 
   def merge_custom_config(new_values)
     mapped = new_values.to_h do |k, v|
-      if respond_to?(:"#{k}?") || k.end_with?("?")
-        ["#{k.to_s.delete_suffix('?')}?", ActiveModel::Type::Boolean.new.cast(v)]
-      elsif default_config[k.to_sym].is_a?(Numeric)
+      k = :"#{k}?" if respond_to?(:"#{k}?")
+      case default_config[k.to_sym]
+      when TrueClass, FalseClass
+        [k, ActiveModel::Type::Boolean.new.cast(v)]
+      when Numeric
         [k, cast_number(v)]
       else
         [k, v]
@@ -61,15 +63,12 @@ module Config
   end
 
   def method_missing(method)
-    raise NoMethodError, "Unknown config #{method}" unless respond_to_missing?(method)
-
-    bool_key = method.to_s.delete_suffix("?").to_sym
-    if custom_config.key?(bool_key) && method.end_with?("?")
-      custom_config[bool_key] == "true"
-    elsif custom_config.key?(method)
+    if custom_config.key?(method)
       custom_config[method]
-    else
+    elsif default_config.key?(method)
       default_config[method]
+    else
+      super
     end
   end
 

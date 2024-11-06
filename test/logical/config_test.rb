@@ -58,10 +58,10 @@ class ConfigTest < ActiveSupport::TestCase
   end
 
   it "handles booleans" do
-    stub_custom_config(bool: "true") do
+    stub_custom_config(bool?: true) do
       assert_predicate(Config, :bool?)
     end
-    stub_custom_config(bool: "false") do
+    stub_custom_config(bool?: false) do
       assert_not_predicate(Config, :bool?)
     end
   end
