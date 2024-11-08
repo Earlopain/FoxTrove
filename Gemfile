@@ -1,6 +1,6 @@
 source "https://rubygems.org"
 
-rails_version = "~> 7.2.0"
+rails_version = "~> 8.0.0"
 gem "actionpack",    rails_version
 gem "actionview",    rails_version
 gem "activejob",     rails_version
