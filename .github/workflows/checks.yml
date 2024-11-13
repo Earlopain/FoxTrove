@@ -36,7 +36,8 @@ jobs:
         uses: ruby/setup-ruby@v1
       - if: env.BLEEDING_EDGE == 'true'
         name: Use git gem sources
-        run: ruby .github/bleeding_edge.rb && bundle lock && cat Gemfile.lock
+        # https://github.com/rubygems/rubygems/issues/8238
+        run: ruby .github/bleeding_edge.rb && bundle lock --update && cat Gemfile.lock
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3

@@ -8,8 +8,14 @@ stubs = dsl.resolve.materialize(dsl.dependencies_for(%w[default test])).map do |
 end
 
 lines = ["source #{remote.inspect}"]
-NO_GIT = %w[minitest i18n logger simplecov].freeze
-FULL_SKIP = %w[simplecov-html nokogiri mini_portile2].freeze
+NO_GIT = [
+  "minitest", # https://github.com/minitest/minitest/issues/750 (lol)
+].freeze
+FULL_SKIP = [
+  "simplecov-html", # https://github.com/simplecov-ruby/simplecov-html/pull/145
+  "nokogiri", # Unknown, mini_portile2 is not found during the build. Maybe platform-related.
+  "mini_portile2",
+].freeze
 
 stubs.each do |stub|
   url = stub.metadata["source_code_uri"] || stub.homepage
