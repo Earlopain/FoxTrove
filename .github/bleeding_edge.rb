@@ -1,4 +1,5 @@
 require "bundler"
+require "json"
 
 remote = "https://rubygems.org"
 fetcher = Bundler::Fetcher.new(Bundler::Source::Rubygems::Remote.new(remote))
@@ -16,17 +17,18 @@ FULL_SKIP = [
   "nokogiri", # Unknown, mini_portile2 is not found during the build. Maybe platform-related.
   "mini_portile2",
 ].freeze
+OVERRIDES = JSON.parse(ENV.fetch("GEM_OVERRIDES", "{}"))
 
 stubs.each do |stub|
   url = stub.metadata["source_code_uri"] || stub.homepage
   matched = url[%r{https?://git(?:hub|lab)\.com/[^\/]*/[^\/]*}]
   next if FULL_SKIP.include?(stub.name)
 
-  lines << if matched && !NO_GIT.include?(stub.name) # rubocop:disable Rails/NegateInclude
-             "gem #{stub.name.inspect}, git: #{matched.inspect}, submodules: true"
-           else
-             "gem #{stub.name.inspect}"
-           end
+  extra = {}
+  extra = { git: matched, submodules: true } if matched && !NO_GIT.include?(stub.name) # rubocop:disable Rails/NegateInclude
+  extra = OVERRIDES[stub.name] if OVERRIDES.key?(stub.name)
+
+  lines << "gem #{stub.name.inspect}, #{extra.inspect}"
 end
 
 File.write("Gemfile", lines.join("\n"))

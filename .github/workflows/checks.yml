@@ -36,6 +36,8 @@ jobs:
         uses: ruby/setup-ruby@v1
       - if: env.BLEEDING_EDGE == 'true'
         name: Use git gem sources
+        env:
+          GEM_OVERRIDES: ${{ vars.GEM_OVERRIDES }}
         # https://github.com/rubygems/rubygems/issues/8238
         run: ruby .github/bleeding_edge.rb && bundle lock --update && cat Gemfile.lock
 
