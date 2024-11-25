@@ -165,10 +165,10 @@ module Scraper
     def expand_description(tweet)
       range = tweet["display_text_range"]
       description = if range[0] == range[1]
-                      ""
-                    else
-                      tweet["full_text"][range[0]..range[1]]
-                    end
+        ""
+      else
+        tweet["full_text"][range[0]..range[1]]
+      end
 
       # Ensure replacements get processed right to left
       tweet["entities"]["urls"].sort { |a, b| b["indices"][0] - a["indices"][0] }.each do |entry|

@@ -43,9 +43,9 @@ module GitHelper
     remote = REPO.remotes.find { |r| r.name == "origin" }.url
     match = remote.scan(regex).first
     @url = if match[0]
-             "https://#{match[0]}/#{match[1]}/#{match[2]}"
-           else
-             "https://#{match[4]}"
-           end
+      "https://#{match[0]}/#{match[1]}/#{match[2]}"
+    else
+      "https://#{match[4]}"
+    end
   end
 end
