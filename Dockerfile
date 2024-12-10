@@ -9,9 +9,9 @@ RUN gem i foreman && bundle install \
  && find /usr/local/bundle/gems/ -name "*.c" -delete \
  && find /usr/local/bundle/gems/ -name "*.o" -delete
 
-FROM node:20-alpine3.21 AS node-downloader
+FROM node:22-alpine3.21 AS node-downloader
 
-RUN npm install esbuild@0.23.1 -g
+RUN npm install esbuild@0.24.0 -g
 
 FROM ${BASE_IMAGE:-ruby:3.3.6-alpine3.21}
 
