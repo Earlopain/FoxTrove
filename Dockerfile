@@ -1,5 +1,5 @@
 ARG BASE_IMAGE
-FROM ${BASE_IMAGE:-ruby:3.3.6-alpine3.20} AS ruby-builder
+FROM ${BASE_IMAGE:-ruby:3.3.6-alpine3.21} AS ruby-builder
 
 RUN apk --no-cache add build-base cmake postgresql16-dev git
 
@@ -9,11 +9,11 @@ RUN gem i foreman && bundle install \
  && find /usr/local/bundle/gems/ -name "*.c" -delete \
  && find /usr/local/bundle/gems/ -name "*.o" -delete
 
-FROM node:20-alpine3.20 AS node-downloader
+FROM node:20-alpine3.21 AS node-downloader
 
 RUN npm install esbuild@0.23.1 -g
 
-FROM ${BASE_IMAGE:-ruby:3.3.6-alpine3.20}
+FROM ${BASE_IMAGE:-ruby:3.3.6-alpine3.21}
 
 WORKDIR /app
 

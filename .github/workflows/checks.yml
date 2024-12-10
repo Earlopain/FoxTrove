@@ -53,7 +53,7 @@ jobs:
           load: true
           tags: foxtrove
           build-args: |
-            BASE_IMAGE=${{ env.BLEEDING_EDGE == 'true' && 'ghcr.io/docker-ruby-nightly/ruby:alpine3.20-nightly' || ''}}
+            BASE_IMAGE=${{ env.BLEEDING_EDGE == 'true' && 'ghcr.io/docker-ruby-nightly/ruby:alpine3.21-nightly' || ''}}
 
       - name: Set env file
         run: |
