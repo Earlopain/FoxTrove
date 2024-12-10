@@ -1,7 +1,7 @@
 default: &default
   adapter: postgresql
   encoding: unicode
-  username: reverser
+  username: foxtrove
   host: <%= ENV.fetch("POSTGRES_HOST") { "postgres" } %>
   # For details on connection pooling, see Rails configuration guide
   # https://guides.rubyonrails.org/configuring.html#database-pooling
@@ -9,8 +9,8 @@ default: &default
 
 development:
   <<: *default
-  database: reverser_development
+  database: foxtrove_development
 
 test:
   <<: *default
-  database: reverser_test
+  database: foxtrove_test

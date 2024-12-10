@@ -37,10 +37,10 @@ services:
     command: foreman start --color
 
   postgres:
-    image: postgres:16.6-alpine3.21
+    image: postgres:17.2-alpine3.21
     environment:
-      - POSTGRES_USER=reverser
-      - POSTGRES_DB=reverser_development
+      - POSTGRES_USER=foxtrove
+      - POSTGRES_DB=foxtrove_development
       - POSTGRES_HOST_AUTH_METHOD=trust
     volumes:
       - ${REVERSER_DATA_PATH:-${FOXTROVE_DATA_PATH:-./data}}/db_data:/var/lib/postgresql/data
@@ -48,14 +48,10 @@ services:
     ports:
       - ${EXPOSED_POSTGRES_PORT:-34518}:5432
     healthcheck:
-      test: [CMD-SHELL, pg_isready -d reverser_development -U reverser]
+      test: [CMD-SHELL, pg_isready -d foxtrove_development -U foxtrove]
       interval: 10s
       timeout: 5s
       retries: 5
-    # Make the version file world readable. Will only happen on second boot when the data actually exists
-    entrypoint: [/bin/sh, -c, chmod -f +r /var/lib/postgresql/data/PG_VERSION || true && docker-entrypoint.sh postgres]
-    # By default the command is "postgres" but that wouldn't properly appended to the entrypoint anymore
-    command: ""
 
   iqdb:
     image: ghcr.io/earlopain/iqdb:897214ffdc0b1ca18d1f9ca4749dff40d2dad2fc

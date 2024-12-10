@@ -1,7 +1,7 @@
 ARG BASE_IMAGE
 FROM ${BASE_IMAGE:-ruby:3.3.6-alpine3.21} AS ruby-builder
 
-RUN apk --no-cache add build-base cmake postgresql16-dev git
+RUN apk --no-cache add build-base cmake postgresql17-dev git
 
 COPY Gemfile Gemfile.lock ./
 RUN gem i foreman && bundle install \
@@ -19,7 +19,7 @@ WORKDIR /app
 
 RUN apk --no-cache add \
   tzdata \
-  postgresql16-client \
+  postgresql17-client \
   vips ffmpeg \
   sudo jemalloc
 
