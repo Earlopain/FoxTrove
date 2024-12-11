@@ -1,6 +1,19 @@
-<h1> Postgres database version mismatch: <%= DockerEnv.pg_data_version %> vs <%= DockerEnv::NEEDED_PG_VERSION %></h1>
+<h1> Postgres database version mismatch: <%= DockerEnv::NEEDED_PG_VERSION %> (wanted) vs <%= DockerEnv.pg_data_version %> (actual)</h1>
 
-FoxTrove updated its version of Postgres and requires action from your side:
-TODO (:
+FoxTrove updated its version of Postgres and requires action from your side. Please don't forget to make a backup before you start.
+
+<ol>
+  <li>Stop services (keep this tab open). <br><code>docker compose down</code></li>
+  <li>Check out the last commit with previous postgres version. <br><code>git checkout 79d3cf242323ec5b0c228a1e3f9074f9f7599bf5</code></li>
+  <li>Start postgres to take a backup. <br><code>docker compose up -d postgres</code></li>
+  <li>Dump the data. <br><code>docker compose exec postgres pg_dump reverser_development -U reverser > backup.sql</code></li>
+  <li>Stop postgres. <br><code>docker compose down</code></li>
+  <li>Checkout out the current latest commit. <br><code>git checkout master</code></li>
+  <li>Remove old data. <br><code>rm -R ${FOXTROVE_DATA_PATH}/db_data</code></li>
+  <li>Start postgres to import the backup. <br><code>docker compose up -d postgres</code></li>
+  <li>Import the backup. <br><code>docker compose exec -T postgres psql -U foxtrove -d foxtrove_development < backup.sql</code></li>
+  <li>Start services. <br><code>docker compose up</code></li>
+  <li>Reload the page, this error should now be gone.</li>
+</ol>
 
 <% page_title "Version Mismatch" %>
