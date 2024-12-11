@@ -71,9 +71,7 @@ jobs:
 
       - if: env.BLEEDING_EDGE == 'false'
         name: Upload Coverage
-        uses: codecov/codecov-action@v4
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
+        uses: codecov/codecov-action@v5
 
   rubocop:
     runs-on: ubuntu-latest
