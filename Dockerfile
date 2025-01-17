@@ -1,7 +1,8 @@
 ARG BASE_IMAGE
 FROM ${BASE_IMAGE:-ruby:3.3.6-alpine3.21} AS ruby-builder
 
-RUN apk --no-cache add build-base cmake postgresql17-dev git
+RUN apk --no-cache add build-base cmake git \
+  libffi-dev postgresql17-dev yaml-dev
 
 COPY Gemfile Gemfile.lock ./
 RUN gem i foreman && bundle install \
