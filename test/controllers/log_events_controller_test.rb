@@ -1,6 +1,6 @@
 require "test_helper"
 
-class IqdbControllerTest < ActionDispatch::IntegrationTest
+class LogEventsControllerTest < ActionDispatch::IntegrationTest
   test "index" do
     create(:log_event, payload: {
       method: "get",
