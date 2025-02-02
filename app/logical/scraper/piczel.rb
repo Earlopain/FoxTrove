@@ -1,17 +1,17 @@
 module Scraper
   class Piczel < Base
-    STATE = :from_id
+    STATE = :page
 
     def initialize(artist_url)
       super
-      @from_id = 999_999_999
+      @page = 1
     end
 
     def fetch_next_batch
-      response = fetch_json("https://piczel.tv/api/users/#{url_identifier}/gallery?from_id=#{@from_id}")
-      @from_id = response.pluck("id").min
-      end_reached if response.size != 32
-      response
+      response = fetch_json("https://piczel.tv/api/users/#{url_identifier}/gallery?page=#{@page}")
+      @page += 1
+      end_reached unless response.dig("meta", "next_page")
+      response["data"]
     end
 
     def to_submission(submission)
@@ -21,16 +21,19 @@ module Scraper
       s.description = submission["description"]
       s.created_at = DateTime.parse submission["created_at"]
 
-      s.add_file({
-        url: submission["image"]["url"],
-        created_at: s.created_at,
-        identifier: submission["id"],
-      })
-      submission["images"]&.each do |entry|
+      if submission["images"]
+        submission["images"]&.each_with_index do |entry, index|
+          s.add_file({
+            url: entry["image"]["url"],
+            created_at: s.created_at,
+            identifier: "#{submission['id']}_#{index}",
+          })
+        end
+      else
         s.add_file({
-          url: entry["image"]["url"],
+          url: submission["image"]["url"],
           created_at: s.created_at,
-          identifier: "plain_image#{entry['id']}",
+          identifier: submission["id"],
         })
       end
       s
