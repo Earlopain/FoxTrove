@@ -5,7 +5,7 @@ module Sites
       return /((old|new)\.)?/ if name == "reddit_old_new"
       return /(sfw\.)?/ if name == "furaffinity_sfw"
       return %r{[a-zA-Z]{2}/|^$} if name == "pixiv_lang"
-      return %r{[^/?&#]*} if name == "site_artist_identifier"
+      return %r{[^/?&#]*} if %w[site_artist_identifier segment].include?(name)
       return /.*?/ if name == "remaining"
 
       raise StandardError, "Unhandled matcher #{name}"

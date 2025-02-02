@@ -4,5 +4,6 @@ display_name: Cohost
 homepage: https://cohost.org/
 gallery_templates:
   - cohost.org/{site_artist_identifier}
+  - web.archive.org/web/{segment}/https://cohost.org/{site_artist_identifier}
 username_identifier_regex: "[a-zA-Z0-9-]{3,200}"
-submission_template: https://cohost.org/{site_artist_identifier}/post/{site_submission_identifier}-abcd
+submission_template: https://web.archive.org/web/*/https://cohost.org/{site_artist_identifier}/post/{site_submission_identifier}

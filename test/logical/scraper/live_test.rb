@@ -52,7 +52,7 @@ module Scraper
       end
 
       test "cohost" do
-        assert_scraper(Scraper::Cohost, "MeldritchHorror", 12_229)
+        assert_scraper(Scraper::Cohost, "MeldritchHorror", "MeldritchHorror")
       end
 
       test "commishes" do

@@ -32,7 +32,7 @@ class JobStats
   def stats_queued(queue_name, count_proc)
     result = {}
     query = GoodJob::JobsFilter.new(queue_name: queue_name).filtered_query
-    query = query.merge(GoodJob::Job.queued.or(GoodJob::Job.retried))
+    query = query.merge(GoodJob::Job.queued.or(GoodJob::Job.retried).or(GoodJob::Job.scheduled))
     query.find_in_batches(batch_size: 1000) do |batch|
       ids = batch.map { |job| extract_model_id(job) }
       db_count = count_proc.call(ids)
