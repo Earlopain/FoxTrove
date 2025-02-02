@@ -20,6 +20,14 @@ class ApplicationRecordTest < ActiveSupport::TestCase
     assert_equal([sm1, sm3], SubmissionFile.attribute_matches("#{sm1.id},#{sm3.id}", :id))
   end
 
+  test "when searching by jsonb field" do
+    e1 = create(:log_event, payload: { foo: "bar" })
+    e2 = create(:log_event, payload: { baz: "bat" })
+    e3 = create(:log_event, payload: { xyz: "123" })
+    assert_equal([e1, e2], LogEvent.attribute_matches("*b*", :payload))
+    assert_equal([e3], LogEvent.attribute_matches("*xyz*", :payload))
+  end
+
   test "when searching for nil it returns all results" do
     r1 = create(:submission_file, file_error: nil)
     r2 = create(:submission_file, file_error: "")

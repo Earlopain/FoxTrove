@@ -61,6 +61,8 @@ class ApplicationRecord < ActiveRecord::Base
           case column.sql_type_metadata.type
           when :text, :string
             text_column_matches(qualified_column, values)
+          when :jsonb
+            text_column_matches("#{qualified_column}::text", values)
           when :integer
             where("#{qualified_column} IN(?)", values)
           else

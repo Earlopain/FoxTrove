@@ -10,6 +10,6 @@ class LogEventsController < ApplicationController
   private
 
   def search_params
-    params.fetch(:search, {}).permit(:loggable_id, :loggable_type, :action)
+    params.fetch(:search, {}).permit(:loggable_id, :loggable_type, :action, :payload)
   end
 end

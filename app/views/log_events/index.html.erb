@@ -2,6 +2,7 @@
   <%= f.input :loggable_type %>
   <%= f.input :loggable_id %>
   <%= f.input :action, collection: LogEvent.actions, include_blank: true %>
+  <%= f.input :payload %>
 <% end %>
 
 <table class="table full-width">
