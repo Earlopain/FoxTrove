@@ -55,6 +55,9 @@ jobs:
           build-args: |
             BASE_IMAGE=${{ env.BLEEDING_EDGE == 'true' && 'ghcr.io/docker-ruby-nightly/ruby:alpine3.21-nightly' || ''}}
 
+      - name: Pull
+        run: docker compose pull --ignore-buildable
+
       - name: Set env file
         run: |
           cat <<EOT >> .env
