@@ -1,14 +1,21 @@
 ENV["RAILS_ENV"] ||= "test"
 ENV["MT_NO_EXPECTATIONS"] ||= "1"
 
-require "simplecov"
-module SimpleCov
-  class SourceFile
-    def coverage_exceeding_source_warn
-      # no-op, https://github.com/simplecov-ruby/simplecov/issues/1057
-    end
-  end
+$VERBOSE = true
+
+def Warning.warn(msg, ...)
+  # https://github.com/bblimke/webmock/pull/1081
+  return if msg.include?("constant Net::HTTPSession is deprecated")
+
+  raise StandardError, msg
 end
+
+require "simplecov"
+SimpleCov::SourceFile.prepend(Module.new do
+  def coverage_exceeding_source_warn
+    # no-op, https://github.com/simplecov-ruby/simplecov/issues/1057
+  end
+end)
 
 SimpleCov.start "rails" do
   enable_coverage :branch
@@ -41,8 +48,6 @@ require "factory_bot"
 require "mocha/minitest"
 require "webmock/minitest"
 require "httpx/adapters/webmock"
-
-$VERBOSE = true
 
 FactoryBot.find_definitions
 FactoryBot::SyntaxRunner.class_eval do
