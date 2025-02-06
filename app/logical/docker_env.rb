@@ -16,7 +16,11 @@ module DockerEnv
   end
 
   def pg_data_version
-    `sudo cat /docker/db_data/PG_VERSION`.strip.presence || NEEDED_PG_VERSION
+    File.read("/docker/pg_version/PG_VERSION").strip
+  rescue StandardError
+    # On first boot the entrypoint was not yet able to modify permissions of the file,
+    # only subsequent ups will do that. The first start will have the correct version anyways
+    NEEDED_PG_VERSION
   end
 
   def specifies_docker_user?

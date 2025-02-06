@@ -26,8 +26,7 @@ services:
     volumes:
       - .:/app
       - ${REVERSER_DATA_PATH:-${FOXTROVE_DATA_PATH:-./data}}/active_storage:/app/public/storage
-      # Only requires a single file but would create it as a folder on initial setup
-      - ${REVERSER_DATA_PATH:-${FOXTROVE_DATA_PATH:-./data}}/db_data:/docker/db_data
+      - pg_version:/docker/pg_version
     depends_on:
       - postgres
       - iqdb
@@ -44,6 +43,7 @@ services:
       - POSTGRES_HOST_AUTH_METHOD=trust
     volumes:
       - ${REVERSER_DATA_PATH:-${FOXTROVE_DATA_PATH:-./data}}/db_data:/var/lib/postgresql/data
+      - pg_version:/docker/pg_version
     shm_size: 256mb
     ports:
       - ${EXPOSED_POSTGRES_PORT:-34518}:5432
@@ -52,6 +52,10 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+    # Move the version file to a dedicated volume. Will only happen on second boot when the data actually exists.
+    # The postgres entrypoint undoes all changes to permissions, so we need to save it somewhere else.
+    command: [/bin/sh, -c, (cp $$PGDATA/PG_VERSION /docker/pg_version/ || true) && (chmod -f o+r /docker/pg_version/PG_VERSION || true) && docker-entrypoint.sh postgres]
+    entrypoint: ""
 
   iqdb:
     image: ghcr.io/earlopain/iqdb:897214ffdc0b1ca18d1f9ca4749dff40d2dad2fc
@@ -125,3 +129,6 @@ services:
         condition: service_healthy
     profiles:
       - tests
+
+volumes:
+  pg_version:
