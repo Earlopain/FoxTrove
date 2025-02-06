@@ -4,9 +4,6 @@ ENV["MT_NO_EXPECTATIONS"] ||= "1"
 $VERBOSE = true
 
 def Warning.warn(msg, ...)
-  # https://github.com/bblimke/webmock/pull/1081
-  return if msg.include?("constant Net::HTTPSession is deprecated")
-
   raise StandardError, msg
 end
 
