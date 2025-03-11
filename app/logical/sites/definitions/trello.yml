@@ -1,4 +1,4 @@
-type: SimpleDefinition
+type: ScraperDefinition
 enum_value: trello
 display_name: Trello
 homepage: https://trello.com
