@@ -32,7 +32,7 @@ module Scraper
       s.identifier = submission["shortLink"]
       s.title = submission["name"]
       s.description = submission["desc"]
-      s.created_at = Time.zone.at(submission["id"][0..7].to_i(16)).to_datetime
+      s.created_at = DateTime.strptime(submission["id"][0..7].to_i(16).to_s, "%s")
 
       submission["attachments"].each do |entry|
         s.add_file({
