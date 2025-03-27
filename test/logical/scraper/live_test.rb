@@ -107,6 +107,10 @@ module Scraper
         assert_scraper(Scraper::Sofurry, "zummeng", "373836")
       end
 
+      test "trello" do
+        assert_scraper(Scraper::Trello, "2fDaPKHy/codys-comms", "63c0a4fd52d78f036e355512")
+      end
+
       test "tumblr" do
         assert_scraper(Scraper::Tumblr, "yuumei-art", "t:DlrWdEaIry0XVtS7NBwpHQ", skip_files: true)
       end
