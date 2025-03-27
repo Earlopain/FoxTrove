@@ -18,11 +18,13 @@ module Scraper
           fields: "id,desc,shortLink,name",
           limit: 1000,
           sort: "-id",
-        }.tap { |h| h[:before] = @before if @before }
-         .tap { |h| h[:key] = Config.trello_key if Config.trello_key }
-         .tap { |h| h[:token] = Config.trello_token if Config.trello_token },
+          filter: "all",
+          before: @before,
+          key: Config.trello_key,
+          token: Config.trello_token,
+        },
       )
-      @before = json.min_by { |c| c["id"][0..7].to_i(16) }.try(:[], "id")
+      @before = json.min_by { |c| to_unix(c["id"]) }&.[]("id")
       end_reached if json.length < 1000
       json.reject { |c| c["attachments"].empty? }
     end
@@ -32,7 +34,7 @@ module Scraper
       s.identifier = submission["shortLink"]
       s.title = submission["name"]
       s.description = submission["desc"]
-      s.created_at = DateTime.strptime(submission["id"][0..7].to_i(16).to_s, "%s")
+      s.created_at = DateTime.strptime(to_unix(submission["id"]).to_s, "%s")
 
       submission["attachments"].each do |entry|
         s.add_file({
@@ -52,10 +54,16 @@ module Scraper
         fields: "id",
         labels: "none",
         lists: "none",
-      }
-       .tap { |h| h[:key] = Config.trello_key if Config.trello_key }
-       .tap { |h| h[:token] = Config.trello_token if Config.trello_token })
+        key: Config.trello_key,
+        token: Config.trello_token,
+      })
       json["id"]
+    end
+
+    private
+
+    def to_unix(id)
+      id[0..7].to_i(16)
     end
   end
 end
