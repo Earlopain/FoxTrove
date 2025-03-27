@@ -42,6 +42,7 @@ You can also search for non-uploaded submission for artists. How well this works
 * <img src="public/icons/7-pixiv.png" width="16px" height="16px"> Pixiv
 * <img src="public/icons/10-reddit.png" width="16px" height="16px"> Reddit
 * <img src="public/icons/3-sofurry.png" width="16px" height="16px"> Sofurry
+* <img src="public/icons/45-trello.png" width="16px" height="16px"> Trello
 * <img src="public/icons/9-tumblr.png" width="16px" height="16px"> Tumblr ([see notes](#tumblr))
 * <img src="public/icons/0-twitter.png" width="16px" height="16px"> Twitter
 * <img src="public/icons/8-weasyl.png" width="16px" height="16px"> Weasyl
