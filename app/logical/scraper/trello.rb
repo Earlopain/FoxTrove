@@ -62,6 +62,7 @@ module Scraper
 
     private
 
+    # https://support.atlassian.com/trello/docs/getting-the-time-a-card-or-board-was-created/
     def to_unix(id)
       id[0..7].to_i(16)
     end
