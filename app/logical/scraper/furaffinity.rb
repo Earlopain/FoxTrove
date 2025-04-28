@@ -79,8 +79,8 @@ module Scraper
       )
       # Searching for "@lower scale" returns results from blue-scale
       relevant_submissions = html.css("#browse-search figure").select do |element|
-        # Remove _ from displayname, https://www.furaffinity.net/user/thesecretcave/ => The_Secret_Cave
-        element.css("figcaption a")[1].content.downcase.delete("_") == url_identifier.downcase
+        # Display names can now be arbitrary text, so take the identifier from the href.
+        element.css("figcaption a")[1]["href"].split("/")[2] == url_identifier.downcase
       end
       relevant_submissions.map do |element|
         element.attributes["id"].value.split("-")[1]
