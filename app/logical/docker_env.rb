@@ -1,6 +1,4 @@
 module DockerEnv
-  NEEDED_PG_VERSION = "17"
-
   module_function
 
   def exposed_vnc_port
@@ -15,12 +13,12 @@ module DockerEnv
     ENV.fetch("SELENIUM_URL")
   end
 
-  def pg_data_version
-    `sudo cat /docker/db_data/PG_VERSION`.strip.presence || NEEDED_PG_VERSION
-  end
-
   def specifies_docker_user?
     ENV.key?("DOCKER_USER")
+  end
+
+  def specifies_postgres_version?
+    ENV.key?("POSTGRES_IMAGE_VERSION") || ENV.key?("POSTGRES_AUTOMATIC_VERSION")
   end
 
   def specifies_deprecated_data_path?

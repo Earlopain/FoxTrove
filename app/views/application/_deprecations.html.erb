@@ -13,3 +13,11 @@
     <br>Please rename it in your <code>.env</code> file to remove this warning.
   </div>
 <% end %>
+
+<% unless DockerEnv.specifies_postgres_version? %>
+  <div>
+    Please add <code>POSTGRES_IMAGE_VERSION=17</code> to your <code>.env</code> file to remove this warning.
+    <br>Alternatively, set <code>POSTGRES_IMAGE_VERSION=1</code> to do unattended version updates, which will
+    require you to do ~yearly database maintenance when they happen.
+  </div>
+<% end %>
