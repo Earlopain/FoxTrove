@@ -35,7 +35,7 @@ services:
     command: foreman start --color
 
   postgres:
-    image: postgres:${POSTGRES_IMAGE_VERSION:-17.2-alpine3.21}
+    image: postgres:${POSTGRES_IMAGE_VERSION:-17.4-alpine3.21}
     environment:
       - POSTGRES_USER=foxtrove
       - POSTGRES_DB=foxtrove_development
@@ -52,12 +52,12 @@ services:
       retries: 5
 
   iqdb:
-    image: ghcr.io/earlopain/iqdb:897214ffdc0b1ca18d1f9ca4749dff40d2dad2fc
+    image: ghcr.io/earlopain/iqdb:ae061136ad8c1a8105464bedd6f7818d3a25cf35
     volumes:
       - ${REVERSER_DATA_PATH:-${FOXTROVE_DATA_PATH:-./data}}/iqdb_data:/iqdb
 
   selenium:
-    image: selenium/standalone-chrome:4.27.0-20241204
+    image: selenium/standalone-chrome:4.31.0-20250414
     environment:
       - SE_VNC_NO_PASSWORD=1
     shm_size: 2gb
@@ -78,7 +78,7 @@ services:
     build:
       dockerfile_inline: |
         FROM python:3.13-alpine3.21
-        RUN pip install yamllint==1.35.1
+        RUN pip install yamllint==1.37.0
         WORKDIR /app
     volumes:
       - .:/app
@@ -90,7 +90,7 @@ services:
     build:
       dockerfile_inline: |
         FROM node:22-alpine3.21
-        RUN npm install stylelint@16.11.0 stylelint-config-standard@36.0.1 -g
+        RUN npm install stylelint@16.19.1 stylelint-config-standard@38.0.0 -g
         WORKDIR /app
     volumes:
       - .:/app
@@ -102,7 +102,7 @@ services:
     build:
       dockerfile_inline: |
         FROM node:22-alpine3.21
-        RUN npm install typescript@5.7.2 -g
+        RUN npm install typescript@5.8.3 -g
         WORKDIR /app
     volumes:
       - .:/app
