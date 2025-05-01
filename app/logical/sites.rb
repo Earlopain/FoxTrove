@@ -34,7 +34,7 @@ module Sites
     response = HTTPX.plugin(:stream).plugin(:follow_redirects).with(headers: headers).get(fixed_uri, stream: true)
     outfile = Tempfile.new(binmode: true)
     response.each do |chunk|
-      next if response.status == 301 || response.status == 302
+      next if [301, 302].include?(response.status)
 
       outfile.write(chunk)
     end
