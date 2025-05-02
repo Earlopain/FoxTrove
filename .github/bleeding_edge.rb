@@ -4,12 +4,14 @@ require "json"
 remote = "https://rubygems.org"
 fetcher = Bundler::Fetcher.new(Bundler::Source::Rubygems::Remote.new(remote))
 dsl = Bundler::Dsl.evaluate("#{__dir__}/../Gemfile", "#{__dir__}/../Gemfile.lock", {})
-stubs = dsl.resolve.materialize(dsl.dependencies_for(%w[default test])).map do |stub|
-  Bundler::RemoteSpecification.new(stub.name, stub.version, stub.platform, fetcher)
+dsl.resolve_remotely!
+stubs = dsl.specs_for(%w[default test]).map do |spec|
+  Bundler::RemoteSpecification.new(spec.name, spec.version, spec.platform, fetcher)
 end
 
 lines = ["source #{remote.inspect}"]
 NO_GIT = [
+  "bundler", # The running version of Bundler (2.7.0.dev) does not match...
   "minitest", # https://github.com/minitest/minitest/issues/750 (lol)
 ].freeze
 FULL_SKIP = [
