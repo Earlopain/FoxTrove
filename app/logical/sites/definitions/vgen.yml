@@ -1,0 +1,8 @@
+type: SimpleDefinition
+enum_value: vgen
+display_name: VGen
+homepage: https://vgen.co
+gallery_templates:
+  - vgen.co/{site_artist_identifier}
+username_identifier_regex: "[\\w.-]{1,30}"
+submission_template: https://vgen.co/{site_artist_identifier}/portfolio/showcase/-/{site_submission_identifier}

@@ -1,0 +1,7 @@
+type: SimpleDefinition
+enum_value: hipolink
+display_name: Hipolink
+homepage: https://hipolink.net
+gallery_templates:
+  - hipolink.net/{site_artist_identifier}
+username_identifier_regex: "[\\w.-]{3,30}"
