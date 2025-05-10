@@ -37,6 +37,7 @@ module Sites
     def submission_url(submission)
       @submission_template.expand(
         site_artist_identifier: submission.artist_url.url_identifier,
+        site_artist_api_identifier: submission.artist_url.api_identifier,
         site_submission_identifier: submission.identifier_on_site,
       ).to_s
     end

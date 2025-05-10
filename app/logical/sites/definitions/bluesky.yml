@@ -5,4 +5,4 @@ homepage: https://bsky.app
 gallery_templates:
   - bsky.app/profile/{site_artist_identifier}
 username_identifier_regex: "[a-zA-Z0-9.]{1,50}"
-submission_template: https://bsky.app/profile/{site_artist_identifier}/post/{site_submission_identifier}
+submission_template: https://bsky.app/profile/{+site_artist_api_identifier}/post/{site_submission_identifier}
