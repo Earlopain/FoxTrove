@@ -1,12 +1,6 @@
 ENV["RAILS_ENV"] ||= "test"
 ENV["MT_NO_EXPECTATIONS"] ||= "1"
 
-$VERBOSE = true
-
-def Warning.warn(msg, ...)
-  raise StandardError, msg
-end
-
 require "simplecov"
 SimpleCov::SourceFile.prepend(Module.new do
   def coverage_exceeding_source_warn
