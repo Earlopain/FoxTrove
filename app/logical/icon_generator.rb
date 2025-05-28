@@ -12,7 +12,7 @@ module IconGenerator
     end
 
     thumbs = files.map do |file|
-      thumb = Vips::Image.thumbnail(file, ICON_SIZE)
+      thumb = Vips::Image.thumbnail(file, ICON_SIZE, height: ICON_SIZE, size: :force)
       thumb = thumb.add_alpha unless thumb.has_alpha?
       thumb
     end

@@ -9,6 +9,12 @@ class IconGeneratorTest < ActiveSupport::TestCase
     assert(FileUtils.compare_file(target_file, IconGenerator::TARGET_FILE))
   end
 
+  test "the target file has correct dimensions" do
+    icons = Vips::Image.new_from_file(IconGenerator::TARGET_FILE.to_path)
+    assert_equal(IconGenerator::ICON_SIZE, icons.width)
+    assert_equal(IconGenerator::ICON_SIZE * ArtistUrl.site_types.count, icons.height)
+  end
+
   test "all files are named correctly" do
     ArtistUrl.site_types.each do |key, index|
       file_name = "#{index}-#{key}.png"
