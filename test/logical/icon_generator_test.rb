@@ -2,11 +2,16 @@ require "test_helper"
 
 class IconGeneratorTest < ActiveSupport::TestCase
   test "the target file is up to date" do
-    target_file = Tempfile.new
-    stub_const(IconGenerator, :TARGET_FILE, target_file.path) do
-      IconGenerator.run
+    Tempfile.create do |target_file|
+      stub_const(IconGenerator, :TARGET_FILE, target_file.path) do
+        IconGenerator.run
+      end
+
+      expected = Vips::Image.new_from_file(IconGenerator::TARGET_FILE.to_path).to_a
+      actual = Vips::Image.new_from_file(target_file.path).to_a
+      equal = expected == actual # No assert_equal to supress printing a huge array diff on failure
+      assert(equal, "Outdated icons, regenerate with `bin/rails r IconGenerator.run`")
     end
-    assert(FileUtils.compare_file(target_file, IconGenerator::TARGET_FILE))
   end
 
   test "the target file has correct dimensions" do
