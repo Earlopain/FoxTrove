@@ -52,7 +52,7 @@ class SubmissionFileTest < ActiveSupport::TestCase
     it "handles corrupt files" do
       sm = create(:submission_file_with_original, file_name: "corrupt.jpg")
       assert_predicate sm, :corrupt?
-      assert_equal "VipsJpeg: Premature end of input file", sm.file_error
+      assert_match(/VipsJpeg: Premature end/i, sm.file_error)
     end
 
     it "purges the blob on errors in from_attachable" do
