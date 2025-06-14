@@ -13,16 +13,8 @@ module DockerEnv
     ENV.fetch("SELENIUM_URL")
   end
 
-  def specifies_docker_user?
-    ENV.key?("DOCKER_USER")
-  end
-
   def specifies_postgres_version?
     ENV.key?("POSTGRES_IMAGE_VERSION") || ENV.key?("POSTGRES_AUTOMATIC_VERSION")
-  end
-
-  def specifies_deprecated_data_path?
-    ENV.key?("REVERSER_DATA_PATH")
   end
 
   def master_commit

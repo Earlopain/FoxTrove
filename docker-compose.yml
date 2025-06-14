@@ -25,7 +25,7 @@ services:
       GOOD_JOB_EXEC: bundle exec good_job --queues=scraping:1;e6_iqdb:1;variant_generation:5;default:1;submission_download:5
     volumes:
       - .:/app
-      - ${REVERSER_DATA_PATH:-${FOXTROVE_DATA_PATH:-./data}}/active_storage:/app/public/storage
+      - ${FOXTROVE_DATA_PATH:-./data}/active_storage:/app/public/storage
     depends_on:
       - postgres
       - iqdb
@@ -41,7 +41,7 @@ services:
       - POSTGRES_DB=foxtrove_development
       - POSTGRES_HOST_AUTH_METHOD=trust
     volumes:
-      - ${REVERSER_DATA_PATH:-${FOXTROVE_DATA_PATH:-./data}}/db_data:/var/lib/postgresql/data
+      - ${FOXTROVE_DATA_PATH:-./data}/db_data:/var/lib/postgresql/data
     shm_size: 256mb
     ports:
       - ${EXPOSED_POSTGRES_PORT:-34518}:5432
@@ -54,7 +54,7 @@ services:
   iqdb:
     image: ghcr.io/earlopain/iqdb:ae061136ad8c1a8105464bedd6f7818d3a25cf35
     volumes:
-      - ${REVERSER_DATA_PATH:-${FOXTROVE_DATA_PATH:-./data}}/iqdb_data:/iqdb
+      - ${FOXTROVE_DATA_PATH:-./data}/iqdb_data:/iqdb
 
   selenium:
     image: selenium/standalone-chrome:4.31.0-20250414

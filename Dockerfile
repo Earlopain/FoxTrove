@@ -33,12 +33,12 @@ RUN echo "[safe]" > ~/.gitconfig && \
 # Create a user with (potentially) the same id as on the host
 ARG HOST_UID=1000
 ARG HOST_GID=1000
-RUN addgroup --gid ${HOST_GID} reverser && \
-  adduser -S --shell /bin/sh --uid ${HOST_UID} reverser -G reverser && \
-  addgroup reverser wheel && \
-  echo "reverser ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+RUN addgroup --gid ${HOST_GID} foxtrove && \
+  adduser -S --shell /bin/sh --uid ${HOST_UID} foxtrove -G foxtrove && \
+  addgroup foxtrove wheel && \
+  echo "foxtrove ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 ARG DOCKER_RUN_AS_USER
-ENV USER=${DOCKER_RUN_AS_USER:+reverser}
+ENV USER=${DOCKER_RUN_AS_USER:+foxtrove}
 ENV USER=${USER:-root}
 USER $USER
 

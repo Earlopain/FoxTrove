@@ -13,15 +13,7 @@ module Config
   end
 
   def custom_config
-    @custom_config ||= custom_config_path.exist? ? YAML.load_file(custom_config_path, fallback: {}, symbolize_names: true) : {}
-  end
-
-  def custom_config_path
-    old_config_path = Rails.root.join("config/reverser_custom_config.yml")
-    if old_config_path.exist?
-      old_config_path.rename(CUSTOM_PATH)
-    end
-    CUSTOM_PATH
+    @custom_config ||= CUSTOM_PATH.exist? ? YAML.load_file(CUSTOM_PATH, fallback: {}, symbolize_names: true) : {}
   end
 
   def merge_custom_config(new_values)
@@ -41,7 +33,7 @@ module Config
 
   def write_custom_config(new_values)
     data = Psych.safe_dump(merge_custom_config(new_values))
-    File.write(custom_config_path, data)
+    File.write(CUSTOM_PATH, data)
   end
 
   def cast_number(value)

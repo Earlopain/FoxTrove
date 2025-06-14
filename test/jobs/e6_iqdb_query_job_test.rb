@@ -1,10 +1,10 @@
 require "test_helper"
 
 class E6IqdbQueryJobTest < ActiveJob::TestCase
-  # Import a file, which gets assigned a reverser iqdb hash.
-  # Import another file, which also gets a reverser iqdb hash.
+  # Import a file, which gets assigned an iqdb hash.
+  # Import another file, which also gets an iqdb hash.
   # The second file is an exact md5 match to the e6 iqdb result.
-  # The reverser iqdb hash of the first and second file are identical.
+  # The iqdb hash of the first and second file are identical.
   # Therefore the first file is also an exact match.
   it "updates the exact match flag for an already existing visual match when the files are visually identical" do
     exact_match = create(:submission_file_with_original, file_name: "1.webp", with_sample: true, iqdb_hash: 0x0102)

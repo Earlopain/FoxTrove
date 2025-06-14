@@ -31,18 +31,18 @@ class ConfigControllerTest < ActionDispatch::IntegrationTest
   test "modify" do
     Tempfile.create do |f|
       Config.unstub(:custom_config)
-      Config.stubs(:custom_config_path).returns(Pathname.new(f.path))
+      stub_const(Config, :CUSTOM_PATH, Pathname.new(f.path)) do
+        put modify_config_index_path, params: { config: {
+          files_per_page: "75",
+          furaffinity_user: "foo",
+          log_scraper_requests: "false",
+        } }
 
-      put modify_config_index_path, params: { config: {
-        files_per_page: "75",
-        furaffinity_user: "foo",
-        log_scraper_requests: "false",
-      } }
-
-      assert_redirected_to(config_index_path)
-      assert_equal(75, Config.files_per_page)
-      assert_equal("foo", Config.furaffinity_user)
-      assert_not_predicate(Config, :log_scraper_requests?)
+        assert_redirected_to(config_index_path)
+        assert_equal(75, Config.files_per_page)
+        assert_equal("foo", Config.furaffinity_user)
+        assert_not_predicate(Config, :log_scraper_requests?)
+      end
     end
   ensure
     Config.reset_cache
