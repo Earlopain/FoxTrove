@@ -10,6 +10,7 @@ class SeleniumWrapper
     cps = Selenium::WebDriver::Options.chrome "goog:loggingPrefs": prefs
 
     driver = Selenium::WebDriver.for :remote, capabilities: [options, cps], url: DockerEnv.selenium_url
+    driver.extend(DriverHelpers)
     if block_given?
       begin
         Rails.cache.write("selenium-since", Time.current)
@@ -26,31 +27,25 @@ class SeleniumWrapper
   def self.active?
     (Rails.cache.fetch("selenium-since") || Time.current).before?(5.seconds.ago)
   end
-end
 
-module Selenium
-  module WebDriver
-    module Remote
-      class Driver
-        def cookie_value(cookie_name)
-          manage.cookie_named(cookie_name)[:value]
-        rescue Selenium::WebDriver::Error::NoSuchCookieError
-          nil
-        end
+  module DriverHelpers
+    def cookie_value(cookie_name)
+      manage.cookie_named(cookie_name)[:value]
+    rescue Selenium::WebDriver::Error::NoSuchCookieError
+      nil
+    end
 
-        def wait_for(timeout: SeleniumWrapper::DEFAULT_TIMEOUT, &)
-          wait = Selenium::WebDriver::Wait.new(timeout: timeout)
-          wait.until(&)
-        end
+    def wait_for(timeout: SeleniumWrapper::DEFAULT_TIMEOUT, &)
+      wait = Selenium::WebDriver::Wait.new(timeout: timeout)
+      wait.until(&)
+    end
 
-        def wait_for_cookie(cookie_name, timeout: SeleniumWrapper::DEFAULT_TIMEOUT)
-          wait_for(timeout: timeout) { cookie_value(cookie_name) }
-        end
+    def wait_for_cookie(cookie_name, timeout: SeleniumWrapper::DEFAULT_TIMEOUT)
+      wait_for(timeout: timeout) { cookie_value(cookie_name) }
+    end
 
-        def wait_for_element(timeout: SeleniumWrapper::DEFAULT_TIMEOUT, **)
-          wait_for(timeout: timeout) { find_element(**) }
-        end
-      end
+    def wait_for_element(timeout: SeleniumWrapper::DEFAULT_TIMEOUT, **)
+      wait_for(timeout: timeout) { find_element(**) }
     end
   end
 end
