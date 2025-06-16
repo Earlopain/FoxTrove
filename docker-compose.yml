@@ -1,7 +1,7 @@
 x-environment: &common-env
-  EXPOSED_VNC_PORT: ${EXPOSED_VNC_PORT:-7900}
-  IQDB_URL: ${IQDB_URL:-http://iqdb:5588}
-  SELENIUM_URL: ${SELENIUM_URL:-http://selenium:4444}
+  EXPOSED_VNC_PORT: ${EXPOSED_VNC_PORT:?}
+  IQDB_URL: ${IQDB_URL:?}
+  SELENIUM_URL: ${SELENIUM_URL:?}
 
 services:
   foxtrove:
@@ -14,7 +14,7 @@ services:
     image: foxtrove
     environment:
       <<: *common-env
-      RAILS_SERVER_EXEC: bin/rails server -p ${EXPOSED_SERVER_PORT:-9000} -b 0.0.0.0 --pid /tmp/server.pid
+      RAILS_SERVER_EXEC: bin/rails server -p ${EXPOSED_SERVER_PORT:?} -b 0.0.0.0 --pid /tmp/server.pid
       ESBUILD_EXEC: >-
         esbuild app/typescript/application.ts
         --target=chrome111,firefox111,safari16
@@ -25,13 +25,13 @@ services:
       GOOD_JOB_EXEC: bundle exec good_job --queues=scraping:1;e6_iqdb:1;variant_generation:5;default:1;submission_download:5
     volumes:
       - .:/app
-      - ${FOXTROVE_DATA_PATH:-./data}/active_storage:/app/public/storage
+      - ${FOXTROVE_DATA_PATH:?}/active_storage:/app/public/storage
     depends_on:
       - postgres
       - iqdb
       - selenium
     ports:
-      - ${EXPOSED_SERVER_PORT:-9000}:${EXPOSED_SERVER_PORT:-9000}
+      - ${EXPOSED_SERVER_PORT:?}:${EXPOSED_SERVER_PORT:?}
     command: foreman start --color
 
   postgres:
@@ -41,10 +41,10 @@ services:
       - POSTGRES_DB=foxtrove_development
       - POSTGRES_HOST_AUTH_METHOD=trust
     volumes:
-      - ${FOXTROVE_DATA_PATH:-./data}/db_data:/var/lib/postgresql/data
+      - ${FOXTROVE_DATA_PATH:?}/db_data:/var/lib/postgresql/data
     shm_size: 256mb
     ports:
-      - ${EXPOSED_POSTGRES_PORT:-34518}:5432
+      - ${EXPOSED_POSTGRES_PORT:?}:5432
     healthcheck:
       test: [CMD-SHELL, pg_isready -d foxtrove_development -U foxtrove]
       interval: 10s
@@ -54,7 +54,7 @@ services:
   iqdb:
     image: ghcr.io/earlopain/iqdb:d274d333c9067f19edd4e619b7bd89cf1c294d50
     volumes:
-      - ${FOXTROVE_DATA_PATH:-./data}/iqdb_data:/iqdb
+      - ${FOXTROVE_DATA_PATH:?}/iqdb_data:/iqdb
 
   selenium:
     image: selenium/standalone-chrome:4.33.0-20250606
@@ -62,7 +62,7 @@ services:
       - SE_VNC_NO_PASSWORD=1
     shm_size: 2gb
     ports:
-      - ${EXPOSED_VNC_PORT:-7900}:7900
+      - ${EXPOSED_VNC_PORT:?}:7900
 
   # Profiles for standalone things
 

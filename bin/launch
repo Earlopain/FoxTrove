@@ -1,0 +1,31 @@
+#!/usr/bin/env sh
+
+set -eu
+
+run_local() {
+  run_docker_compose up -d postgres selenium iqdb
+  bin/rails server
+}
+
+run_docker_compose() {
+  if [ -e .env ]
+    docker compose --env-file .env.default --env-file .env "$@"
+  else
+    docker compose --env-file .env.default "$@"
+  fi
+}
+
+if [ -n "${1-}" ]; then
+  if [ "$1" = "local" ]; then
+    shift;
+    run_local "$@";
+    exit;
+  elif [ "$1" = "docker" ]; then
+    shift;
+    run_docker_compose "$@";
+    exit;
+  fi
+fi
+
+echo "missing type";
+exit 1;

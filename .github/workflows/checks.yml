@@ -55,7 +55,7 @@ jobs:
             BASE_IMAGE=${{ env.BLEEDING_EDGE == 'true' && 'ghcr.io/docker-ruby-nightly/ruby:alpine3.22-nightly' || ''}}
 
       - name: Pull
-        run: docker compose pull --ignore-buildable
+        run: bin/launch docker pull --ignore-buildable
 
       - name: Set env file
         run: |
@@ -68,13 +68,13 @@ jobs:
       # Set `BUNDLED WITH` to the version of the running ruby so it uses the latest dev version
       - if: env.BLEEDING_EDGE == 'true'
         name: Correct `BUNDLED WITH`
-        run: docker compose run foxtrove bundle lock --update --bundler
+        run: bin/launch docker run foxtrove bundle lock --update --bundler
 
       - name: Create DB
-        run: docker compose run foxtrove bin/setup
+        run: bin/launch docker run foxtrove bin/setup
 
       - name: Run Tests
-        run: docker compose run -e CI -e BLEEDING_EDGE tests
+        run: bin/launch docker run -e CI -e BLEEDING_EDGE tests
 
       - if: env.BLEEDING_EDGE == 'false'
         name: Upload Coverage
@@ -106,4 +106,4 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Run ${{ matrix.service }}
-        run: docker compose run ${{ matrix.service }}
+        run: bin/launch docker run ${{ matrix.service }}
