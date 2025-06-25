@@ -14,7 +14,7 @@ module Scraper
       it "stops once no more results are returned" do
         artist_url = create(:artist_url, url_identifier: "foo", api_identifier: 123, scraper_stop_marker: 10.hours.ago)
         scraper = Scraper::Artstation.new(artist_url)
-        scraper.stubs(:fetch_next_batch).returns([
+        scraper.stub(:fetch_next_batch, [
           {
             "hash_id" => "bar",
             "title" => "baz",
@@ -23,8 +23,9 @@ module Scraper
             "updated_at" => 15.hours.ago.to_s,
             "assets" => [],
           },
-        ])
-        scraper.process!
+        ]) do
+          scraper.process!
+        end
         assert_in_delta Time.current, artist_url.reload.last_scraped_at, 1
       end
 
@@ -47,8 +48,10 @@ module Scraper
           "updated_at" => 15.hours.ago.to_s,
           "assets" => [],
         }
-        scraper.stubs(:fetch_next_batch).returns([b1]).then.returns([b2])
-        scraper.process!
+        batches = [b1, b2]
+        scraper.stub(:fetch_next_batch, -> { [batches.shift] }) do
+          scraper.process!
+        end
         assert_equal(2, artist_url.submissions.count)
       end
     end
@@ -81,42 +84,53 @@ module Scraper
         @scraper = Scraper::Twitter.new(create(:artist_url))
       end
 
+      def assert_called(object, method_name, returns:, times:, &)
+        called = 0
+        object.stub(method_name, -> {
+          called += 1
+          returns
+        }, &)
+
+        assert_equal(times, called, "Expected #{method_name} to be called #{times} times, but was called #{called} times")
+      end
+
       it "is stable" do
         assert_equal("Scraper::Twitter.foo/7d010443693eec253a121e2aa2ba177c", @scraper.class.cache_key("foo"))
       end
 
       it "calls the original method only once" do
-        @scraper.expects(:tokens_old).once.returns("value")
-
-        @scraper.tokens
-        @scraper.tokens
+        assert_called(@scraper, :tokens_old, returns: "value", times: 1) do
+          @scraper.tokens
+          @scraper.tokens
+        end
       end
 
       it "doesn't cache nil" do
-        @scraper.expects(:tokens_old).twice.returns(nil)
-
-        @scraper.tokens
-        @scraper.tokens
+        assert_called(@scraper, :tokens_old, returns: nil, times: 2) do
+          @scraper.tokens
+          @scraper.tokens
+        end
       end
 
       it "invalidates the cache when config values change" do
-        @scraper.expects(:tokens_old).times(3).returns("value")
-
-        @scraper.tokens
-        Config.stubs(:twitter_user).returns("new_value")
-        @scraper.tokens
-        Config.unstub(:twitter_user)
-        @scraper.tokens
-        Config.stubs(:twitter_otp_secret).returns("new_value")
-        @scraper.tokens
+        assert_called(@scraper, :tokens_old, returns: "value", times: 3) do
+          @scraper.tokens
+          stub_config(twitter_user: "new_value") do
+            @scraper.tokens
+          end
+          @scraper.tokens
+          stub_config(twitter_otp_secret: "new_value") do
+            @scraper.tokens
+          end
+        end
       end
 
       it "correctly removes the currently cached value" do
-        @scraper.expects(:tokens_old).twice.returns("value")
-
-        @scraper.tokens
-        @scraper.class.delete_cache(:tokens)
-        @scraper.tokens
+        assert_called(@scraper, :tokens_old, returns: "value", times: 2) do
+          @scraper.tokens
+          @scraper.class.delete_cache(:tokens)
+          @scraper.tokens
+        end
       end
     end
   end

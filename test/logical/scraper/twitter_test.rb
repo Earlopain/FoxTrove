@@ -7,7 +7,7 @@ module Scraper
     def scraper
       @scraper ||= begin
         scraper = Scraper::Twitter.new(create(:artist_url))
-        scraper.stubs(:tokens).returns(%w[auth_token csrf_token])
+        def scraper.tokens = %w[auth_token csrf_token]
         scraper
       end
     end

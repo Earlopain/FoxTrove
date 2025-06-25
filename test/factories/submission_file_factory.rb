@@ -15,7 +15,7 @@ FactoryBot.define do
     end
 
     before(:create) do |submission_file, evaluator|
-      submission_file.stubs(:original_present) if evaluator.skip_original_validation
+      def submission_file.original_present = nil if evaluator.skip_original_validation
     end
 
     factory :submission_file_with_original do

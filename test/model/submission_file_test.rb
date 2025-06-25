@@ -96,8 +96,9 @@ class SubmissionFileTest < ActiveSupport::TestCase
     _, sm = SubmissionFile.pagy({})
     assert_equal(3, sm.count)
 
-    Config.stubs(:files_per_page).returns(2)
-    _, sm = SubmissionFile.pagy({})
+    stub_config(files_per_page: 2) do
+      _, sm = SubmissionFile.pagy({})
+    end
     assert_equal(2, sm.count)
   end
 
@@ -187,14 +188,17 @@ class SubmissionFileTest < ActiveSupport::TestCase
       create(:e6_post, submission_file: sm2, similarity_score: 75)
       create(:e6_post, submission_file: sm3, similarity_score: 50)
 
-      Config.stubs(:similarity_cutoff).returns(40)
-      assert_equal([sm3, sm2, sm1], SubmissionFile.search(upload_status: "already_uploaded"))
+      stub_config(similarity_cutoff: 40) do
+        assert_equal([sm3, sm2, sm1], SubmissionFile.search(upload_status: "already_uploaded"))
+      end
 
-      Config.stubs(:similarity_cutoff).returns(60)
-      assert_equal([sm2, sm1], SubmissionFile.search(upload_status: "already_uploaded"))
+      stub_config(similarity_cutoff: 60) do
+        assert_equal([sm2, sm1], SubmissionFile.search(upload_status: "already_uploaded"))
+      end
 
-      Config.stubs(:similarity_cutoff).returns(80)
-      assert_equal([sm1], SubmissionFile.search(upload_status: "already_uploaded"))
+      stub_config(similarity_cutoff: 80) do
+        assert_equal([sm1], SubmissionFile.search(upload_status: "already_uploaded"))
+      end
     end
   end
 end

@@ -36,6 +36,7 @@ require "rails/test_help"
 require "minitest-spec-rails"
 
 require "factory_bot"
+require "minitest/mock"
 require "mocha/minitest"
 require "webmock/minitest"
 require "httpx/adapters/webmock"
@@ -53,8 +54,18 @@ module ActiveSupport
     setup do
       WebMock.enable!
       WebMock.disable_net_connect!
-      Config.stubs(:custom_config).returns({})
       Rails.cache.clear
+    end
+
+    def stub_config(**params, &)
+      params.each do |key, value|
+        Config.define_singleton_method(key) { value }
+      end
+      yield
+    ensure
+      params.each_key do |key|
+        Config.remove_possible_singleton_method(key)
+      end
     end
 
     def stub_e6_iqdb(response, &)
@@ -76,14 +87,14 @@ module ActiveSupport
 
     def stub_scraper_enabled(*site_types, &)
       sites = site_types.map { |site_type| Sites.from_enum(site_type.to_s) }
+      block = proc(&)
       sites.each.with_index do |site, index|
         raise ArgumentError, "#{site_types[index]} is not a valid scraper" unless site.scraper?
 
-        site.stubs(:scraper_enabled?).returns(true)
+        prev_block = block
+        block = proc { site.stub(:scraper_enabled?, true, &prev_block) }
       end
-      yield
-    ensure
-      sites.each { |site| site.unstub(:scraper_enabled?) }
+      block.call
     end
 
     def stub_request_once(method, url_matcher, **)

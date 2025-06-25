@@ -35,11 +35,11 @@ class JobStatsTest < ActiveJob::TestCase
     ScrapeArtistUrlJob.perform_later(url1)
     ScrapeArtistUrlJob.perform_later(url2)
     ScrapeArtistUrlJob.perform_later(url3)
-
-    # Fool GoodJob into thinking some jobs are actually running
-    GoodJob::Job.stubs(:running).returns(GoodJob::Job.where(finished_at: nil))
     GoodJob::Job.order(:created_at).second.update(finished_at: Time.current)
 
-    assert_equal([url1.id, url3.id].sort, JobStats.new.scraping_now.sort)
+    # Fool GoodJob into thinking some jobs are actually running
+    GoodJob::Job.stub(:running, GoodJob::Job.where(finished_at: nil)) do
+      assert_equal([url1.id, url3.id].sort, JobStats.new.scraping_now.sort)
+    end
   end
 end
