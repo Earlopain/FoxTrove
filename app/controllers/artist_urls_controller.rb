@@ -1,6 +1,6 @@
 class ArtistUrlsController < ApplicationController
   def index
-    @pagy, @artist_urls = ArtistUrl.search(index_search_params).pagy(params)
+    @paginator, @artist_urls = ArtistUrl.search(index_search_params).paginate(params)
   end
 
   def show

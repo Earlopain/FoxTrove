@@ -128,16 +128,14 @@ class ApplicationRecord < ActiveRecord::Base
         "#{model_name}Decorator".constantize
       end
 
-      def pagy(params)
-        page = [params[:page].to_i, 1].max
-        limit = params[:limit].to_i <= 0 ? nil : params[:limit]
-        pagy = Pagy.new(page: page, limit: limit, count: count)
-        [pagy, offset(pagy.offset).limit(pagy.limit)]
+      def paginate(params)
+        paginator = Pagination.new(self, limit: params[:limit], page: params[:page])
+        [paginator, paginator.records]
       end
 
       def pagy_and_decorate(params)
-        pagy, elements = pagy(params)
-        [pagy, elements.map(&:decorate)]
+        pagy, records = paginate(params)
+        [pagy, records.map(&:decorate)]
       end
     end
   end

@@ -1,6 +1,6 @@
 class ArtistsController < ApplicationController
   def index
-    @pagy, @artists = Artist.includes(:artist_urls).search(index_search_params).pagy(params)
+    @paginator, @artists = Artist.includes(:artist_urls).search(index_search_params).paginate(params)
 
     @artist_urls_count = ArtistUrl.select(:artist_id)
       .where(artist: @artists).group(:artist_id).count
