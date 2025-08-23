@@ -19,7 +19,7 @@ gem "puma"
 gem "rotp"
 gem "rouge"
 gem "ruby-vips"
-gem "rubyzip", "~> 2.4.rc1"
+gem "rubyzip"
 gem "rugged"
 gem "selenium-webdriver"
 
