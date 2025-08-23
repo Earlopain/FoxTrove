@@ -3,7 +3,7 @@ module Scraper
   # This doesn't download the images, they just get reblogged
   # You can then export your data and import the archive instead
   class Tumblr < Base
-    STATE = :offset
+    STATE = "offset"
 
     def initialize(artist_url)
       super

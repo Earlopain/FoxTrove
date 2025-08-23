@@ -1,7 +1,7 @@
 module Scraper
   # https://docs.joinmastodon.org/
   class MastodonV1 < Base
-    STATE = :max_id
+    STATE = "max_id"
     MAX_LIMIT = 40
 
     def initialize(artist_url)

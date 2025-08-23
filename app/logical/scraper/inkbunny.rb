@@ -1,7 +1,7 @@
 module Scraper
   # https://wiki.inkbunny.net/wiki/API
   class Inkbunny < Base
-    STATE = :page
+    STATE = "page"
 
     def initialize(artist_url)
       super

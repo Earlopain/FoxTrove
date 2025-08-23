@@ -1,7 +1,7 @@
 module Scraper
   # https://www.reddit.com/dev/api/
   class Reddit < Base
-    STATE = :after
+    STATE = "after"
 
     def initialize(artist_url)
       super

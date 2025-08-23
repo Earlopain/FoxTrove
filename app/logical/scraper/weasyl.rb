@@ -1,7 +1,7 @@
 module Scraper
   # https://projects.weasyl.com/weasylapi/
   class Weasyl < Base
-    STATE = :nextid
+    STATE = "nextid"
 
     def initialize(artist_url)
       super

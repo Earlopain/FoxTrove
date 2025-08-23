@@ -1,6 +1,6 @@
 module Scraper
   class Commishes < BufferedScraper
-    STATE = :until
+    STATE = "until"
 
     def initialize(artist_url)
       super

@@ -29,7 +29,7 @@ module Scraper
     end
 
     def process!
-      jumpstart(@artist_url.scraper_status[self.class::STATE.to_s]) if @artist_url.scraper_status.present?
+      jumpstart(@artist_url.scraper_status[self.class::STATE]) if @artist_url.scraper_status.present?
       @artist_url.scraper_status["started_at"] ||= Time.current
 
       while more?

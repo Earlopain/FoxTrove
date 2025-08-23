@@ -1,6 +1,6 @@
 module Scraper
   class Newgrounds < BufferedScraper
-    STATE = :page
+    STATE = "page"
     COOKIE_NAME = "vmkIdu5l8m"
 
     def initialize(artist_url)

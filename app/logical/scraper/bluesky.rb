@@ -1,6 +1,6 @@
 module Scraper
   class Bluesky < Base
-    STATE = :cursor
+    STATE = "cursor"
 
     def initialize(artist_url)
       super

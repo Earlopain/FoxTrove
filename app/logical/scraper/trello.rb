@@ -1,7 +1,7 @@
 module Scraper
   # https://developer.atlassian.com/cloud/trello/rest
   class Trello < Base
-    STATE = :before
+    STATE = "before"
     OPTIONAL_CONFIG_KEYS = %i[trello_key trello_token].freeze
 
     def initialize(artist_url)

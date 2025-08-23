@@ -1,6 +1,6 @@
 module Scraper
   class Furrynetwork < Base
-    STATE = :offset
+    STATE = "offset"
 
     PER_REQUEST = 72
     API_PREFIX = "https://furrynetwork.com/api"

@@ -1,6 +1,6 @@
 module Scraper
   class Artfight < BufferedScraper
-    STATE = :page
+    STATE = "page"
 
     def initialize(artist_url)
       super

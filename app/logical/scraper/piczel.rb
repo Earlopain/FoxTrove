@@ -1,6 +1,6 @@
 module Scraper
   class Piczel < Base
-    STATE = :page
+    STATE = "page"
 
     def initialize(artist_url)
       super
