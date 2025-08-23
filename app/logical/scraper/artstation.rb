@@ -54,7 +54,7 @@ module Scraper
       json = make_request("/projects/#{id}.json")
       # Remove any non-image assets
       json["assets"] = json["assets"].select { |asset| asset["asset_type"].in? %w[image cover] }
-      json if json["assets"].count > 0
+      json if json["assets"].any?
     end
 
     # FIXME: Figure out a way to do this without selenium

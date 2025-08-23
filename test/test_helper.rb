@@ -43,6 +43,7 @@ require "httpx/adapters/webmock"
 FactoryBot.find_definitions
 FactoryBot::SyntaxRunner.class_eval do
   include ActiveSupport::Testing::FileFixtures
+
   self.file_fixture_path = ActiveSupport::TestCase.file_fixture_path
 end
 
