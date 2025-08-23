@@ -93,11 +93,11 @@ class SubmissionFileTest < ActiveSupport::TestCase
   it "respects the limit setting during pagination" do
     create_list(:submission_file, 3)
 
-    _, sm = SubmissionFile.pagy({})
+    _, sm = SubmissionFile.paginate({})
     assert_equal(3, sm.count)
 
     Config.stubs(:files_per_page).returns(2)
-    _, sm = SubmissionFile.pagy({})
+    _, sm = SubmissionFile.paginate({})
     assert_equal(2, sm.count)
   end
 

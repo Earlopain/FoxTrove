@@ -37,4 +37,32 @@ class ApplicationControllerTest < ActionDispatch::IntegrationTest
       assert_select(".error-backtrace")
     end
   end
+
+  describe "paginator" do
+    def assert_active_links(*expected)
+      actual = css_select(".paginator a").map { it.attribute("aria-disabled")&.value != "true" }
+      assert_equal(expected, actual)
+    end
+
+    def test_all_links_disabled_when_only_one_page
+      create(:artist)
+      get artists_path(page: 1, limit: 1)
+      assert_response :success
+      assert_active_links(false, false, false)
+    end
+
+    def test_has_gap_when_applicable
+      create_list(:artist, 8)
+      get artists_path(page: 1, limit: 1)
+      assert_response :success
+      assert_select ".paginator a.gap", count: 1
+    end
+
+    def test_current_page_is_disabled
+      create_list(:artist, 3)
+      get artists_path(page: 2, limit: 1)
+      assert_response :success
+      assert_active_links(true, true, false, true, true)
+    end
+  end
 end

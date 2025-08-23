@@ -29,7 +29,9 @@
         </div>
         <%= yield %>
       </div>
-      <%= pagy_nav(@pagy).html_safe if instance_variable_defined?(:@pagy) && @pagy.pages > 1 %>
+      <% if instance_variable_defined?(:@paginator) %>
+        <%= render "application/paginator", paginator: @paginator %>
+      <% end %>
     </div>
     <footer>
       <%= render "application/footer" %>

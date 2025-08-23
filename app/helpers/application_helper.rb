@@ -1,6 +1,4 @@
 module ApplicationHelper
-  include Pagy::Frontend
-
   def time_ago(value)
     return "" if value.nil?
 
@@ -22,6 +20,14 @@ module ApplicationHelper
 
   def link_to_external(text, url, **)
     link_to text, url, **, rel: "nofollow noopener noreferrer"
+  end
+
+  def link_to_current_with_page(text, paginator, page)
+    if paginator.current_page == page || page < 1 || page > paginator.last_page
+      tag.a(text, "aria-disabled": true)
+    else
+      link_to(text, request.query_parameters.merge(page: page))
+    end
   end
 
   def fake_link(text, **)

@@ -1,0 +1,13 @@
+<%# locals: (paginator:) -%>
+
+<nav class="paginator">
+  <%= link_to_current_with_page "‹ Prev", paginator, paginator.current_page - 1 %>
+  <% paginator.pages.each do |page| %>
+    <% if page == :gap  %>
+      <%= tag.a("…", "aria-disabled": true, "class": "gap") %>
+    <% else %>
+      <%= link_to_current_with_page page, paginator, page %>
+    <% end %>
+  <% end %>
+  <%= link_to_current_with_page "Next ›", paginator, paginator.current_page + 1 %>
+</nav>

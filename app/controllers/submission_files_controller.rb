@@ -1,7 +1,7 @@
 class SubmissionFilesController < ApplicationController
   def index
     @search_params = search_params
-    @pagy, @submission_files = SubmissionFile.search(@search_params).with_everything.pagy(params)
+    @paginator, @submission_files = SubmissionFile.search(@search_params).with_everything.paginate(params)
   end
 
   def show
@@ -39,18 +39,18 @@ class SubmissionFilesController < ApplicationController
 
   def backlog
     @search_params = search_params.merge(in_backlog: true)
-    @pagy, @submission_files = SubmissionFile.search(@search_params)
+    @paginator, @submission_files = SubmissionFile.search(@search_params)
       .with_everything
       .reorder(added_to_backlog_at: :desc)
-      .pagy(params)
+      .paginate(params)
   end
 
   def hidden
     @search_params = search_params.merge(hidden_from_search: true)
-    @pagy, @submission_files = SubmissionFile.search(@search_params)
+    @paginator, @submission_files = SubmissionFile.search(@search_params)
       .with_everything
       .reorder(hidden_from_search_at: :desc)
-      .pagy(params)
+      .paginate(params)
   end
 
   def hide_many
