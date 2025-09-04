@@ -9,7 +9,7 @@ module Scraper
       @artist_url = artist_url.is_a?(Integer) ? ArtistUrl.find(artist_url) : artist_url
       @has_more = true
       @previous_request = 0
-      @client = extend_client(HTTPX.plugin(HttpxPlugin, scraper: self))
+      @client = extend_client(HttpxPlugin.from_scraper(self))
     end
 
     def self.site_type
@@ -139,7 +139,7 @@ module Scraper
 
     def fetch_json_selenium(path)
       SeleniumWrapper.driver do |d|
-        enfore_rate_limit do
+        enforce_rate_limit do
           d.navigate.to path
         end
         begin
@@ -172,7 +172,7 @@ module Scraper
     end
 
     # This is pretty hacky and only works because there is only one job executing at once
-    def enfore_rate_limit(&)
+    def enforce_rate_limit(&)
       now = Process.clock_gettime(Process::CLOCK_MONOTONIC)
       elapsed_time = now - @previous_request
       if elapsed_time < Config.scraper_request_rate_limit

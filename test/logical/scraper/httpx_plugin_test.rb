@@ -5,7 +5,7 @@ module Scraper
     setup do
       @submission_file = create(:submission_file)
       scraper = Scraper::Twitter.new(@submission_file)
-      @client = HTTPX.plugin(Scraper::HttpxPlugin, scraper: scraper)
+      @client = HttpxPlugin.from_scraper(scraper)
     end
 
     test "fetch_json returns a hash on success" do
