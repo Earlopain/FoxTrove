@@ -20,8 +20,7 @@ module FoxTrove
 
     if Rails::VERSION::STRING >= "8.1.0"
       # Opt out of build-in variants. We don't use those.
-      config.active_storage.variant_processor = nil
-      config.active_storage.analyzers += [ActiveStorage::Analyzer::ImageAnalyzer::Vips]
+      config.active_storage.variant_processor = :disabled
     end
 
     config.active_job.queue_adapter = :good_job

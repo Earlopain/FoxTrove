@@ -93,12 +93,12 @@ class SubmissionFile < ApplicationRecord
   end
 
   def attach_original_from_blob!(blob)
-    blob.analyze
+    metadata = ActiveStorage::Analyzer::ImageAnalyzer::Vips.new(blob).metadata
     raise StandardError, "Failed to analyze" if blob.content_type == "application/octet-stream"
     raise StandardError, "'#{blob.content_type}' is not allowed" if blob.content_type.in? Scraper::Submission::MIME_IGNORE
 
-    self.width = blob.metadata[:width]
-    self.height = blob.metadata[:height]
+    self.width = metadata[:width]
+    self.height = metadata[:height]
     self.content_type = blob.content_type
     self.size = blob.byte_size
 
