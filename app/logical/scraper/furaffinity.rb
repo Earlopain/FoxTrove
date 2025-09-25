@@ -95,10 +95,10 @@ module Scraper
       element = html.css(".submission-id-container .popup_date").first
       begin
         # Full date format
-        DateTime.strptime(element.content.strip, "%B %d, %Y, %H:%M:%S")
+        DateTime.strptime(element.content.strip, "%B %d, %Y %I:%M:%S %p")
       rescue ArgumentError
         # Fuzzy date format
-        DateTime.strptime(element.attribute("title").content.strip, "%B %d, %Y, %H:%M:%S")
+        DateTime.strptime(element.attribute("title").content.strip, "%B %d, %Y %I:%M:%S %p")
       end
     end
 
