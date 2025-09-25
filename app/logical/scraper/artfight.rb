@@ -34,7 +34,7 @@ module Scraper
 
     def fetch_api_identifier
       html = fetch_html("https://artfight.net/~#{url_identifier}", headers: headers)
-      html.at(".btn.btn-danger.report-button")&.attribute("data-id")&.value
+      html.at(".block-button")&.attribute("data-id")&.value
     end
 
     private
@@ -68,8 +68,9 @@ module Scraper
         driver.wait_for_element(css: "input[name='username']").send_keys Config.artfight_user
         driver.find_element(css: "input[name='password']").send_keys Config.artfight_pass
         driver.find_element(css: "input[name='remember']").click
-        driver.find_element(css: "input[value='Sign in']").click
+        driver.find_element(css: "button[type='submit']").click
 
+        driver.wait_for_element(css: ".username-navbar")
         driver.cookie_value("laravel_session")
       end
     end
