@@ -1,5 +1,5 @@
 ARG BASE_IMAGE
-FROM ${BASE_IMAGE:-ruby:3.4.5-alpine3.22} AS ruby-builder
+FROM ${BASE_IMAGE:-ruby:3.4.7-alpine3.22} AS ruby-builder
 
 RUN apk --no-cache add build-base cmake git \
   libffi-dev postgresql17-dev yaml-dev
@@ -10,11 +10,11 @@ RUN gem i foreman && bundle install \
  && find /usr/local/bundle/gems/ -name "*.c" -delete \
  && find /usr/local/bundle/gems/ -name "*.o" -delete
 
-FROM node:22-alpine3.22 AS node-downloader
+FROM node:24-alpine3.22 AS node-downloader
 
-RUN npm install esbuild@0.25.9 -g
+RUN npm install esbuild@0.25.12 -g
 
-FROM ${BASE_IMAGE:-ruby:3.4.5-alpine3.22}
+FROM ${BASE_IMAGE:-ruby:3.4.7-alpine3.22}
 
 WORKDIR /app
 
