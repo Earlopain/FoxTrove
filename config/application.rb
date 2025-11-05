@@ -16,12 +16,10 @@ Bundler.require(*Rails.groups)
 module FoxTrove
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
-    config.load_defaults 8.0
+    config.load_defaults 8.1
 
-    if Rails::VERSION::STRING >= "8.1.0"
-      # Opt out of build-in variants. We don't use those.
-      config.active_storage.variant_processor = :disabled
-    end
+    # Opt out of build-in variants. We don't use those.
+    config.active_storage.variant_processor = :disabled
 
     config.active_job.queue_adapter = :good_job
     config.good_job.execution_mode = :external
