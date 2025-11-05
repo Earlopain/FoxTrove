@@ -2,6 +2,12 @@ require "test_helper"
 
 module Scraper
   class HttpxPluginTest < ActiveSupport::TestCase
+    DEFAULT_HEADERS = {
+      "accept" => "*/*",
+      "user-agent" => HTTPX::Options::USER_AGENT,
+      "accept-encoding" => "gzip, deflate",
+    }.freeze
+
     setup do
       @submission_file = create(:submission_file)
       scraper = Scraper::Twitter.new(@submission_file)
@@ -57,7 +63,10 @@ module Scraper
         "method" => "GET",
         "response_body" => "{}",
         "response_code" => 200,
-        "request_params" => { "params" => { "abc" => "def" } },
+        "request_params" => {
+          "params" => { "abc" => "def" },
+          "headers" => DEFAULT_HEADERS,
+        },
       }, payload)
     end
 
@@ -79,8 +88,8 @@ module Scraper
       payload = @submission_file.log_events.sole.payload
       assert_equal("https://example.com/test", payload["path"])
       assert_equal({
-        "headers" => { "x-a" => "a", "x-b" => "b" },
         "params" => { "foo" => "bar" },
+        "headers" => { "x-a" => "a", "x-b" => "b" }.merge(DEFAULT_HEADERS),
       }, payload["request_params"])
     end
 
@@ -90,7 +99,10 @@ module Scraper
 
       payload = @submission_file.log_events.sole.payload
       assert_equal("POST", payload["method"])
-      assert_equal({ "json" => { "foo" => "bar" } }, payload["request_params"])
+      assert_equal({
+        "json" => { "foo" => "bar" },
+        "headers" => DEFAULT_HEADERS,
+      }, payload["request_params"])
     end
 
     test "it doesn't log empty headers" do
@@ -98,7 +110,7 @@ module Scraper
       @client.get("https://example.com")
 
       payload = @submission_file.log_events.sole.payload
-      assert_empty(payload["request_params"])
+      assert_equal({ "headers" => DEFAULT_HEADERS }, payload["request_params"])
     end
 
     describe "encoding" do
