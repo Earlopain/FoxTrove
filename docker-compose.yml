@@ -35,11 +35,12 @@ services:
     command: foreman start --color
 
   postgres:
-    image: postgres:${POSTGRES_IMAGE_VERSION:-17.7-alpine3.23}
+    image: postgres:${POSTGRES_IMAGE_VERSION:-18.1-alpine3.23}
     environment:
       - POSTGRES_USER=foxtrove
       - POSTGRES_DB=foxtrove_development
       - POSTGRES_HOST_AUTH_METHOD=trust
+      - PGDATA=/var/lib/postgresql/data
     volumes:
       - ${FOXTROVE_DATA_PATH:-./data}/db_data:/var/lib/postgresql/data
     shm_size: 256mb

@@ -2,7 +2,7 @@ ARG BASE_IMAGE
 FROM ${BASE_IMAGE:-ruby:3.4.7-alpine3.23} AS ruby-builder
 
 RUN apk --no-cache add build-base cmake git \
-  libffi-dev postgresql17-dev yaml-dev
+  libffi-dev postgresql18-dev yaml-dev
 
 COPY Gemfile Gemfile.lock ./
 RUN gem i foreman && bundle install \
@@ -20,7 +20,7 @@ WORKDIR /app
 
 RUN apk --no-cache add \
   tzdata \
-  postgresql17-client \
+  postgresql18-client \
   vips ffmpeg \
   sudo jemalloc
 
