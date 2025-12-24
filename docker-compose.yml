@@ -58,7 +58,7 @@ services:
       - ${FOXTROVE_DATA_PATH:-./data}/iqdb_data:/iqdb
 
   selenium:
-    image: selenium/standalone-chrome:4.38.0-20251101
+    image: selenium/standalone-chrome:4.39.0-20251212
     environment:
       - SE_VNC_NO_PASSWORD=1
     shm_size: 2gb
@@ -91,7 +91,7 @@ services:
     build:
       dockerfile_inline: |
         FROM node:24-alpine3.23
-        RUN npm install stylelint@16.25.0 stylelint-config-standard@39.0.1 -g
+        RUN npm install stylelint@16.26.1 stylelint-config-standard@39.0.1 -g
         WORKDIR /app
     volumes:
       - .:/app
