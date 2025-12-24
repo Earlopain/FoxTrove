@@ -12,6 +12,6 @@ class ConfigController < ApplicationController
 
     Config.write_custom_config(custom_config)
     Config.reset_cache
-    redirect_back fallback_location: config_index_path
+    redirect_back_or_to(config_index_path)
   end
 end
