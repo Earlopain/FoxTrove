@@ -40,7 +40,7 @@ module Scraper
       end
 
       test "artstation" do
-        assert_scraper(Scraper::Artstation, "ilyar", 75_315)
+        assert_scraper(Scraper::Artstation, "royzilya", 75_315)
       end
 
       test "baraag" do
