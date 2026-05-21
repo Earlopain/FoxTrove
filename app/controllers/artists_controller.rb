@@ -16,7 +16,7 @@ class ArtistsController < ApplicationController
   end
 
   def show
-    @artist = Artist.includes(:artist_urls).find(params[:id])
+    @artist = Artist.includes(:artist_urls).find(params.expect(:id))
     @search_params = instance_search_params.merge(artist_id: @artist.id)
     @paginator, @submission_files = SubmissionFile.search(@search_params).with_everything.paginate(params)
   end
@@ -26,7 +26,7 @@ class ArtistsController < ApplicationController
   end
 
   def edit
-    @artist = Artist.includes(:artist_urls).find(params[:id])
+    @artist = Artist.includes(:artist_urls).find(params.expect(:id))
   end
 
   def create
@@ -42,20 +42,20 @@ class ArtistsController < ApplicationController
   end
 
   def update
-    @artist = Artist.find(params[:id])
+    @artist = Artist.find(params.expect(:id))
     @artist.update(artist_params)
     add_new_artist_urls(@artist)
     respond_with(@artist)
   end
 
   def destroy
-    @artist = Artist.includes(artist_urls: { submissions: :submission_files }).find(params[:id])
+    @artist = Artist.includes(artist_urls: { submissions: :submission_files }).find(params.expect(:id))
     @artist.destroy
     redirect_to artists_path
   end
 
   def enqueue_all_urls
-    @artist = Artist.find(params[:id])
+    @artist = Artist.find(params.expect(:id))
     @artist.enqueue_all_urls
   end
 

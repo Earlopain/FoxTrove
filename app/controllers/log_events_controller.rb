@@ -4,7 +4,7 @@ class LogEventsController < ApplicationController
   end
 
   def show
-    @log_event = LogEvent.find(params[:id]).decorate
+    @log_event = LogEvent.find(params.expect(:id)).decorate
   end
 
   private
