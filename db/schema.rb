@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_05_21_100761) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_27_170844) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pgcrypto"
@@ -51,7 +51,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_21_100761) do
     t.datetime "created_at_on_site", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index "artist_url_id, lower(identifier_on_site)", name: "index_artist_submissions_on_artist_url_and_identifier", unique: true
+    t.index ["artist_url_id", "identifier_on_site"], name: "idx_on_artist_url_id_identifier_on_site_4836c05993", unique: true
     t.index ["artist_url_id"], name: "index_artist_submissions_on_artist_url_id"
   end
 

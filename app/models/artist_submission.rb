@@ -3,7 +3,7 @@ class ArtistSubmission < ApplicationRecord
   has_one :artist, through: :artist_url
   has_many :submission_files, dependent: :destroy
 
-  validates :identifier_on_site, uniqueness: { scope: :artist_url_id, case_sensitive: false }
+  validates :identifier_on_site, uniqueness: { scope: :artist_url_id }
 
   delegate :site, to: :artist_url
 
