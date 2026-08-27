@@ -22,7 +22,7 @@ module Scraper
             title: html.css(".submission-title").first.content.strip,
             description: html.css(".submission-description").first.content.strip,
             created_at: submission_timestamp(html),
-            url: "https:#{html.css('.download a').first.attributes['href'].value}",
+            url: "https:#{html.at_css('#submission-options a[href^="//d.furaffinity.net/"]')['href']}",
           },
         ]
       end
@@ -92,7 +92,7 @@ module Scraper
     end
 
     def submission_timestamp(html)
-      element = html.css(".submission-id-container .popup_date").first
+      element = html.css(".submission-description-artist .popup_date").first
       begin
         # Full date format
         DateTime.strptime(element.content.strip, "%B %d, %Y %I:%M:%S %p")
