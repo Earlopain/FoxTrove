@@ -9,7 +9,6 @@ class ApplicationController < ActionController::Base
   EXCEPTION_TYPES = {
     ActionController::BadRequest => 400,
     ActionController::ParameterMissing => 400,
-    ActionController::InvalidAuthenticityToken => 403,
     ActionController::UnpermittedParameters => 403,
     ActiveRecord::RecordNotFound => 404,
     ActionController::UnknownFormat => 406,
