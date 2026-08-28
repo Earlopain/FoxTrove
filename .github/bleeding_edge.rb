@@ -15,7 +15,6 @@ NO_GIT = [
   "minitest", # https://github.com/minitest/minitest/issues/750 (lol)
 ].freeze
 FULL_SKIP = [
-  "simplecov-html", # https://github.com/simplecov-ruby/simplecov-html/pull/145
   "nokogiri", # Unknown, mini_portile2 is not found during the build. Maybe platform-related.
   "mini_portile2",
 ].freeze

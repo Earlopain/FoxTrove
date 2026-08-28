@@ -2,11 +2,6 @@ ENV["RAILS_ENV"] ||= "test"
 ENV["MT_NO_EXPECTATIONS"] ||= "1"
 
 require "simplecov"
-SimpleCov::SourceFile.prepend(Module.new do
-  def coverage_exceeding_source_warn
-    # no-op, https://github.com/simplecov-ruby/simplecov/issues/1057
-  end
-end)
 
 SimpleCov.start "rails" do
   enable_coverage :branch
