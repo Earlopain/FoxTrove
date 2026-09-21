@@ -5,8 +5,8 @@ require "simplecov"
 
 SimpleCov.start "rails" do
   enable_coverage :branch
-  enable_coverage :eval
-  cover "{app,lib}/**/*.{rb,erb}"
+  cover "{app,lib}/**/*.rb"
+  cover_views
 
   groups.delete "Channels"
   groups.delete "Mailers"
