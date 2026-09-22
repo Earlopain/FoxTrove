@@ -10,9 +10,9 @@
           <td><%= link_to_external "E6D", entry.direct_url, title: "E6 Direct Link" %></td>
         <% end %>
         <% if entry.is_exact_match? %>
-          <td colspan="2">Exact</td>
+          <td colspan="2" title="MD5 match">Exact</td>
         <% else %>
-          <td class="size-difference">
+          <td class="size-difference", title="Size difference">
             <%= number_to_human_size(entry.post_size - submission_file.size, precision: 2) %>
           </td>
           <td class="dimension-difference number" title="<%= "#{entry.post_width}x#{entry.post_height}" %>">
