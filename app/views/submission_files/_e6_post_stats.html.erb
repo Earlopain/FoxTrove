@@ -10,12 +10,12 @@
           <td><%= link_to_external "E6D", entry.direct_url, title: "E6 Direct Link" %></td>
         <% end %>
         <% if entry.is_exact_match? %>
-          <td>Exact</td>
+          <td colspan="2">Exact</td>
         <% else %>
           <td class="size-difference">
             <%= number_to_human_size(entry.post_size - submission_file.size, precision: 2) %>
           </td>
-          <td class="dimension-difference" title="<%= "#{entry.post_width}x#{entry.post_height}" %>">
+          <td class="dimension-difference number" title="<%= "#{entry.post_width}x#{entry.post_height}" %>">
             x<%= (entry.post_width / submission_file.width.to_f).round(1) %>
           </td>
         <% end %>
