@@ -1,7 +1,7 @@
 <%= hideable_search(log_events_path) do |f| %>
   <%= f.input :loggable_type %>
   <%= f.input :loggable_id %>
-  <%= f.input :action, collection: LogEvent.actions, include_blank: true %>
+  <%= f.input :action, collection: LogEvent.actions, include_blank: 'Any' %>
   <%= f.input :payload %>
 <% end %>
 
