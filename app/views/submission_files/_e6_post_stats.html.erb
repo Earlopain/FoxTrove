@@ -3,11 +3,12 @@
   <tbody>
     <% submission_file.relevant_e6_posts.sort_by(&:similarity_score).reverse_each do |entry| %>
       <tr>
+        <td title="Similarity score"><%= entry.similarity_score.to_i %></td>
         <td><%= link_to_external "##{entry.post_id}", "https://e621.net/posts/#{entry.post_id}", title: "Score: #{entry.score}" %></td>
         <% if entry.post_is_deleted? %>
           <td title="Deleted">!</td>
         <% else %>
-          <td><%= link_to_external "E6D", entry.direct_url, title: "E6 Direct Link" %></td>
+          <td><%= link_to_external "D", entry.direct_url, title: "E6 Direct Link" %></td>
         <% end %>
         <% if entry.is_exact_match? %>
           <td colspan="2" title="MD5 match">Exact</td>
