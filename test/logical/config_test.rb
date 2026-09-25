@@ -22,42 +22,43 @@ class ConfigTest < ActiveSupport::TestCase
     end
   end
 
-  it "works when the custom config file doesn't exist" do
-    # This is the default stub
-    assert_equal("foo", Config.text)
-    assert_empty(Config.custom_config)
+  test "no crash when the custom config file doesn't exist" do
+    stub_const(Config, :CUSTOM_PATH, Pathname.new("i_dont_exist.yml")) do
+      assert_equal("foo", Config.text)
+      assert_empty(Config.custom_config)
+    end
   end
 
-  it "raises an error for unknown config entries" do
+  test "error for unknown config entries" do
     assert_raises(NoMethodError) { Config.missing_key }
   end
 
-  it "works when the custom config file is empty" do
+  test "no crash when the custom config is empty" do
     stub_custom_config do
       assert_equal("foo", Config.text)
       assert_empty(Config.custom_config)
     end
   end
 
-  it "returns the overwritten value of the custom config" do
+  test "the overwritten value of the custom config is returned" do
     stub_custom_config(text: "bar") do
       assert_equal("bar", Config.text)
     end
   end
 
-  it "merges the config correctly" do
+  test "the config is correctly merged" do
     stub_custom_config(text: "bar", other_key: "abc") do
       assert_equal({ "text" => "baz", "other_key" => "abc" }, Config.merge_custom_config("text" => "baz"))
       assert_equal({ "text" => "baz", "other_key" => "abc" }, Config.merge_custom_config(text: "baz"))
     end
   end
 
-  it "merges boolean values" do
+  test "boolean values are merged" do
     assert_equal({ "bool?" => true }, Config.merge_custom_config("bool" => "true"))
     assert_equal({ "bool?" => false }, Config.merge_custom_config(bool?: false))
   end
 
-  it "handles booleans" do
+  test "booleans are correctly handled" do
     stub_custom_config(bool?: true) do
       assert_predicate(Config, :bool?)
     end
@@ -66,7 +67,7 @@ class ConfigTest < ActiveSupport::TestCase
     end
   end
 
-  it "merges numeric values" do
+  test "numeric values are merged" do
     assert_equal({ "numeric" => 456 }, Config.merge_custom_config("numeric" => "456"))
     assert_equal({ "numeric" => 456 }, Config.merge_custom_config("numeric" => "456.0"))
     assert_equal({ "numeric" => 456.789 }, Config.merge_custom_config("numeric" => "456.789"))

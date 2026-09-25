@@ -1,7 +1,7 @@
 require "test_helper"
 
 class ArtistSubmissionTest < ActiveSupport::TestCase
-  it "prevents saving with identical identifier for the same url" do
+  test "saving is prevented with identical identifier for the same url" do
     artist_url = create(:artist_url)
     create(:artist_submission, artist_url: artist_url, identifier_on_site: "foo")
 

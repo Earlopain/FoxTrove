@@ -27,7 +27,6 @@ end
 
 require_relative "../config/environment"
 require "rails/test_help"
-require "minitest-spec-rails"
 
 require "factory_bot"
 require "mocha/minitest"
