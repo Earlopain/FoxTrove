@@ -5,7 +5,7 @@ class JobStatsTest < ActiveJob::TestCase
     ActiveJob::QueueAdapters::GoodJobAdapter.new
   end
 
-  it "returns enqueued jobs" do
+  test "enqueued jobs are returned" do
     url1 = create(:artist_url)
     submission1, submission2 = create_list(:artist_submission, 2, artist_url: url1)
     file1, file2 = create_list(:submission_file, 2, artist_submission: submission1)
@@ -30,7 +30,7 @@ class JobStatsTest < ActiveJob::TestCase
     assert_equal([url1.id, url2.id].sort, stats.active_urls.sort)
   end
 
-  it "returns the correct values for currently running scraping jobs" do
+  test "currently running scraping jobs are returned" do
     url1, url2, url3 = create_list(:artist_url, 3)
     ScrapeArtistUrlJob.perform_later(url1)
     ScrapeArtistUrlJob.perform_later(url2)

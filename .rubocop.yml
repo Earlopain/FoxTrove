@@ -50,10 +50,10 @@ Metrics/BlockLength:
   AllowedMethods:
     - class_methods
     - concerning
-    - describe
     - define
     - factory
     - FactoryBot.define
+    - test
   Exclude:
     - config/routes.rb
     - test/factories/web/**/*

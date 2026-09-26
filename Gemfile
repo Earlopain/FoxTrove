@@ -29,7 +29,6 @@ end
 
 group :development, :test do
   gem "factory_bot", require: false
-  gem "minitest-spec-rails", require: false
   gem "mocha", require: false
   gem "webmock", require: false
 end
