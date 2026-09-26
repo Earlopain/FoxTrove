@@ -1,7 +1,7 @@
 <%= hideable_search(artists_path) do |f| %>
   <%= f.input :name %>
   <%= f.input :url_identifier %>
-  <%= f.input :site_type, label: "Site", collection: site_types_collection, include_blank: 'Any' %>
+  <%= f.input :site_type, label: "Site", collection: site_types_collection, include_blank: "Any" %>
 <% end %>
 
 <table class="table full-width">

@@ -1,5 +1,5 @@
 <%= hideable_search(artist_urls_path) do |f| %>
-  <%= f.input :site_type, label: "Site", collection: site_types_collection, include_blank: 'Any' %>
+  <%= f.input :site_type, label: "Site", collection: site_types_collection, include_blank: "Any" %>
   <%= f.input :url_identifier %>
   <%= f.input :api_identifier %>
   <%= f.input :missing_api_identifier, as: :checkbox %>
