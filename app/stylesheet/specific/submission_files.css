@@ -53,20 +53,27 @@
 
 .e6-posts-table {
   width: 100%;
-  border-collapse: separate;
-  border-spacing: 0;
+  border-collapse: collapse;
 
   .number {
     text-align: right;
   }
 
   tbody {
-    td {
-      text-align: left;
-      border-right: 0.25em solid transparent;
-      border-top: 0.1em solid transparent;
-      border-bottom: 0.1em solid transparent;
-      background-clip: padding-box;
+
+    tr {
+      border-top: 0.25em solid transparent;
+      border-bottom: 0.25em solid transparent;
+
+      td {
+        text-align: left;
+        border-right: 0.25em solid transparent;
+
+      }
+    }
+
+    tr.blank td::before {
+      content: "\200B";
     }
 
     tr:nth-child(odd) {

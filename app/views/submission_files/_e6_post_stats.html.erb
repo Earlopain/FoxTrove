@@ -3,7 +3,7 @@
   <tbody>
     <% if submission_file.relevant_e6_posts.empty? %>
       <tr class="blank">
-        <td colspan="5">&nbsp;</td>
+        <td colspan="5"></td>
       </tr>
     <% else %>
       <% submission_file.relevant_e6_posts.sort_by(&:similarity_score).reverse_each do |entry| %>
