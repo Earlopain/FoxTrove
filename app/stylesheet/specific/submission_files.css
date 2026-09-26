@@ -23,7 +23,7 @@
       outline: 5px solid green;
       outline-offset: -5px;
     }
-  
+
     .submission-file-full {
       max-width: 75vw;
       max-height: 75vh;
@@ -36,17 +36,47 @@
       top: 50%;
       transform: translate(-50%, -50%);
       border: 10px solid var(--color-table-section);
-      background:  var(--color-table-section);
+      background: var(--color-table-section);
     }
   }
 }
 
-.original { 
+.original {
   display: grid;
   grid-template-columns: auto 1fr;
   column-gap: 1em;
 
   .description {
     white-space: pre-line;
+  }
+}
+
+.e6-posts-table {
+  width: 100%;
+  border-collapse: collapse;
+
+  .number {
+    text-align: right;
+  }
+
+  tbody {
+    tr {
+      border-top: 0.25em solid transparent;
+      border-bottom: 0.25em solid transparent;
+
+      td {
+        text-align: left;
+        border-right: 0.25em solid transparent;
+
+      }
+    }
+
+    tr.blank td::before {
+      content: "\200B";
+    }
+
+    tr:nth-child(odd) {
+      background-color: var(--color-table-section-lighten-10);
+    }
   }
 }
