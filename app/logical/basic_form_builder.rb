@@ -4,9 +4,9 @@ class BasicFormBuilder < ActionView::Helpers::FormBuilder
     super
   end
 
-  def input(attribute, label: attribute, as: nil, **options)
+  def input(attribute, label: nil, as: nil, **options)
     as ||= :select if options[:collection]
-    label = label.to_s.titleize
+    label ||= attribute.to_s.titleize
     label += "?" if as == :checkbox
 
     @template.content_tag(:div, class: "input") do
