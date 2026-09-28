@@ -2,8 +2,14 @@
 <table class="e6-posts-table">
   <tbody>
     <% if submission_file.relevant_e6_posts.empty? %>
-      <tr class="blank">
-        <td colspan="5"></td>
+      <tr>
+        <td colspan="5" class="blank">
+          <% if submission_file.last_iqdb_checked_at %>
+            No E6 IQDB matches
+          <% else %>
+            ...E6 IQDB not yet queried...
+          <% end %>
+        </td>
       </tr>
     <% else %>
       <% submission_file.relevant_e6_posts.sort_by(&:similarity_score).reverse_each do |entry| %>

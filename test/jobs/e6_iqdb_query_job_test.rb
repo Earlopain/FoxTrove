@@ -18,4 +18,22 @@ class E6IqdbQueryJobTest < ActiveJob::TestCase
       end
     end
   end
+
+  test "the last queried timestamp is updated" do
+    submission_file = create(:submission_file_with_original, file_name: "1.webp", with_sample: true)
+    assert_nil submission_file.last_iqdb_checked_at
+
+    stub_e6_iqdb(build(:e6_iqdb_response, post_ids: [])) do
+      E6IqdbQueryJob.new.perform(submission_file)
+    end
+
+    updated_timestamp = submission_file.last_iqdb_checked_at
+    assert updated_timestamp
+
+    stub_e6_iqdb(build(:e6_iqdb_response, post_ids: [])) do
+      E6IqdbQueryJob.new.perform(submission_file)
+    end
+
+    assert_operator updated_timestamp, :<, submission_file.last_iqdb_checked_at
+  end
 end
