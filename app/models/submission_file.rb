@@ -193,6 +193,8 @@ class SubmissionFile < ApplicationRecord
         end
       end
     end
+
+    update(last_iqdb_checked_at: Time.current)
   end
 
   def existing_matches(post_id, is_exact_match:)

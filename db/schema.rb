@@ -222,6 +222,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_27_170844) do
     t.binary "iqdb_hash"
     t.timestamp "hidden_from_search_at"
     t.string "file_error"
+    t.timestamp "last_iqdb_checked_at"
     t.index ["artist_submission_id", "file_identifier"], name: "index_submission_files_on_artist_submission_id_and_file_id", unique: true
     t.index ["artist_submission_id"], name: "index_submission_files_on_artist_submission_id"
   end

@@ -71,10 +71,6 @@
       }
     }
 
-    tr.blank td::before {
-      content: "\200B";
-    }
-
     tr:nth-child(odd) {
       background-color: var(--color-table-section-lighten-10);
     }
