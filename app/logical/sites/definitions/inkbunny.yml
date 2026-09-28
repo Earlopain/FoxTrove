@@ -6,3 +6,7 @@ gallery_templates:
   - inkbunny.net/{site_artist_identifier}
 username_identifier_regex: "[a-zA-Z0-9]{1,22}"
 submission_template: https://inkbunny.net/s/{site_submission_identifier}
+image_domains:
+  - metapix.net
+download_headers:
+  Referer: https://inkbunny.net
