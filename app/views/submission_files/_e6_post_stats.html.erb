@@ -1,21 +1,32 @@
 <%# locals: (submission_file:) -%>
-<% submission_file.relevant_e6_posts.sort_by(&:similarity_score).reverse_each do |entry| %>
-  <div>
-  <%= link_to_external "##{entry.post_id}", "https://e621.net/posts/#{entry.post_id}", title: "Score: #{entry.score}" %>
-  <% if entry.post_is_deleted? %>
-    <span title="Deleted">!</span>
-  <% else %>
-    <%= link_to_external "E6D", entry.direct_url, title: "E6 Direct Link" %>
-  <% end %>
-  <% if entry.is_exact_match? %>
-    Exact
-  <% else %>
-    <span class="size-difference">
-      <%= number_to_human_size(entry.post_size - submission_file.size, precision: 2) %>
-    </span>
-    <span class="dimension-difference" title="<%= "#{entry.post_width}x#{entry.post_height}" %>">
-      x<%= (entry.post_width / submission_file.width.to_f).round(1) %>
-    </span>
-  <% end %>
-  </div>
-<% end %>
+<table class="e6-posts-table">
+  <tbody>
+    <% if submission_file.relevant_e6_posts.empty? %>
+      <tr class="blank">
+        <td colspan="5"></td>
+      </tr>
+    <% else %>
+      <% submission_file.relevant_e6_posts.sort_by(&:similarity_score).reverse_each do |entry| %>
+        <tr>
+          <td title="Similarity score"><%= entry.similarity_score.to_i %></td>
+          <td><%= link_to_external "##{entry.post_id}", "https://e621.net/posts/#{entry.post_id}", title: "Score: #{entry.score}" %></td>
+          <% if entry.post_is_deleted? %>
+            <td title="Deleted">!</td>
+          <% else %>
+            <td><%= link_to_external "D", entry.direct_url, title: "E6 Direct Link" %></td>
+          <% end %>
+          <% if entry.is_exact_match? %>
+            <td colspan="2" title="MD5 match">Exact</td>
+          <% else %>
+            <td class="size-difference number", title="Size difference">
+              <%= number_to_human_size(entry.post_size - submission_file.size, precision: 2) %>
+            </td>
+            <td class="dimension-difference number" title="<%= "#{entry.post_width}x#{entry.post_height}" %>">
+              x<%= (entry.post_width / submission_file.width.to_f).round(1) %>
+            </td>
+          <% end %>
+        </tr>
+      <% end %>
+    <% end %>
+  </tbody>
+</table>
