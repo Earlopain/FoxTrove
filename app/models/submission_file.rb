@@ -149,9 +149,9 @@ class SubmissionFile < ApplicationRecord
   end
 
   def update_e6_posts(priority: E6IqdbQueryJob::PRIORITIES[:manual_action])
-    e6_posts.destroy_all
+    destroy_e6_posts
     similar = IqdbProxy.query_submission_file(self).pluck(:submission_file)
-    similar.each { |s| s.e6_posts.destroy_all }
+    similar.each(&:destroy_e6_posts)
 
     E6IqdbQueryJob.set(priority: priority).perform_later(self)
     similar.each do |s|
@@ -163,7 +163,7 @@ class SubmissionFile < ApplicationRecord
   end
 
   def update_e6_posts!
-    e6_posts.destroy_all
+    destroy_e6_posts
 
     sample.open do |file|
       # FIXME: Error handling
@@ -195,6 +195,11 @@ class SubmissionFile < ApplicationRecord
     end
 
     update(last_iqdb_checked_at: Time.current)
+  end
+
+  def destroy_e6_posts
+    e6_posts.destroy_all
+    update(last_iqdb_checked_at: nil)
   end
 
   def existing_matches(post_id, is_exact_match:)

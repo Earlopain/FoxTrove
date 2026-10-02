@@ -86,6 +86,21 @@ class SubmissionFilesControllerTest < ActionDispatch::IntegrationTest
     assert_enqueued_jobs 2, only: E6IqdbQueryJob
   end
 
+  test "update e6 posts clears existing iqdb data immediately" do
+    sm = create(:submission_file_with_original, file_name: "1.jpg", with_sample: true, last_iqdb_checked_at: Time.current)
+    create(:e6_post, submission_file: sm)
+
+    assert_not_nil(sm.last_iqdb_checked_at)
+    assert_not_empty(sm.e6_posts)
+
+    stub_iqdb({}) do
+      post update_e6_posts_submission_file_path(sm)
+    end
+
+    assert_nil(sm.reload.last_iqdb_checked_at)
+    assert_empty(sm.e6_posts)
+  end
+
   test "update matching e6 posts" do
     post update_matching_e6_posts_submission_files_path(search: { artist_id: "123" })
 
