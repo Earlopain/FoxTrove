@@ -171,25 +171,25 @@ class SubmissionFile < ApplicationRecord
       break unless json.is_a? Array
 
       json.each do |entry|
-        post_id = entry["post"]["id"]
-        post_json = E6ApiClient.get_post(post_id)
+        post = entry["post"]
+        post_id = post["id"]
         post_entry = e6_posts.create(
-          post_id: post_json["id"],
-          post_width: post_json["files"]["original"]["width"],
-          post_height: post_json["files"]["original"]["height"],
-          post_size: post_json["files"]["meta"]["size"],
-          post_is_deleted: post_json["flags"]["deleted"],
-          post_score: post_json["stats"]["score"]["total"],
-          post_direct_url: post_json["files"]["original"]["url"],
-          post_json: post_json,
+          post_id: post_id,
+          post_width: post.dig("files", "original", "width"),
+          post_height: post.dig("files", "original", "height"),
+          post_size: post.dig("files", "meta", "size"),
+          post_is_deleted: post.dig("flags", "deleted"),
+          post_score: post.dig("stats", "score", "total"),
+          post_direct_url: post.dig("files", "original", "url"),
+          post_json: entry["post"],
           similarity_score: entry["score"],
-          is_exact_match: md5 == post_json["files"]["meta"]["md5"] || existing_matches(post_json["id"], is_exact_match: true).any?,
+          is_exact_match: md5 == post.dig("files", "meta", "md5") || existing_matches(post_id, is_exact_match: true).any?,
         )
 
         # Check if there are entries which were previously added
         # that are an exact visual match to this newly added exact match
         if post_entry.is_exact_match
-          existing_matches(post_json["id"], is_exact_match: false).find_each do |existing_match|
+          existing_matches(post_id, is_exact_match: false).find_each do |existing_match|
             existing_match.update(is_exact_match: true)
           end
         end

@@ -6,6 +6,7 @@ FactoryBot.define do
       post_ids.map do |iqdb_match_id|
         {
           score: 90,
+          post_id: iqdb_match_id,
           post: {
             id: iqdb_match_id,
           },
