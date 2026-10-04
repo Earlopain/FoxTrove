@@ -7,9 +7,7 @@ FactoryBot.define do
         {
           score: 90,
           post: {
-            posts: {
-              id: iqdb_match_id,
-            },
+            id: iqdb_match_id,
           },
         }
       end

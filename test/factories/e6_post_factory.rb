@@ -8,7 +8,7 @@ FactoryBot.define do
     post_size { 300.kilobytes }
     similarity_score { 95 }
     is_exact_match { false }
-    post_json { { "file" => { "url" => "https://localhost/image.png" }, "score" => { "total" => 50 } } }
+    post_json { { "files" => { "original" => { "url" => "https://localhost/image.png" } }, "stats" => { "score" => { "total" => 50 } } } }
     post_is_deleted { false }
   end
 end

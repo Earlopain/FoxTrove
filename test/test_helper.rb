@@ -52,13 +52,13 @@ module ActiveSupport
     end
 
     def stub_e6_iqdb(response, &)
-      stub = stub_request_once(:post, "https://e621.net/iqdb_queries.json", body: response.to_json, headers: { content_type: "application/json" })
+      stub = stub_request_once(:post, "https://e621.net/iqdb_queries.json?v2=true", body: response.to_json, headers: { content_type: "application/json" })
       stub_for_block(stub, &)
     end
 
     def stub_e6_post(response, &)
-      id = response[:post][:id]
-      stub = stub_request_once(:get, "https://e621.net/posts/#{id}.json", body: response.to_json, headers: { content_type: "application/json" })
+      id = response[:id]
+      stub = stub_request_once(:get, "https://e621.net/posts/#{id}.json?v2=true&mode=extended", body: response.to_json, headers: { content_type: "application/json" })
       stub_for_block(stub, &)
     end
 

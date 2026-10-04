@@ -5,11 +5,11 @@ module E6ApiClient
   def iqdb_query(file)
     # FIXME: Proper rate limiting
     sleep 2 unless Rails.env.test?
-    client.post("/iqdb_queries.json", form: { file: file }).raise_for_status.json
+    client.post("/iqdb_queries.json?v2=true", form: { file: file }).raise_for_status.json
   end
 
   def get_post(id)
-    client.get("/posts/#{id}.json").raise_for_status.json["post"]
+    client.get("/posts/#{id}.json?v2=true&mode=extended").raise_for_status.json
   end
 
   private
