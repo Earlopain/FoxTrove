@@ -27,7 +27,7 @@ FactoryBot.define do
 
       before(:create) do |submission_file, evaluator|
         submission_file.attach_original_from_file!(file_fixture(evaluator.file_name).open)
-        submission_file.sample.attach(io: file_fixture(evaluator.file_name).open, filename: "sample") if evaluator.with_sample
+        submission_file.generate_variants if evaluator.with_sample
       end
     end
   end
