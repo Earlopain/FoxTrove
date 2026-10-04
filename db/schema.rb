@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_28_101737) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_04_122644) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pgcrypto"
@@ -93,6 +93,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_28_101737) do
     t.datetime "updated_at", null: false
     t.jsonb "post_json", null: false
     t.boolean "post_is_deleted", null: false
+    t.string "post_direct_url"
+    t.integer "post_score", null: false
     t.index ["submission_file_id"], name: "index_e6_posts_on_submission_file_id"
   end
 

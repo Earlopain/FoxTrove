@@ -22,6 +22,11 @@ FactoryBot.define do
         flags: {
           deleted: false,
         },
+        stats: {
+          score: {
+            total: 50,
+          },
+        },
       }
     end
   end

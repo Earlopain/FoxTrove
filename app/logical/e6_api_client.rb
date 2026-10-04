@@ -12,6 +12,10 @@ module E6ApiClient
     client.get("/posts/#{id}.json?v2=true&mode=extended").raise_for_status.json
   end
 
+  def get_posts(ids)
+    client.get("/posts.json", params: { v2: true, mode: :extended, limit: 300, tags: "status:any id:#{ids.join(',')}" }).raise_for_status.json
+  end
+
   private
 
   def client

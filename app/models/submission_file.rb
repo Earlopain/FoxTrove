@@ -179,6 +179,8 @@ class SubmissionFile < ApplicationRecord
           post_height: post_json["files"]["original"]["height"],
           post_size: post_json["files"]["meta"]["size"],
           post_is_deleted: post_json["flags"]["deleted"],
+          post_score: post_json["stats"]["score"]["total"],
+          post_direct_url: post_json["files"]["original"]["url"],
           post_json: post_json,
           similarity_score: entry["score"],
           is_exact_match: md5 == post_json["files"]["meta"]["md5"] || existing_matches(post_json["id"], is_exact_match: true).any?,
