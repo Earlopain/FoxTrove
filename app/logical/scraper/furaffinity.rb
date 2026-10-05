@@ -20,7 +20,7 @@ module Scraper
           {
             id: single_submission_id,
             title: html.css(".submission-title").first.content.strip,
-            description: html.css(".submission-description").first.content.strip,
+            description: html.css(".submission-description-text").first.content.strip,
             created_at: submission_timestamp(html),
             url: "https:#{html.at_css('#submission-options a[href^="//d.furaffinity.net/"]')['href']}",
           },
