@@ -9,7 +9,7 @@
     "isolatedModules": true,
     "emitDecoratorMetadata": false,
     "declaration": false,
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
 
     "rootDir": "./../app/typescript",
 
@@ -29,6 +29,7 @@
     "noUncheckedIndexedAccess": true,
     "noImplicitOverride": true,
     "noPropertyAccessFromIndexSignature": true,
+    "noUncheckedSideEffectImports": false,
     "allowUnusedLabels": false,
     "allowUnreachableCode": false,
     "forceConsistentCasingInFileNames": true,

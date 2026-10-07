@@ -103,7 +103,7 @@ services:
     build:
       dockerfile_inline: |
         FROM node:24-alpine3.23
-        RUN npm install typescript@5.9.3 -g
+        RUN npm install typescript@7.0.2 -g
         WORKDIR /app
     volumes:
       - .:/app
