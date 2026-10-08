@@ -1,7 +1,6 @@
 extends: default
 
-ignore: |
-  config/foxtrove_custom_config.yml
+ignore-from-file: .gitignore
 
 rules:
   document-start: disable

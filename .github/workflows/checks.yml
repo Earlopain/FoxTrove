@@ -93,17 +93,18 @@ jobs:
       - name: Run Rubocop
         run: bundle exec rubocop --format github
 
-  docker-checks:
+  lint:
     runs-on: ubuntu-latest
     if: github.event_name != 'schedule' && github.event_name != 'workflow_dispatch'
 
-    name: Run ${{ matrix.service }}
+    name: Run ${{ matrix.task }}
     strategy:
       fail-fast: false
       matrix:
-        service: [yamllint, csslint, tslint]
+        task: [lint:css, lint:ts, lint:yaml]
 
     steps:
       - uses: actions/checkout@v7
-      - name: Run ${{ matrix.service }}
-        run: docker compose run ${{ matrix.service }}
+      - uses: jdx/mise-action@v5
+      - name: Run ${{ matrix.task }}
+        run: mise ${{ matrix.task }}
