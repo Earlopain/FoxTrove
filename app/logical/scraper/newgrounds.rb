@@ -1,7 +1,7 @@
 module Scraper
   class Newgrounds < BufferedScraper
     STATE = "page"
-    COOKIE_NAME = "vmkIdu5l8m"
+    COOKIE_NAME = "ng_remember"
 
     def initialize(artist_url)
       super
@@ -74,7 +74,7 @@ module Scraper
       image_urls += media_object.css("[data-action='view-image'][href]").map { |e| e.attributes["href"].value }
 
       # Comic submissions
-      # https://www.newgrounds.com/art/view/ethandoesathing/legend-of-arcana-ch-1-pages
+      # https://www.newgrounds.com/art/view/pokyuii/starhell-chapter-1
       image_data, = html.to_s.scan(/imageData = (\[[\s\S]*\]);/m).first
       if image_data
         image_urls += JSON.parse(image_data).pluck("image")
@@ -95,9 +95,9 @@ module Scraper
     def fetch_cookie
       SeleniumWrapper.driver do |driver|
         driver.navigate.to "https://www.newgrounds.com/passport"
-        driver.wait_for_element(css: "input[name='username']").send_keys Config.newgrounds_user
-        driver.find_element(css: "input[name='password']").send_keys Config.newgrounds_pass
-        driver.find_element(css: "button.PassportLoginBtn").click
+        driver.wait_for_element(css: "form input[type='text']").send_keys Config.newgrounds_user
+        driver.find_element(css: "form input[type='password']").send_keys Config.newgrounds_pass
+        driver.find_element(css: "form button[type='submit']").click
         driver.wait_for_cookie(COOKIE_NAME)
       end
     end
