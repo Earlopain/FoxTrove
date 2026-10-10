@@ -80,19 +80,6 @@ jobs:
         name: Upload Coverage
         uses: codecov/codecov-action@v7
 
-  rubocop:
-    runs-on: ubuntu-latest
-    if: github.event_name != 'schedule' && github.event_name != 'workflow_dispatch'
-
-    steps:
-      - uses: actions/checkout@v7
-      - uses: ruby/setup-ruby@v1
-        with:
-          bundler-cache: true
-
-      - name: Run Rubocop
-        run: bundle exec rubocop --format github
-
   lint:
     runs-on: ubuntu-latest
     if: github.event_name != 'schedule' && github.event_name != 'workflow_dispatch'
@@ -101,7 +88,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        task: ["lint:css", "lint:ts", "lint:yaml"]
+        task: ["lint:css", "lint:rb", "lint:ts", "lint:yaml"]
 
     steps:
       - uses: actions/checkout@v7

@@ -5,8 +5,8 @@ module ApplicationHelper
     tag.span value.to_fs(:long), datetime: value.to_fs(:iso8601), class: "time-ago"
   end
 
-  def selenium_path
-    "#{request.scheme}://#{request.host}:#{DockerEnv.exposed_vnc_port}?autoconnect=1"
+  def selenium_vnc_url
+    "#{DockerEnv.selenium_vnc_url}?autoconnect=1"
   end
 
   # Properly support the method keyword argument

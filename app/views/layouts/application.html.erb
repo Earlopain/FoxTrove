@@ -25,7 +25,7 @@
         <% end %>
         <div id="selenium-notice" class="<%= "hidden" unless SeleniumWrapper.active? %>">
           Selenium has been launched, you may need to solve a captcha.
-          <%= link_to "Click here", selenium_path, target: "_blank", rel: "noopener" %> to view.
+          <%= link_to "Click here", selenium_vnc_url, target: "_blank", rel: "noopener" %> to view.
         </div>
         <%= yield %>
       </div>

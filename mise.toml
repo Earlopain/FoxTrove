@@ -1,10 +1,49 @@
 [tools]
+ruby = "4.0.7"
+
 node = "24"
 "npm:typescript" = "7.0.2"
 "npm:stylelint" = "17.16.0"
 "npm:stylelint-config-standard" = "40.0.0"
 
 yamlfmt = "0.21.0"
+
+[env]
+_.file = ".env"
+
+FOXTROVE_DATA_PATH = { default = "./data" }
+VIPS_WARNING = "0"
+
+EXPOSED_SERVER_PORT = { default = "9000" }
+EXPOSED_POSTGRES_PORT = { default = "34518" }
+EXPOSED_SELENIUM_VNC_PORT = { default = "7900" }
+
+[task_templates.docker]
+env = {
+  IQDB_URL = "http://iqdb:5588",
+  SELENIUM_URL = "http://selenium:4444",
+  SELENIUM_VNC_URL = "http://localhost:{{ env.EXPOSED_SELENIUM_VNC_PORT }}",
+}
+
+[tasks."docker:start"]
+description = "Bring up all the necessary docker containers"
+extends = "docker"
+run = "docker compose up foxtrove iqdb selenium"
+
+[tasks."docker:run"]
+description = "Run a command in the docker container containing the rails application"
+extends = "docker"
+run = "docker compose run --rm foxtrove"
+
+[tasks."docker:test"]
+description = "Run rails tests in docker"
+extends = "docker"
+run = "docker compose run --rm foxtrove bin/rails test"
+
+[tasks."docker"]
+description = "Run a docker compose command"
+extends = "docker"
+run = "docker compose"
 
 [tasks.lint]
 description = "Run all linting tasks"
@@ -13,6 +52,10 @@ depends = ["lint:*"]
 [tasks."lint:css"]
 description = "Run stylelint"
 run = "stylelint --config .github/.stylelintrc.json --config-basedir \"$(mise where npm:stylelint-config-standard)\" 'app/**/*.css'"
+
+[tasks."lint:rb"]
+description = "Run rubocop"
+run = "bundle exec rubocop"
 
 [tasks."lint:ts"]
 description = "Run typescript (tsc)"
