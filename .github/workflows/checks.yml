@@ -1,6 +1,6 @@
 name: Checks
 
-on: # yamllint disable-line rule:truthy
+on:
   push:
     branches:
       - master
@@ -101,7 +101,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        task: [lint:css, lint:ts, lint:yaml]
+        task: ["lint:css", "lint:ts", "lint:yaml"]
 
     steps:
       - uses: actions/checkout@v7

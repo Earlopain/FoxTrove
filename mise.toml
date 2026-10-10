@@ -4,8 +4,7 @@ node = "24"
 "npm:stylelint" = "17.16.0"
 "npm:stylelint-config-standard" = "40.0.0"
 
-python = "3.14"
-yamllint = "1.38.0"
+yamlfmt = "0.21.0"
 
 [tasks.lint]
 description = "Run all linting tasks"
@@ -20,5 +19,5 @@ description = "Run typescript (tsc)"
 run = "tsc --noEmit -p .github/tsconfig.json"
 
 [tasks."lint:yaml"]
-description = "Run yamllint"
-run = "yamllint -c .github/yamllint.yml -s ."
+description = "Run yamlfmt"
+run = "yamlfmt -lint -conf .github/yamlfmt.yml ."
