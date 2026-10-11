@@ -5,7 +5,7 @@ class E6PostJsonFields < ActiveRecord::Migration[8.1]
         if E6Post.where("post_json->'files' is null").any?
           raise StandardError, <<~MSG
             E6 post response format has changed. Run \
-            docker compose run --rm foxtrove bin/rails r db/refresh_post_response_format.rb \
+            mise docker:run bin/rails r db/refresh_post_response_format.rb \
             before executing this migration.
           MSG
         end

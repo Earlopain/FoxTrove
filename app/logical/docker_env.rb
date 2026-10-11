@@ -1,16 +1,16 @@
 module DockerEnv
   module_function
 
-  def exposed_vnc_port
-    ENV.fetch("EXPOSED_VNC_PORT")
-  end
-
   def iqdb_url
     ENV.fetch("IQDB_URL")
   end
 
   def selenium_url
     ENV.fetch("SELENIUM_URL")
+  end
+
+  def selenium_vnc_url
+    ENV.fetch("SELENIUM_VNC_URL")
   end
 
   def specifies_postgres_version?

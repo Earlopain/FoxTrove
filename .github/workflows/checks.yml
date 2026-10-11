@@ -31,6 +31,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v7
+      - uses: jdx/mise-action@v5
 
       - if: env.BLEEDING_EDGE == 'true'
         uses: ruby/setup-ruby@v1
@@ -55,7 +56,7 @@ jobs:
             BASE_IMAGE=${{ env.BLEEDING_EDGE == 'true' && 'ghcr.io/docker-ruby-nightly/ruby:alpine3.24-nightly' || ''}}
 
       - name: Pull
-        run: docker compose pull --ignore-buildable
+        run: mise docker pull --ignore-buildable
 
       - name: Set env file
         run: |
@@ -68,13 +69,13 @@ jobs:
       # Set `BUNDLED WITH` to the version of the running ruby so it uses the latest dev version
       - if: env.BLEEDING_EDGE == 'true'
         name: Correct `BUNDLED WITH`
-        run: docker compose run foxtrove bundle lock --update --bundler
+        run: mise docker:run bundle lock --update --bundler
 
       - name: Create DB
-        run: docker compose run foxtrove bin/setup
+        run: mise docker:run bin/setup
 
       - name: Run Tests
-        run: docker compose run -e CI -e BLEEDING_EDGE tests
+        run: mise docker run -e CI -e BLEEDING_EDGE foxtrove bin/rails test
 
       - if: env.BLEEDING_EDGE == 'false'
         name: Upload Coverage
