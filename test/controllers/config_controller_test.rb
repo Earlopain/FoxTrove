@@ -34,13 +34,13 @@ class ConfigControllerTest < ActionDispatch::IntegrationTest
       stub_const(Config, :CUSTOM_PATH, Pathname.new(f.path)) do
         put modify_config_index_path, params: { config: {
           files_per_page: "75",
-          furaffinity_user: "foo",
+          furaffinity_cookie_a: "foo",
           log_scraper_requests: "false",
         } }
 
         assert_redirected_to(config_index_path)
         assert_equal(75, Config.files_per_page)
-        assert_equal("foo", Config.furaffinity_user)
+        assert_equal("foo", Config.furaffinity_cookie_a)
         assert_not_predicate(Config, :log_scraper_requests?)
       end
     end
