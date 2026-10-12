@@ -1,6 +1,5 @@
 module Scraper
-  # https://www.deviantart.com/developers/http/v1/20210526
-  # https://www.deviantart.com/developers/console
+  # https://deviantart.readme.io/docs/getting-started
   class Deviantart < Base
     STATE = "next_offset"
     API_PREFIX = "https://www.deviantart.com/api/v1/oauth2"
@@ -10,7 +9,7 @@ module Scraper
       @next_offset = nil
     end
 
-    # https://www.deviantart.com/developers/http/v1/20210526/gallery_all/bdb19761e6debcc6609356d6b78f4a5d
+    # https://deviantart.readme.io/reference/gallery_all
     def fetch_next_batch
       json = make_api_call("/gallery/all", {
         username: url_identifier,
@@ -40,12 +39,12 @@ module Scraper
       s
     end
 
-    # https://www.deviantart.com/developers/http/v1/20210526/deviation_download/bed6982b88949bdb08b52cd6763fcafd
+    # https://deviantart.readme.io/reference/deviation_download
     def get_download_link(data)
       make_api_call("/deviation/download/#{data[0]}")["src"]
     end
 
-    # https://www.deviantart.com/developers/http/v1/20210526/user_profile/0b06f6d6c8aa25b33b52f836e53f4f65
+    # https://deviantart.readme.io/reference/user_profile
     def fetch_api_identifier
       json = make_api_call("/user/profile/#{url_identifier}")
       return nil if json["error_code"] == 2
@@ -57,25 +56,27 @@ module Scraper
 
     def make_api_call(endpoint, params = {})
       fetch_json("#{API_PREFIX}#{endpoint}",
-        params: {
-          access_token: access_token,
-          **params,
-        },
+        params: params,
         headers: {
           "dA-minor-version": "20210526",
+          "Authorization": "Bearer #{access_token}",
         },
       )
     end
 
-    # https://www.deviantart.com/developers/authentication
+    # https://deviantart.readme.io/docs/authentication
     def access_token
-      redirect_uri = "http://localhost"
+      redirect_uri = "https://localhost"
+      code_verifier = SecureRandom.base36(46)
+
       code = SeleniumWrapper.driver do |driver|
         autorize_params = {
           response_type: "code",
-          client_id: Config.deviantart_client_id,
+          client_id: Config.deviantart_client_id_v2,
           redirect_uri: redirect_uri,
           scope: "browse",
+          code_challenge: Base64.urlsafe_encode64(Digest::SHA256.digest(code_verifier), padding: false),
+          code_challenge_method: "S256",
         }
         driver.navigate.to "https://www.deviantart.com/oauth2/authorize?#{autorize_params.to_query}"
 
@@ -99,11 +100,12 @@ module Scraper
         driver.wait_for { Addressable::URI.parse(driver.current_url).query_values&.dig("code") }
       end
       response = fetch_json("https://www.deviantart.com/oauth2/token", params: {
-        client_id: Config.deviantart_client_id,
-        client_secret: Config.deviantart_client_secret,
+        client_id: Config.deviantart_client_id_v2,
+        client_secret: Config.deviantart_client_secret_v2,
         grant_type: "authorization_code",
         code: code,
         redirect_uri: redirect_uri,
+        code_verifier: code_verifier,
       })
       response["access_token"]
     end
