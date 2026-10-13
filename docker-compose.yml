@@ -1,9 +1,3 @@
-x-environment: &common-env
-  IQDB_URL: ${IQDB_URL:?}
-  SELENIUM_URL: ${SELENIUM_URL:?}
-  SELENIUM_VNC_URL: ${SELENIUM_VNC_URL:?}
-  VIPS_WARNING: ${VIPS_WARNING:?}
-
 services:
   foxtrove:
     build:
@@ -14,7 +8,10 @@ services:
         DOCKER_RUN_AS_USER: ${DOCKER_RUN_AS_USER:-}
     image: foxtrove
     environment:
-      <<: *common-env
+      IQDB_URL: ${IQDB_URL:?}
+      SELENIUM_URL: ${SELENIUM_URL:?}
+      SELENIUM_VNC_URL: ${SELENIUM_VNC_URL:?}
+      VIPS_WARNING: ${VIPS_WARNING:?}
       RAILS_SERVER_EXEC: bin/rails server -p 9000 -b 0.0.0.0 --pid /tmp/server.pid
       ESBUILD_EXEC: >-
         esbuild app/typescript/application.ts
