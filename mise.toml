@@ -12,6 +12,7 @@ yamlfmt = "0.21.0"
 _.file = ".env"
 
 FOXTROVE_DATA_PATH = { default = "./data" }
+FOXTROVE_DATA_PATH_HOST = "{{ env.FOXTROVE_DATA_PATH }}"
 VIPS_WARNING = { default = "0" }
 
 EXPOSED_SERVER_PORT = { default = "9000" }
@@ -23,6 +24,7 @@ env = {
   IQDB_URL = "http://iqdb:5588",
   SELENIUM_URL = "http://selenium:4444",
   SELENIUM_VNC_URL = "http://localhost:{{ env.EXPOSED_SELENIUM_VNC_PORT }}",
+  FOXTROVE_DATA_PATH_HOST = "/data",
 }
 
 [tasks."docker:start"]

@@ -4,4 +4,4 @@ test:
 
 local:
   service: Disk
-  root: <%= Rails.root.join("public/storage") %>
+  root: <%= Pathname(ENV.fetch("FOXTROVE_DATA_PATH_HOST")).join("active_storage") %>

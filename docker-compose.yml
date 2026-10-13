@@ -11,6 +11,7 @@ services:
       IQDB_URL: ${IQDB_URL:?}
       SELENIUM_URL: ${SELENIUM_URL:?}
       SELENIUM_VNC_URL: ${SELENIUM_VNC_URL:?}
+      FOXTROVE_DATA_PATH_HOST: ${FOXTROVE_DATA_PATH_HOST:?}
       VIPS_WARNING: ${VIPS_WARNING:?}
       RAILS_SERVER_EXEC: bin/rails server -p 9000 -b 0.0.0.0 --pid /tmp/server.pid
       ESBUILD_EXEC: >-
@@ -23,7 +24,7 @@ services:
       GOOD_JOB_EXEC: bundle exec good_job --queues=scraping:1;e6_iqdb:1;variant_generation:5;default:1;submission_download:5
     volumes:
       - .:/app
-      - ${FOXTROVE_DATA_PATH:?}/active_storage:/app/public/storage
+      - ${FOXTROVE_DATA_PATH:?}/active_storage:${FOXTROVE_DATA_PATH_HOST:?}/active_storage
     depends_on:
       postgres:
         condition: ${POSTGRS_DEPENDS_CONDITION:-service_started}
