@@ -28,7 +28,8 @@ services:
       - .:/app
       - ${FOXTROVE_DATA_PATH:?}/active_storage:/app/public/storage
     depends_on:
-      - postgres
+      postgres:
+        condition: ${POSTGRS_DEPENDS_CONDITION:-service_started}
     ports:
       - ${EXPOSED_SERVER_PORT:?}:9000
     command: foreman start --color

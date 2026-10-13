@@ -38,6 +38,7 @@ run = "docker compose run --rm foxtrove"
 [tasks."docker:test"]
 description = "Run rails tests in docker"
 extends = "docker"
+env.POSTGRS_DEPENDS_CONDITION = "service_healthy"
 run = "docker compose run --rm foxtrove bin/rails test"
 
 [tasks."docker"]
