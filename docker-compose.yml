@@ -8,6 +8,7 @@ services:
         DOCKER_RUN_AS_USER: ${DOCKER_RUN_AS_USER:-}
     image: foxtrove
     environment:
+      DATABASE_URL: ${DATABASE_URL:?}
       IQDB_URL: ${IQDB_URL:?}
       SELENIUM_URL: ${SELENIUM_URL:?}
       SELENIUM_VNC_URL: ${SELENIUM_VNC_URL:?}

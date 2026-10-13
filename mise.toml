@@ -21,6 +21,7 @@ EXPOSED_SELENIUM_VNC_PORT = { default = "7900" }
 
 [task_templates.docker]
 env = {
+  DATABASE_URL = "postgresql://postgres:5432",
   IQDB_URL = "http://iqdb:5588",
   SELENIUM_URL = "http://selenium:4444",
   SELENIUM_VNC_URL = "http://localhost:{{ env.EXPOSED_SELENIUM_VNC_PORT }}",
