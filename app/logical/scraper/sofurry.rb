@@ -73,7 +73,7 @@ module Scraper
         @otp_pad = json["newPadding"]
         @otp_salt = json["salt"]
       end
-      raise StandartError, "failed to authenticate"
+      raise StandardError, "failed to authenticate"
     end
   end
 end

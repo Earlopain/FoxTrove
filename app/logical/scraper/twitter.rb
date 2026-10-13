@@ -119,7 +119,7 @@ module Scraper
       tweets = item_content.reject { |content| content["promotedMetadata"] }.filter_map { |content| content.dig("tweet_results", "result") }
       # Tweets deleted by the author
       tweets = tweets.reject { |tweet| tweet["__typename"] == "TweetTombstone" }
-      # Tweets without downloadable content, like embeded youtube videos
+      # Tweets without downloadable content, like embedded youtube videos
       tweets = tweets.select { |tweet| tweet.dig("legacy", "extended_entities", "media") }
       cursor_entry = entries_by_type(timeline_add_entries, "TimelineTimelineCursor").find { |cursor| cursor["cursorType"] == "Bottom" }
       [tweets, cursor_entry]

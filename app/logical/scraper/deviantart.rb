@@ -70,7 +70,7 @@ module Scraper
       code_verifier = SecureRandom.base36(46)
 
       code = SeleniumWrapper.driver do |driver|
-        autorize_params = {
+        authorize_params = {
           response_type: "code",
           client_id: Config.deviantart_client_id_v2,
           redirect_uri: redirect_uri,
@@ -78,7 +78,7 @@ module Scraper
           code_challenge: Base64.urlsafe_encode64(Digest::SHA256.digest(code_verifier), padding: false),
           code_challenge_method: "S256",
         }
-        driver.navigate.to "https://www.deviantart.com/oauth2/authorize?#{autorize_params.to_query}"
+        driver.navigate.to "https://www.deviantart.com/oauth2/authorize?#{authorize_params.to_query}"
 
         # Move from signup to login
         driver.wait_for_element(xpath: "//*[text()='Log In']").click

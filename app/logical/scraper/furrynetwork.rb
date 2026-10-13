@@ -11,7 +11,7 @@ module Scraper
     end
 
     def fetch_next_batch
-      # This fetches EVERYTHING. Terribly sorry about that but I can't circumentvent the login captcha
+      # This fetches EVERYTHING. Terribly sorry about that but I can't circumvent the login captcha
       json = make_request("/character/#{url_identifier}/artwork")
       end_reached
       json.sort_by do |entry|

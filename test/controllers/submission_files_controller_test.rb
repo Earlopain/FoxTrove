@@ -32,7 +32,7 @@ class SubmissionFilesControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test "modify backlock add" do
+  test "modify backlog add" do
     sm = create(:submission_file)
     put modify_backlog_submission_file_path(sm, type: "add")
 
@@ -40,7 +40,7 @@ class SubmissionFilesControllerTest < ActionDispatch::IntegrationTest
     assert sm.reload.added_to_backlog_at
   end
 
-  test "modify backlock remove" do
+  test "modify backlog remove" do
     sm = create(:submission_file, added_to_backlog_at: Time.current)
     put modify_backlog_submission_file_path(sm, type: "remove")
 
