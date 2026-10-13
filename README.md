@@ -4,7 +4,7 @@
 
 A content aggregator for a variety of sites to make uploading to e6 easier. Created because Saucenao doesn't support all the sites I want it to.
 
-You provide links where the artist is uploading their content to. The content will then be scraped of those sites and put into iqdb (a reverse image search software). It also checks e6' version of iqdb to provide you information on if submissions are already uploaded, or if the current upload has a better version available elsewere.
+You provide links where the artist is uploading their content to. The content will then be scraped of those sites and put into iqdb (a reverse image search software). It also checks e6's version of iqdb to provide you information on if submissions are already uploaded, or if the current upload has a better version available elsewhere.
 
 It's also useful to clean up `source:none artist_name` searches.
 
@@ -14,11 +14,11 @@ Image dimensions and filesize are displayed, links to the original submission, t
 
 ![Larger submission example](screenshots/2.png)
 
-The current upload on e6 is only 0.3x of the dimensions from the twitter post. It's also 1.83MB larger, a prime example for replacement. Please check manually if the file is actually superior, just because the filessize is greater doesn't mean that the visual quality is too. 
+The current upload on e6 is only 0.3x of the dimensions from the Twitter post. It's also 1.83MB larger, a prime example for replacement. Please check manually if the file is actually superior, just because the filesize is greater doesn't mean that the visual quality is too. 
 
 ![Non-uploaded submissions from kenket](screenshots/3.png)
 
-You can also search for non-uploaded submission for artists. How well this works depends on the artist and page. Some artists don't seperate their personal and art accounts and post irrelevant content which would also appear in this list.
+You can also search for non-uploaded submission for artists. How well this works depends on the artist and page. Some artists don't separate their personal and art accounts and post irrelevant content which would also appear in this list.
 
 ## Currently supported sites
 <!--- Automatically linted. You can add notes in brackets (see tumblr) -->
@@ -50,18 +50,18 @@ You can also search for non-uploaded submission for artists. How well this works
 
 ### Tumblr
 
-Tumblr doesn't expose the full resolution image through normal means. Getting full resolution on tumblr is a bit more compicated. Here's what you need to do, and what is done for you. Manual steps are marked with (*)
+Tumblr doesn't expose the full resolution image through normal means. Getting full resolution on Tumblr is a bit more complicated. Here's what you need to do, and what is done for you. Manual steps are marked with (*)
 1. Reblog every post of the blog
 1. (*) Download an archive of your blog
 1. (*) Upload the archive through the "Archive Importer"
 1. (*) Remove drafts from your blog with the [Mega-Editor](https://www.tumblr.com/mega-editor/draft/)
 1. Import full resolution files from the uploaded archive
 
-The first step starts when you add a tumblr url to an artist. Instead of downloading the image like all other scrapers, it reblogs them.
+The first step starts when you add a Tumblr url to an artist. Instead of downloading the image like all other scrapers, it reblogs them.
 
 ## Captchas
 
-A few sites throw captchas at you when trying to login through an automated browser. You will need to solve these captchas manually. Click on the `Selenium` link and connect to see what is happening inside the automated browser. Solve captchas as needed when adding artist urls or enqueuing new updates.
+A few sites throw captchas at you when trying to log in through an automated browser. You will need to solve these captchas manually. Click on the `Selenium` link and connect to see what is happening inside the automated browser. Solve captchas as needed when adding artist urls or enqueuing new updates.
 
 ## Configuration
 
@@ -89,7 +89,7 @@ but you still need to enable WSL integration in Docker Desktop under "Settings >
 1. Run `mise docker:run bin/setup`.
 1. Run `mise docker:start`. The container is now available at `http://localhost:9000`. A few config options are mandatory, you will be notified of them when accessing the site. See [Configuration](#configuration) on how to set them.
 
-This project is only meant to run locally on your machine. You may host it somewhere and make it accessible to others, but be aware that there are no user accounts or fine grained permissions. Everyone can do anyhting.
+This project is only meant to run locally on your machine. You may host it somewhere and make it accessible to others, but be aware that there are no user accounts or fine-grained permissions. Everyone can do anything.
 
 ### Development tools
 

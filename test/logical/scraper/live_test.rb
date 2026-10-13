@@ -8,7 +8,7 @@ module Scraper
       setup do
         WebMock.disable!
         Config.unstub(:custom_config)
-        # Supress api identifier fetching during callbacks
+        # Suppress api identifier fetching during callbacks
         ArtistUrl.any_instance.stubs(:scraper_enabled?).returns(false)
       end
 

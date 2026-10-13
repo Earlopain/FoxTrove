@@ -8,7 +8,7 @@ module IqdbProxy
   extend self
 
   # Puts the passed submission_file into the iqdb server
-  # This can both insert and update an submission
+  # This can both insert and update a submission
   def update_submission(submission_file)
     response = client.post("/images/#{submission_file.id}", json: get_channels_data(submission_file.file_path_for(:sample)))
     raise StandardError, "iqdb request failed" if response.status != 200

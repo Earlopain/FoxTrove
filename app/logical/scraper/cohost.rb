@@ -66,7 +66,7 @@ module Scraper
 
     # https://wiki.archiveteam.org/index.php?title=Internet_Archive
     # This does not use https://archive.org/wayback/available because that
-    # is totally unrealiable and occasionally returns no snapshot (rate limit?).
+    # is totally unreliable and occasionally returns no snapshot (rate limit?).
     # Using it would be nice since it filters out redirects and other non-successful
     # status codes. Instead, use the timestamp when scraping started, that should
     # prevent catching snapshots in the future where the site now redirects.

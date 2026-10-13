@@ -52,7 +52,7 @@ module Scraper
     end
 
     # Make a network request to the service and get an array of entries.
-    # Can also return an emptry arrray, scraping is only stopped once end_reached
+    # Can also return an empty array, scraping is only stopped once end_reached
     # is called.
     def fetch_next_batch
       raise NotImplementedError
