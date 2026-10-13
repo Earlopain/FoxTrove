@@ -1,6 +1,8 @@
 <h1>General Settings</h1>
 
 <%= form_with(scope: :config, url: modify_config_index_path, method: :put) do |f| %>
+  <%= f.input :e6_user, value: Config.e6_user %>
+  <%= f.input :e6_apikey, value: Config.e6_apikey %>
   <%= f.input :files_per_page, value: Config.files_per_page %>
   <%= f.input :similarity_cutoff, value: Config.similarity_cutoff %>
   <%= f.input :log_scraper_requests, as: :select, selected: Config.log_scraper_requests? %>
