@@ -31,7 +31,7 @@ export default class MultiselectMode {
     const elements = {
       hide_many: document.getElementById("hide-selected"),
       unhide_many: document.getElementById("unhide-selected"),
-      backlog_many: document.getElementById("backlock-selected"),
+      backlog_many: document.getElementById("backlog-selected"),
       unbacklog_many: document.getElementById("unbacklog-selected"),
       enqueue_many: document.getElementById("enqueue-selected"),
     };
