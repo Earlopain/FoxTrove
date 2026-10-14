@@ -22,7 +22,7 @@
   <tbody>
     <% Sites.scraper_definitions.each do |definition| %>
       <tr>
-        <td><%= definition.display_name %></td>
+        <td><%= icon_url(definition.site_type) %> <%= definition.display_name %></td>
         <td><%= link_to "Edit", config_path(definition.site_type) %></td>
         <td><%= definition_status(definition) %></td>
       </tr>

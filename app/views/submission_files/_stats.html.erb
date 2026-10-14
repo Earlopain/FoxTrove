@@ -8,7 +8,7 @@
     </div>
   <% end %>
   <div class="submission-file-stats">
-    <%= site_icon artist_url %>
+    <%= artist_url_icon artist_url %>
     <%= "#{submission_file.width}x#{submission_file.height}" %>, 
     <%= number_to_human_size submission_file.size %>, 
     <%= Marcel::TYPE_EXTS[submission_file.content_type].first.upcase %>

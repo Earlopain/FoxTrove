@@ -11,10 +11,14 @@ module ArtistUrlHelper
     Sites.definitions.map { |definition| [definition.display_name, definition.site_type] }.sort
   end
 
-  def site_icon(artist_url)
+  def icon_url(site_type)
     # NOTE: Would be neat to be able to use attr here but no browser supports this at the moment
-    icon_index = ArtistUrl.site_types[artist_url.site_type]
-    icon = tag.span(class: "site-icon", style: "--icon-index: #{icon_index};")
+    icon_index = ArtistUrl.site_types[site_type]
+    tag.span(class: "site-icon", style: "--icon-index: #{icon_index};")
+  end
+
+  def artist_url_icon(artist_url)
+    icon = icon_url(artist_url.site_type)
     link_to(icon, gallery_url(artist_url), title: "#{artist_url.site.display_name} - #{artist_url.unescaped_url_identifier}")
   end
 
