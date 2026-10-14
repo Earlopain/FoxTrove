@@ -1,19 +1,13 @@
-.site-icon-wrapper {
-  --_icon-size: var(--icon-size, 1rem);
-  font-size: var(--_icon-size);
-  white-space: nowrap;
+.site-icon {
+  vertical-align: middle;
 
-  .site-icon {
-    vertical-align: middle;
-
-    &::before {
-      content: "";
-      width: var(--_icon-size);
-      height: var(--_icon-size);
-      display: inline-block;
-      background: url("../../../public/icons.png");
-      background-size: var(--_icon-size);;
-      background-position: 0 calc(var(--icon-index) * var(--_icon-size) * -1);
-    }
+  &::before {
+    content: "";
+    width: 1em;
+    height: 1em;
+    display: inline-block;
+    background: url("../../../public/icons.png");
+    background-size: 1em;
+    background-position: 0 calc(var(--icon-index) * -1em);
   }
 }
