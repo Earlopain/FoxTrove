@@ -13,11 +13,11 @@ module SubmissionFileHelper
 
   def original_file_tag(submission_file)
     url = submission_file.url_for(:original)
-    dimensions = { width: submission_file.width, height: submission_file.height }
+    style = "--width: #{submission_file.width}px; --aspect-ratio: #{submission_file.width.to_f / submission_file.height}"
     if submission_file.original.content_type.in? ["video/mp4", "video/webm", "video/quicktime"]
-      video_tag(url, controls: false, class: "submission-file-full hidden", **dimensions)
+      video_tag(url, controls: false, class: "submission-file-full hidden", style: style)
     else
-      image_tag(url, loading: "lazy", class: "submission-file-full hidden", **dimensions)
+      image_tag(url, loading: "lazy", class: "submission-file-full hidden", style: style)
     end
   end
 end

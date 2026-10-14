@@ -25,9 +25,8 @@
     }
 
     .submission-file-full {
-      max-width: 75vw;
-      max-height: 75vh;
-      width: auto;
+      aspect-ratio: var(--aspect-ratio);
+      width: min(var(--width), 75vw, calc(75vh * var(--aspect-ratio)));
       height: auto;
       object-fit: contain;
       z-index: 2;
