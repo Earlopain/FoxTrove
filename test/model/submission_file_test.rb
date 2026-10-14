@@ -155,7 +155,8 @@ class SubmissionFileTest < ActiveSupport::TestCase
     end
 
     test "results for not uploaded" do
-      sm1, sm2, sm3 = create_list(:submission_file, 3)
+      sm1, sm2, sm3, _sm4 = create_list(:submission_file, 4)
+      sm3.update!(last_iqdb_checked_at: Time.current)
       create_list(:e6_post, 2, submission_file: sm1)
       create(:e6_post, submission_file: sm2)
 

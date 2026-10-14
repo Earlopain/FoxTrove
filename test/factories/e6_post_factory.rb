@@ -12,5 +12,9 @@ FactoryBot.define do
     post_is_deleted { false }
     post_score { 50 }
     post_direct_url { "https://localhost/image.png" }
+
+    after(:create) do |e6_post|
+      e6_post.submission_file.update!(last_iqdb_checked_at: Time.current)
+    end
   end
 end
