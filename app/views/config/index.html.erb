@@ -11,8 +11,23 @@
   <%= f.submit %>
 <% end %>
 
-<% Sites.scraper_definitions.each do |definition| %>
-  <div><%= link_to "#{definition.display_name} settings", config_path(definition.site_type) %></div>
-<% end %>
+<table class="table">
+  <thead>
+    <tr>
+      <th>Site</th>
+      <th></th>
+      <th>Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% Sites.scraper_definitions.each do |definition| %>
+      <tr>
+        <td><%= definition.display_name %></td>
+        <td><%= link_to "Edit", config_path(definition.site_type) %></td>
+        <td><%= definition_status(definition) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
 
 <% page_title "Settings" %>

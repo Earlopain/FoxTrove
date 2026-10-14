@@ -22,18 +22,7 @@
         <td><%= link_to(entry["url_count"] || 0, artist_urls_path(search: { site_type: definition.site_type }))  %></td>
         <td><%= link_to(entry["submission_count"] || 0, submission_files_path(search: { site_type: definition.site_type }))  %></td>
         <td><%= link_to(entry["file_count"] || 0, submission_files_path(search: { site_type: definition.site_type }))  %></td>
-        <td>
-          <% if definition.manually_disabled? %>
-            Manually disabled
-          <% elsif definition.missing_config_keys.any? %>
-            Missing config <%= "key".pluralize(definition.missing_config_keys.count) %>:<br>
-            <%= definition.missing_config_keys.join(", ") %>
-          <% elsif !definition.scraper? %>
-            Removed
-          <% else %>
-            Enabled
-          <% end %>
-        </td>
+        <td><%= definition_status(definition) %></td>
         <td>
           <% cached = definition.cached_values %>
           <% if cached.any? %>
