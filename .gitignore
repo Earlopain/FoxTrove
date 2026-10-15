@@ -19,3 +19,4 @@
 /.env
 /public/build
 /coverage
+/node_modules

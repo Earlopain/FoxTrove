@@ -12,7 +12,9 @@ RUN gem i foreman && bundle install \
 
 FROM node:24-alpine3.24 AS node-downloader
 
-RUN npm install esbuild@0.28.2 -g
+WORKDIR /app
+COPY package.json Gemfile.lock ./
+RUN npm install --omit=dev
 
 FROM ${BASE_IMAGE:-ruby:4.0.7-alpine3.24}
 
@@ -43,7 +45,7 @@ ENV USER=${USER:-root}
 USER $USER
 
 # Copy native npm package binaries
-COPY --from=node-downloader /usr/local/lib/node_modules/esbuild/bin/esbuild /usr/local/bin
+COPY --from=node-downloader /app/node_modules/esbuild/bin/esbuild /usr/local/bin
 
 # Copy gems
 COPY --from=ruby-builder /usr/local/bundle /usr/local/bundle

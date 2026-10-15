@@ -1,15 +1,11 @@
 [tools]
 ruby = "4.0.7"
-
 node = "24"
-"npm:typescript" = "7.0.2"
-"npm:stylelint" = "17.16.0"
-"npm:stylelint-config-standard" = "40.0.0"
-
 yamlfmt = "0.21.0"
 
 [env]
 _.file = ".env"
+_.path = ["{{config_root}}/node_modules/.bin"]
 
 FOXTROVE_DATA_PATH = { default = "./data" }
 FOXTROVE_DATA_PATH_HOST = "{{ env.FOXTROVE_DATA_PATH }}"
@@ -54,13 +50,19 @@ description = "Keep local gem up-to-date"
 run = "bundle install"
 sources = ["Gemfile.lock", ".bundle/config"]
 
+[tasks."local:npm-install"]
+description = "Keep local npm packages up-to-date"
+run = "npm install"
+sources = ["package-lock.json"]
+
 [tasks.lint]
 description = "Run all linting tasks"
 depends = ["lint:*"]
 
 [tasks."lint:css"]
 description = "Run stylelint"
-run = "stylelint --config .github/.stylelintrc.json --config-basedir \"$(mise where npm:stylelint-config-standard)\" 'app/**/*.css'"
+depends = ["local:npm-install"]
+run = "stylelint --config .github/.stylelintrc.json 'app/**/*.css'"
 
 [tasks."lint:rb"]
 description = "Run rubocop"
@@ -69,6 +71,7 @@ run = "bundle exec rubocop"
 
 [tasks."lint:ts"]
 description = "Run typescript (tsc)"
+depends = ["local:npm-install"]
 run = "tsc --noEmit -p .github/tsconfig.json"
 
 [tasks."lint:yaml"]
