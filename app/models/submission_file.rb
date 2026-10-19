@@ -127,15 +127,8 @@ class SubmissionFile < ApplicationRecord
     file_error.present?
   end
 
-  def original_attachment=(new_attachment)
-    super
-    @original_purged = new_attachment.nil?
-  end
-
   def original_present
-    return if new_record? ? original.attached? : @original_purged != true
-
-    errors.add(:original_file, "not attached")
+    errors.add(:original_file, "not attached") unless original.attached?
   end
 
   def sample_generated?

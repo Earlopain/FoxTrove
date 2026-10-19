@@ -2,14 +2,14 @@ require "test_helper"
 
 class SubmissionFilesControllerTest < ActionDispatch::IntegrationTest
   test "index" do
-    create(:submission_file_with_original, file_name: "1.jpg", with_sample: true)
+    create(:submission_file, file_name: "1.jpg", with_sample: true)
     get submission_files_path
     assert_response :success
   end
 
   test "show" do
-    sm = create(:submission_file_with_original, file_name: "1.jpg", with_sample: true)
-    iqdb_sm = create(:submission_file_with_original, file_name: "1.webp")
+    sm = create(:submission_file, file_name: "1.jpg", with_sample: true)
+    iqdb_sm = create(:submission_file, file_name: "1.webp")
     create(:e6_post, post_id: 1, submission_file: iqdb_sm, is_exact_match: false)
     create(:e6_post, post_id: 2, submission_file: iqdb_sm, is_exact_match: true)
     stub_iqdb(iqdb_sm => 80) do
@@ -21,13 +21,13 @@ class SubmissionFilesControllerTest < ActionDispatch::IntegrationTest
 
   test "show with a manual site type" do
     submission = create(:artist_submission, artist_url: create(:artist_url, site_type: "manual"))
-    sm = create(:submission_file_with_original, artist_submission: submission, file_name: "1.jpg")
+    sm = create(:submission_file, artist_submission: submission, file_name: "1.jpg")
     get submission_file_path(sm)
     assert_response :success
   end
 
   test "show with sample not yet generated" do
-    sm = create(:submission_file_with_original, file_name: "1.jpg", with_sample: false)
+    sm = create(:submission_file, file_name: "1.jpg", with_sample: false)
     get submission_file_path(sm)
     assert_response :success
   end
@@ -74,7 +74,7 @@ class SubmissionFilesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "update e6 posts" do
-    sm1 = create(:submission_file_with_original, file_name: "1.jpg", with_sample: true)
+    sm1 = create(:submission_file, file_name: "1.jpg", with_sample: true)
     sm2 = create(:submission_file)
     create(:submission_file)
 
@@ -87,7 +87,7 @@ class SubmissionFilesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "update e6 posts clears existing iqdb data immediately" do
-    sm = create(:submission_file_with_original, file_name: "1.jpg", with_sample: true, last_iqdb_checked_at: Time.current)
+    sm = create(:submission_file, file_name: "1.jpg", with_sample: true, last_iqdb_checked_at: Time.current)
     create(:e6_post, submission_file: sm)
 
     assert_not_nil(sm.last_iqdb_checked_at)
@@ -110,7 +110,7 @@ class SubmissionFilesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "backlog" do
-    sm = create(:submission_file_with_original, file_name: "1.jpg", added_to_backlog_at: Time.current)
+    sm = create(:submission_file, file_name: "1.jpg", added_to_backlog_at: Time.current)
     create(:submission_file)
 
     get backlog_submission_files_path
@@ -121,7 +121,7 @@ class SubmissionFilesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "hidden" do
-    sm = create(:submission_file_with_original, file_name: "1.jpg", hidden_from_search_at: Time.current)
+    sm = create(:submission_file, file_name: "1.jpg", hidden_from_search_at: Time.current)
     create(:submission_file)
 
     get hidden_submission_files_path
@@ -204,7 +204,7 @@ class SubmissionFilesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "enqueue many" do
-    sm = create(:submission_file_with_original, file_name: "1.jpg", with_sample: true)
+    sm = create(:submission_file, file_name: "1.jpg", with_sample: true)
     create(:submission_file)
     stub_iqdb({}) do
       put enqueue_many_submission_files_path(ids: [sm.id])

@@ -7,7 +7,7 @@ class IqdbControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "search by url returns results" do
-    files = create_list(:submission_file_with_original, 3, file_name: "1.webp")
+    files = create_list(:submission_file, 3, file_name: "1.webp")
 
     stub_request(:get, "https://example.com/").to_return(body: file_fixture("1.jpg").open)
     stub_iqdb(files[0] => 70, files[2] => 80) do
@@ -21,7 +21,7 @@ class IqdbControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "search by e6 url" do
-    sm = create(:submission_file_with_original, file_name: "1.webp")
+    sm = create(:submission_file, file_name: "1.webp")
     e6_post = build(:e6_post_response, post_id: 123, md5: "abcdefg")
     stub_request_once(:get, e6_post.dig(:files, :sample, :jpg), body: file_fixture("1.webp").read)
     stub_e6_post(e6_post) do
@@ -35,7 +35,7 @@ class IqdbControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "search by file" do
-    sm = create(:submission_file_with_original, file_name: "1.webp")
+    sm = create(:submission_file, file_name: "1.webp")
     stub_iqdb(sm => 80) do
       post search_iqdb_path, params: { search: { file: file_fixture_upload("1.webp") } }
     end

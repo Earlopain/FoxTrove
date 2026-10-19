@@ -5,47 +5,42 @@ class SubmissionFileTest < ActiveSupport::TestCase
     include ActiveJob::TestHelper
 
     test "must be attached on create" do
-      e = assert_raises(ActiveRecord::RecordInvalid) { create(:submission_file, skip_original_validation: false) }
+      sm = build(:submission_file)
+      e = assert_raises(ActiveRecord::RecordInvalid) { sm.save! }
       assert_match(/Original file not attached/, e.message)
     end
 
     test "prevents removal once attached" do
-      sm = create(:submission_file_with_original, file_name: "1.webp")
+      sm = create(:submission_file, file_name: "1.webp")
       sm.original.purge
       e = assert_raises(ActiveRecord::RecordInvalid) { sm.save! }
       assert_match(/Original file not attached/, e.message)
     end
 
     test "allows updating unrelated attributes" do
-      sm = create(:submission_file_with_original, file_name: "1.webp")
+      sm = create(:submission_file, file_name: "1.webp")
       sm.update!(file_identifier: "foo")
       assert_nothing_raised { SubmissionFile.find(sm.id).update!(file_identifier: "bar") }
     end
 
     test "allows replacing the original" do
-      sm = create(:submission_file_with_original, file_name: "1.webp")
+      sm = create(:submission_file, file_name: "1.webp")
       sm.update!(original: file_fixture("1.jpg"))
       assert_equal("1.jpg", sm.original.blob.filename.to_s)
     end
 
-    test "can be omitted for testing purposes" do
-      sm = create(:submission_file)
-      assert_not sm.original.attached?
-      assert_predicate(sm, :valid?)
-    end
-
     test "enqueues the update job on create" do
-      create(:submission_file_with_original, file_name: "1.webp")
+      create(:submission_file, file_name: "1.webp")
       assert_enqueued_jobs 1, only: SubmissionFileUpdateJob
     end
 
     test "enqueues nothing if the attachment didn't change" do
-      sm = create(:submission_file_with_original, file_name: "1.webp")
+      sm = create(:submission_file, file_name: "1.webp")
       assert_no_enqueued_jobs { sm.save }
     end
 
     test "handles videos" do
-      sm = create(:submission_file_with_original, file_name: "1.webm", with_sample: true)
+      sm = create(:submission_file, file_name: "1.webm", with_sample: true)
       assert_equal(720, sm.width)
       assert_equal(480, sm.height)
 
@@ -57,7 +52,7 @@ class SubmissionFileTest < ActiveSupport::TestCase
     end
 
     test "handles corrupt files" do
-      sm = create(:submission_file_with_original, file_name: "corrupt.jpg")
+      sm = create(:submission_file, file_name: "corrupt.jpg")
       assert_predicate sm, :corrupt?
       assert_match(/VipsJpeg: Premature end/i, sm.file_error)
     end
@@ -110,9 +105,9 @@ class SubmissionFileTest < ActiveSupport::TestCase
 
   class SearchTest < ActiveSupport::TestCase
     test "results for larger by filesize absolute" do
-      sm1 = create(:submission_file, size: 200.kilobytes)
+      sm1 = create(:submission_file, file_name: "1.png")
       create(:e6_post, submission_file: sm1, post_size: 50.kilobytes)
-      sm2 = create(:submission_file, size: 60.kilobytes)
+      sm2 = create(:submission_file, file_name: "1.webp")
       create(:e6_post, submission_file: sm2, post_size: 50.kilobytes)
 
       assert_equal([sm2, sm1], SubmissionFile.search(upload_status: "larger_only_filesize_kb", larger_only_filesize_treshold: 5))
@@ -120,10 +115,10 @@ class SubmissionFileTest < ActiveSupport::TestCase
     end
 
     test "results for larger by filesize relative" do
-      sm1 = create(:submission_file, size: 1.megabyte)
+      sm1 = create(:submission_file, file_name: "1.png")
       create(:e6_post, submission_file: sm1, post_size: 0.5.kilobytes)
-      sm2 = create(:submission_file, size: 1.megabyte)
-      create(:e6_post, submission_file: sm2, post_size: 0.85.megabytes)
+      sm2 = create(:submission_file, file_name: "1.png")
+      create(:e6_post, submission_file: sm2, post_size: 0.60.megabytes)
 
       assert_equal([sm2, sm1], SubmissionFile.search(upload_status: "larger_only_filesize_percentage", larger_only_filesize_treshold: 10))
       assert_equal([sm1], SubmissionFile.search(upload_status: "larger_only_filesize_percentage", larger_only_filesize_treshold: 40))

@@ -2,7 +2,7 @@ require "test_helper"
 
 class IqdbProxyTest < ActiveSupport::TestCase
   test "it makes the correct request when updating a submission" do
-    sm = create(:submission_file_with_original, file_name: "1.jpg")
+    sm = create(:submission_file, file_name: "1.jpg")
     sm.generate_variants
 
     request = stub_request(:post, "#{DockerEnv.iqdb_url}/images/#{sm.id}").to_return(status: 200, body: "{}", headers: { content_type: "application/json" })
@@ -19,7 +19,7 @@ class IqdbProxyTest < ActiveSupport::TestCase
   end
 
   test "it makes the correct request when querying by submission" do
-    sm = create(:submission_file_with_original, file_name: "1.jpg")
+    sm = create(:submission_file, file_name: "1.jpg")
     sm.generate_variants
 
     similar_sm = create(:submission_file)
@@ -31,7 +31,7 @@ class IqdbProxyTest < ActiveSupport::TestCase
 
   test "it filters out results that fall below the score cutoff" do
     Config.stubs(:similarity_cutoff).returns(70)
-    sm = create(:submission_file_with_original, file_name: "1.jpg")
+    sm = create(:submission_file, file_name: "1.jpg")
     sm.generate_variants
 
     similar_sm1, similar_sm2 = create_list(:submission_file, 2)
