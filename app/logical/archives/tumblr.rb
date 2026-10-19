@@ -14,7 +14,10 @@ module Archives
   # -----| style.css
   # -----| posts_index.html
   class Tumblr < Base
-    URL_ID_REGEX = %r{tumblr\.com/post/(?<id>\d*)}
+    # https://cutestcloud.tumblr.com/post/665706371197566976
+    # https://www.tumblr.com/romannisbetliu/830749449950232576/quick-timelaps-for-october-17
+    # https://www.tumblr.com/blog/view/daftpatriot/166078824429 (NSFW)
+    URL_ID_REGEX = %r{tumblr\.com/(?:blog/view/)?[^/]*/(?<id>\d*)}
 
     def self.handles_file(file)
       Zip::File.open(file) do |zip_file|
@@ -50,7 +53,12 @@ module Archives
         return
       end
 
-      original_post_id = URL_ID_REGEX.match(original_post_url["href"])[:id]
+      original_post_id = URL_ID_REGEX.match(original_post_url["href"])&.match(:id)
+      if original_post_id.nil?
+        @failed_imports.push("#{reblog_entry.name} Failed to extract id from #{original_post_url}")
+        return
+      end
+
       submission = ArtistSubmission.for_site_with_identifier(site: "tumblr", identifier: original_post_id)
       if submission.nil?
         @failed_imports.push("#{reblog_entry.name} Submission #{original_post_id} not found")
