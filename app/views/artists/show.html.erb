@@ -1,6 +1,5 @@
 <h1><%= @artist.name %></h1>
 
-Links:
 <%= render "artist_urls/list", artist_urls: ordered_artist_urls(@artist) %>
 
 <%= render "submission_files/list_with_search", path: artist_url(@artist), artist_urls: active_artist_urls_collection(@artist), submission_files: @submission_files %>
