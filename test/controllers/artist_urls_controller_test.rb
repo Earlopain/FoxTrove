@@ -26,4 +26,15 @@ class ArtistUrlsControllerTest < ActionDispatch::IntegrationTest
     post enqueue_artist_url_path(artist_url)
     assert_response :success
   end
+
+  test "redo for a scraping url enqueues the scraping job and resets last_scraped_at" do
+    artist_url = create(:artist_url, last_scraped_at: Time.current, site_type: :furaffinity, api_identifier: "foo")
+
+    stub_scraper_enabled(:furaffinity) do
+      put redo_artist_url_path(artist_url)
+    end
+    assert_response :success
+    assert_nil artist_url.reload.last_scraped_at
+    assert_enqueued_jobs 1, only: ScrapeArtistUrlJob
+  end
 end

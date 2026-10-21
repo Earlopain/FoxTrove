@@ -64,15 +64,6 @@ class SubmissionFilesControllerTest < ActionDispatch::IntegrationTest
     assert_nil sm.reload.hidden_from_search_at
   end
 
-  test "last known good" do
-    artist_url = create(:artist_url, last_scraped_at: Time.current)
-    sm = create(:submission_file, artist_submission: create(:artist_submission, artist_url: artist_url), created_at_on_site: 7.days.ago)
-
-    put set_last_known_good_submission_file_path(sm)
-    assert_response :success
-    assert_in_delta artist_url.reload.last_scraped_at, 8.days.ago, 1
-  end
-
   test "update e6 posts" do
     sm1 = create(:submission_file, file_name: "1.jpg", with_sample: true)
     sm2 = create(:submission_file)

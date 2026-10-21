@@ -16,6 +16,7 @@ Rails.application.routes.draw do
   resources :artist_urls, only: %i[index show destroy] do
     member do
       post :enqueue
+      put :redo
     end
   end
   resources :submission_files, only: %i[index show] do
@@ -23,7 +24,6 @@ Rails.application.routes.draw do
       post :update_e6_posts
       put :modify_backlog
       put :modify_hidden
-      put :set_last_known_good
     end
     collection do
       get :backlog

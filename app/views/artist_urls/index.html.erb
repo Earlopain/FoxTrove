@@ -26,7 +26,12 @@
         <td><%= artist_url.api_identifier %></td>
         <td><%= scraper_status(artist_url) %> </td>
         <td><%= time_ago artist_url.last_scraped_at %></td>
-        <td><%= link_to "Delete", artist_url_path(artist_url), method: :delete, data: { confirm: "Are you sure?" } %></td>
+        <td>
+          <%= link_to "Delete", artist_url_path(artist_url), method: :delete, data: { confirm: "Are you sure?" } %>
+          <% if artist_url.last_scraped_at %>
+            | <%= link_to "Rescrape", redo_artist_url_path(artist_url), method: :put, data: { confirm: "Will force a fresh scrape of this url. Doesn't update images, but will fetch missing ones." } %>
+          <% end %>
+        </td>
       </tr>
     <% end %>
   </tbody>

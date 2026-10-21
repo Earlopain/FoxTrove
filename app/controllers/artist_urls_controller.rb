@@ -19,6 +19,12 @@ class ArtistUrlsController < ApplicationController
     artist_url.enqueue_scraping
   end
 
+  def redo
+    artist_url = ArtistUrl.find(params.expect(:id))
+    artist_url.update(last_scraped_at: nil)
+    artist_url.enqueue_scraping
+  end
+
   private
 
   def index_search_params
