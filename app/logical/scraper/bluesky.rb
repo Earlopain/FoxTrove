@@ -7,7 +7,7 @@ module Scraper
       @cursor = nil
     end
 
-    # https://docs.bsky.app/docs/api/app-bsky-feed-get-author-feed
+    # https://endpoints.bsky.app/#bluesky-app/tag/appbskyfeed/GET/xrpc/app.bsky.feed.getAuthorFeed
     def fetch_next_batch
       response = fetch_json("https://public.api.bsky.app/xrpc/app.bsky.feed.getAuthorFeed", params: {
         filter: "posts_with_media",
@@ -29,18 +29,31 @@ module Scraper
       s.description = record["text"]
       s.created_at = DateTime.parse(record["createdAt"])
 
-      record.dig("embed", "images")&.pluck("image")&.each do |image|
-        image_cid = image["ref"]["$link"]
-        s.add_file({
-          url: "https://bsky.social/xrpc/com.atproto.sync.getBlob?did=#{api_identifier}&cid=#{image_cid}",
-          created_at: s.created_at,
-          identifier: image_cid,
-        })
+      embed = record["embed"]
+      case embed["$type"]
+      when "app.bsky.embed.images"
+        embed["images"]&.pluck("image")&.each do |image|
+          image_cid = image["ref"]["$link"]
+          add_cid(s, image_cid)
+        end
+      when "app.bsky.embed.video"
+        cid = embed["video"]["ref"]["$link"]
+        add_cid(s, cid)
       end
+
       s
     end
 
-    # https://docs.bsky.app/docs/api/app-bsky-actor-get-profile
+    # https://endpoints.bsky.app/#bluesky-app/tag/comatprotosync/GET/xrpc/com.atproto.sync.getBlob
+    def add_cid(submission, cid)
+      submission.add_file({
+        url: "https://bsky.social/xrpc/com.atproto.sync.getBlob?did=#{api_identifier}&cid=#{cid}",
+        created_at: submission.created_at,
+        identifier: cid,
+      })
+    end
+
+    # https://endpoints.bsky.app/#bluesky-app/tag/appbskyactor/GET/xrpc/app.bsky.actor.getProfile
     def fetch_api_identifier
       response = fetch_json("https://public.api.bsky.app/xrpc/app.bsky.actor.getProfile?actor=#{url_identifier}")
       response["did"]
