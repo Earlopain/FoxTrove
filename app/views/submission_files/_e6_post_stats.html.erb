@@ -6,6 +6,8 @@
         <td colspan="5" class="blank">
           <% if submission_file.last_iqdb_checked_at %>
             No E6 IQDB matches
+          <% elsif !submission_file.can_iqdb? %>
+            Can't be queried by IQDB
           <% else %>
             ...E6 IQDB not yet queried...
           <% end %>
