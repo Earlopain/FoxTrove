@@ -16,10 +16,10 @@ services:
       VIPS_WARNING: ${VIPS_WARNING:?}
       RAILS_SERVER_EXEC: bin/rails server -p 9000 -b 0.0.0.0 --pid /tmp/server.pid
       ESBUILD_EXEC: >-
-        esbuild app/typescript/application.ts
+        esbuild app/typescript/application.ts public/icons/*.png
         --target=chrome111,firefox111,safari16
         --bundle --sourcemap
-        --outdir=public/build --loader:.png=file
+        --outdir=public/build --loader:.png=copy
         --entry-names=[name]-[hash] --metafile=public/build/manifest.json
         --watch=forever --color=true
       GOOD_JOB_EXEC: bundle exec good_job --queues=scraping:1;e6_iqdb:1;variant_generation:5;default:1;submission_download:5

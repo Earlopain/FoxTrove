@@ -6,8 +6,7 @@
     width: 1em;
     height: 1em;
     display: inline-block;
-    background: url("../../../public/icons.png");
+    background: var(--icon);
     background-size: 1em;
-    background-position: 0 calc(var(--icon-index) * -1em);
   }
 }

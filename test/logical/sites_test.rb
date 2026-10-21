@@ -99,6 +99,14 @@ class SitesTest < ActiveSupport::TestCase
     end
   end
 
+  test "all icon files are named correctly" do
+    icons_path = Rails.public_path.join("icons")
+    ArtistUrl.site_types.each_key do |site_type|
+      file_name = "#{site_type}.png"
+      assert_path_exists(icons_path.join(file_name))
+    end
+  end
+
   test "all scrapers are mentioned in the readme" do
     lines = Rails.root.join("README.md").read
       .split("<!--- sites:start -->\n")[1]
@@ -120,7 +128,7 @@ class SitesTest < ActiveSupport::TestCase
       scraper = Sites.scraper_definitions.find { |definition| definition.display_name == site }
       assert(scraper, "Scraper definition for display name #{site} not found")
       assert_path_exists(image)
-      assert_equal(scraper.site_type, Pathname.new(image).basename.to_s.split(".")[0].split("-")[1], "Wrong image for #{site}")
+      assert_equal(scraper.site_type, Pathname.new(image).basename.to_s.split(".")[0], "Wrong image for #{site}")
     end
   end
 end

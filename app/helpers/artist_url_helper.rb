@@ -12,9 +12,8 @@ module ArtistUrlHelper
   end
 
   def icon_url(site_type)
-    # NOTE: Would be neat to be able to use attr here but no browser supports this at the moment
-    icon_index = ArtistUrl.site_types[site_type]
-    tag.span(class: "site-icon", style: "--icon-index: #{icon_index};")
+    url = EsbuildManifest["#{site_type}.png"]
+    tag.span(class: "site-icon", style: "--icon: url(#{url});")
   end
 
   def artist_url_icon(artist_url)
