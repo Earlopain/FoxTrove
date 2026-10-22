@@ -30,4 +30,8 @@ table.table {
       }
     }
   }
+
+  .align-right {
+    text-align: right;
+  }
 }
