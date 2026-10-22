@@ -11,17 +11,21 @@ class Artist < ApplicationRecord
 
   def add_artist_url(url)
     result = Sites.from_gallery_url url
-
-    if !result
+    if result == :unsupported
       errors.add(:url, "#{url} is not a supported url")
-      return
-    elsif !result[:valid]
-      errors.add(:identifier, "#{result[:identifier]} is not valid for #{result[:site].display_name}")
       return
     end
 
+    case result[:type]
+    in :invalid
+      errors.add(:identifier, "#{result[:identifier]} is not valid for #{result[:definition].display_name}")
+      return
+    in :username
+      # falltrhough
+    end
+
     artist_url = artist_urls.new(
-      site_type: result[:site].site_type,
+      site_type: result[:definition].site_type,
       url_identifier: result[:identifier],
       created_at_on_site: Time.current,
       about_on_site: "",

@@ -20,9 +20,9 @@ module Sites
       return if extracted_identifiers.none?
 
       first_valid_identifier = extracted_identifiers.find { |identifier| @username_identifier_regex.match?(identifier) }
-      return { identifier: first_valid_identifier, valid: true } if first_valid_identifier
+      return { type: :username, identifier: first_valid_identifier } if first_valid_identifier
 
-      { identifier: extracted_identifiers.first, valid: false }
+      { type: :invalid, identifier: extracted_identifiers.first }
     end
 
     # Returns true when the site needs special headers to download from
