@@ -13,6 +13,7 @@ lines = ["source #{remote.inspect}"]
 NO_GIT = [
   "bundler", # The running version of Bundler (2.7.0.dev) does not match...
   "minitest", # https://github.com/minitest/minitest/issues/750 (lol)
+  "selenium-webdriver", # Requires bazel (lol)
 ].freeze
 FULL_SKIP = [
   "nokogiri", # Unknown, mini_portile2 is not found during the build. Maybe platform-related.
