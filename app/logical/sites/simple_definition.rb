@@ -1,6 +1,6 @@
 module Sites
   class SimpleDefinition
-    attr_reader :site_type, :display_name, :homepage, :gallery_templates, :username_identifier_regex, :image_domains, :download_headers
+    attr_reader :site_type, :display_name, :homepage, :download_headers
 
     def initialize(definition_data)
       @site_type = definition_data["enum_value"]
@@ -14,12 +14,12 @@ module Sites
     end
 
     def match_for_gallery(uri)
-      extracted_identifiers = gallery_templates.filter_map do |template|
+      extracted_identifiers = @gallery_templates.filter_map do |template|
         template.extract(uri, IdentifierProcessor)&.dig("site_artist_identifier")
       end
       return if extracted_identifiers.none?
 
-      first_valid_identifier = extracted_identifiers.find { |identifier| username_identifier_regex.match?(identifier) }
+      first_valid_identifier = extracted_identifiers.find { |identifier| @username_identifier_regex.match?(identifier) }
       return { identifier: first_valid_identifier, valid: true } if first_valid_identifier
 
       { identifier: extracted_identifiers.first, valid: false }
@@ -27,11 +27,11 @@ module Sites
 
     # Returns true when the site needs special headers to download from
     def handles_image_domain?(domain)
-      image_domains.include? domain
+      @image_domains.include? domain
     end
 
     def gallery_url(identifier)
-      "https://#{gallery_templates.first.expand(site_artist_identifier: identifier)}"
+      "https://#{@gallery_templates.first.expand(site_artist_identifier: identifier)}"
     end
 
     def submission_url(submission)
