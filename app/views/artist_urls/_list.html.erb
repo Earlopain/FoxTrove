@@ -2,10 +2,10 @@
 <table class="url-list table full-width">
   <thead>
     <th>Link</th>
+    <th>Actions</th>
     <th>Last scraped</th>
-    <th></th>
     <th>Status</th>
-    <th class="align-right">Pending</th>
+    <th class="align-right">Pending File Downloads</th>
     <th class="align-right">Pending IQDB calls</th>
   </thead>
   <% artist_urls.each do |artist_url| %>
@@ -15,23 +15,26 @@
         <%= link_to artist_url.unescaped_url_identifier, artist_path(artist_url.artist, search: { artist_url_id: [artist_url.id] }) %>
       </td>
       <td>
-        <%= artist_url.site_type == "manual" ? time_ago(artist_url.created_at_on_site) : time_ago(artist_url.last_scraped_at) %>
+        <%= link_to "Enqueue", enqueue_artist_url_path(artist_url), method: :post if artist_url.scraper_enabled? %>
       </td>
       <td>
-        <%= link_to "[U]", enqueue_artist_url_path(artist_url), method: :post, title: "Enqueue scraping" if artist_url.scraper_enabled? %>
+        <%= artist_url.site_type == "manual" ? time_ago(artist_url.created_at_on_site) : time_ago(artist_url.last_scraped_at) %>
       </td>
       <td>
         <% if artist_url.id.in? job_stats.scraping_now %>
           Scraping now: <%= scraper_status(artist_url) %></div>
         <% elsif job_stats.scraping_queued[artist_url.id] %>
-          <div title="Scraping queued">⏳</div>
+          Scraping Queued
+        <% else %>
+          Idle
         <% end %>
       </td>
-      <td class="align-right" title="<%= artist_url.site_type == "tumblr" ? "Reblogs" : "File downloads" %>">
-        <%= job_stats.submission_download_queued[artist_url.id] %>
+      <td class="align-right">
+        <%= job_stats.submission_download_queued[artist_url.id] || 0 %>
+        <%= "(Reblogs)" if artist_url.site_type == "tumblr" %>
       </td>
       <td class="align-right">
-        <%= job_stats.e6_iqdb_queued[artist_url.id] %>
+        <%= job_stats.e6_iqdb_queued[artist_url.id] || 0 %>
       </td>
     </tr>
   <% end %>
