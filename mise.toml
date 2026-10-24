@@ -32,6 +32,7 @@ run = "docker compose up foxtrove iqdb selenium"
 [tasks."docker:run"]
 description = "Run a command in the docker container containing the rails application"
 extends = "docker"
+env.POSTGRS_DEPENDS_CONDITION = "service_healthy"
 run = "docker compose run --rm foxtrove"
 
 [tasks."docker:test"]

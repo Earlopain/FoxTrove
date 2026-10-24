@@ -42,18 +42,18 @@ class SitesTest < ActiveSupport::TestCase
   end
 
   class FromGalleryUrlTest < ActiveSupport::TestCase
-    def assert_extracted(url, site_type, username, valid: true)
+    def assert_extracted(url, site_type, username, type: :username)
       result = Sites.from_gallery_url(url)
       assert(result, "expected #{url} to match")
-      assert_equal(site_type, result[:site].site_type, "expected #{url} to be #{site_type}")
-      assert_equal(username, result[:identifier], "expected #{url} to be #{username}")
-      assert_equal(valid, result[:valid], "expected #{url} to be #{valid ? 'valid' : 'invalid'}")
+      assert_equal(site_type, result[:definition].site_type)
+      assert_equal(username, result[:identifier])
+      assert_equal(type, result[:type])
     end
 
     test "works with twitter" do
       assert_extracted("https://twitter.com/username", "twitter", "username")
       assert_extracted("https://twitter.com/@username", "twitter", "username")
-      assert_extracted("https://twitter.com/!invalid!", "twitter", "!invalid!", valid: false)
+      assert_extracted("https://twitter.com/!invalid!", "twitter", "!invalid!", type: :invalid)
     end
 
     test "works with furaffinity" do
@@ -75,7 +75,7 @@ class SitesTest < ActiveSupport::TestCase
 
     test "nil is returned when no definitions match" do
       result = Sites.from_gallery_url("https://example.com")
-      assert_nil(result)
+      assert_equal(:unsupported, result)
     end
   end
 
