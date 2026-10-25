@@ -5,7 +5,7 @@ module ConfigHelper
 
   def definition_status(definition)
     if definition.manually_disabled?
-      "❌ Manually disabled"
+      "⏸️ Manually disabled"
     elsif definition.missing_config_keys.any?
       missing = definition.missing_config_keys.map { |key| strip_config_prefix(definition, key) }
       "❌ Missing config #{'key'.pluralize(missing.count)}: #{missing.join(', ')}"
