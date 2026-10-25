@@ -84,6 +84,8 @@ jobs:
   rubocop:
     runs-on: ubuntu-latest
     if: github.event_name != 'schedule' && github.event_name != 'workflow_dispatch'
+    env:
+      BUNDLE_ONLY: rubocop
 
     steps:
       - uses: actions/checkout@v7
