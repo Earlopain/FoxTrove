@@ -35,10 +35,15 @@ module ArtistUrlHelper
     artist_url.last_scraped_at
   end
 
-  def scraper_status(artist_url, prefix: "")
-    return "" if artist_url.scraper_status.blank?
-
-    beginning = "#{prefix}: " if prefix.present?
-    "#{beginning}#{artist_url.scraper_status.except('started_at').to_json}"
+  def scraper_status(artist_url)
+    if job_stats.scraping_now.include?(artist_url.id)
+      details = artist_url.scraper_status.except("started_at")
+      extra = ": #{details.to_json}" if details.present?
+      "Scraping now#{extra}"
+    elsif job_stats.scraping_queued.key?(artist_url.id)
+      "Scraping Queued"
+    else
+      "Idle"
+    end
   end
 end

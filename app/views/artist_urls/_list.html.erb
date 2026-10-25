@@ -20,15 +20,7 @@
       <td>
         <%= artist_url.site_type == "manual" ? time_ago(artist_url.created_at_on_site) : time_ago(artist_url.last_scraped_at) %>
       </td>
-      <td>
-        <% if artist_url.id.in? job_stats.scraping_now %>
-          Scraping now: <%= scraper_status(artist_url) %></div>
-        <% elsif job_stats.scraping_queued[artist_url.id] %>
-          Scraping Queued
-        <% else %>
-          Idle
-        <% end %>
-      </td>
+      <td><%= scraper_status(artist_url) %></td>
       <td class="align-right">
         <%= job_stats.submission_download_queued[artist_url.id] || 0 %>
         <%= "(Reblogs)" if artist_url.site_type == "tumblr" %>
