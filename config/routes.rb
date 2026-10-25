@@ -36,7 +36,7 @@ Rails.application.routes.draw do
       post :update_matching_e6_posts
     end
   end
-  resources :log_events, only: %i[index show]
+  resources :scraper_logs, only: %i[index show]
   resources :archive_imports, only: %i[new create]
   resources :stats, only: :index do
     collection do

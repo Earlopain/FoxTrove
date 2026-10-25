@@ -1,44 +1,44 @@
 require "test_helper"
 
-class LogEventsControllerTest < ActionDispatch::IntegrationTest
+class ScraperLogsControllerTest < ActionDispatch::IntegrationTest
   test "index" do
-    create(:log_event, payload: {
+    create(:scraper_log, request: {
       method: "get",
       path: "foo.com",
       request_params: { params: { foo: "bar" } },
     })
-    create(:log_event, payload: {
+    create(:scraper_log, request: {
       method: "get",
       path: "foo.com",
       request_params: { body: "Hello World!" },
     })
-    create(:log_event, payload: {
+    create(:scraper_log, request: {
       method: "get",
       path: "foo.com",
       request_params: { json: { foo: "bar" } },
     })
-    create(:log_event, payload: { method: "get", path: "foo.com" })
-    get log_events_path
+    create(:scraper_log, request: { method: "get", path: "foo.com" })
+    get scraper_logs_path
     assert_response :success
   end
 
   test "show for json response" do
-    log_event = create(:log_event, payload: {
+    scraper_log = create(:scraper_log, request: {
       method: "get",
       path: "foo.com",
       response_body: "{}",
     })
-    get log_event_path(log_event)
+    get scraper_log_path(scraper_log)
     assert_response :success
   end
 
   test "show for non-json response" do
-    log_event = create(:log_event, payload: {
+    scraper_log = create(:scraper_log, request: {
       method: "get",
       path: "foo.com",
       response_body: "Hi!",
     })
-    get log_event_path(log_event)
+    get scraper_log_path(scraper_log)
     assert_response :success
   end
 end

@@ -160,7 +160,7 @@ module Scraper
       end
       body = body.encode(body.encoding, body.encoding, invalid: :replace) unless body.valid_encoding?
 
-      @artist_url.add_log_event(:scraper_request, {
+      ScraperLog.add!(@artist_url, {
         path: path,
         method: method,
         request_params: {

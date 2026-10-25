@@ -9,8 +9,7 @@ module Scraper
     }.freeze
 
     setup do
-      @submission_file = create(:submission_file)
-      scraper = Scraper::Twitter.new(@submission_file)
+      scraper = Scraper::Twitter.new(create(:artist_url))
       @client = HttpxPlugin.from_scraper(scraper)
     end
 
@@ -57,7 +56,7 @@ module Scraper
       stub_request(:get, "https://example.com?abc=def").to_return(body: "{}")
       @client.fetch_json("https://example.com", params: { abc: "def" })
 
-      payload = @submission_file.log_events.sole.payload
+      request = ScraperLog.sole.request
       assert_equal({
         "path" => "https://example.com",
         "method" => "GET",
@@ -67,7 +66,7 @@ module Scraper
           "params" => { "abc" => "def" },
           "headers" => DEFAULT_HEADERS,
         },
-      }, payload)
+      }, request)
     end
 
     test "it logs the responses if it errors" do
@@ -75,7 +74,7 @@ module Scraper
       assert_raises(HTTPX::HTTPError) do
         @client.fetch_json("https://example.com")
       end
-      assert_equal(404, @submission_file.log_events.sole.payload["response_code"])
+      assert_equal(404, ScraperLog.sole.request["response_code"])
     end
 
     test "it logs options that are set on the session" do
@@ -85,48 +84,48 @@ module Scraper
         headers: { "x-a" => "a" },
       ).get("/test", headers: { "x-b" => "b" }, params: { foo: "bar" })
 
-      payload = @submission_file.log_events.sole.payload
-      assert_equal("https://example.com/test", payload["path"])
+      request = ScraperLog.sole.request
+      assert_equal("https://example.com/test", request["path"])
       assert_equal({
         "params" => { "foo" => "bar" },
         "headers" => { "x-a" => "a", "x-b" => "b" }.merge(DEFAULT_HEADERS),
-      }, payload["request_params"])
+      }, request["request_params"])
     end
 
     test "it logs json parameters" do
       stub_request(:post, "https://example.com").with(body: { foo: "bar" }.to_json)
       @client.post("https://example.com", json: { foo: "bar" })
 
-      payload = @submission_file.log_events.sole.payload
-      assert_equal("POST", payload["method"])
+      request = ScraperLog.sole.request
+      assert_equal("POST", request["method"])
       assert_equal({
         "json" => { "foo" => "bar" },
         "headers" => DEFAULT_HEADERS,
-      }, payload["request_params"])
+      }, request["request_params"])
     end
 
     test "it doesn't log empty headers" do
       stub_request(:get, "https://example.com")
       @client.get("https://example.com")
 
-      payload = @submission_file.log_events.sole.payload
-      assert_equal({ "headers" => DEFAULT_HEADERS }, payload["request_params"])
+      request = ScraperLog.sole.request
+      assert_equal({ "headers" => DEFAULT_HEADERS }, request["request_params"])
     end
 
     test "it logs utf-8" do
       stub_request(:get, "https://example.com").to_return(body: "🦊")
       @client.get("https://example.com")
 
-      payload = @submission_file.log_events.sole.payload
-      assert_equal("🦊", payload["response_body"])
+      request = ScraperLog.sole.request
+      assert_equal("🦊", request["response_body"])
     end
 
     test "it logs broken utf-8" do
       stub_request(:get, "https://example.com").to_return(body: "foo \xF0\x9F\xA6")
       @client.get("https://example.com")
 
-      payload = @submission_file.log_events.sole.payload
-      assert_equal("foo �", payload["response_body"])
+      request = ScraperLog.sole.request
+      assert_equal("foo �", request["response_body"])
     end
 
     test "it converts to utf-8 when the response is encoded differently but is utf-8 compatible" do
@@ -134,8 +133,8 @@ module Scraper
       stub_request(:get, "https://example.com").to_return(body: body, headers: { content_type: ";charset=shift_jis" })
       @client.get("https://example.com")
 
-      payload = @submission_file.log_events.sole.payload
-      assert_equal(body.encode(Encoding::UTF_8), payload["response_body"])
+      request = ScraperLog.sole.request
+      assert_equal(body.encode(Encoding::UTF_8), request["response_body"])
     end
 
     test "it converts to utf-8 when the response is encoded differently and is not utf-8 compatible" do
@@ -143,8 +142,8 @@ module Scraper
       stub_request(:get, "https://example.com").to_return(body: body, headers: { content_type: ";charset=shift_jis" })
       @client.get("https://example.com")
 
-      payload = @submission_file.log_events.sole.payload
-      assert_equal("foo ﾃ?", payload["response_body"])
+      request = ScraperLog.sole.request
+      assert_equal("foo ﾃ?", request["response_body"])
     end
   end
 end

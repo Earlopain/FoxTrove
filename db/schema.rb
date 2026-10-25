@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_07_104318) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_24_170343) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pgcrypto"
@@ -216,15 +216,14 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_07_104318) do
     t.index ["scheduled_at"], name: "index_good_jobs_on_scheduled_at", where: "(finished_at IS NULL)"
   end
 
-  create_table "log_events", force: :cascade do |t|
-    t.text "loggable_type", null: false
-    t.integer "loggable_id", null: false
-    t.jsonb "payload", null: false
+  create_table "scraper_logs", force: :cascade do |t|
+    t.string "site_type", null: false
+    t.string "api_identifier"
+    t.string "url_identifier"
+    t.jsonb "request", null: false
     t.datetime "created_at", null: false
-    t.integer "action", null: false
-    t.index ["loggable_id"], name: "index_log_events_on_loggable_id"
-    t.index ["loggable_type", "loggable_id"], name: "index_log_events_on_loggable_type_and_loggable_id"
-    t.index ["loggable_type"], name: "index_log_events_on_loggable_type"
+    t.index ["site_type", "api_identifier"], name: "index_scraper_logs_on_site_type_and_api_identifier"
+    t.index ["site_type", "url_identifier"], name: "index_scraper_logs_on_site_type_and_url_identifier"
   end
 
   create_table "submission_files", force: :cascade do |t|

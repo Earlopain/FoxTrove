@@ -25,11 +25,11 @@ class ApplicationRecordTest < ActiveSupport::TestCase
   end
 
   test "when searching by jsonb field" do
-    e1 = create(:log_event, payload: { foo: "bar" })
-    e2 = create(:log_event, payload: { baz: "bat" })
-    e3 = create(:log_event, payload: { xyz: "123" })
-    assert_equal_any_order([e1, e2], LogEvent.attribute_matches("*b*", :payload))
-    assert_equal_any_order([e3], LogEvent.attribute_matches("*xyz*", :payload))
+    e1 = create(:scraper_log, request: { foo: "bar" })
+    e2 = create(:scraper_log, request: { baz: "bat" })
+    e3 = create(:scraper_log, request: { xyz: "123" })
+    assert_equal_any_order([e1, e2], ScraperLog.attribute_matches("*b*", :request))
+    assert_equal_any_order([e3], ScraperLog.attribute_matches("*xyz*", :request))
   end
 
   test "when searching for nil it returns all results" do

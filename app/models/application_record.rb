@@ -1,12 +1,6 @@
 class ApplicationRecord < ActiveRecord::Base
   self.abstract_class = true
 
-  has_many :log_events, as: :loggable, dependent: nil
-
-  def add_log_event(action, payload = {})
-    LogEvent.add!(self, action, payload)
-  end
-
   concerning :SearchMethods do
     class_methods do
       def attribute_matches(value, attribute)

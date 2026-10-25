@@ -1,0 +1,30 @@
+<%= hideable_search(scraper_logs_path) do |f| %>
+  <%= f.input :site_type, label: "Site", collection: site_types_collection, include_blank: "Any" %>
+  <%= f.input :identifier %>
+  <%= f.input :request %>
+<% end %>
+
+<table class="table full-width">
+  <thead>
+    <tr>
+      <th>Timestamp</th>
+      <th>Site</th>
+      <th>Identifier</th>
+      <th>Details</th>
+      <th>Preview</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @scraper_logs.each do |scraper_log| %>
+      <tr>
+        <td><%= time_ago scraper_log.created_at %></td>
+        <td><%= icon_url scraper_log.site_type %> <%= scraper_log.definition.display_name %></td>
+        <td><%= scraper_log.api_identifier || scraper_log.url_identifier %></td>
+        <td><%= link_to "Details", scraper_log_path(scraper_log) %></td>
+        <td class="break-all"><%= scraper_log.preview %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<% page_title "Scaper Logs" %>

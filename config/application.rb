@@ -29,9 +29,9 @@ module FoxTrove
         cron: "0 * * * *", # every hour
         class: "PurgeUnattachedBlobsJob",
       },
-      purge_log_events: {
+      purge_scraper_logs: {
         cron: "0 * * * *",
-        class: "PurgeLogEventsJob",
+        class: "PurgeScraperLogsJob",
       },
     }
 
