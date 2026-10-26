@@ -16,7 +16,6 @@ class ArtistUrl < ApplicationRecord
 
   validates :url_identifier, uniqueness: { scope: :site_type, case_sensitive: false }
   validates :api_identifier, uniqueness: { scope: :site_type, case_sensitive: false, allow_nil: true }
-  after_create :set_api_identifier!
   after_create_commit :enqueue_scraping
 
   enum :site_type, %i[
@@ -47,24 +46,6 @@ class ArtistUrl < ApplicationRecord
       q = q.attribute_nil_check("false", :api_identifier).attribute_matches(scrapers, :site_type)
     end
     q.order(id: :desc)
-  end
-
-  def set_api_identifier!
-    return unless scraper_enabled?
-
-    begin
-      self.api_identifier = scraper.fetch_api_identifier
-    rescue HTTPX::HTTPError => e
-      http_status_error = e.status
-    end
-
-    if api_identifier
-      save
-    else
-      error_message = "#{url_identifier} failed api lookup"
-      error_message << " (#{Rack::Utils::HTTP_STATUS_CODES[http_status_error]})" if http_status_error
-      errors.add(:base, error_message)
-    end
   end
 
   def unescaped_url_identifier

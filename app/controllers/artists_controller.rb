@@ -30,21 +30,17 @@ class ArtistsController < ApplicationController
   end
 
   def create
-    Artist.transaction do
-      @artist = Artist.create(artist_params)
-      add_new_artist_urls(@artist) if @artist.valid?
-
-      if @artist.errors.any?
-        raise ActiveRecord::Rollback
-      end
-    end
+    @artist = Artist.new(artist_params)
+    @artist.add_artist_urls if @artist.valid?
+    @artist.save if @artist.errors.none?
     respond_with(@artist)
   end
 
   def update
     @artist = Artist.find(params.expect(:id))
-    @artist.update(artist_params)
-    add_new_artist_urls(@artist)
+    @artist.assign_attributes(artist_params)
+    @artist.add_artist_urls if @artist.valid?
+    @artist.save if @artist.errors.none?
     respond_with(@artist)
   end
 
@@ -77,11 +73,5 @@ class ArtistsController < ApplicationController
 
   def instance_search_params
     params.fetch(:search, {}).permit(SubmissionFile.search_params)
-  end
-
-  def add_new_artist_urls(artist)
-    artist.url_string.lines.map(&:strip).compact_blank.each do |url|
-      artist.add_artist_url(url)
-    end
   end
 end

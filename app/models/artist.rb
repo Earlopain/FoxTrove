@@ -9,35 +9,64 @@ class Artist < ApplicationRecord
 
   attr_accessor :url_string
 
-  def add_artist_url(url)
-    result = Sites.from_gallery_url url
-    if result == :unsupported
-      errors.add(:url, "#{url} is not a supported url")
-      return
+  concerning :UrlParsing do
+    def add_artist_urls
+      parsed = parse_urls(url_string)
+      return if errors.any?
+
+      build_artist_urls(parsed)
     end
 
-    case result[:type]
-    in :invalid
-      errors.add(:identifier, "#{result[:identifier]} is not valid for #{result[:definition].display_name}")
-      return
-    in :username
-      # falltrhough
+    private
+
+    def parse_urls(url_string)
+      url_string.lines.map(&:strip).compact_blank.map do |url|
+        Sites.from_gallery_url(url).tap do |result|
+          case result[:type]
+          when :unsupported
+            errors.add(:base, "#{url} is not a supported url")
+          when :invalid
+            errors.add(:base, "#{result[:identifier]} is not valid for #{result[:definition].display_name}")
+          end
+        end
+      end
     end
 
-    artist_url = artist_urls.new(
-      site_type: result[:definition].site_type,
-      url_identifier: result[:identifier],
-      created_at_on_site: Time.current,
-      about_on_site: "",
-    )
+    def build_artist_urls(parsed)
+      parsed.each do |result|
+        artist_url = artist_urls.build(
+          site_type: result[:definition].site_type,
+          url_identifier: result[:identifier],
+          created_at_on_site: Time.current,
+          about_on_site: "",
+        )
 
-    artist_url.save
+        if result[:definition].scraper_enabled?
+          scraper = result[:definition].new_scraper(artist_url)
 
-    if artist_url.errors.any?
-      errors.add(:base, "#{url} is not valid: #{artist_url.errors.full_messages.join(',')}")
+          begin
+            artist_url.api_identifier = scraper.fetch_api_identifier
+          rescue HTTPX::HTTPError => e
+            http_status = e.status
+          end
+
+          unless artist_url.api_identifier
+            message = "#{result[:url]} is not valid: #{result[:identifier]} failed api lookup"
+            message << " (#{Rack::Utils::HTTP_STATUS_CODES[http_status]})" if http_status
+            errors.add(:base, message)
+            next
+          end
+        end
+
+        forward_artist_url_errors(artist_url, result[:url])
+      end
     end
 
-    artist_url
+    def forward_artist_url_errors(artist_url, raw_url)
+      return if artist_url.valid?
+
+      errors.add(:base, "#{raw_url} is not valid: #{artist_url.errors.full_messages.join(', ')}")
+    end
   end
 
   def enqueue_all_urls

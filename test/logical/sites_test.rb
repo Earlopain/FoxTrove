@@ -75,7 +75,7 @@ class SitesTest < ActiveSupport::TestCase
 
     test "nil is returned when no definitions match" do
       result = Sites.from_gallery_url("https://example.com")
-      assert_equal(:unsupported, result)
+      assert_equal({ type: :unsupported }, result)
     end
   end
 

@@ -11,14 +11,14 @@ module Sites
     begin
       uri = Addressable::URI.parse url
     rescue Addressable::URI::InvalidURIError
-      return :unsupported
+      return { type: :unsupported }
     end
 
     definitions.each do |definition|
-      match = definition.match_for_gallery(uri)
-      return match.merge(definition: definition) if match
+      match = definition.match_for_gallery(url)
+      return match.merge(definition: definition, url: uri) if match
     end
-    :unsupported
+    { type: :unsupported }
   end
 
   def download_headers_for_image_uri(uri)

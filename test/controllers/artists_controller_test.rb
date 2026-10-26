@@ -71,13 +71,13 @@ class ArtistsControllerTest < ActionDispatch::IntegrationTest
     test "create with unsupported url" do
       post artists_path(artist: { name: "foo", url_string: "https://example.com" })
       assert_response :unprocessable_content
-      assert_equal("Url https://example.com is not a supported url", css_select("#form-error").inner_text)
+      assert_equal("https://example.com is not a supported url", css_select("#form-error").inner_text)
     end
 
     test "create with invalid artist identifier" do
       post artists_path(artist: { name: "foo", url_string: "https://furaffinity.net/user/!invalid" })
       assert_response :unprocessable_content
-      assert_equal("Identifier !invalid is not valid for FurAffinity", css_select("#form-error").inner_text)
+      assert_equal("!invalid is not valid for FurAffinity", css_select("#form-error").inner_text)
     end
 
     test "create rolls back if second url is invalid" do
@@ -104,6 +104,7 @@ class ArtistsControllerTest < ActionDispatch::IntegrationTest
 
       assert_response :found
       assert_equal("123", ArtistUrl.last.api_identifier)
+      assert_equal(1, ScraperLog.count)
       assert_enqueued_jobs 1
       assert_enqueued_with(job: ScrapeArtistUrlJob, args: [ArtistUrl.last])
     end
@@ -156,6 +157,17 @@ class ArtistsControllerTest < ActionDispatch::IntegrationTest
     assert_difference(-> { ArtistUrl.count }, 1) do
       put artist_path(artist, artist: { url_string: "https://foo.carrd.co" })
       assert_redirected_to(artist_path(artist))
+    end
+  end
+
+  test "update rolls back when artist url identifier is already taken" do
+    artist = create(:artist)
+    create(:artist_url, artist: artist, site_type: "furaffinity", url_identifier: "foo")
+
+    assert_no_difference(-> { ArtistUrl.count }) do
+      put artist_path(artist, artist: { url_string: "https://furaffinity.net/user/foo" })
+      assert_response :unprocessable_content
+      assert_equal("https://furaffinity.net/user/foo is not valid: Url identifier has already been taken", css_select("#form-error").inner_text)
     end
   end
 
