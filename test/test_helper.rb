@@ -44,10 +44,12 @@ module ActiveSupport
   class TestCase
     include FactoryBot::Syntax::Methods
 
+    DEFAULT_CUSTOM_CONFIG = Sites.scraper_definitions.to_h { [:"#{it.site_type}_disabled?", true] }
+
     setup do
       WebMock.enable!
       WebMock.disable_net_connect!
-      Config.stubs(:custom_config).returns({})
+      Config.stubs(:custom_config).returns(DEFAULT_CUSTOM_CONFIG)
       Rails.cache.clear
     end
 

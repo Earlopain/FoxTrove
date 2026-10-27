@@ -98,7 +98,7 @@ class ArtistsControllerTest < ActionDispatch::IntegrationTest
 
     test "create with scraper enabled" do
       stub_request(:get, "https://piczel.tv/api/users/foo?friendly=1").to_return(body: { id: 123 }.to_json)
-      stub_scraper_enabled(:artstation) do
+      stub_scraper_enabled(:piczel) do
         post artists_path(artist: { name: "foo", url_string: "piczel.tv/gallery/foo" })
       end
 
@@ -121,7 +121,7 @@ class ArtistsControllerTest < ActionDispatch::IntegrationTest
 
     test "create with failed api lookup" do
       stub_request(:get, "https://piczel.tv/api/users/foo?friendly=1").to_return(status: 404)
-      stub_scraper_enabled(:artstation) do
+      stub_scraper_enabled(:piczel) do
         post artists_path(artist: { name: "foo", url_string: "piczel.tv/gallery/foo" })
       end
 
@@ -131,7 +131,7 @@ class ArtistsControllerTest < ActionDispatch::IntegrationTest
 
     test "create with api lookup returns nil" do
       stub_request(:get, "https://piczel.tv/api/users/foo?friendly=1").to_return(body: {}.to_json)
-      stub_scraper_enabled(:artstation) do
+      stub_scraper_enabled(:piczel) do
         post artists_path(artist: { name: "foo", url_string: "piczel.tv/gallery/foo" })
       end
 
@@ -141,7 +141,7 @@ class ArtistsControllerTest < ActionDispatch::IntegrationTest
 
     test "create with errored api lookup" do
       stub_request(:get, "https://piczel.tv/api/users/foo?friendly=1").to_return(status: 500)
-      stub_scraper_enabled(:artstation) do
+      stub_scraper_enabled(:piczel) do
         post artists_path(artist: { name: "foo", url_string: "piczel.tv/gallery/foo" })
       end
 

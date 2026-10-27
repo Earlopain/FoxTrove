@@ -3,6 +3,7 @@ require "test_helper"
 class ConfigTest < ActiveSupport::TestCase
   setup do
     Config.stubs(:default_config).returns(text: "foo", bool?: true, numeric: 123)
+    Config.stubs(:custom_config).returns({})
     Config.reset_cache
   end
 

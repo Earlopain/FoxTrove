@@ -1,6 +1,10 @@
 require "test_helper"
 
 class ScraperDefinitionTest < ActiveSupport::TestCase
+  setup do
+    Config.stubs(:custom_config).returns({})
+  end
+
   test "#scraper_enabled? returns true if all the required config keys are set" do
     Config.stubs(:twitter_user).returns("a")
     Config.stubs(:twitter_pass).returns("b")
