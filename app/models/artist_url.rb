@@ -48,6 +48,27 @@ class ArtistUrl < ApplicationRecord
     q.order(id: :desc)
   end
 
+  def fetch_identifier!(result)
+    begin
+      case result[:type]
+      in :username
+        self.url_identifier = result[:identifier]
+        self.api_identifier = scraper.fetch_api_identifier
+      in :api
+        self.api_identifier = result[:identifier]
+        self.url_identifier = scraper.fetch_url_identifier
+      end
+    rescue HTTPX::HTTPError => e
+      http_status = e.status
+    end
+
+    return if api_identifier && url_identifier
+
+    message = "#{result[:identifier]} failed api lookup"
+    message << " (#{Rack::Utils::HTTP_STATUS_CODES[http_status]})" if http_status
+    errors.add(:base, message)
+  end
+
   def unescaped_url_identifier
     CGI.unescape(url_identifier)
   end

@@ -14,7 +14,10 @@ class Artist < ApplicationRecord
       parsed = parse_urls(url_string)
       return if errors.any?
 
-      build_artist_urls(parsed)
+      new_artist_urls = build_artist_urls(parsed)
+      return if errors.any?
+
+      artist_urls.concat(new_artist_urls)
     end
 
     private
@@ -33,37 +36,28 @@ class Artist < ApplicationRecord
     end
 
     def build_artist_urls(parsed)
-      parsed.each do |result|
-        artist_url = artist_urls.build(
+      parsed.map do |result|
+        artist_url = ArtistUrl.new(
+          # This will be appended to the relation, so it seems
+          # unessesary to set here. But we need it to pass validations.
+          artist: self,
           site_type: result[:definition].site_type,
-          url_identifier: result[:identifier],
           created_at_on_site: Time.current,
           about_on_site: "",
         )
-
-        if result[:definition].scraper_enabled?
-          scraper = result[:definition].new_scraper(artist_url)
-
-          begin
-            artist_url.api_identifier = scraper.fetch_api_identifier
-          rescue HTTPX::HTTPError => e
-            http_status = e.status
-          end
-
-          unless artist_url.api_identifier
-            message = "#{result[:url]} is not valid: #{result[:identifier]} failed api lookup"
-            message << " (#{Rack::Utils::HTTP_STATUS_CODES[http_status]})" if http_status
-            errors.add(:base, message)
-            next
-          end
+        if artist_url.scraper_enabled?
+          artist_url.fetch_identifier!(result)
+        else
+          artist_url.url_identifier = result[:identifier]
+          artist_url.api_identifier = result[:identifier] if result[:type] == :api
         end
-
         forward_artist_url_errors(artist_url, result[:url])
+        artist_url
       end
     end
 
     def forward_artist_url_errors(artist_url, raw_url)
-      return if artist_url.valid?
+      return if artist_url.errors.none? && artist_url.valid?
 
       errors.add(:base, "#{raw_url} is not valid: #{artist_url.errors.full_messages.join(', ')}")
     end

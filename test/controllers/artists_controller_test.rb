@@ -87,13 +87,24 @@ class ArtistsControllerTest < ActionDispatch::IntegrationTest
       assert_response :unprocessable_content
     end
 
-    test "create rolls back if second url is duplicate" do
+    test "create rolls back if second url is duplicate url identifier" do
       create(:artist_url, site_type: "furaffinity", url_identifier: "foo")
       assert_no_difference(-> { Artist.count }, -> { ArtistUrl.count }) do
         post artists_path(artist: { name: "foo", url_string: "https://ko-fi.com/foo\nhttps://furaffinity.net/user/foo" })
       end
       assert_response :unprocessable_content
       assert_equal("https://furaffinity.net/user/foo is not valid: Url identifier has already been taken", css_select("#form-error").inner_text)
+    end
+
+    test "create rolls back if second url is duplicate api foo" do
+      create(:artist_url, site_type: "furaffinity", api_identifier: "foo")
+      assert_no_difference(-> { Artist.count }, -> { ArtistUrl.count }) do
+        stub_scraper_enabled(:furaffinity) do
+          post artists_path(artist: { name: "foo", url_string: "https://ko-fi.com/kofi\nhttps://furaffinity.net/user/foo" })
+        end
+      end
+      assert_response :unprocessable_content
+      assert_equal("https://furaffinity.net/user/foo is not valid: Api identifier has already been taken", css_select("#form-error").inner_text)
     end
 
     test "create with scraper enabled" do
@@ -148,6 +159,28 @@ class ArtistsControllerTest < ActionDispatch::IntegrationTest
       assert_response :unprocessable_content
       assert_equal("piczel.tv/gallery/foo is not valid: foo failed api lookup (Internal Server Error)", css_select("#form-error").inner_text)
     end
+
+    test "create with bluesky via did does a lookup via api identifier" do
+      did = "did:plc:ewvi7nxzyoun6zhxrhs64oiz"
+      handle = "foo.bsky.social"
+      stub_request(:get, "https://public.api.bsky.app/xrpc/app.bsky.actor.getProfile?actor=#{did}").to_return(body: { handle: handle }.to_json)
+      stub_scraper_enabled(:bluesky) do
+        post artists_path(artist: { name: "foo", url_string: "https://bsky.app/profile/#{did}" })
+      end
+
+      assert_response :found
+      assert_equal(handle, ArtistUrl.last.url_identifier)
+      assert_equal(did, ArtistUrl.last.api_identifier)
+    end
+
+    test "create with bluesky via did when scraper is disabled" do
+      did = "did:plc:4taw67zmobkhukme35hnn3ga"
+      post artists_path(artist: { name: "foo", url_string: "https://bsky.app/profile/#{did}" })
+
+      assert_response :found
+      assert_equal(did, ArtistUrl.last.url_identifier)
+      assert_equal(did, ArtistUrl.last.api_identifier)
+    end
   end
 
   test "update adds new urls" do
@@ -168,6 +201,19 @@ class ArtistsControllerTest < ActionDispatch::IntegrationTest
       put artist_path(artist, artist: { url_string: "https://furaffinity.net/user/foo" })
       assert_response :unprocessable_content
       assert_equal("https://furaffinity.net/user/foo is not valid: Url identifier has already been taken", css_select("#form-error").inner_text)
+    end
+  end
+
+  test "update rolls back when artist api identifier is already taken" do
+    artist = create(:artist)
+    create(:artist_url, artist: artist, site_type: "furaffinity", api_identifier: "foo")
+
+    assert_no_difference(-> { ArtistUrl.count }) do
+      stub_scraper_enabled(:furaffinity) do
+        put artist_path(artist, artist: { url_string: "https://furaffinity.net/user/foo" })
+      end
+      assert_response :unprocessable_content
+      assert_equal("https://furaffinity.net/user/foo is not valid: Api identifier has already been taken", css_select("#form-error").inner_text)
     end
   end
 

@@ -73,7 +73,13 @@ class SitesTest < ActiveSupport::TestCase
       assert_extracted("https://pixiv.net/jp/users/123", "pixiv", "123")
     end
 
-    test "nil is returned when no definitions match" do
+    test "works with bluesky" do
+      assert_extracted("https://bsky.app/profile/foo.bsky.social", "bluesky", "foo.bsky.social")
+      assert_extracted("https://bsky.app/profile/atproto.com", "bluesky", "atproto.com")
+      assert_extracted("https://bsky.app/profile/did:plc:4taw67zmobkhukme35hnn3ga", "bluesky", "did:plc:4taw67zmobkhukme35hnn3ga", type: :api)
+    end
+
+    test "unsupported is returned when no definitions match" do
       result = Sites.from_gallery_url("https://example.com")
       assert_equal({ type: :unsupported }, result)
     end

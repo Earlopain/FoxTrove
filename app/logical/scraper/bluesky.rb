@@ -58,5 +58,10 @@ module Scraper
       response = fetch_json("https://public.api.bsky.app/xrpc/app.bsky.actor.getProfile?actor=#{url_identifier}")
       response["did"]
     end
+
+    def fetch_url_identifier
+      response = fetch_json("https://public.api.bsky.app/xrpc/app.bsky.actor.getProfile?actor=#{api_identifier}")
+      response["handle"]
+    end
   end
 end

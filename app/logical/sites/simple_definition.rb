@@ -8,6 +8,7 @@ module Sites
       @homepage = definition_data["homepage"]
       @gallery_templates = definition_data["gallery_templates"].map { |t| Addressable::Template.new("{prefix}#{t}{/remaining}{?remaining}{#remaining}") }
       @username_identifier_regex = Regexp.new("^#{definition_data['username_identifier_regex']}$")
+      @api_identifier_regex = Regexp.new("^#{definition_data['api_identifier_regex']}$")
       @submission_template = Addressable::Template.new(definition_data["submission_template"]) if definition_data["submission_template"]
       @image_domains = definition_data["image_domains"] || []
       @download_headers = definition_data["download_headers"] || {}
@@ -15,12 +16,12 @@ module Sites
 
     def match_for_gallery(uri)
       extracted_identifiers = @gallery_templates.filter_map do |template|
-        template.extract(uri, IdentifierProcessor)&.dig("site_artist_identifier")
+        template.extract(uri, IdentifierProcessor)&.dig("site_artist_identifier").tap do |identifier|
+          return { type: :username, identifier: identifier } if @username_identifier_regex.match?(identifier)
+          return { type: :api,      identifier: identifier } if @api_identifier_regex.match?(identifier)
+        end
       end
       return if extracted_identifiers.none?
-
-      first_valid_identifier = extracted_identifiers.find { |identifier| @username_identifier_regex.match?(identifier) }
-      return { type: :username, identifier: first_valid_identifier } if first_valid_identifier
 
       { type: :invalid, identifier: extracted_identifiers.first }
     end
