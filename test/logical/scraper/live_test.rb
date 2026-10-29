@@ -12,15 +12,24 @@ module Scraper
         ArtistUrl.any_instance.stubs(:scraper_enabled?).returns(false)
       end
 
-      def assert_scraper(scraper_class, identifier, id, skip_files: false)
-        artist_url = create(:artist_url, url_identifier: identifier, site_type: scraper_class.site_type)
+      def assert_scraper(scraper_class, url_identifier, api_identifier, skip_files: false, type: :username)
+        artist_url = create(:artist_url, site_type: scraper_class.site_type)
         missing_keys = artist_url.site.missing_config_keys
         skip "Skipping #{scraper_class.site_type}: missing #{missing_keys}" if missing_keys.any?
 
-        assert_equal(id, artist_url.scraper.fetch_api_identifier)
+        case type
+        in :username
+          artist_url.url_identifier = url_identifier
+          artist_url.api_identifier = artist_url.scraper.fetch_api_identifier
+        in :api
+          artist_url.api_identifier = api_identifier
+          artist_url.url_identifier = artist_url.scraper.fetch_url_identifier
+        end
+        assert_equal(url_identifier, artist_url.url_identifier)
+        assert_equal(api_identifier, artist_url.api_identifier)
+
         return if skip_files
 
-        artist_url.api_identifier = id
         scraper = artist_url.scraper
         scraper.stubs(:more?).returns(true).then.returns(false)
         scraper.process!
@@ -96,7 +105,7 @@ module Scraper
       end
 
       test "pixiv" do
-        assert_scraper(Scraper::Pixiv, "23343984", "23343984")
+        assert_scraper(Scraper::Pixiv, "The_Secret_Cave", "23343984", type: :api)
       end
 
       test "reddit" do

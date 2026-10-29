@@ -68,9 +68,9 @@ class SitesTest < ActiveSupport::TestCase
     end
 
     test "works with pixiv" do
-      assert_extracted("pixiv.net/member.php?id=123", "pixiv", "123")
-      assert_extracted("https://pixiv.net/en/users/123", "pixiv", "123")
-      assert_extracted("https://pixiv.net/jp/users/123", "pixiv", "123")
+      assert_extracted("pixiv.net/member.php?id=123", "pixiv", "123", type: :api)
+      assert_extracted("https://pixiv.net/en/users/123", "pixiv", "123", type: :api)
+      assert_extracted("https://pixiv.net/jp/users/123", "pixiv", "123", type: :api)
     end
 
     test "works with bluesky" do

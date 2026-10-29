@@ -4,6 +4,7 @@ display_name: Bluesky
 homepage: https://bsky.app
 gallery_templates:
   - bsky.app/profile/{site_artist_identifier}
+  - bsky.app/profile/{site_artist_api_identifier}
 username_identifier_regex: "[a-zA-Z0-9.]{1,50}"
 api_identifier_regex: "did:plc:[a-z2-7]{24}"
 submission_template: https://bsky.app/profile/{+site_artist_api_identifier}/post/{site_submission_identifier}

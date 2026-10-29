@@ -58,9 +58,9 @@ module Scraper
       s
     end
 
-    # The url identifier is already the api identifier
-    def fetch_api_identifier
-      url_identifier
+    def fetch_url_identifier
+      json = make_request("user/detail", { user_id: api_identifier })
+      json.dig("user", "name")
     end
 
     def make_request(endpoint, params = {})

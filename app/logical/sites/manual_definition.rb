@@ -1,7 +1,7 @@
 module Sites
   class ManualDefinition < SimpleDefinition
-    def gallery_url(identifier)
-      identifier
+    def gallery_url(artist_url)
+      artist_url.unescaped_url_identifier
     end
 
     def submission_url(submission)

@@ -15,15 +15,14 @@ module Sites
     end
 
     def match_for_gallery(uri)
-      extracted_identifiers = @gallery_templates.filter_map do |template|
-        template.extract(uri, IdentifierProcessor)&.dig("site_artist_identifier").tap do |identifier|
-          return { type: :username, identifier: identifier } if @username_identifier_regex.match?(identifier)
-          return { type: :api,      identifier: identifier } if @api_identifier_regex.match?(identifier)
-        end
-      end
-      return if extracted_identifiers.none?
+      processor = IdentifierProcessor.new(@username_identifier_regex, @api_identifier_regex)
+      @gallery_templates.each do |template|
+        template.extract(uri, processor)
 
-      { type: :invalid, identifier: extracted_identifiers.first }
+        return { type: :username, identifier: processor.username_identifier } if processor.username_identifier
+        return { type: :api,      identifier: processor.api_identifier } if processor.api_identifier
+      end
+      { type: :invalid, identifier: processor.invalid_identifier } if processor.invalid_identifier
     end
 
     # Returns true when the site needs special headers to download from
@@ -31,8 +30,12 @@ module Sites
       @image_domains.include? domain
     end
 
-    def gallery_url(identifier)
-      "https://#{@gallery_templates.first.expand(site_artist_identifier: identifier)}"
+    def gallery_url(artist_url)
+      expanded = @gallery_templates.first.expand(
+        site_artist_identifier: artist_url.unescaped_url_identifier,
+        site_artist_api_identifier: artist_url.api_identifier,
+      )
+      "https://#{expanded}"
     end
 
     def submission_url(submission)
