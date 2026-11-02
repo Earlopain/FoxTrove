@@ -1,4 +1,6 @@
 module Scraper
+  class Error < StandardError; end
+
   class Base
     FRIENDLY_USER_AGENT = "FoxTrove/0.1 (by earlopain)"
 
@@ -98,17 +100,26 @@ module Scraper
 
       alias_method :"#{method_name}_old", method_name
       define_method(method_name) do
-        key = self.class.cache_key(method_name)
-        return Rails.cache.fetch(key) if Rails.cache.exist?(key)
-
-        value = send(:"#{method_name}_old")
-        Rails.cache.write(key, value, expires_in: expires_in) if value # Don't cache nil
-        value
+        fetch_cache(method_name, expires_in: expires_in, skip_nil: true) do
+          send(:"#{method_name}_old")
+        end
       end
     end
 
-    def self.delete_cache(method_name)
-      Rails.cache.delete(cache_key(method_name))
+    def self.fetch_cache(key, ...)
+      Rails.cache.fetch(cache_key(key), ...)
+    end
+
+    def fetch_cache(...)
+      self.class.fetch_cache(...)
+    end
+
+    def write_cache(key, ...)
+      Rails.cache.write(self.class.cache_key(key), ...)
+    end
+
+    def self.clear_cache
+      cache_keys.each { Rails.cache.delete(cache_key(it)) }
     end
 
     def self.cache_key(method_name)
@@ -117,8 +128,9 @@ module Scraper
       "#{name}.#{method_name}/#{config_checksum}"
     end
 
-    def self.cached_methods
-      @_cached_methods || []
+    def self.cache_keys
+      keys = const_defined?(:CACHE_KEYS) ? self::CACHE_KEYS : []
+      keys + (@_cached_methods || [])
     end
 
     def end_reached

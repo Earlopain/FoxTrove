@@ -5,6 +5,9 @@ module Scraper
   # https://github.com/upbit/pixivpy/blob/master/pixivpy3/api.py
   class Pixiv < Base
     STATE = "offset"
+    REFRESH_TOKEN_KEY = "refresh_token"
+    ACCESS_TOKEN_KEY = "access_token"
+    CACHE_KEYS = [REFRESH_TOKEN_KEY, ACCESS_TOKEN_KEY].freeze
 
     API_BASE_URL = "https://app-api.pixiv.net/v1"
     LOGIN_URL = "https://app-api.pixiv.net/web/v1/login"
@@ -70,23 +73,51 @@ module Scraper
       })
     end
 
+    def access_token
+      access_token = fetch_cache(ACCESS_TOKEN_KEY)
+      return access_token if access_token
+
+      refresh_token = fetch_cache(REFRESH_TOKEN_KEY)
+      response = if refresh_token
+        refresh(refresh_token)
+      else
+        initial_login
+      end
+      raise Error, "unexpected token response: #{response}" unless %w[refresh_token access_token expires_in].all? { response.key?(it) }
+
+      write_cache(REFRESH_TOKEN_KEY, response["refresh_token"])
+      write_cache(ACCESS_TOKEN_KEY, response["access_token"], expires_in: (response["expires_in"] - 60).seconds)
+      response["access_token"]
+    end
+
     private
 
-    def access_token
+    def refresh(refresh_token)
+      fetch_json(AUTH_TOKEN_URL, method: :post, headers: headers, form: {
+        client_id: CLIENT_ID,
+        client_secret: CLIENT_SECRET,
+        refresh_token: refresh_token,
+        grant_type: "refresh_token",
+        include_policy: true,
+      })
+    rescue HTTPX::HTTPError
+      self.class.clear_cache
+      raise Error, "failed to refresh access_token"
+    end
+
+    def initial_login
       code_verifier = urlsafe_b64 SecureRandom.base64(32)
       code = fetch_code code_verifier
-      response = fetch_json(AUTH_TOKEN_URL, method: :post, headers: headers, form: {
+      fetch_json(AUTH_TOKEN_URL, method: :post, headers: headers, form: {
         client_id: CLIENT_ID,
         client_secret: CLIENT_SECRET,
         code: code,
         code_verifier: code_verifier,
         grant_type: "authorization_code",
-        unclude_policy: true,
+        include_policy: true,
         redirect_uri: REDIRECT_URI,
       })
-      response["access_token"]
     end
-    cache(:access_token, 55.minutes)
 
     def fetch_code(code_verifier)
       SeleniumWrapper.driver(with_performance: true) do |driver|
