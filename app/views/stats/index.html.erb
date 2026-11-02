@@ -28,7 +28,7 @@
           <% if cached.any? %>
             <details>
               <summary><%= cached.size %> <%= "value".pluralize(cached.size) %></summary>
-              <pre><%= cached.to_json %></pre>
+              <pre><%= JSON.pretty_generate(cached) %></pre>
             </details>
           <% end %>
         </td>
