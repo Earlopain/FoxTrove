@@ -1,8 +1,6 @@
 module Scraper
   class Twitter < Base
     # Inspired by https://github.com/JustAnotherArchivist/snscrape/blob/e7d35ec1ebb008108082fc79161f351bc8a707e4/snscrape/modules/twitter.py
-    class ApiError < RuntimeError; end
-
     OPTIONAL_CONFIG_KEYS = %i[twitter_otp_secret].freeze
     STATE = "cursor"
 
@@ -158,7 +156,7 @@ module Scraper
         # there is only one variant, get that
         media.dig("video_info", "variants").first["url"]
       else
-        raise ApiError, "Unknown media type #{media['type']}"
+        raise Error, "Unknown media type #{media['type']}"
       end
     end
 

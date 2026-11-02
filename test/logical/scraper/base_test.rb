@@ -114,7 +114,7 @@ module Scraper
 
         @scraper.tokens
         @scraper.tokens
-        @scraper.class.delete_cache(:tokens)
+        @scraper.class.clear_cache
         @scraper.tokens
         @scraper.tokens
       end

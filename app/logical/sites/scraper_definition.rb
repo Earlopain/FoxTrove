@@ -12,11 +12,11 @@ module Sites
     delegate :all_config_keys, to: :@scraper
 
     def cached_values
-      @scraper.cached_methods.filter_map do |method|
-        key = @scraper.cache_key(method)
-        next unless Rails.cache.exist?(key)
+      @scraper.cache_keys.filter_map do |key|
+        value = @scraper.fetch_cache(key)
+        next if value.nil?
 
-        [method, Rails.cache.fetch(key)]
+        [key, value]
       end.to_h
     end
 

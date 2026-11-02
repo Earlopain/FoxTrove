@@ -34,4 +34,13 @@ class ScraperDefinitionTest < ActiveSupport::TestCase
     assert_equal(%i[twitter_pass], definition.missing_config_keys)
     assert_not(definition.scraper_enabled?)
   end
+
+  test "#cached_values returns all active cache keys" do
+    definition = Sites.from_enum("pixiv")
+    Scraper::Pixiv::CACHE_KEYS.each_with_index do |key, index|
+      Scraper::Pixiv.fetch_cache(key) { index }
+    end
+
+    assert_equal({ "refresh_token" => 0, "access_token" => 1 }, definition.cached_values)
+  end
 end
