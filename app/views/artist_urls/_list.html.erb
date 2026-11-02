@@ -1,12 +1,14 @@
 <%# locals: (artist_urls:) -%>
 <table class="url-list table full-width">
   <thead>
-    <th>Link</th>
-    <th>Actions</th>
-    <th>Last scraped</th>
-    <th>Status</th>
-    <th class="align-right">Pending File Downloads</th>
-    <th class="align-right">Pending IQDB calls</th>
+    <tr>
+      <th>Link</th>
+      <th>Actions</th>
+      <th>Last scraped</th>
+      <th>Status</th>
+      <th class="align-right">Pending File Downloads</th>
+      <th class="align-right">Pending IQDB calls</th>
+    <tr>
   </thead>
   <% artist_urls.each do |artist_url| %>
     <tr>
