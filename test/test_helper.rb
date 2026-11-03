@@ -5,18 +5,11 @@ require "simplecov"
 
 SimpleCov.start "rails" do
   enable_coverage :branch
-  cover "{app,lib}/**/*.rb"
   cover_views
 
-  groups.delete "Channels"
-  groups.delete "Mailers"
-  groups.delete "Libraries"
-
-  group "Sites", "app/logical/sites"
   group "Scraper", "app/logical/scraper"
-  group "Views", "app/views"
   group "Logical" do |src_file|
-    not_filtered_further = ["logical/sites", "logical/scraper"].none? { |e| src_file.filename.include? e }
+    not_filtered_further = ["logical/scraper"].none? { |e| src_file.filename.include? e }
     not_filtered_further && src_file.filename.include?("app/logical")
   end
 end
