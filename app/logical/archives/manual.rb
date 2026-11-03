@@ -6,8 +6,6 @@ module Archives
 
       artist_url = ArtistUrl.find_or_create_by!(site_type: "manual", artist_id: artist_id) do |url|
         url.url_identifier = "manual-#{artist_id}"
-        url.created_at_on_site = Time.current
-        url.about_on_site = ""
       end
 
       artist_submission = ArtistSubmission.find_or_create_by!(artist_url: artist_url, identifier_on_site: source_url) do |submission|

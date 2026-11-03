@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_24_170343) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_03_102528) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pgcrypto"
@@ -58,9 +58,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_24_170343) do
   create_table "artist_urls", force: :cascade do |t|
     t.bigint "artist_id", null: false
     t.text "url_identifier", null: false
-    t.datetime "created_at_on_site", null: false
-    t.text "about_on_site", null: false
-    t.boolean "scraping_disabled", default: false, null: false
     t.datetime "last_scraped_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

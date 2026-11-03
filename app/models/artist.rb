@@ -42,8 +42,6 @@ class Artist < ApplicationRecord
           # unessesary to set here. But we need it to pass validations.
           artist: self,
           site_type: result[:definition].site_type,
-          created_at_on_site: Time.current,
-          about_on_site: "",
         )
         if artist_url.scraper_enabled?
           artist_url.fetch_identifier!(result)
