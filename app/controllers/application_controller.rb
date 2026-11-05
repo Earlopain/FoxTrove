@@ -12,6 +12,7 @@ class ApplicationController < ActionController::Base
     ActionController::UnpermittedParameters => 403,
     ActiveRecord::RecordNotFound => 404,
     ActionController::UnknownFormat => 406,
+    ActiveRecord::RecordInvalid => 422,
     PG::ConnectionBad => 503,
   }.freeze
   exception_classes = Rails.env.test? ? EXCEPTION_TYPES.keys : Exception
@@ -35,6 +36,7 @@ class ApplicationController < ActionController::Base
   def rescue_exception(exception)
     @exception = exception
     @exception = @exception.cause if @exception.is_a?(ActionView::Template::Error)
+    @message = @exception.message.dup.force_encoding("utf-8")
 
     @params = {
       params: request.filtered_parameters.except(:authenticity_token),
@@ -45,7 +47,19 @@ class ApplicationController < ActionController::Base
     error_template = "application/error"
     error_template = "application/#{status}" if lookup_context.template_exists?(status, "application")
 
-    render error_template, formats: [:html], status: status
+    respond_to do |format|
+      format.json do
+        json = {
+          class: @exception.class,
+          message: @message,
+          backtrace: @exception.backtrace,
+        }
+        render json: json, status: status
+      end
+      format.any do
+        render error_template, formats: [:html], status: status
+      end
+    end
   end
 
   def respond_with(model)

@@ -76,9 +76,56 @@ class SubmissionFilesController < ApplicationController
     SubmissionFile.where(id: params[:ids]).find_each(&:update_e6_posts)
   end
 
+  def import
+    params = import_params
+    respond_to do |format|
+      format.json do
+        artist = Artist.find_or_create_by!(name: params[:artist_name])
+        artist_url = artist.artist_urls.find_or_create_by!(
+          site_type: "manual",
+          url_identifier: params[:artist_url],
+        )
+        artist_submission = artist_url.submissions.find_or_create_by!(
+          identifier_on_site: params[:submission][:url],
+        ) do |submission|
+          submission.title_on_site = params[:submission][:title]
+          submission.description_on_site = params[:submission][:description]
+          submission.created_at_on_site = params[:submission][:created_at]
+        end
+
+        if (existing = artist_submission.submission_files.find_by(file_identifier: params[:file][:url]))
+          return render json: existing
+        end
+
+        submission_file = SubmissionFile.from_attachable(
+          attachable: params[:file][:blob],
+          artist_submission: artist_submission,
+          url: params[:file][:url],
+          created_at: params[:submission][:created_at],
+          file_identifier: params[:file][:url],
+        )
+
+        render json: submission_file
+      end
+    end
+  end
+
   private
 
   def search_params
     params.fetch(:search, {}).permit(SubmissionFile.search_params)
+  end
+
+  def import_params
+    import = params.expect(
+      import: [
+        :artist_name,
+        :artist_url,
+        { submission: %i[created_at url title description] },
+        { file: %i[url blob] },
+      ],
+    )
+    import.require(%i[artist_name artist_url submission file])
+    import
   end
 end

@@ -34,6 +34,7 @@ Rails.application.routes.draw do
       put :unbacklog_many
       put :enqueue_many
       post :update_matching_e6_posts
+      post :import
     end
   end
   resources :scraper_logs, only: %i[index show]
