@@ -72,13 +72,14 @@ class SubmissionFile < ApplicationRecord
       file_identifier: file_identifier,
     )
     case attachable
-    when Tempfile
+    when Tempfile, ActionDispatch::Http::UploadedFile
       submission_file.attach_original_from_file!(attachable)
     when ActiveStorage::Blob
       submission_file.attach_original_from_blob!(attachable)
     else
       raise ArgumentError, "'#{attachable.class}' is not supported"
     end
+    submission_file
   end
 
   def attach_original_from_file!(file)
@@ -227,6 +228,12 @@ class SubmissionFile < ApplicationRecord
 
   def url_for(variant, **)
     Rails.application.routes.url_helpers.rails_blob_path(send(variant), only_path: true, **)
+  end
+
+  def serializable_hash(...)
+    super.tap do |json|
+      json["iqdb_hash"] = Base64.encode64(json["iqdb_hash"]) if json["iqdb_hash"]
+    end
   end
 
   concerning :SearchMethods do

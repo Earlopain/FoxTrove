@@ -59,6 +59,37 @@ Tumblr doesn't expose the full resolution image through normal means. Getting fu
 
 The first step starts when you add a Tumblr url to an artist. Instead of downloading the image like all other scrapers, it reblogs them.
 
+### Manual Import
+
+If you have data from other sources like gallery-dl or the like, there's an endpoint you can use to import them. Check out the following script to understand how the endpoint works:
+
+<details><summary>import.rb</summary>
+<p>
+
+```rb
+require "httpx"
+
+url = "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/14/Norderney%2C_D%C3%BCnenlandschaft%2C_Wegweiser_--_2025_--_9437.jpg/1280px-Norderney%2C_D%C3%BCnenlandschaft%2C_Wegweiser_--_2025_--_9437.jpg?download"
+
+Tempfile.create("upload", binmode: true) do |blob|
+  blob.write(HTTPX.get(url).body.to_s)
+  blob.rewind
+
+  HTTPX.post("http://localhost:9000/submission_files/import.json", form: {
+    "import[artist_name]" => "Dietmar_Rabich",
+    "import[artist_url]" => "https://commons.wikimedia.org/wiki/User:XRay",
+    "import[submission][created_at]" => "2025-08-27T12:12+02:00",
+    "import[submission][url]" => "https://commons.wikimedia.org/wiki/File:Norderney,_D%C3%BCnenlandschaft,_Wegweiser_--_2025_--_9437.jpg",
+    "import[submission][title]" => "Norderney, Dünenlandschaft, Wegweiser -- 2025",
+    "import[submission][description]" => "",
+    "import[file][url]" => url,
+    "import[file][blob]" => blob,
+  })
+end
+```
+</p>
+</details> 
+
 ## Captchas
 
 A few sites throw captchas at you when trying to log in through an automated browser. You will need to solve these captchas manually. Click on the `Selenium` link and connect to see what is happening inside the automated browser. Solve captchas as needed when adding artist urls or enqueuing new updates.

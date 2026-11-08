@@ -205,4 +205,64 @@ class SubmissionFilesControllerTest < ActionDispatch::IntegrationTest
     assert_enqueued_jobs 1, only: E6IqdbQueryJob
     assert_enqueued_with(job: E6IqdbQueryJob, args: [sm])
   end
+
+  class ImportTest < ActionDispatch::IntegrationTest
+    setup do
+      @artist_name = "foo"
+      @artist_url = "https://example.com/foo"
+      @submission_url = "https://example.com/foo/123"
+      @file_url = "https://example.com/1.jpg"
+    end
+
+    def import_params
+      {
+        artist_name: @artist_name,
+        artist_url: @artist_url,
+        submission: {
+          created_at: Time.current,
+          url: @submission_url,
+          title: "Hello!",
+          description: "World!",
+        },
+        file: {
+          url: @file_url,
+          blob: fixture_file_upload("1.jpg", "image/jpeg"),
+        },
+      }
+    end
+
+    test "it works when nothing exists yet" do
+      assert_difference([-> { Artist.count }, -> { ArtistUrl.count }, -> { ArtistSubmission.count }, -> { SubmissionFile.count }], 1) do
+        post import_submission_files_path, params: { format: :json, import: import_params }
+      end
+      assert_response :success
+      assert_equal(@artist_name, Artist.sole.name)
+      assert_equal(@artist_url, ArtistUrl.sole.url_identifier)
+      assert_equal(@submission_url, ArtistSubmission.sole.identifier_on_site)
+      assert_equal(@file_url, SubmissionFile.sole.file_identifier)
+    end
+
+    test "it is idempotent" do
+      artist = create(:artist, name: @artist_name)
+      artist_url = create(:artist_url, artist: artist, url_identifier: @artist_url, site_type: "manual")
+      artist_submission = create(:artist_submission, artist_url: artist_url, identifier_on_site: @submission_url)
+      submission_file = create(:submission_file, artist_submission: artist_submission, file_identifier: @file_url, iqdb_hash: "\xE6")
+
+      assert_no_difference([-> { Artist.count }, -> { ArtistUrl.count }, -> { ArtistSubmission.count }, -> { SubmissionFile.count }]) do
+        post import_submission_files_path, params: { format: :json, import: import_params }
+      end
+      assert_response :success
+      parsed_response = response.parsed_body
+      assert_equal(submission_file.file_identifier, parsed_response["file_identifier"])
+    end
+
+    test "it shows an error when something is not valid" do
+      @artist_name = "!invalid!"
+      post import_submission_files_path, params: { format: :json, import: import_params }
+      assert_response :unprocessable_content
+      json_response = response.parsed_body
+      assert_equal("ActiveRecord::RecordInvalid", json_response["class"])
+      assert_match(/Validation failed: Name '!invalid!'/, json_response["message"])
+    end
+  end
 end
