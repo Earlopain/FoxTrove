@@ -5,7 +5,7 @@ RUN apk --no-cache add build-base cmake git \
   libffi-dev postgresql18-dev yaml-dev
 
 COPY Gemfile Gemfile.lock ./
-RUN gem i foreman && bundle install \
+RUN bundle install \
  && rm -rf /usr/local/bundle/cache/*.gem \
  && find /usr/local/bundle/gems/ -name "*.c" -delete \
  && find /usr/local/bundle/gems/ -name "*.o" -delete

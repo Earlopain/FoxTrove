@@ -22,6 +22,7 @@ module FoxTrove
     config.active_storage.variant_processor = :disabled
 
     config.active_job.queue_adapter = :good_job
+    config.good_job.queues = "scraping:1;e6_iqdb:1;variant_generation:5;default:1;submission_download:5"
     config.good_job.execution_mode = :external
     config.good_job.enable_cron = true
     config.good_job.cron = {

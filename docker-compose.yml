@@ -14,15 +14,6 @@ services:
       SELENIUM_VNC_URL: ${SELENIUM_VNC_URL:?}
       FOXTROVE_DATA_PATH_HOST: ${FOXTROVE_DATA_PATH_HOST:?}
       VIPS_WARNING: ${VIPS_WARNING:?}
-      RAILS_SERVER_EXEC: bin/rails server -p 9000 -b 0.0.0.0 --pid /tmp/server.pid
-      ESBUILD_EXEC: >-
-        esbuild app/typescript/application.ts public/icons/*.png
-        --target=chrome111,firefox111,safari16
-        --bundle --sourcemap
-        --outdir=public/build --loader:.png=copy
-        --entry-names=[name]-[hash] --metafile=public/build/manifest.json
-        --watch=forever --color=true
-      GOOD_JOB_EXEC: bundle exec good_job --queues=scraping:1;e6_iqdb:1;variant_generation:5;default:1;submission_download:5
     volumes:
       - .:/app
       - ${FOXTROVE_DATA_PATH:?}/active_storage:${FOXTROVE_DATA_PATH_HOST:?}/active_storage
@@ -31,7 +22,29 @@ services:
         condition: ${POSTGRS_DEPENDS_CONDITION:-service_started}
     ports:
       - ${EXPOSED_SERVER_PORT:?}:9000
-    command: foreman start --color
+    command: bin/rails server -p 9000 -b 0.0.0.0 --pid /tmp/server.pid
+
+  good_job:
+    extends:
+      service: foxtrove
+    depends_on: !override
+      postgres:
+        condition: ${POSTGRES_DEPENDS_CONDITION:-service_started}
+    ports: !reset []
+    command: bundle exec good_job
+
+  esbuild:
+    extends:
+      service: foxtrove
+    depends_on: !reset []
+    ports: !reset []
+    command: >-
+      esbuild app/typescript/application.ts public/icons/*.png
+      --target=chrome111,firefox111,safari16
+      --bundle --sourcemap
+      --outdir=public/build --loader:.png=copy
+      --entry-names=[name]-[hash] --metafile=public/build/manifest.json
+      --watch=forever --color=true
 
   postgres:
     image: postgres:${POSTGRES_IMAGE_VERSION:-18.6-alpine3.24}

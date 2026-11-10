@@ -27,7 +27,7 @@ env = {
 [tasks."docker:start"]
 description = "Bring up all the necessary docker containers"
 extends = "docker"
-run = "docker compose up foxtrove iqdb selenium"
+run = "docker compose up foxtrove good_job esbuild iqdb selenium"
 
 [tasks."docker:run"]
 description = "Run a command in the docker container containing the rails application"
