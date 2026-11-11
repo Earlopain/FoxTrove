@@ -4,4 +4,4 @@ test:
 
 local:
   service: Disk
-  root: <%= Pathname(ENV.fetch("FOXTROVE_DATA_PATH_HOST")).join("active_storage") %>
+  root: <%= Pathname(ENV.fetch("FOXTROVE_DATA_PATH")).join("active_storage") %>

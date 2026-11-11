@@ -12,11 +12,11 @@ services:
       IQDB_URL: ${IQDB_URL:?}
       SELENIUM_URL: ${SELENIUM_URL:?}
       SELENIUM_VNC_URL: ${SELENIUM_VNC_URL:?}
-      FOXTROVE_DATA_PATH_HOST: ${FOXTROVE_DATA_PATH_HOST:?}
       VIPS_WARNING: ${VIPS_WARNING:?}
+      FOXTROVE_DATA_PATH: /data
     volumes:
       - .:/app
-      - ${FOXTROVE_DATA_PATH:?}/active_storage:${FOXTROVE_DATA_PATH_HOST:?}/active_storage
+      - ${FOXTROVE_DATA_PATH:?}/active_storage:/data/active_storage
     depends_on:
       postgres:
         condition: ${POSTGRS_DEPENDS_CONDITION:-service_started}
