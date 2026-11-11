@@ -129,3 +129,5 @@ There are some mise tasks to help with common development flows:
 * `mise lint`
 
 Run `mise tasks ls` to show them all.
+
+As an alternative to the full docker setup above, you might want to run `mise local:start`. It brings up anything except for rails itself, which you must start after with `bin/rails s`. It connects to postgres and the other services locally for easier debugging. Install gems with `mise local:bundle-install` but be aware that some gems might require certain libraries to be present. Please see the Dockerfile for more info.

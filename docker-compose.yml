@@ -8,9 +8,9 @@ services:
         DOCKER_RUN_AS_USER: ${DOCKER_RUN_AS_USER:-}
     image: foxtrove
     environment:
-      DATABASE_URL: ${DATABASE_URL:?}
-      IQDB_URL: ${IQDB_URL:?}
-      SELENIUM_URL: ${SELENIUM_URL:?}
+      DATABASE_URL: postgresql://postgres:5432
+      IQDB_URL: http://iqdb:5588
+      SELENIUM_URL: http://selenium:4444
       SELENIUM_VNC_URL: ${SELENIUM_VNC_URL:?}
       VIPS_WARNING: ${VIPS_WARNING:?}
       FOXTROVE_DATA_PATH: /data
@@ -68,10 +68,14 @@ services:
     image: ghcr.io/earlopain/iqdb:a7ad6010291d5308e65b040b2c3a128ddfd5f3d3
     volumes:
       - ${FOXTROVE_DATA_PATH:?}/iqdb_data:/iqdb
+    ports:
+      - ${EXPOSED_IQDB_PORT:?}:5588
+
   selenium:
     image: selenium/standalone-chrome:4.49.0-20260909
     environment:
       - SE_VNC_NO_PASSWORD=1
     shm_size: 2gb
     ports:
+      - ${EXPOSED_SELENIUM_PORT:?}:4444
       - ${EXPOSED_SELENIUM_VNC_PORT:?}:7900

@@ -12,36 +12,31 @@ VIPS_WARNING = { default = "0" }
 
 EXPOSED_SERVER_PORT = { default = "9000" }
 EXPOSED_POSTGRES_PORT = { default = "34518" }
+EXPOSED_IQDB_PORT = { default = "5588" }
+EXPOSED_SELENIUM_PORT = { default = "4444" }
 EXPOSED_SELENIUM_VNC_PORT = { default = "7900" }
 
-[task_templates.docker]
-env = {
-  DATABASE_URL = "postgresql://postgres:5432",
-  IQDB_URL = "http://iqdb:5588",
-  SELENIUM_URL = "http://selenium:4444",
-  SELENIUM_VNC_URL = "http://localhost:{{ env.EXPOSED_SELENIUM_VNC_PORT }}",
-}
+DATABASE_URL = "postgresql://localhost:{{ env.EXPOSED_POSTGRES_PORT }}"
+IQDB_URL = "http://localhost:{{ env.EXPOSED_IQDB_PORT }}"
+SELENIUM_URL = "http://localhost:{{ env.EXPOSED_SELENIUM_PORT }}"
+SELENIUM_VNC_URL = "http://localhost:{{ env.EXPOSED_SELENIUM_VNC_PORT }}"
 
 [tasks."docker:start"]
 description = "Bring up all the necessary docker containers"
-extends = "docker"
 run = "docker compose up foxtrove good_job esbuild iqdb selenium"
 
 [tasks."docker:run"]
 description = "Run a command in the docker container containing the rails application"
-extends = "docker"
 env.POSTGRS_DEPENDS_CONDITION = "service_healthy"
 run = "docker compose run --rm foxtrove"
 
 [tasks."docker:test"]
 description = "Run rails tests in docker"
-extends = "docker"
 env.POSTGRS_DEPENDS_CONDITION = "service_healthy"
 run = "docker compose run --rm foxtrove bin/rails test"
 
 [tasks."docker"]
 description = "Run a docker compose command"
-extends = "docker"
 run = "docker compose"
 
 [tasks."local:bundle-install"]
@@ -53,6 +48,10 @@ sources = ["Gemfile.lock", ".bundle/config"]
 description = "Keep local npm packages up-to-date"
 run = "npm install"
 sources = ["package-lock.json"]
+
+[tasks."local:start"]
+description = "Start all required services in the background, run `bin/rails s` to start rails after"
+run = "docker compose up postgres good_job esbuild iqdb selenium -d"
 
 [tasks.lint]
 description = "Run all linting tasks"
