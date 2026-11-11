@@ -5,7 +5,7 @@ RUN apk --no-cache add build-base cmake git \
   libffi-dev postgresql18-dev yaml-dev
 
 COPY Gemfile Gemfile.lock ./
-RUN bundle install \
+RUN BUNDLE_FROZEN=true bundle install \
  && rm -rf /usr/local/bundle/cache/*.gem \
  && find /usr/local/bundle/gems/ -name "*.c" -delete \
  && find /usr/local/bundle/gems/ -name "*.o" -delete
@@ -13,8 +13,8 @@ RUN bundle install \
 FROM node:24-alpine3.24 AS node-downloader
 
 WORKDIR /app
-COPY package.json Gemfile.lock ./
-RUN npm install --omit=dev
+COPY package.json package-lock.json ./
+RUN npm ci --omit=dev
 
 FROM ${BASE_IMAGE:-ruby:4.0.7-alpine3.24}
 

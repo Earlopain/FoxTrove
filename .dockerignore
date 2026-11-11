@@ -5,5 +5,5 @@
 !/Gemfile
 !/Gemfile.lock
 !/package.json
-!/package-lock.lock
+!/package-lock.json
 !/.git/refs/heads/master
